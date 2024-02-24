@@ -1,28 +1,13 @@
 ﻿using Domain.Streaming.Agreggates;
-using Domain.Streaming.ValueObject;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+using Repository.Mapping.Streaming;
 
-namespace Domain.Account.Agreggates
+namespace Domain.Account.Agreggates;
+
+public class MusicPersonalMap : MusicEntityMap<PlaylistPersonal>
 {
-    public class MusicPersonalMap : IEntityTypeConfiguration<Music<PlaylistPersonal>>
+    protected override void ConfigureCustom(EntityTypeBuilder<Music<PlaylistPersonal>> builder)
     {
-        public void Configure(EntityTypeBuilder<Music<PlaylistPersonal>> builder)
-        {
-
-            builder.ToTable("MusicPersonal");
-
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-
-            builder.OwnsOne<Duration>(d => d.Duration, c =>
-            {
-                c.Property(x => x.Value).HasColumnName("Duration").IsRequired().HasMaxLength(50);
-            });
-
-            builder.HasMany(x => x.Playlists).WithMany(m => m.Musics);
-        }
+        builder.HasMany(x => x.Playlists).WithMany(m => m.Musics);
     }
-
 }
