@@ -1,0 +1,95 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{E37175AA-C02D-4379-8931-175751FB9E7C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E5B92FE2-DCD7-4675-85B3-E367EB0C7375}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		generate_coverage_report.ps1 = generate_coverage_report.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".documents", ".documents", "{0EA1D342-20E9-4789-A90A-1E362A8E252B}"
+	ProjectSection(SolutionItems) = preProject
+		ExampleOpenAPI.cs = ExampleOpenAPI.cs
+		migrations.txt = migrations.txt
+		Domain\.documents\DDD Course OREILLY\README.md = Domain\.documents\DDD Course OREILLY\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Aula 2023-11-18", "1 - Aula 2023-11-18", "{89C28CE8-969E-4FCA-9C55-7C5F65C14021}"
+	ProjectSection(SolutionItems) = preProject
+		Domain\.documents\1 - Aula 2023-11-18\DDD.md = Domain\.documents\1 - Aula 2023-11-18\DDD.md
+		Domain\.documents\1 - Aula 2023-11-18\git_initial_commands = Domain\.documents\1 - Aula 2023-11-18\git_initial_commands
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2- Aula  2023-11-25", "2- Aula  2023-11-25", "{E8DE01EA-D4A5-4821-B5FF-642D45BC5480}"
+	ProjectSection(SolutionItems) = preProject
+		Domain\.documents\2- Aula  2023-11-25\DiagramaClasse_Alex.jpg = Domain\.documents\2- Aula  2023-11-25\DiagramaClasse_Alex.jpg
+		Domain\.documents\2- Aula  2023-11-25\diagrama_Classe_2.png = Domain\.documents\2- Aula  2023-11-25\diagrama_Classe_2.png
+		Domain\.documents\2- Aula  2023-11-25\Tecnologia.NETMinimundo.txt = Domain\.documents\2- Aula  2023-11-25\Tecnologia.NETMinimundo.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDD Course OREILLY", "DDD Course OREILLY", "{5AA101AF-6DE9-4322-A799-834E61AEF49E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations_MySqlServer", "Migrations_MySqlServer\Migrations_MySqlServer.csproj", "{BAC8FF7B-F097-4F74-B273-B9B7205E2DE0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations_SqlServer", "Migrations_SqlServer\Migrations_SqlServer.csproj", "{79FB884D-5437-4255-B7E6-521F47AF0A31}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{1DA9072C-CB58-4169-BB67-80F4B3CF6A51}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XunitTest", "XUnitTest\XunitTest.csproj", "{63653778-1501-426A-918F-088BCC961EC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{7B166AEF-B63D-4E43-B903-95A96DC73FA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{5056D4A1-229B-4A80-BDE8-F059B3173EFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E37175AA-C02D-4379-8931-175751FB9E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E37175AA-C02D-4379-8931-175751FB9E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E37175AA-C02D-4379-8931-175751FB9E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E37175AA-C02D-4379-8931-175751FB9E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAC8FF7B-F097-4F74-B273-B9B7205E2DE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAC8FF7B-F097-4F74-B273-B9B7205E2DE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAC8FF7B-F097-4F74-B273-B9B7205E2DE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAC8FF7B-F097-4F74-B273-B9B7205E2DE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79FB884D-5437-4255-B7E6-521F47AF0A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79FB884D-5437-4255-B7E6-521F47AF0A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79FB884D-5437-4255-B7E6-521F47AF0A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79FB884D-5437-4255-B7E6-521F47AF0A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA9072C-CB58-4169-BB67-80F4B3CF6A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA9072C-CB58-4169-BB67-80F4B3CF6A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA9072C-CB58-4169-BB67-80F4B3CF6A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA9072C-CB58-4169-BB67-80F4B3CF6A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63653778-1501-426A-918F-088BCC961EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63653778-1501-426A-918F-088BCC961EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63653778-1501-426A-918F-088BCC961EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63653778-1501-426A-918F-088BCC961EC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B166AEF-B63D-4E43-B903-95A96DC73FA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B166AEF-B63D-4E43-B903-95A96DC73FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B166AEF-B63D-4E43-B903-95A96DC73FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B166AEF-B63D-4E43-B903-95A96DC73FA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5056D4A1-229B-4A80-BDE8-F059B3173EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5056D4A1-229B-4A80-BDE8-F059B3173EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5056D4A1-229B-4A80-BDE8-F059B3173EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5056D4A1-229B-4A80-BDE8-F059B3173EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0EA1D342-20E9-4789-A90A-1E362A8E252B} = {E5B92FE2-DCD7-4675-85B3-E367EB0C7375}
+		{89C28CE8-969E-4FCA-9C55-7C5F65C14021} = {0EA1D342-20E9-4789-A90A-1E362A8E252B}
+		{E8DE01EA-D4A5-4821-B5FF-642D45BC5480} = {0EA1D342-20E9-4789-A90A-1E362A8E252B}
+		{5AA101AF-6DE9-4322-A799-834E61AEF49E} = {0EA1D342-20E9-4789-A90A-1E362A8E252B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B568D506-4D7F-4382-B4C7-41F243F7C5D0}
+	EndGlobalSection
+EndGlobal
