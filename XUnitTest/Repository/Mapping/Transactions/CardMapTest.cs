@@ -27,19 +27,19 @@ public class CardMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Card));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var activeProperty = entityType.FindProperty("Active");
-            var numberProperty = entityType.FindProperty("Number");                
-            var cvvProperty = entityType.FindProperty("CVV");
-            var cardBrandNavigation = entityType.FindNavigation("CardBrand");
+            var idProperty = entityType?.FindProperty("Id");
+            var activeProperty = entityType?.FindProperty("Active");
+            var numberProperty = entityType?.FindProperty("Number");                
+            var cvvProperty = entityType?.FindProperty("CVV");
+            var cardBrandNavigation = entityType?.FindNavigation("CardBrand");
 
 
-            var validateProperty = entityType.FindNavigation("Validate").ForeignKey.Properties.First();
-            var limitProperty = entityType.FindNavigation("Limit").ForeignKey.Properties.First();
-            var transactionsNavigation = entityType.FindNavigation("Transactions");
+            var validateProperty = entityType?.FindNavigation("Validate")?.ForeignKey.Properties.First();
+            var limitProperty = entityType?.FindNavigation("Limit")?.ForeignKey.Properties.First();
+            var transactionsNavigation = entityType?.FindNavigation("Transactions");
 
             // Assert
             Assert.NotNull(idProperty);
@@ -63,7 +63,7 @@ public class CardMapTest
             Assert.False(limitProperty.IsNullable);
             Assert.NotNull(transactionsNavigation);
             Assert.True(transactionsNavigation.IsCollection);
-            Assert.NotNull(transactionsNavigation.ForeignKey.DeleteBehavior);
+            Assert.NotNull(transactionsNavigation?.ForeignKey.DeleteBehavior);
             Assert.Equal(PROPERTY_COUNT, propsCount);
         }
     }

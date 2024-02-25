@@ -13,7 +13,7 @@ public class MockLogin
             .RuleFor(l => l.Password, f => f.Internet.Password())
             .Generate();
 
-        fakeLogin.Password = CryptoPassword(fakeLogin.Password);
+        fakeLogin.Password = CryptoPassword(fakeLogin.Password ?? "");
 
         return fakeLogin;
     }

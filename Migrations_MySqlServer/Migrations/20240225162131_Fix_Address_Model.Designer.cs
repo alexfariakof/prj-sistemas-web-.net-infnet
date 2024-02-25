@@ -2,18 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
 #nullable disable
 
-namespace Migrations_SqlServer.Migrations
+namespace Migrations_MySqlServer.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20240225005039_Change-Music-And-MusicPlayList-Mapping")]
-    partial class ChangeMusicAndMusicPlayListMapping
+    [Migration("20240225162131_Fix_Address_Model")]
+    partial class Fix_Address_Model
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,35 +20,31 @@ namespace Migrations_SqlServer.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("Birth")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("CPF")
                         .IsRequired()
                         .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)");
+                        .HasColumnType("varchar(14)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -58,24 +53,24 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
                         .HasMaxLength(18)
-                        .HasColumnType("nvarchar(18)");
+                        .HasColumnType("varchar(18)");
+
+                    b.Property<string>("CPF")
+                        .IsRequired()
+                        .HasMaxLength(14)
+                        .HasColumnType("varchar(14)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
 
                     b.ToTable("Merchant", (string)null);
                 });
@@ -84,23 +79,28 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid?>("AlbumId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtCreated")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AlbumId");
 
                     b.HasIndex("CustomerId");
 
@@ -111,22 +111,22 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtActivation")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("FlatId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid?>("FlatId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -143,75 +143,90 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Complement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("MerchantId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Neighborhood")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Zipcode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("MerchantId");
+
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Notifications.Notification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("DestinationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtNotification")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("varchar(250)");
 
                     b.Property<int>("NotificationType")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("SenderId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("varchar(150)");
 
                     b.HasKey("Id");
 
@@ -228,15 +243,15 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("BandId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -249,22 +264,22 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Backdrop")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -275,57 +290,36 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("varchar(1024)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Flat", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Music<Domain.Account.Agreggates.PlaylistPersonal>", b =>
+            modelBuilder.Entity("Domain.Streaming.Agreggates.Music", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("AlbumId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AlbumId");
-
-                    b.ToTable("MusicPersonal", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Music<Domain.Streaming.Agreggates.Playlist>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AlbumId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -338,15 +332,15 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
-                    b.Property<Guid>("FlatId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid?>("FlatId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -359,29 +353,29 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("CVV")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("CardBrandId")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(19)
-                        .HasColumnType("nvarchar(19)");
+                        .HasColumnType("varchar(19)");
 
                     b.HasKey("Id");
 
@@ -398,24 +392,24 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CardId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("CorrelationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime>("DtTransaction")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -432,11 +426,9 @@ namespace Migrations_SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -483,13 +475,13 @@ namespace Migrations_SqlServer.Migrations
             modelBuilder.Entity("MusicPlayList", b =>
                 {
                     b.Property<Guid>("MusicId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("PlaylistId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("MusicId", "PlaylistId");
 
@@ -498,47 +490,23 @@ namespace Migrations_SqlServer.Migrations
                     b.ToTable("MusicPlayList");
                 });
 
-            modelBuilder.Entity("MusicPlayListPersonal", b =>
-                {
-                    b.Property<Guid>("MusicId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PlaylistPersonalId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DtAdded")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("MusicId", "PlaylistPersonalId");
-
-                    b.HasIndex("PlaylistPersonalId");
-
-                    b.ToTable("MusicPlayListPersonal");
-                });
-
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
-                    b.HasOne("Domain.Account.ValueObject.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<string>("Email")
                                 .IsRequired()
                                 .HasMaxLength(150)
-                                .HasColumnType("nvarchar(150)")
+                                .HasColumnType("varchar(150)")
                                 .HasColumnName("Email");
 
                             b1.Property<string>("Password")
                                 .IsRequired()
                                 .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
+                                .HasColumnType("varchar(255)")
                                 .HasColumnName("Password");
 
                             b1.HasKey("CustomerId");
@@ -552,12 +520,12 @@ namespace Migrations_SqlServer.Migrations
                     b.OwnsOne("Domain.Account.ValueObject.Phone", "Phone", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
+                                .HasColumnType("varchar(50)")
                                 .HasColumnName("Phone");
 
                             b1.HasKey("CustomerId");
@@ -568,38 +536,28 @@ namespace Migrations_SqlServer.Migrations
                                 .HasForeignKey("CustomerId");
                         });
 
-                    b.Navigation("Address");
+                    b.Navigation("Login");
 
-                    b.Navigation("Login")
-                        .IsRequired();
-
-                    b.Navigation("Phone")
-                        .IsRequired();
+                    b.Navigation("Phone");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.Merchant", b =>
                 {
-                    b.HasOne("Domain.Account.ValueObject.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("MerchantId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<string>("Email")
                                 .IsRequired()
                                 .HasMaxLength(150)
-                                .HasColumnType("nvarchar(150)")
+                                .HasColumnType("varchar(150)")
                                 .HasColumnName("Email");
 
                             b1.Property<string>("Password")
                                 .IsRequired()
                                 .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
+                                .HasColumnType("varchar(255)")
                                 .HasColumnName("Password");
 
                             b1.HasKey("MerchantId");
@@ -613,12 +571,12 @@ namespace Migrations_SqlServer.Migrations
                     b.OwnsOne("Domain.Account.ValueObject.Phone", "Phone", b1 =>
                         {
                             b1.Property<Guid>("MerchantId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
+                                .HasColumnType("varchar(50)")
                                 .HasColumnName("Phone");
 
                             b1.HasKey("MerchantId");
@@ -629,22 +587,20 @@ namespace Migrations_SqlServer.Migrations
                                 .HasForeignKey("MerchantId");
                         });
 
-                    b.Navigation("Address");
+                    b.Navigation("Login");
 
-                    b.Navigation("Login")
-                        .IsRequired();
-
-                    b.Navigation("Phone")
-                        .IsRequired();
+                    b.Navigation("Phone");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.PlaylistPersonal", b =>
                 {
+                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
+                        .WithMany("MusicPersonal")
+                        .HasForeignKey("AlbumId");
+
                     b.HasOne("Domain.Account.Agreggates.Customer", "Customer")
                         .WithMany("Playlists")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.Navigation("Customer");
                 });
@@ -657,15 +613,24 @@ namespace Migrations_SqlServer.Migrations
 
                     b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
                         .WithMany()
-                        .HasForeignKey("FlatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FlatId");
 
                     b.HasOne("Domain.Account.Agreggates.Merchant", null)
                         .WithMany("Signatures")
                         .HasForeignKey("MerchantId");
 
                     b.Navigation("Flat");
+                });
+
+            modelBuilder.Entity("Domain.Account.ValueObject.Address", b =>
+                {
+                    b.HasOne("Domain.Account.Agreggates.Customer", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("Domain.Account.Agreggates.Merchant", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("MerchantId");
                 });
 
             modelBuilder.Entity("Domain.Notifications.Notification", b =>
@@ -702,7 +667,7 @@ namespace Migrations_SqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
                         {
                             b1.Property<Guid>("FlatId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")
@@ -720,36 +685,7 @@ namespace Migrations_SqlServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Music<Domain.Account.Agreggates.PlaylistPersonal>", b =>
-                {
-                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
-                        .WithMany("MusicPersonal")
-                        .HasForeignKey("AlbumId");
-
-                    b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
-                        {
-                            b1.Property<Guid>("MusicId")
-                                .HasColumnType("uniqueidentifier")
-                                .HasColumnName("Music<PlaylistPersonal>Id");
-
-                            b1.Property<int>("Value")
-                                .HasMaxLength(50)
-                                .HasColumnType("int")
-                                .HasColumnName("Duration");
-
-                            b1.HasKey("MusicId");
-
-                            b1.ToTable("MusicPersonal");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MusicId");
-                        });
-
-                    b.Navigation("Duration")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Music<Domain.Streaming.Agreggates.Playlist>", b =>
+            modelBuilder.Entity("Domain.Streaming.Agreggates.Music", b =>
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Album", null)
                         .WithMany("Music")
@@ -759,8 +695,7 @@ namespace Migrations_SqlServer.Migrations
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
                         {
                             b1.Property<Guid>("MusicId")
-                                .HasColumnType("uniqueidentifier")
-                                .HasColumnName("Music<Playlist>Id");
+                                .HasColumnType("char(36)");
 
                             b1.Property<int>("Value")
                                 .HasMaxLength(50)
@@ -783,9 +718,7 @@ namespace Migrations_SqlServer.Migrations
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
                         .WithMany()
-                        .HasForeignKey("FlatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FlatId");
 
                     b.Navigation("Flat");
                 });
@@ -809,7 +742,7 @@ namespace Migrations_SqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Limit", b1 =>
                         {
                             b1.Property<Guid>("CardId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")
@@ -826,10 +759,10 @@ namespace Migrations_SqlServer.Migrations
                     b.OwnsOne("Domain.Transactions.ValueObject.ExpiryDate", "Validate", b1 =>
                         {
                             b1.Property<Guid>("CardId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<DateTime>("Value")
-                                .HasColumnType("datetime2")
+                                .HasColumnType("datetime(6)")
                                 .HasColumnName("Validate");
 
                             b1.HasKey("CardId");
@@ -845,8 +778,7 @@ namespace Migrations_SqlServer.Migrations
                     b.Navigation("Limit")
                         .IsRequired();
 
-                    b.Navigation("Validate")
-                        .IsRequired();
+                    b.Navigation("Validate");
                 });
 
             modelBuilder.Entity("Domain.Transactions.Agreggates.Transaction", b =>
@@ -868,7 +800,7 @@ namespace Migrations_SqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
                         {
                             b1.Property<Guid>("TransactionId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")
@@ -890,9 +822,15 @@ namespace Migrations_SqlServer.Migrations
 
             modelBuilder.Entity("MusicPlayList", b =>
                 {
-                    b.HasOne("Domain.Streaming.Agreggates.Music<Domain.Streaming.Agreggates.Playlist>", null)
+                    b.HasOne("Domain.Streaming.Agreggates.Music", null)
                         .WithMany()
                         .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Account.Agreggates.PlaylistPersonal", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -903,23 +841,10 @@ namespace Migrations_SqlServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MusicPlayListPersonal", b =>
-                {
-                    b.HasOne("Domain.Streaming.Agreggates.Music<Domain.Account.Agreggates.PlaylistPersonal>", null)
-                        .WithMany()
-                        .HasForeignKey("MusicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Account.Agreggates.PlaylistPersonal", null)
-                        .WithMany()
-                        .HasForeignKey("PlaylistPersonalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Cards");
 
                     b.Navigation("Notifications");
@@ -933,6 +858,8 @@ namespace Migrations_SqlServer.Migrations
 
             modelBuilder.Entity("Domain.Account.Agreggates.Merchant", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Cards");
 
                     b.Navigation("Notifications");

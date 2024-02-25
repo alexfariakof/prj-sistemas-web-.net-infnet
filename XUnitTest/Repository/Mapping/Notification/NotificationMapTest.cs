@@ -26,16 +26,16 @@ public class NotificationMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Notification));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var titleroperty = entityType.FindProperty("Title");
-            var messageProperty = entityType.FindProperty("Message");
-            var dtNotificationProperty = entityType.FindProperty("DtNotification");
-            var notificationTypeProperty = entityType.FindProperty("NotificationType");
-            var destinationNavigation = entityType.FindNavigation("Destination");
-            var senderNavigation = entityType.FindNavigation("Sender");
+            var idProperty = entityType?.FindProperty("Id");
+            var titleroperty = entityType?.FindProperty("Title");
+            var messageProperty = entityType?.FindProperty("Message");
+            var dtNotificationProperty = entityType?.FindProperty("DtNotification");
+            var notificationTypeProperty = entityType?.FindProperty("NotificationType");
+            var destinationNavigation = entityType?.FindNavigation("Destination");
+            var senderNavigation = entityType?.FindNavigation("Sender");
             
             // Assert
             Assert.NotNull(idProperty);

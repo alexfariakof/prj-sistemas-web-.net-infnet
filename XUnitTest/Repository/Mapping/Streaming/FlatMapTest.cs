@@ -25,13 +25,13 @@ public class FlatMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Flat));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
-            var descriptionProperty = entityType.FindProperty("Description");
-            var monetaryValueProperty = entityType.FindNavigation("Value").ForeignKey.Properties.First();
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
+            var descriptionProperty = entityType?.FindProperty("Description");
+            var monetaryValueProperty = entityType?.FindNavigation("Value")?.ForeignKey.Properties.First();
 
             // Assert
             Assert.NotNull(idProperty);
@@ -42,7 +42,7 @@ public class FlatMapTest
             Assert.Equal(50, nameProperty.GetMaxLength());
             Assert.False(descriptionProperty.IsNullable);
             Assert.Equal(1024, descriptionProperty.GetMaxLength());
-            Assert.False(monetaryValueProperty.IsNullable);
+            Assert.False(monetaryValueProperty?.IsNullable);
             Assert.Equal(PROPERTY_COUNT, propsCount);
         }
     }

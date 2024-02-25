@@ -9,10 +9,10 @@ public class MusicTest
     public void Should_Set_Properties_Correctly_Music()
     {
         // Arrange
-        var fakeMusic = MockMusic<Playlist>.GetFaker();
+        var fakeMusic = MockMusic.GetFaker();
 
         // Act
-        var music = new Music<Playlist>
+        var music = new Music
         {
             Name = fakeMusic.Name,
             Duration = fakeMusic.Duration,
@@ -29,9 +29,9 @@ public class MusicTest
     public void Should_Set_Properties_Correctly_Playlist()
     {
         // Arrange
-        var fakeMusic1 = MockMusic<Playlist>.GetFaker();
-        var fakeMusic2 = MockMusic<Playlist>.GetFaker();
-        var fakeMusicList = new List<Music<Playlist>> { fakeMusic1, fakeMusic2 };
+        var fakeMusic1 = MockMusic.GetFaker();
+        var fakeMusic2 = MockMusic.GetFaker();
+        var fakeMusicList = new List<Music> { fakeMusic1, fakeMusic2 };
 
         // Act
         var playlist = new Playlist
@@ -50,8 +50,8 @@ public class MusicTest
     {
         // Arrange
         var fakeCustomer = MockCustomer.GetFaker();
-        var fakeMusic = MockMusic<PlaylistPersonal>.GetFaker();
-        var fakeMusicList = new List<Music<PlaylistPersonal>> { fakeMusic };
+        var fakeMusic = MockMusic.GetFaker();
+        var fakeMusicList = new List<Music> { fakeMusic };
 
         // Act
         var playlistPersonal = new PlaylistPersonal

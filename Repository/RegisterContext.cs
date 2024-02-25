@@ -5,25 +5,26 @@ using Domain.Notifications;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
+using Domain.Account.ValueObject;
 
 namespace Repository;
 public class RegisterContext: DbContext
 {
-    public RegisterContext(DbContextOptions<RegisterContext> options) : base(options) { }
-    public DbSet<Customer> Customer { get; set; }
+    public RegisterContext(DbContextOptions<RegisterContext> options) : base(options) { }        
+    public DbSet<Customer> Customer { get; set; }        
     public DbSet<Merchant> Merchant { get; set; }
+    public DbSet<Address> Address { get; set; }
     public DbSet<PlaylistPersonal> PlaylistPersonal { get; set; }
     public DbSet<Signature> Signature { get; set; }
     public DbSet<Album> Album { get; set; }
-    public DbSet<Band> Band{ get; set; }
-    public DbSet<Flat> Flat{ get; set; }
-    public DbSet<Music<Playlist>> Music { get; set; }
-    //public DbSet<Music<PlaylistPersonal>> MusicPersonal { get; set; }
-    public DbSet<Playlist> Playlist{ get; set; }
-    public DbSet<Card> Card{ get; set; }
+    public DbSet<Band> Band { get; set; }
+    public DbSet<Flat> Flat { get; set; }
+    public DbSet<Music> Music { get; set; }    
+    public DbSet<Playlist> Playlist { get; set; }
+    public DbSet<Card> Card { get; set; }
     public DbSet<CreditCardBrand> CardBrand { get; set; }
     public DbSet<Transaction> Transaction { get; set; }
-    public DbSet<Notification> Notification{ get; set; }
+    public DbSet<Notification> Notification { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RegisterContext).Assembly);
@@ -34,5 +35,4 @@ public class RegisterContext: DbContext
         optionsBuilder.UseLoggerFactory(LoggerFactory.Create(x => x.AddConsole()));
         base.OnConfiguring(optionsBuilder);
     }
-
 }

@@ -21,16 +21,16 @@ public class MusicMapTest
             var builder = new ModelBuilder(new ConventionSet());
             var configuration = new MusicMap();
 
-            configuration.Configure(builder.Entity<Music<Playlist>>());
+            configuration.Configure(builder.Entity<Music>());
 
             var model = builder.Model;
-            var entityType = model.FindEntityType(typeof(Music<Playlist>));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var entityType = model.FindEntityType(typeof(Music));
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
-            var durationProperty = entityType.FindNavigation("Duration").ForeignKey.Properties.First();
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
+            var durationProperty = entityType?.FindNavigation("Duration")?.ForeignKey.Properties.First();
 
             // Assert
             Assert.NotNull(idProperty);

@@ -19,7 +19,7 @@ namespace Repository.Mapping.Streaming
                     .UsingEntity<Dictionary<string, object>>(
                     "MusicPlayList",
                     j => j
-                        .HasOne<Music<Playlist>>()
+                        .HasOne<Music>()
                         .WithMany()
                         .HasForeignKey("MusicId"),
                     j => j
