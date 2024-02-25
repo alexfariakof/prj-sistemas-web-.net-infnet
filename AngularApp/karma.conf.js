@@ -2,6 +2,8 @@
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
 module.exports = function (config) {
+  const selectedBrowser = process.env.BROWSER || 'Chrome';
+
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
@@ -28,16 +30,26 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/angular-app'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
+        { type: 'lcov' },
+        { type: 'clover' },
+        { type: 'json' },
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'kjhtml', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: [selectedBrowser],
+    debugger: {
+      ChromeDebugging: {
+        base: 'Chrome',
+        protocol: 'inspector',
+        host: 'localhost',
+        port: 9876
+      }
+    },
     singleRun: false,
     restartOnFileChange: true
   });
