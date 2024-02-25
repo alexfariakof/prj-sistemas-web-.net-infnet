@@ -12,12 +12,12 @@ public abstract class AbstractAccount<T> : BaseModel
     public string? Name { get; set; }
     public string? CPF { get; set; } = String.Empty;
     public Login? Login { get; set; }
-    public virtual IList<Adress> Addresses { get; set; } = new List<Adress>();
+    public virtual IList<Address> Addresses { get; set; } = new List<Address>();
     public virtual IList<Card> Cards { get; set; } = new List<Card>();    
     public virtual IList<Signature> Signatures { get; set; } = new List<Signature>();
     public virtual IList<Notification> Notifications { get; set; } = new List<Notification>();
-    public abstract void CreateAccount(T obj, Adress adress, Flat flat, Card card);    
-    public void AddAdress(Adress address) => this.Addresses.Add(address);
+    public abstract void CreateAccount(T obj, Address adress, Flat flat, Card card);    
+    public void AddAdress(Address address) => this.Addresses.Add(address);
     public void AddCard(Card card) => this.Cards.Add(card);
     public void AddFlat(Customer customer, Flat flat, Card card)
     {
@@ -36,9 +36,7 @@ public abstract class AbstractAccount<T> : BaseModel
     private void DisableActiveSigniture()
     {
         if (this.Signatures.Count > 0 && this.Signatures.Any(x => x.Active))
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             this.Signatures.FirstOrDefault(x => x.Active).Active = false ;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
     private static void IsValidCreditCard(string creditCardNumber)

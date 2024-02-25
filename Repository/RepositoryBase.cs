@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 
 namespace Repository;
-#pragma warning disable CS8603 // Possible null reference return.
 public abstract class RepositoryBase<T> where T : class, new()
 {
     protected RegisterContext Context { get; set; }

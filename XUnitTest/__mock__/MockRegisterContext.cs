@@ -16,7 +16,7 @@ public class MockRegisterContext : DbContext
         base.OnModelCreating(modelBuilder);        
         modelBuilder.ApplyConfiguration(new CustomerMap());
         modelBuilder.ApplyConfiguration(new MerchantMap());
-        modelBuilder.ApplyConfiguration(new AdressMap());
+        modelBuilder.ApplyConfiguration(new AddressMap());
         modelBuilder.ApplyConfiguration(new PlaylistPersonalMap());
         modelBuilder.ApplyConfiguration(new SignitureMap());
         modelBuilder.ApplyConfiguration(new AlbumMap());

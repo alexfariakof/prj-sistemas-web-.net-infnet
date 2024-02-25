@@ -36,8 +36,8 @@ namespace Migrations_MsSqlServer.Migrations
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -62,7 +62,8 @@ namespace Migrations_MsSqlServer.Migrations
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -83,7 +84,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<Guid?>("AlbumId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtCreated")
@@ -121,7 +122,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtActivation")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("FlatId")
+                    b.Property<Guid?>("FlatId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("MerchantId")
@@ -138,7 +139,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.ToTable("Signature", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.ValueObject.Adress", b =>
+            modelBuilder.Entity("Domain.Account.ValueObject.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,12 +151,10 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Complement")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -166,7 +165,6 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Neighborhood")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -196,7 +194,7 @@ namespace Migrations_MsSqlServer.Migrations
 
                     b.HasIndex("MerchantId");
 
-                    b.ToTable("Adresses", (string)null);
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Notifications.Notification", b =>
@@ -336,7 +334,7 @@ namespace Migrations_MsSqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FlatId")
+                    b.Property<Guid?>("FlatId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -540,11 +538,9 @@ namespace Migrations_MsSqlServer.Migrations
                                 .HasForeignKey("CustomerId");
                         });
 
-                    b.Navigation("Login")
-                        .IsRequired();
+                    b.Navigation("Login");
 
-                    b.Navigation("Phone")
-                        .IsRequired();
+                    b.Navigation("Phone");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.Merchant", b =>
@@ -593,11 +589,9 @@ namespace Migrations_MsSqlServer.Migrations
                                 .HasForeignKey("MerchantId");
                         });
 
-                    b.Navigation("Login")
-                        .IsRequired();
+                    b.Navigation("Login");
 
-                    b.Navigation("Phone")
-                        .IsRequired();
+                    b.Navigation("Phone");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.PlaylistPersonal", b =>
@@ -608,9 +602,7 @@ namespace Migrations_MsSqlServer.Migrations
 
                     b.HasOne("Domain.Account.Agreggates.Customer", "Customer")
                         .WithMany("Playlists")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.Navigation("Customer");
                 });
@@ -623,9 +615,7 @@ namespace Migrations_MsSqlServer.Migrations
 
                     b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
                         .WithMany()
-                        .HasForeignKey("FlatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FlatId");
 
                     b.HasOne("Domain.Account.Agreggates.Merchant", null)
                         .WithMany("Signatures")
@@ -634,7 +624,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Navigation("Flat");
                 });
 
-            modelBuilder.Entity("Domain.Account.ValueObject.Adress", b =>
+            modelBuilder.Entity("Domain.Account.ValueObject.Address", b =>
                 {
                     b.HasOne("Domain.Account.Agreggates.Customer", null)
                         .WithMany("Addresses")
@@ -730,9 +720,7 @@ namespace Migrations_MsSqlServer.Migrations
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
                         .WithMany()
-                        .HasForeignKey("FlatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FlatId");
 
                     b.Navigation("Flat");
                 });
@@ -792,8 +780,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Navigation("Limit")
                         .IsRequired();
 
-                    b.Navigation("Validate")
-                        .IsRequired();
+                    b.Navigation("Validate");
                 });
 
             modelBuilder.Entity("Domain.Transactions.Agreggates.Transaction", b =>

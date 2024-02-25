@@ -10,7 +10,7 @@ public class Customer : AbstractAccount<Customer>
     public Phone? Phone { get; set; }    
     public virtual IList<PlaylistPersonal> Playlists { get; set; } = new List<PlaylistPersonal>();
     public virtual IList<Transaction> Transactions { get; set; } = new List<Transaction>();
-    public override void CreateAccount(Customer customer, Adress address, Flat flat, Card card)
+    public override void CreateAccount(Customer customer, Address address, Flat flat, Card card)
     {
         Id = Guid.NewGuid();
         Name = customer.Name;            

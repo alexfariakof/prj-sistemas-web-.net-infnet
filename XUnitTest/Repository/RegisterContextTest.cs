@@ -1,5 +1,5 @@
-﻿using Bogus.DataSets;
-using Domain.Account.Agreggates;
+﻿using Domain.Account.Agreggates;
+using Domain.Account.ValueObject;
 using Domain.Notifications;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
@@ -23,7 +23,7 @@ public class RegisterContextTest
             // Assert
             Assert.NotNull(context.Customer);
             Assert.NotNull(context.Merchant);
-            Assert.NotNull(context.Addresses);
+            Assert.NotNull(context.Address);
             Assert.NotNull(context.PlaylistPersonal);
             Assert.NotNull(context.Signature);
             Assert.NotNull(context.Album);
@@ -59,7 +59,7 @@ public class RegisterContextTest
             Assert.True(model.FindEntityType(typeof(Album)) != null);
             Assert.True(model.FindEntityType(typeof(Band)) != null);
             Assert.True(model.FindEntityType(typeof(Flat)) != null);
-            Assert.True(model.FindEntityType(typeof(Domain.Streaming.Agreggates.Music)) != null);
+            Assert.True(model.FindEntityType(typeof(Music)) != null);
             Assert.True(model.FindEntityType(typeof(Playlist)) != null);
             Assert.True(model.FindEntityType(typeof(Card)) != null);
             Assert.True(model.FindEntityType(typeof(CreditCardBrand)) != null);

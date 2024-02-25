@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.Mapping.Account;
-public class AdressMap : IEntityTypeConfiguration<Adress>
+public class AddressMap : IEntityTypeConfiguration<Address>
 {
-    public void Configure(EntityTypeBuilder<Adress> builder)
+    public void Configure(EntityTypeBuilder<Address> builder)
     {
-        builder.ToTable("Adresses"); 
+        builder.ToTable("Address"); 
 
         builder.HasKey(a => a.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();

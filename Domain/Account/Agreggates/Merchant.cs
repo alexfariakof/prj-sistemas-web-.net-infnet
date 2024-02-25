@@ -8,7 +8,7 @@ public class Merchant : AbstractAccount<Merchant>
     public string? CNPJ { get; set; }
     public Phone? Phone { get; set; }
     public virtual IList<Transaction>? Transactions { get; set; }
-    public override void CreateAccount(Merchant merchant, Adress address,  Flat flat, Card card)
+    public override void CreateAccount(Merchant merchant, Address address,  Flat flat, Card card)
     {
         Name = merchant.Name;
         CNPJ = merchant.CNPJ;

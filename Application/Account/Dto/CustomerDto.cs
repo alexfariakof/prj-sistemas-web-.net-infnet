@@ -28,7 +28,7 @@ public class CustomerDto
     public Phone? Phone { get; set; }
 
     [Required]
-    public Adress? Address { get; set; }
+    public Address? Address { get; set; }
 
     public Guid FlatId { get; set; }
 
