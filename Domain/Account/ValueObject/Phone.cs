@@ -1,10 +1,10 @@
 ﻿namespace Domain.Account.ValueObject;
 public record Phone 
 {
-    public string Number { get; set; }
+    public string Number { get; set; } = String.Empty;
     public static implicit operator string(Phone d) => d.Number;
     public static implicit operator Phone(string value) => new Phone(value);
-    public Phone() { }
+    public Phone() {  }
     public Phone(string value)
     {
         if (String.IsNullOrEmpty(value))

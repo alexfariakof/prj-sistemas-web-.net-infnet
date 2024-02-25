@@ -31,6 +31,7 @@ public record CreditCardBrand
 
     private CreditCardBrand(CardBrand brand, string name, bool isValid)
     {
+        Name = name;
         CardBrand = brand;            
         IsValid = isValid;
     }
@@ -94,7 +95,6 @@ public record CreditCardBrand
 
         return soma % 10 == 0;
     }
-
     private static string RemoveNonNumericCharacters(string input)
     {
         return new string(input.Where(char.IsDigit).ToArray());

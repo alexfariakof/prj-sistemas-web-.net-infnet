@@ -4,6 +4,9 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace Domain.Core.Aggreggates;
+
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable SYSLIB0023 // Type or member is obsolete
 public class Crypto : ICrypto
 {
     private readonly byte[] Key; // Chave fixa de 256 bits
@@ -40,6 +43,7 @@ public class Crypto : ICrypto
             var jsonContent = File.ReadAllText(jsonFilePath);
             var config = JObject.Parse(jsonContent);                
             var cryptoKey = config["Crypto"]?["Key"]?.ToString();
+
             return cryptoKey;
         }
         else
@@ -95,15 +99,14 @@ public class Crypto : ICrypto
         {
             rngCsp.GetBytes(iv);
         }
+
         return iv;
     }
-
     private static byte[] PerformCryptography(string data, ICryptoTransform transform)
     {
         byte[] inputBytes = Encoding.UTF8.GetBytes(data);
         return PerformCryptography(inputBytes, transform);
     }
-
     private static byte[] PerformCryptography(byte[] data, ICryptoTransform transform)
     {
         using (MemoryStream memoryStream = new MemoryStream())

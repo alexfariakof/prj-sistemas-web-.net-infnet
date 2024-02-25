@@ -7,7 +7,7 @@ public class CardDto
     public bool Active { get; set; }
     public decimal Limit { get; set; }
     public string? Number { get; set; }
-    public ExpiryDate Validate { get; set; }
-    public string CVV { get; set; }
+    public ExpiryDate? Validate { get; set; }
+    public string? CVV { get; set; }
 
 }

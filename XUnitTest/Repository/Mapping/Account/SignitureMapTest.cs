@@ -26,12 +26,12 @@ public class SignitureMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Signature));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var activeProperty = entityType.FindProperty("Active");
-            var dtActivationProperty = entityType.FindProperty("DtActivation");
-            var flatNavigation = entityType.FindNavigation("Flat");
+            var idProperty = entityType?.FindProperty("Id");
+            var activeProperty = entityType?.FindProperty("Active");
+            var dtActivationProperty = entityType?.FindProperty("DtActivation");
+            var flatNavigation = entityType?.FindNavigation("Flat");
 
             // Assert
             Assert.NotNull(idProperty);

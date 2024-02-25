@@ -4,18 +4,18 @@ using System.Text.RegularExpressions;
 namespace Domain.Account.ValueObject;
 public class Login
 {
-    private string _email = String.Empty;
-    public string Email 
+    private string? _email;
+    public string? Email 
     { 
         get => _email; 
-        set =>  _email = IsValidEmail(value);  
+        set =>  _email = IsValidEmail(value ?? "");  
     }
 
-    private string _password = String.Empty;
-    public string Password
+    private string? _password;
+    public string? Password
     {
         get => _password;
-        set => _password =  Crypto.GetInstance.Encrypt(value);
+        set => _password =  Crypto.GetInstance.Encrypt(value ?? "");
     }
     private string IsValidEmail(string email)
     {

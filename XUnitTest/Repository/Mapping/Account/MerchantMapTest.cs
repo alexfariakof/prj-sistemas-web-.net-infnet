@@ -27,19 +27,19 @@ public class MerchantMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Merchant));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
-            var cpfProperty = entityType.FindProperty("CPF");
-            var loginNavigation = entityType.FindNavigation(nameof(Merchant.Login));
-            var emailProperty = loginNavigation.TargetEntityType.FindProperty(nameof(Login.Email));
-            var passwordProperty = loginNavigation.TargetEntityType.FindProperty(nameof(Login.Password));
-            var phoneNavigation = entityType.FindNavigation(nameof(Customer.Phone));
-            var phoneProperty = phoneNavigation.TargetEntityType.FindProperty(nameof(Phone.Number));
-            var cnpjProperty = entityType.FindProperty("CNPJ");
-            var addressesNavigation = entityType.FindNavigation("Addresses");
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
+            var cpfProperty = entityType?.FindProperty("CPF");
+            var loginNavigation = entityType?.FindNavigation(nameof(Merchant.Login));
+            var emailProperty = loginNavigation?.TargetEntityType.FindProperty(nameof(Login.Email));
+            var passwordProperty = loginNavigation?.TargetEntityType.FindProperty(nameof(Login.Password));
+            var phoneNavigation = entityType?.FindNavigation(nameof(Customer.Phone));
+            var phoneProperty = phoneNavigation?.TargetEntityType.FindProperty(nameof(Phone.Number));
+            var cnpjProperty = entityType?.FindProperty("CNPJ");
+            var addressesNavigation = entityType?.FindNavigation("Addresses");
 
             // Assert
             Assert.NotNull(idProperty);
@@ -67,7 +67,7 @@ public class MerchantMapTest
             Assert.Equal(50, phoneProperty.GetMaxLength());
             Assert.NotNull(addressesNavigation);
             Assert.True(addressesNavigation.IsCollection);
-            Assert.NotNull(addressesNavigation.ForeignKey.DeleteBehavior);
+            Assert.NotNull(addressesNavigation?.ForeignKey.DeleteBehavior);
 
             Assert.Equal(PROPERTY_COUNT, propsCount);
         }

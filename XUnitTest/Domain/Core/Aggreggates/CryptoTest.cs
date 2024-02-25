@@ -8,9 +8,6 @@ public class CryptoTest
     public void Encrypt_And_Decrypt_Should_Work()
     {
         // Arrange
-
-        string key = "01010101010101010101010101010101";
-
         string originalText = "!12345";
         ICrypto crypto = Crypto.GetInstance;
 
@@ -27,9 +24,6 @@ public class CryptoTest
     public void Encrypt_Should_Produce_Different_Output_For_Same_Input()
     {
         // Arrange
-
-        string key = "01010101010101010101010101010101";
-
         string originalText = "!12345";
         ICrypto crypto = Crypto.GetInstance;
 

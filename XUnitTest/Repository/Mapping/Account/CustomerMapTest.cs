@@ -26,20 +26,20 @@ public class CustomerMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Customer));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
-            var loginNavigation = entityType.FindNavigation(nameof(Customer.Login));
-            var emailProperty = loginNavigation.TargetEntityType.FindProperty(nameof(Login.Email));
-            var passwordProperty = loginNavigation.TargetEntityType.FindProperty(nameof(Login.Password));
-            var birthProperty = entityType.FindProperty("Birth");
-            var cpfProperty = entityType.FindProperty("CPF");
-            var phoneNavigation = entityType.FindNavigation(nameof(Customer.Phone));
-            var phoneProperty = phoneNavigation.TargetEntityType.FindProperty(nameof(Phone.Number));
-            var playlistsNavigation = entityType.FindNavigation("Playlists");
-            var addressesNavigation = entityType.FindNavigation("Addresses");
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
+            var loginNavigation = entityType?.FindNavigation(nameof(Customer.Login));
+            var emailProperty = loginNavigation?.TargetEntityType.FindProperty(nameof(Login.Email));
+            var passwordProperty = loginNavigation?.TargetEntityType.FindProperty(nameof(Login.Password));
+            var birthProperty = entityType?.FindProperty("Birth");
+            var cpfProperty = entityType?.FindProperty("CPF");
+            var phoneNavigation = entityType?.FindNavigation(nameof(Customer.Phone));
+            var phoneProperty = phoneNavigation?.TargetEntityType.FindProperty(nameof(Phone.Number));
+            var playlistsNavigation = entityType?.FindNavigation("Playlists");
+            var addressesNavigation = entityType?.FindNavigation("Addresses");
             
             // Assert
             // Assert.NotNull(idProperty);
@@ -53,7 +53,7 @@ public class CustomerMapTest
             Assert.NotNull(phoneProperty);
 
 
-            Assert.True(idProperty.IsPrimaryKey());
+            Assert.True(idProperty?.IsPrimaryKey());
             Assert.False(nameProperty.IsNullable);
             Assert.Equal(100, nameProperty.GetMaxLength());
             Assert.False(emailProperty.IsNullable);
@@ -67,10 +67,10 @@ public class CustomerMapTest
             Assert.Equal(50, phoneProperty.GetMaxLength());
             Assert.NotNull(playlistsNavigation);
             Assert.True(playlistsNavigation.IsCollection);
-            Assert.NotNull(playlistsNavigation.ForeignKey.DeleteBehavior);
+            Assert.NotNull(playlistsNavigation?.ForeignKey.DeleteBehavior);
             Assert.NotNull(addressesNavigation);
             Assert.True(addressesNavigation.IsCollection);
-            Assert.NotNull(addressesNavigation.ForeignKey.DeleteBehavior);
+            Assert.NotNull(addressesNavigation?.ForeignKey.DeleteBehavior);
 
             Assert.Equal(PROPERTY_COUNT, propsCount);
         }

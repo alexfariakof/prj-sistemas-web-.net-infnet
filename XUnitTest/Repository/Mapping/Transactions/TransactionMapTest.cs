@@ -26,14 +26,18 @@ public class TransactionMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Transaction));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
+
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var dtTransactionProperty = entityType.FindProperty("DtTransaction");
-            var descriptionProperty = entityType.FindProperty("Description");
-            var customerNavigation = entityType.FindNavigation("Customer");
-            var monetaryValueProperty = entityType.FindNavigation("Value").ForeignKey.Properties.First();
+            var idProperty = entityType?.FindProperty("Id");
+            var dtTransactionProperty = entityType?.FindProperty("DtTransaction");
+            var descriptionProperty = entityType?.FindProperty("Description");
+            var customerNavigation = entityType?.FindNavigation("Customer");
+
+            var monetaryValueProperty = entityType?.FindNavigation("Value")?.ForeignKey.Properties.First();
+
 
             // Assert
             Assert.NotNull(idProperty);
@@ -49,7 +53,7 @@ public class TransactionMapTest
             Assert.NotNull(customerNavigation.ForeignKey);
             Assert.True(customerNavigation.ForeignKey.IsRequired);
             Assert.Equal("Id", customerNavigation.ForeignKey.Properties.First().Name);
-            Assert.False(monetaryValueProperty.IsNullable);
+            Assert.False(monetaryValueProperty?.IsNullable);
             Assert.Equal(PROPERTY_COUNT, propsCount);
         }
     }

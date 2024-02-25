@@ -25,12 +25,12 @@ public class MusicMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Music));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
-            var durationProperty = entityType.FindNavigation("Duration").ForeignKey.Properties.First();
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
+            var durationProperty = entityType?.FindNavigation("Duration")?.ForeignKey.Properties.First();
 
             // Assert
             Assert.NotNull(idProperty);

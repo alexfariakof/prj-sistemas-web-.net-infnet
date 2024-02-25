@@ -25,12 +25,12 @@ public class PlaylistPersonalMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(PlaylistPersonal));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
-            var isPublicProperty = entityType.FindProperty("IsPublic");
-            var dtCreatedProperty = entityType.FindProperty("DtCreated");
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
+            var isPublicProperty = entityType?.FindProperty("IsPublic");
+            var dtCreatedProperty = entityType?.FindProperty("DtCreated");
 
             // Assert
             Assert.NotNull(idProperty);

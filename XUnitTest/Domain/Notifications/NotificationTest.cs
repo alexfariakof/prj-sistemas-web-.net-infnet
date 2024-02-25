@@ -1,6 +1,8 @@
 ﻿using __mock__;
 
 namespace Domain.Notifications;
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 public class NotificationTest
 {
     [Fact]

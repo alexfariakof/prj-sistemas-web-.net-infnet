@@ -4,7 +4,7 @@ using Domain.Core.Aggreggates;
 namespace Domain.Streaming.Agreggates;
 public class Album : BaseModel
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
     public virtual List<Music> Music { get; set; } = new List<Music>();
     public virtual List<PlaylistPersonal> MusicPersonal { get; set; } = new List<PlaylistPersonal>();
     public void AddMusic(Music music) => this.Music.Add(music);

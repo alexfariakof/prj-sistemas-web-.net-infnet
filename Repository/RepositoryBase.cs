@@ -1,5 +1,7 @@
 ﻿using System.Linq.Expressions;
+
 namespace Repository;
+#pragma warning disable CS8603 // Possible null reference return.
 public abstract class RepositoryBase<T> where T : class, new()
 {
     protected RegisterContext Context { get; set; }
@@ -25,7 +27,6 @@ public abstract class RepositoryBase<T> where T : class, new()
         this.Context.Remove(entity);
         this.Context.SaveChanges();
     }
-
     public virtual IEnumerable<T> GetAll()
     {
         return this.Context.Set<T>().ToList();

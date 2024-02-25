@@ -5,9 +5,9 @@ using Domain.Transactions.Agreggates;
 namespace Domain.Account.Agreggates;
 public class Merchant : AbstractAccount<Merchant>
 {
-    public string CNPJ { get; set; }
-    public Phone Phone { get; set; } = new Phone();
-    public virtual IList<Transaction> Transactions { get; set; }
+    public string? CNPJ { get; set; }
+    public Phone? Phone { get; set; }
+    public virtual IList<Transaction>? Transactions { get; set; }
     public override void CreateAccount(Merchant merchant, Adress address,  Flat flat, Card card)
     {
         Name = merchant.Name;

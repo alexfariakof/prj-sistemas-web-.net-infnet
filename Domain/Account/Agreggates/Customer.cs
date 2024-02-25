@@ -7,7 +7,7 @@ public class Customer : AbstractAccount<Customer>
 {
     private const string PLAYLIST_NAME = "Favoritas";    
     public DateTime Birth { get; set; }
-    public Phone Phone { get; set; }    
+    public Phone? Phone { get; set; }    
     public virtual IList<PlaylistPersonal> Playlists { get; set; } = new List<PlaylistPersonal>();
     public virtual IList<Transaction> Transactions { get; set; } = new List<Transaction>();
     public override void CreateAccount(Customer customer, Adress address, Flat flat, Card card)
