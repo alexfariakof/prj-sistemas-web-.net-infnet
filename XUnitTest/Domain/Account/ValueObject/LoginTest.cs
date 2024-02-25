@@ -1,41 +1,44 @@
 ﻿using __mock__;
+using Domain.Account.ValueObject;
 
 namespace Domain.Account;
-
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
 public class LoginTest
 {
-
     [Fact]
-    public void Should_Success_With_Valid_Email()
+    public void Should_Success_With_Valid_Login()
     {
         // Arrange
-        var customer = MockCustomer.GetFaker();
+        var mockLogin = MockLogin.GetFaker();
 
         // Act
-        customer.Login.Email = "usuario@teste.com";
+        var login = new Login() 
+        { 
+            Email = mockLogin.Email,
+            Password = mockLogin.Password,
+        };
 
         // Assert
-        Assert.Equal("usuario@teste.com", customer.Login.Email);
+        Assert.Equal(mockLogin.Email, login.Email);
+        Assert.NotEqual(mockLogin.Password, login.Password);
     }
 
     [Fact]
     public void Should_Throws_Erro_With_Invalid_Email()
     {
         // Arrange
-        var merchant = MockMerchant.GetFaker();
+        var mockLogin = new Login(); 
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => merchant.Login.Email = "Email inválido!");
+        Assert.Throws<ArgumentException>(() => mockLogin.Email = "Email inválido!");
     }
             
     [Fact]
     public void Should_Throws_Erro_With_Long_Email()
     {
         // Arrange
-        var merchant = MockMerchant.GetFaker();
+        var mockLogin = MockLogin.GetFaker();
 
         // Act e Assert
-        Assert.Throws<ArgumentException>(() => merchant.Login.Email = new string('a', 257));
+        Assert.Throws<ArgumentException>(() => mockLogin.Email = new string('a', 257));
     }
 }
