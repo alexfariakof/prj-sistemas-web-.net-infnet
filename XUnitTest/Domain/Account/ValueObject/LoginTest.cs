@@ -25,20 +25,23 @@ public class LoginTest
     [Fact]
     public void Should_Throws_Erro_With_Invalid_Email()
     {
-        // Arrange
-        var mockLogin = new Login(); 
-
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => mockLogin.Email = "Email inválido!");
+        // Arrange & Act 
+        var mockLogin = new Login();
+        var exception = () => mockLogin.Email = "InvalidEmail";
+        
+        // Assert
+        Assert.Throws<ArgumentException>(exception);
     }
             
     [Fact]
     public void Should_Throws_Erro_With_Long_Email()
     {
-        // Arrange
+        // Arrange & Act 
         var mockLogin = MockLogin.GetFaker();
 
-        // Act e Assert
-        Assert.Throws<ArgumentException>(() => mockLogin.Email = new string('a', 257));
+        var exception = () => mockLogin.Email = new string('a', 257);
+        
+        // Assert
+        Assert.Throws<ArgumentException>(exception);
     }
 }

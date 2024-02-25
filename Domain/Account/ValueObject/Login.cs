@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 namespace Domain.Account.ValueObject;
 public class Login
 {
+    public Login() { }
+
     private string _email = string.Empty;
     public string Email
     { 
