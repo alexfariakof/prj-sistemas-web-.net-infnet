@@ -13,7 +13,7 @@ public class AbstractAccountTests
         // Arrange
         var accountMock = new Mock<AbstractAccount<Customer>>();
         accountMock.SetupGet(a => a.Cards).Returns(new List<Card>());
-        var account = accountMock.Object;
+        AbstractAccount<Customer> account = accountMock.Object;
         var card = MockCard.GetFaker();
 
         // Act
