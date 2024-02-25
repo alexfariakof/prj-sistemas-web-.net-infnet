@@ -2,14 +2,12 @@
 using Domain.Core.Aggreggates;
 using Domain.Core.ValueObject;
 
-namespace Domain.Transactions.Agreggates
+namespace Domain.Transactions.Agreggates;
+public class Transaction : BaseModel
 {
-    public class Transaction : BaseModel
-    {
-        public DateTime DtTransaction { get; set; }
-        public Monetary Value { get; set; }
-        public String Description { get; set; }
-        public Customer Customer { get; set; }
-        public Guid CorrelationId { get; set; }
-    }
+    public DateTime DtTransaction { get; set; }
+    public Monetary Value { get; set; } = 0;
+    public String? Description { get; set; }
+    public virtual Customer? Customer { get; set; }
+    public Guid CorrelationId { get; set; }
 }

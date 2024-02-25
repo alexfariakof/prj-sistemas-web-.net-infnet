@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<RegisterContext>(options =>
-options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString"),
+options
+.UseLazyLoadingProxies(true)
+.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString"),
 b => b.MigrationsAssembly("Migrations_MySqlServer")));
 
 var app = builder.Build();

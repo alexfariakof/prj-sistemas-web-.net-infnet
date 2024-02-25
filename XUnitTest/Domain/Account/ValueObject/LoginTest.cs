@@ -1,6 +1,8 @@
 ﻿using __mock__;
 
 namespace Domain.Account;
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 public class LoginTest
 {
 

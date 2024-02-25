@@ -3,23 +3,23 @@ using Domain.Streaming.ValueObject;
 using Bogus;
 
 namespace __mock__;
-public class MockMusic<T>
+public class MockMusic
 {
-    public static Music<T> GetFaker()
+    public static Music GetFaker()
     {
-        var fakeMusic = new Faker<Music<T>>()
+        var fakeMusic = new Faker<Music>()
             .RuleFor(m => m.Id, f => f.Random.Guid())
             .RuleFor(m => m.Name, f => f.Commerce.ProductName())
             .RuleFor(m => m.Duration, f => new Duration(f.Random.Int(60, 600)))
-            .RuleFor(m => m.Playlists, new List<T>())
+            .RuleFor(m => m.Playlists, new List<Playlist>())
             .Generate();
 
         return fakeMusic;
     }
 
-    public static List<Music<T>> GetListFaker(int count)
+    public static List<Music> GetListFaker(int count)
     {
-        var musicList = new List<Music<T>>();
+        var musicList = new List<Music>();
         for (var i = 0; i < count; i++)
         {
             musicList.Add(GetFaker());

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Streaming.Agreggates;
 using Repository.Mapping.Streaming;
 using __mock__;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Repository.Mapping;
 public class PlaylistMapTest
@@ -26,11 +25,11 @@ public class PlaylistMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Playlist));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
 
             // Assert
             Assert.NotNull(idProperty);

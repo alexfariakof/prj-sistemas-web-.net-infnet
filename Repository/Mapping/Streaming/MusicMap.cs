@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.Mapping.Streaming;
-public class MusicMap : IEntityTypeConfiguration<Music<Playlist>>
+public class MusicMap : IEntityTypeConfiguration<Music>
 {
-    public void Configure(EntityTypeBuilder<Music<Playlist>> builder)
+    public void Configure(EntityTypeBuilder<Music> builder)
     {
         builder.ToTable("Music");
 
@@ -19,6 +19,7 @@ public class MusicMap : IEntityTypeConfiguration<Music<Playlist>>
             c.Property(x => x.Value).HasColumnName("Duration").IsRequired().HasMaxLength(50);
         });
 
+        builder.HasMany(x => x.PersonalPlaylists).WithMany(m => m.Musics);
         builder.HasMany(x => x.Playlists).WithMany(m => m.Musics);
     }
 }

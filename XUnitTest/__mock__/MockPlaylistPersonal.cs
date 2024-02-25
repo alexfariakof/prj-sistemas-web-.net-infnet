@@ -1,24 +1,23 @@
 ﻿using Bogus;
-using Domain.Streaming.Agreggates;
+using Domain.Account.Agreggates;
 
 namespace __mock__;
-public static class MockPlaylist
+public static class MockPlaylistPersonal
 {
-    public static Playlist GetFaker()
+    public static PlaylistPersonal GetFaker()
     {
-        var fakePlaylist = new Faker<Playlist>()
+        var fakePlaylist = new Faker<PlaylistPersonal>()
             .RuleFor(p => p.Id, f => f.Random.Guid())
             .RuleFor(p => p.Name, f => f.Lorem.Word())
-            .RuleFor(p => p.Flat, f => MockFlat.GetFaker())
             .RuleFor(p => p.Musics, f => MockMusic.GetListFaker(3))
             .Generate();
 
         return fakePlaylist;
     }
 
-    public static List<Playlist> GetListFaker(int count)
+    public static List<PlaylistPersonal> GetListFaker(int count)
     {
-        var playlistList = new List<Playlist>();
+        var playlistList = new List<PlaylistPersonal>();
         for (var i = 0; i < count; i++)
         {
             playlistList.Add(GetFaker());

@@ -26,14 +26,14 @@ public class BandMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Band));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
-            var descriptionProperty = entityType.FindProperty("Description");
-            var backdropProperty = entityType.FindProperty("Backdrop");
-            var albumNavigation = entityType.FindNavigation("Albums");
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
+            var descriptionProperty = entityType?.FindProperty("Description");
+            var backdropProperty = entityType?.FindProperty("Backdrop");
+            var albumNavigation = entityType?.FindNavigation("Albums");
 
             // Assert
             Assert.NotNull(idProperty);
@@ -49,7 +49,7 @@ public class BandMapTest
             Assert.Equal(50, backdropProperty.GetMaxLength());
             Assert.NotNull(albumNavigation);
             Assert.True(albumNavigation.IsCollection);
-            Assert.NotNull(albumNavigation.ForeignKey.DeleteBehavior);
+            Assert.NotNull(albumNavigation?.ForeignKey.DeleteBehavior);
             var foreignKey = albumNavigation.ForeignKey;
             Assert.NotNull(foreignKey);
             Assert.Equal(DeleteBehavior.Cascade, foreignKey.DeleteBehavior);

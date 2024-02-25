@@ -26,12 +26,12 @@ public class AlbumMapTest
 
             var model = builder.Model;
             var entityType = model.FindEntityType(typeof(Album));
-            var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
+            var propsCount = entityType?.GetNavigations().Count() + entityType?.GetProperties().Count();
 
             // Act
-            var idProperty = entityType.FindProperty("Id");
-            var nameProperty = entityType.FindProperty("Name");
-            var musicNavigation = entityType.FindNavigation("Music");
+            var idProperty = entityType?.FindProperty("Id");
+            var nameProperty = entityType?.FindProperty("Name");
+            var musicNavigation = entityType?.FindNavigation("Music");
 
             // Assert
             Assert.NotNull(idProperty);
@@ -42,7 +42,7 @@ public class AlbumMapTest
             Assert.Equal(50, nameProperty.GetMaxLength());
             Assert.NotNull(musicNavigation);
             Assert.True(musicNavigation.IsCollection);
-            Assert.NotNull(musicNavigation.ForeignKey.DeleteBehavior);
+            Assert.NotNull(musicNavigation?.ForeignKey.DeleteBehavior);
             var foreignKey = musicNavigation.ForeignKey;
             Assert.NotNull(foreignKey);
             Assert.Equal(DeleteBehavior.Cascade, foreignKey.DeleteBehavior);

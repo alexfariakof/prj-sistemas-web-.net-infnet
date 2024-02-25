@@ -15,7 +15,7 @@ public static class MockCustomer
             .RuleFor(c => c.CPF, f => f.Person.Cpf())
             .RuleFor(c => c.Birth, f => f.Person.DateOfBirth)
             .RuleFor(c => c.Phone, f => new Phone { Number = f.Person.Phone })
-            .RuleFor(c => c.Address, MockAddress.GetFaker())
+            .RuleFor(c => c.Addresses, MockAddress.GetListFaker(10))
             .Generate();
 
         return fakeCustomer;

@@ -1,8 +1,6 @@
-﻿namespace Domain.Core.Interfaces
+﻿namespace Domain.Core.Interfaces;
+public interface ICrypto
 {
-    public interface ICrypto
-    {
-        string Encrypt(string password);
-        string Decrypt(string encryptedText);
-    }
+    string Encrypt(string password);
+    string Decrypt(string encryptedText);
 }

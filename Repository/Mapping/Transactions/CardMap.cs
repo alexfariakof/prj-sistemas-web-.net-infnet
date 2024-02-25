@@ -13,7 +13,6 @@ namespace Repository.Mapping.Transactions
             builder.ToTable(nameof(Card));
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Active).IsRequired();
             builder.Property(x => x.Number).IsRequired().HasMaxLength(19);            
             builder.Property(x => x.CVV).IsRequired().HasMaxLength(255);

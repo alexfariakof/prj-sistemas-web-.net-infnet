@@ -8,5 +8,5 @@ public class PaymentSlip : BaseModel
     public DateTime Date { get; set; }
     public Status Status { get; set; }
     public Guid CorrelationId { get; set; }
-    public Monetary Monetary { get; set; }    
+    public Monetary Monetary { get; set; } = 0;
 }

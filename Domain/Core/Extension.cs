@@ -1,8 +1,2 @@
-﻿
-namespace Domain.Core;
-
-public static class Extension
-{
-
-
-}
+﻿namespace Domain.Core;
+public static class Extension {}

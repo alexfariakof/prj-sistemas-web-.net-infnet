@@ -31,12 +31,13 @@ public class PlaylistTest
     {
         // Arrange
         var playlist = new Playlist();
-        var fakeMusic = MockMusic<Playlist>.GetFaker();
-        var fakeMusicList = MockMusic<Playlist>.GetListFaker(2);
+        var fakeMusic = MockMusic.GetFaker();
+        var fakeMusicList = MockMusic.GetListFaker(2);
 
         // Act
         playlist.Musics.Add(fakeMusic);
-        playlist.Musics.AddRange(fakeMusicList);
+        foreach(var music in fakeMusicList)
+            playlist.Musics.Add(music);
 
         // Assert
         Assert.Single(playlist.Musics, fakeMusic);
