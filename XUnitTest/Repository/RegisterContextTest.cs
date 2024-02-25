@@ -58,7 +58,7 @@ public class RegisterContextTest
             Assert.True(model.FindEntityType(typeof(Album)) != null);
             Assert.True(model.FindEntityType(typeof(Band)) != null);
             Assert.True(model.FindEntityType(typeof(Flat)) != null);
-            Assert.True(model.FindEntityType(typeof(Music<Playlist>)) != null);
+            Assert.True(model.FindEntityType(typeof(Music)) != null);
             Assert.True(model.FindEntityType(typeof(Playlist)) != null);
             Assert.True(model.FindEntityType(typeof(Card)) != null);
             Assert.True(model.FindEntityType(typeof(CreditCardBrand)) != null);

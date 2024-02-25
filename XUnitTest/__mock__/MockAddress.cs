@@ -4,9 +4,9 @@ using Domain.Account.ValueObject;
 namespace __mock__;
 public class MockAddress
 {
-    public static Address GetFaker()
+    public static Adress GetFaker()
     {
-        var fakeAddress = new Faker<Address>()
+        var fakeAddress = new Faker<Adress>()
             .RuleFor(c => c.Id, f => f.Random.Guid())
             .RuleFor(a => a.Zipcode, f => f.Address.ZipCode())
             .RuleFor(a => a.Street, f => f.Address.StreetName())
@@ -21,9 +21,9 @@ public class MockAddress
         return fakeAddress;
     }
 
-    public static List<Address> GetListFaker(int count)
+    public static List<Adress> GetListFaker(int count)
     {
-        var addressList = new List<Address>();
+        var addressList = new List<Adress>();
         for (var i = 0; i < count; i++)
         {
             addressList.Add(GetFaker());

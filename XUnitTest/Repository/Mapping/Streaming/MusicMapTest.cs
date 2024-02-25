@@ -21,10 +21,10 @@ public class MusicMapTest
             var builder = new ModelBuilder(new ConventionSet());
             var configuration = new MusicMap();
 
-            configuration.Configure(builder.Entity<Music<Playlist>>());
+            configuration.Configure(builder.Entity<Music>());
 
             var model = builder.Model;
-            var entityType = model.FindEntityType(typeof(Music<Playlist>));
+            var entityType = model.FindEntityType(typeof(Music));
             var propsCount = entityType.GetNavigations().Count() + entityType.GetProperties().Count();
 
             // Act

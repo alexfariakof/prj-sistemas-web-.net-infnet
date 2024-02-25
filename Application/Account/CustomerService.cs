@@ -30,8 +30,20 @@ public class CustomerService
 
         Card card = this.Mapper.Map<Card>(dto.Card);
 
-        Customer customer = new() {  Name = dto.Name, Birth = dto.Birth };
-        customer.CreateAccount(customer, new() { Email = dto.Email, Password = dto.Password }, flat, card);
+        Customer customer = new() {  
+            Id = Guid.NewGuid(),
+            Name = dto.Name, 
+            CPF = dto.CPF,
+            Birth = dto.Birth,
+            Phone = dto.Phone,
+            Login = new() 
+            {
+                Email = dto.Email,
+                Password = dto.Password
+            }
+        };
+        
+        customer.CreateAccount(customer, dto.Address, flat, card);
         
         this.CustomerRepository.Save(customer);
         var result = this.Mapper.Map<CustomerDto>(customer);

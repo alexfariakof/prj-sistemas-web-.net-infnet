@@ -4,14 +4,14 @@ using System.Text.RegularExpressions;
 namespace Domain.Account.ValueObject;
 public class Login
 {
-    private string _email;
+    private string _email = String.Empty;
     public string Email 
     { 
         get => _email; 
         set =>  _email = IsValidEmail(value);  
     }
 
-    private string _password;
+    private string _password = String.Empty;
     public string Password
     {
         get => _password;

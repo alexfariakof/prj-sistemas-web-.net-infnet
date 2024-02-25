@@ -25,7 +25,7 @@ public class MerchantTest
         var login = MockLogin.GetFaker();
 
         // Act
-        merchant.CreateAccount(new Agreggates.Merchant { Name = "John Doe", CNPJ = "123456789" }, login, flat, card);
+        merchant.CreateAccount(new Agreggates.Merchant { Name = "John Doe", CNPJ = "123456789" }, MockAddress.GetFaker(), flat, card);
 
         // Assert
         Assert.Equal("John Doe", merchant.Name);

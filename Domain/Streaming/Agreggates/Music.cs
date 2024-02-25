@@ -1,12 +1,12 @@
-﻿using Domain.Core.Aggreggates;
+﻿using Domain.Account.Agreggates;
+using Domain.Core.Aggreggates;
 using Domain.Streaming.ValueObject;
 
-namespace Domain.Streaming.Agreggates
+namespace Domain.Streaming.Agreggates;
+public class Music : BaseModel
 {
-    public class Music<T> : BaseModel
-    {
-        public String Name { get; set; }
-        public Duration Duration { get; set; }
-        public List<T> Playlists { get; set; } = new List<T>();
-    }
+    public String Name { get; set; }
+    public Duration Duration { get; set; }    
+    public virtual IList<PlaylistPersonal> PersonalPlaylists { get; set; } = new List<PlaylistPersonal>();
+    public virtual IList<Playlist> Playlists { get; set; } = new List<Playlist>();
 }

@@ -20,7 +20,7 @@ public class PlaylistPersonalTests
             IsPublic = isPublic,
             DtCreated = dtCreated,
             Name = name,
-            Musics = new List<Music<PlaylistPersonal>>()
+            Musics = new List<Music>()
         };
 
         // Assert

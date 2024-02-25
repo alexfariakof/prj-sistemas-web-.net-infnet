@@ -1,4 +1,4 @@
-﻿{
+﻿ {
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Migrations_SqlServer": {
+    "Migrations_MsSqlServer": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

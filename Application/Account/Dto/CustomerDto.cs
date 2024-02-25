@@ -8,30 +8,30 @@ public class CustomerDto
     public Guid Id { get; set; }
 
     [Required]
-    public string? Name { get; set; } = null;
+    public string? Name { get; set; }
 
     [Required]
     [EmailAddress]
-    public string? Email { get; set; } = null;
+    public string? Email { get; set; }
 
     [Required]
     [PasswordPropertyText]
-    public string? Password { get; set; } = null;
+    public string? Password { get; set; }
 
     [Required]
-    public string? CPF { get; set; } = null;
+    public string? CPF { get; set; }
 
     [Required]
     public DateTime Birth { get; set; }
 
     [Required]
-    public Phone? Phone { get; set; } = null;
+    public Phone? Phone { get; set; }
 
     [Required]
-    public Address? Address { get; set; } = null;
+    public Adress? Address { get; set; }
 
     public Guid FlatId { get; set; }
 
     [Required]
-    public CardDto? Card { get; set; } = null;
+    public CardDto? Card { get; set; }
 }

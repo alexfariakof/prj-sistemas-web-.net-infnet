@@ -17,6 +17,9 @@ namespace Migrations_MySqlServer.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
@@ -25,16 +28,13 @@ namespace Migrations_MySqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("char(36)");
-
                     b.Property<DateTime>("Birth")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("varchar(14)");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -42,8 +42,6 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -54,13 +52,14 @@ namespace Migrations_MySqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("CNPJ")
                         .IsRequired()
                         .HasMaxLength(18)
                         .HasColumnType("varchar(18)");
+
+                    b.Property<string>("CPF")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -69,8 +68,6 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("Merchant", (string)null);
                 });
 
@@ -78,6 +75,9 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("AlbumId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("CustomerId")
@@ -95,6 +95,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AlbumId");
 
                     b.HasIndex("CustomerId");
 
@@ -133,7 +135,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.ToTable("Signature", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Account.ValueObject.Address", b =>
+            modelBuilder.Entity("Domain.Account.ValueObject.Adress", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -141,39 +143,57 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Complement")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("MerchantId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Neighborhood")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Zipcode")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("MerchantId");
+
+                    b.ToTable("Adresses", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Notifications.Notification", b =>
@@ -286,28 +306,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.ToTable("Flat", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Music<Domain.Account.Agreggates.PlaylistPersonal>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("AlbumId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AlbumId");
-
-                    b.ToTable("MusicPersonal", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Music<Domain.Streaming.Agreggates.Playlist>", b =>
+            modelBuilder.Entity("Domain.Streaming.Agreggates.Music", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -490,32 +489,8 @@ namespace Migrations_MySqlServer.Migrations
                     b.ToTable("MusicPlayList");
                 });
 
-            modelBuilder.Entity("MusicPlayListPersonal", b =>
-                {
-                    b.Property<Guid>("MusicId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("PlaylistPersonalId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("DtAdded")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("MusicId", "PlaylistPersonalId");
-
-                    b.HasIndex("PlaylistPersonalId");
-
-                    b.ToTable("MusicPlayListPersonal");
-                });
-
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
-                    b.HasOne("Domain.Account.ValueObject.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
@@ -559,8 +534,6 @@ namespace Migrations_MySqlServer.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
                         });
-
-                    b.Navigation("Address");
 
                     b.Navigation("Login")
                         .IsRequired();
@@ -571,12 +544,6 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("Domain.Account.Agreggates.Merchant", b =>
                 {
-                    b.HasOne("Domain.Account.ValueObject.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("MerchantId")
@@ -621,8 +588,6 @@ namespace Migrations_MySqlServer.Migrations
                                 .HasForeignKey("MerchantId");
                         });
 
-                    b.Navigation("Address");
-
                     b.Navigation("Login")
                         .IsRequired();
 
@@ -632,6 +597,10 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("Domain.Account.Agreggates.PlaylistPersonal", b =>
                 {
+                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
+                        .WithMany("MusicPersonal")
+                        .HasForeignKey("AlbumId");
+
                     b.HasOne("Domain.Account.Agreggates.Customer", "Customer")
                         .WithMany("Playlists")
                         .HasForeignKey("CustomerId")
@@ -658,6 +627,17 @@ namespace Migrations_MySqlServer.Migrations
                         .HasForeignKey("MerchantId");
 
                     b.Navigation("Flat");
+                });
+
+            modelBuilder.Entity("Domain.Account.ValueObject.Adress", b =>
+                {
+                    b.HasOne("Domain.Account.Agreggates.Customer", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("Domain.Account.Agreggates.Merchant", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("MerchantId");
                 });
 
             modelBuilder.Entity("Domain.Notifications.Notification", b =>
@@ -712,36 +692,7 @@ namespace Migrations_MySqlServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Music<Domain.Account.Agreggates.PlaylistPersonal>", b =>
-                {
-                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
-                        .WithMany("MusicPersonal")
-                        .HasForeignKey("AlbumId");
-
-                    b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
-                        {
-                            b1.Property<Guid>("MusicId")
-                                .HasColumnType("char(36)")
-                                .HasColumnName("Music<PlaylistPersonal>Id");
-
-                            b1.Property<int>("Value")
-                                .HasMaxLength(50)
-                                .HasColumnType("int")
-                                .HasColumnName("Duration");
-
-                            b1.HasKey("MusicId");
-
-                            b1.ToTable("MusicPersonal");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MusicId");
-                        });
-
-                    b.Navigation("Duration")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Music<Domain.Streaming.Agreggates.Playlist>", b =>
+            modelBuilder.Entity("Domain.Streaming.Agreggates.Music", b =>
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Album", null)
                         .WithMany("Music")
@@ -751,8 +702,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
                         {
                             b1.Property<Guid>("MusicId")
-                                .HasColumnType("char(36)")
-                                .HasColumnName("Music<Playlist>Id");
+                                .HasColumnType("char(36)");
 
                             b1.Property<int>("Value")
                                 .HasMaxLength(50)
@@ -882,9 +832,15 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("MusicPlayList", b =>
                 {
-                    b.HasOne("Domain.Streaming.Agreggates.Music<Domain.Streaming.Agreggates.Playlist>", null)
+                    b.HasOne("Domain.Streaming.Agreggates.Music", null)
                         .WithMany()
                         .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Account.Agreggates.PlaylistPersonal", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -895,23 +851,10 @@ namespace Migrations_MySqlServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MusicPlayListPersonal", b =>
-                {
-                    b.HasOne("Domain.Streaming.Agreggates.Music<Domain.Account.Agreggates.PlaylistPersonal>", null)
-                        .WithMany()
-                        .HasForeignKey("MusicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Account.Agreggates.PlaylistPersonal", null)
-                        .WithMany()
-                        .HasForeignKey("PlaylistPersonalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Cards");
 
                     b.Navigation("Notifications");
@@ -925,6 +868,8 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("Domain.Account.Agreggates.Merchant", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("Cards");
 
                     b.Navigation("Notifications");

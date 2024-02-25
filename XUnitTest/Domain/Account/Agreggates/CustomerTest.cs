@@ -24,7 +24,7 @@ public class CustomerTest
         var login = MockLogin.GetFaker();
 
         // Act
-        customer.CreateAccount(new Agreggates.Customer { Name = "John Doe", Birth = DateTime.Now, CPF = "123456789" }, login, flat, card);
+        customer.CreateAccount(new Agreggates.Customer { Name = "John Doe", Birth = DateTime.Now, CPF = "123456789" }, MockAddress.GetFaker(), flat, card);
 
         // Assert
         Assert.Equal("John Doe", customer.Name);

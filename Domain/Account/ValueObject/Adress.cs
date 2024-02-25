@@ -1,9 +1,10 @@
-﻿using Domain.Core.Aggreggates;
+﻿using Domain.Account.Agreggates;
+using Domain.Core.Aggreggates;
 
 namespace Domain.Account.ValueObject;
-public class Address : BaseModel
+public class Adress : BaseModel
 {
-    public Address() { }
+    public Adress() { }
     public string Zipcode { get; set; }
     public string Street { get; set; }
     public string Number { get; set; }

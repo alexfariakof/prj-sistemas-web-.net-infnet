@@ -54,7 +54,7 @@ public class AbstractAccountTests
 
         // Act
         account.Cards.Add(card);
-        account.AddFlat(flat, card);
+        account.AddFlat(MockCustomer.GetFaker(), flat, card);
 
         // Assert
         Mock.Verify(accountMock, cardMock);
@@ -92,7 +92,7 @@ public class AbstractAccountTests
         card.Limit = mockCard.Limit;
 
         // Act
-        account.AddFlat(flat, card);
+        account.AddFlat(MockCustomer.GetFaker(), flat, card);
 
         // Assert
         Mock.Verify(accountMock, cardMock);
