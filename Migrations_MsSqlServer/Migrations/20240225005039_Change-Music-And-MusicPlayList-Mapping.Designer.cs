@@ -2,44 +2,50 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
 #nullable disable
 
-namespace Migrations_MySqlServer.Migrations
+namespace Migrations_SqlServer.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    partial class RegisterContextModelSnapshot : ModelSnapshot
+    [Migration("20240225005039_Change-Music-And-MusicPlayList-Mapping")]
+    partial class ChangeMusicAndMusicPlayListMapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AddressId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Birth")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CPF")
                         .IsRequired()
                         .HasMaxLength(14)
-                        .HasColumnType("varchar(14)");
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -52,20 +58,20 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AddressId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
                         .HasMaxLength(18)
-                        .HasColumnType("varchar(18)");
+                        .HasColumnType("nvarchar(18)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -78,21 +84,21 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CustomerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtCreated")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsPublic")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -105,22 +111,22 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtActivation")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("FlatId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -137,39 +143,39 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Complement")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Neighborhood")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Zipcode")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -180,32 +186,32 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DestinationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtNotification")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("varchar(250)");
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("NotificationType")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("SenderId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
@@ -222,15 +228,15 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BandId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -243,22 +249,22 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Backdrop")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -269,17 +275,17 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1024)
-                        .HasColumnType("varchar(1024)");
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -290,15 +296,15 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AlbumId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -311,15 +317,15 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AlbumId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -332,15 +338,15 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("FlatId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -353,29 +359,29 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("CVV")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("CardBrandId")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(19)
-                        .HasColumnType("varchar(19)");
+                        .HasColumnType("nvarchar(19)");
 
                     b.HasKey("Id");
 
@@ -392,24 +398,24 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CardId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CorrelationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("DtTransaction")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -426,9 +432,11 @@ namespace Migrations_MySqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -475,13 +483,13 @@ namespace Migrations_MySqlServer.Migrations
             modelBuilder.Entity("MusicPlayList", b =>
                 {
                     b.Property<Guid>("MusicId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PlaylistId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("MusicId", "PlaylistId");
 
@@ -493,13 +501,13 @@ namespace Migrations_MySqlServer.Migrations
             modelBuilder.Entity("MusicPlayListPersonal", b =>
                 {
                     b.Property<Guid>("MusicId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PlaylistPersonalId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
@@ -519,18 +527,18 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Email")
                                 .IsRequired()
                                 .HasMaxLength(150)
-                                .HasColumnType("varchar(150)")
+                                .HasColumnType("nvarchar(150)")
                                 .HasColumnName("Email");
 
                             b1.Property<string>("Password")
                                 .IsRequired()
                                 .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
+                                .HasColumnType("nvarchar(255)")
                                 .HasColumnName("Password");
 
                             b1.HasKey("CustomerId");
@@ -544,12 +552,12 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Account.ValueObject.Phone", "Phone", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("varchar(50)")
+                                .HasColumnType("nvarchar(50)")
                                 .HasColumnName("Phone");
 
                             b1.HasKey("CustomerId");
@@ -580,18 +588,18 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("MerchantId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Email")
                                 .IsRequired()
                                 .HasMaxLength(150)
-                                .HasColumnType("varchar(150)")
+                                .HasColumnType("nvarchar(150)")
                                 .HasColumnName("Email");
 
                             b1.Property<string>("Password")
                                 .IsRequired()
                                 .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
+                                .HasColumnType("nvarchar(255)")
                                 .HasColumnName("Password");
 
                             b1.HasKey("MerchantId");
@@ -605,12 +613,12 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Account.ValueObject.Phone", "Phone", b1 =>
                         {
                             b1.Property<Guid>("MerchantId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("varchar(50)")
+                                .HasColumnType("nvarchar(50)")
                                 .HasColumnName("Phone");
 
                             b1.HasKey("MerchantId");
@@ -694,7 +702,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
                         {
                             b1.Property<Guid>("FlatId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")
@@ -721,7 +729,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
                         {
                             b1.Property<Guid>("MusicId")
-                                .HasColumnType("char(36)")
+                                .HasColumnType("uniqueidentifier")
                                 .HasColumnName("Music<PlaylistPersonal>Id");
 
                             b1.Property<int>("Value")
@@ -751,7 +759,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
                         {
                             b1.Property<Guid>("MusicId")
-                                .HasColumnType("char(36)")
+                                .HasColumnType("uniqueidentifier")
                                 .HasColumnName("Music<Playlist>Id");
 
                             b1.Property<int>("Value")
@@ -801,7 +809,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Limit", b1 =>
                         {
                             b1.Property<Guid>("CardId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")
@@ -818,10 +826,10 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Transactions.ValueObject.ExpiryDate", "Validate", b1 =>
                         {
                             b1.Property<Guid>("CardId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<DateTime>("Value")
-                                .HasColumnType("datetime(6)")
+                                .HasColumnType("datetime2")
                                 .HasColumnName("Validate");
 
                             b1.HasKey("CardId");
@@ -860,7 +868,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
                         {
                             b1.Property<Guid>("TransactionId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")

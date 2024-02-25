@@ -1,6 +1,6 @@
 ﻿using Domain.Streaming.Agreggates;
 
-namespace Repository.Repository;
+namespace Repository.Repositories;
 public class FlatRepository : RepositoryBase<Flat>, IRepository<Flat>
 {
     public RegisterContext Context { get; set; }

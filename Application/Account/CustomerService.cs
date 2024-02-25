@@ -3,7 +3,7 @@ using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
-using Repository.Repository;
+using Repository.Repositories;
 
 namespace Application.Account;
 public class CustomerService

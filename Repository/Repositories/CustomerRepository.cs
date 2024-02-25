@@ -1,6 +1,6 @@
 ﻿using Domain.Account.Agreggates;
 
-namespace Repository.Repository;
+namespace Repository.Repositories;
 public class CustomerRepository : RepositoryBase<Customer>, IRepository<Customer>
 {
     public RegisterContext Context { get; set; }

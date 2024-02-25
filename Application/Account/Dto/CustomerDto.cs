@@ -25,7 +25,6 @@ public class CustomerDto
     public DateTime Birth { get; set; }
 
     [Required]
-    [Phone]
     public Phone? Phone { get; set; } = null;
 
     [Required]
