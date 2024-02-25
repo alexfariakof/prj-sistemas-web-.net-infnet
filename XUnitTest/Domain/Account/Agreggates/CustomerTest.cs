@@ -21,16 +21,14 @@ public class CustomerTest
         var card = MockCard.GetFaker();
         card.Active = true;
 
-        var login = MockLogin.GetFaker();
-
         // Act
-        customer.CreateAccount(new Agreggates.Customer { Name = "John Doe", Birth = DateTime.Now, CPF = "123456789" }, MockAddress.GetFaker(), flat, card);
+        customer.CreateAccount(customerMock, MockAddress.GetFaker(), flat, card);
 
         // Assert
-        Assert.Equal("John Doe", customer.Name);
-        Assert.Equal(login, customer.Login) ;
-        Assert.Equal("123456789", customer.CPF);
-        Assert.Equal(DateTime.Now.Date, customer.Birth.Date);
+        Assert.Equal(customerMock.Name, customer.Name);
+        Assert.Equal(customerMock.Login, customer.Login) ;
+        Assert.Equal(customerMock.CPF, customer.CPF);
+        Assert.Equal(customerMock.Birth, customer.Birth);
         Assert.Single(customer.Cards, card);
         Assert.Single(customer.Playlists);
     }

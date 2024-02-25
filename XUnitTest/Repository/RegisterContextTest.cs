@@ -4,12 +4,10 @@ using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
 using Microsoft.EntityFrameworkCore;
-using Repository;
 
-namespace XunitTest.Repository;
+namespace Repository;
 public class RegisterContextTest
 {
-
     [Fact]
     public void Should_Have_DbSets_RegisterContext()
     {

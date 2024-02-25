@@ -36,7 +36,8 @@ public class PlaylistTest
 
         // Act
         playlist.Musics.Add(fakeMusic);
-        //playlist.Musics.AddRange(fakeMusicList);
+        foreach(var music in fakeMusicList)
+            playlist.Musics.Add(music);
 
         // Assert
         Assert.Single(playlist.Musics, fakeMusic);

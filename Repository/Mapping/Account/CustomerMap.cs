@@ -9,7 +9,6 @@ public class CustomerMap : BaseAccountMap<Customer>
     protected override void ConfigureCustom(EntityTypeBuilder<Customer> builder)
     {
         builder.Property(x => x.Birth).IsRequired();
-        builder.Property(x => x.CPF).IsRequired().HasMaxLength(20);
 
         builder.OwnsOne<Phone>(e => e.Phone, c =>
         {

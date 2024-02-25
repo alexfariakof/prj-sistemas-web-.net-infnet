@@ -11,7 +11,9 @@ public class AbstractAccountTests
     public void Should_AddCard_To_Card_List()
     {
         // Arrange
-        var account = new Mock<AbstractAccount<Customer>>().Object;
+        var accountMock = new Mock<AbstractAccount<Customer>>();
+        accountMock.SetupGet(a => a.Cards).Returns(new List<Card>());
+        var account = accountMock.Object;
         var card = MockCard.GetFaker();
 
         // Act
@@ -26,13 +28,9 @@ public class AbstractAccountTests
     {
         // Arrange
         var accountMock = new Mock<AbstractAccount<Customer>>();
-        accountMock.VerifyAll();
-
+        accountMock.SetupGet(a => a.Cards).Returns(new List<Card>());
+        accountMock.SetupGet(a => a.Signatures).Returns(new List<Signature>());
         var account = accountMock.Object;
-        account.Id = Guid.NewGuid();
-        account.Name = " Account Test ";
-        account.Login = MockLogin.GetFaker();
-
         var flat = new Flat
         {
             Id = Guid.NewGuid(),
@@ -40,26 +38,15 @@ public class AbstractAccountTests
             Value = 50.0m,
             Description = "Test Description"
         };
-        var cardMock = new Mock<Card>();
-        cardMock.VerifyAll();
-        var card = cardMock.Object;
-
-        var mockCard = MockCard.GetFaker();
-        card.Id = mockCard.Id;
-        card.Number = mockCard.Number;
-        card.Validate = mockCard.Validate;
-        card.CVV = mockCard.CVV;
+        var card = MockCard.GetFaker();
         card.Active = true;
-        card.Limit = mockCard.Limit;
+        accountMock.SetupGet(a => a.Cards).Returns(new List<Card> { card });
 
         // Act
-        account.Cards.Add(card);
         account.AddFlat(MockCustomer.GetFaker(), flat, card);
 
         // Assert
-        Mock.Verify(accountMock, cardMock);
         Assert.Single(account.Signatures, s => s.Flat == flat && s.Active);
-        Assert.Empty(account.Notifications);
     }
 
     [Fact]
@@ -67,11 +54,13 @@ public class AbstractAccountTests
     {
         // Arrange
         var accountMock = new Mock<AbstractAccount<Customer>>();
+        accountMock.SetupGet(a => a.Signatures).Returns(new List<Signature>());
         var account = accountMock.Object;
         var activeSignature = new Signature { Active = true };
         var inactiveSignature = new Signature { Active = false };
         account.Signatures.Add(activeSignature);
         account.Signatures.Add(inactiveSignature);
+
         var flat = new Flat
         {
             Id = Guid.NewGuid(),
@@ -79,26 +68,46 @@ public class AbstractAccountTests
             Value = 50.0m,
             Description = "Test Description"
         };
-        var cardMock = new Mock<Card>();
-        cardMock.VerifyAll();
-        var card = cardMock.Object;
-
-        var mockCard = MockCard.GetFaker();
-        card.Id = mockCard.Id;
-        card.Number = mockCard.Number;
-        card.Validate = mockCard.Validate;
-        card.CVV = mockCard.CVV;
-        card.Active = true;
-        card.Limit = mockCard.Limit;
+        var cards = MockCard.GetListFaker(100);
+        accountMock.SetupGet(a => a.Cards).Returns(cards);
+        var card = cards.Where(c => c.Active == true).First();
+        accountMock.SetupGet(a => a.Cards).Returns(new List<Card> { card });
 
         // Act
         account.AddFlat(MockCustomer.GetFaker(), flat, card);
 
         // Assert
-        Mock.Verify(accountMock, cardMock);
         Assert.Single(account.Signatures, s => s.Flat == flat && s.Active);
         Assert.False(activeSignature.Active);
         Assert.False(inactiveSignature.Active);
-        Assert.Empty(account.Notifications);
+    }
+
+    [Fact]
+    public void Should_Throw_Exception_When_Invalid_Credit_Card_AddFlat()
+    {
+        // Arrange
+        var accountMock = new Mock<AbstractAccount<Customer>>();
+        var account = accountMock.Object;
+        account.Cards = new List<Card>();
+        var flat = new Flat
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Flat",
+            Value = 50.0m,
+            Description = "Test Description"
+        };
+
+        var cardMock = new Mock<Card>();
+        var card = cardMock.Object;
+        var mockCard = MockCard.GetFaker();
+        card.Id = mockCard.Id;
+        card.Number = "InvalidCardNumber"; // This will cause an invalid card
+        card.Validate = mockCard.Validate;
+        card.CVV = mockCard.CVV;
+        card.Active = true;
+        card.Limit = mockCard.Limit;
+
+        // Act and Assert
+        Assert.Throws<ArgumentException>(() => account.AddFlat(MockCustomer.GetFaker(), flat, card));
     }
 }

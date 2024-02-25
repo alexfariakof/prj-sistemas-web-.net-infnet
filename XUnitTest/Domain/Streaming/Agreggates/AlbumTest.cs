@@ -46,8 +46,8 @@ public class AlbumTest
     {
         // Arrange
         var album = new Album();
-        var fakeMusic = MockMusic.GetFaker();
-        var fakeMusicList = MockMusic.GetListFaker(2);
+        var fakeMusic = MockPlaylistPersonal.GetFaker();
+        var fakeMusicList = MockPlaylistPersonal.GetListFaker(2);
 
         // Act
         album.AddMusic(fakeMusic);
