@@ -19,7 +19,7 @@ public class CustomerService
     }
     public CustomerDto Create(CustomerDto dto)
     {
-        if (this.CustomerRepository.Exists(x => x.Login.Email == dto.Email))
+        if (this.CustomerRepository.Exists(x => x.Login != null && x.Login.Email == dto.Email))
             throw new Exception("Usuario já existente na base");
 
 
@@ -38,12 +38,12 @@ public class CustomerService
             Phone = dto.Phone,
             Login = new() 
             {
-                Email = dto.Email,
-                Password = dto.Password
+                Email = dto.Email ?? "",
+                Password = dto.Password ?? ""
             }
         };
         
-        customer.CreateAccount(customer, dto.Address, flat, card);
+        customer.CreateAccount(customer, dto.Address ?? new(), flat, card);
         
         this.CustomerRepository.Save(customer);
         var result = this.Mapper.Map<CustomerDto>(customer);

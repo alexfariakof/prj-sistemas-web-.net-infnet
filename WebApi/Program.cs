@@ -30,6 +30,12 @@ builder.Services.AddScoped<CustomerService>();
 
 var app = builder.Build();
 
+if (app.Environment.IsStaging())
+{
+    app.Urls.Add("http://0.0.0.0:7204");
+    app.Urls.Add("https://0.0.0.0:5146");
+}
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
