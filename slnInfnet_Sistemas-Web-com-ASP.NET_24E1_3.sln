@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations_MsSqlServer", "M
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "AngularApp", "AngularApp\AngularApp.esproj", "{C22C98B6-0412-434B-AD37-C97427DAF3F3}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{C22C98B6-0412-434B-AD37-C97427DAF3F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C22C98B6-0412-434B-AD37-C97427DAF3F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C22C98B6-0412-434B-AD37-C97427DAF3F3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

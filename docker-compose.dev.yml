@@ -1,0 +1,14 @@
+version: '3.4'
+services:
+  webapi-dev:
+    container_name: dev
+    image: alexfariakof/infnet-24e1_3-dev-img
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile-Development
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
+      ASPNETCORE_URLS: http://+7204;https://+5146;
+    ports:
+       - 7204:7204
+       - 5146:5146

@@ -33,7 +33,7 @@ public abstract class RepositoryBase<T> where T : class, new()
 
     public virtual T GetById(Guid id)
     {
-        return this.Context.Set<T>().Find(id);
+        return this.Context.Set<T>().Find(id) ?? new();
     }
 
     public virtual IEnumerable<T> Find(Expression<Func<T, bool>> expression)
