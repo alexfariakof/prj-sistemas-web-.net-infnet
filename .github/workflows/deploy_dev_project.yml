@@ -10,7 +10,7 @@ permissions:
 jobs:
   trigger_build_and_test:
     name: Triggered Deploy Dev
-    uses: alexfariakof/Home_Broker_Chart/.github/workflows/build_and_test.yml@main
+    uses: alexfariakof/Infnet_Sistemas-Web-com-ASP.NET_24E1_3/.github/workflows/build_and_test.yml@main
     secrets: inherit  
    
   deploy:
@@ -35,7 +35,7 @@ jobs:
           DOCKER_CLI_AGGREGATE: 1  
         run: |
             docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
-            docker push alexfariakof/homebrokerspa-dev-img
+            docker push alexfariakof/infnet-24e1_3-dev-img
         continue-on-error: false
         
       - name: Execute SSH Commands into EC2 
@@ -50,5 +50,5 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
           script: |            
-            ./scripts/hb-spa.dev.sh
+            ./scripts/infnet-24e1_3.dev.sh
 
