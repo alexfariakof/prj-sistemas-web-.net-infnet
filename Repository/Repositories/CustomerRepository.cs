@@ -13,7 +13,7 @@ public class CustomerRepository : RepositoryBase<Customer>, IRepository<Customer
     {
         var dsCreditCardBrand = this.Context.Set<CreditCardBrand>();
         foreach (var card in entity.Cards) 
-            card.CardBrand = dsCreditCardBrand.Where(c => c.Id == (int)card.CardBrand.CardBrand).FirstOrDefault();
+            card.CardBrand = dsCreditCardBrand.Where(c => card.CardBrand != null &&  c.Id == (int)card.CardBrand.CardBrand).FirstOrDefault();
 
         this.Context.Add(entity);       
         this.Context.SaveChanges();
