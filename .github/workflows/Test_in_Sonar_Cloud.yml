@@ -4,17 +4,13 @@ on:
 
   push:
     branches: 
-      - main
-      - develop
       - hotfix/*
       - feature/*
       - bugfix/*  
 
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: 
-      - main
-      - develop
+    branches:       
       - hotfix/*
       - feature/*
       - bugfix/*  
