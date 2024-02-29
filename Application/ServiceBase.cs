@@ -6,13 +6,13 @@ public abstract class ServiceBase<Dto, Entity> where Dto : class, new() where En
 {
     protected IMapper Mapper { get; set; }
     protected IRepository<Entity> Repository { get; set; }
-    public ServiceBase(IMapper mapper, IRepository<Entity> repository)
+    protected ServiceBase(IMapper mapper, IRepository<Entity> repository)
     {
         Mapper = mapper;
         Repository = repository;
     }
     public abstract Dto Create(Dto obj);
-    public abstract List<Dto> FindAll(Guid idUsuario);
+    public abstract List<Dto> FindAll(Guid userId);
     public abstract Dto FindById(Guid id);
     public abstract Dto Update(Dto obj);
     public abstract bool Delete(Dto obj);
