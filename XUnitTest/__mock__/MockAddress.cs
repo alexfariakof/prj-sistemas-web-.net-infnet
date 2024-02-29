@@ -20,7 +20,6 @@ public class MockAddress
 
         return fakeAddress;
     }
-
     public static List<Address> GetListFaker(int count)
     {
         var addressList = new List<Address>();
@@ -30,5 +29,4 @@ public class MockAddress
         }
         return addressList;
     }
-
 }

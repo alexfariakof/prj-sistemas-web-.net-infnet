@@ -1,5 +1,4 @@
 ﻿using Domain.Account.Agreggates;
-using __mock__;
 
 namespace Domain.Account;
 public class SignatureTest

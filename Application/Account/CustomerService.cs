@@ -1,32 +1,29 @@
-﻿using Application.Conta.Dto;
+﻿using Application.Account.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
+using Domain.Account.ValueObject;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
-using Repository.Repositories;
+using Repository;
 
 namespace Application.Account;
-public class CustomerService
+public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<CustomerDto>
 {
-    private IMapper Mapper { get; set; }
-    private CustomerRepository CustomerRepository { get; set; }
-    private FlatRepository FlatRepository { get; set; }
-    public CustomerService(IMapper mapper, CustomerRepository customerRepository, FlatRepository flatRepository)
+    private IRepository<Flat> FlatRepository { get; set; }
+    public CustomerService(IMapper mapper, IRepository<Customer> customerRepository, IRepository<Flat> flatRepository) : base(mapper, customerRepository)
     {
-        Mapper = mapper;
-        CustomerRepository = customerRepository;
         FlatRepository = flatRepository;
     }
-    public CustomerDto Create(CustomerDto dto)
+    public override CustomerDto Create(CustomerDto dto)
     {
-        if (this.CustomerRepository.Exists(x => x.Login != null && x.Login.Email == dto.Email))
-            throw new Exception("Usuario já existente na base");
+        if (this.Repository.Exists(x => x.Login != null && x.Login.Email == dto.Email))
+            throw new Exception("Usuário já existente na base.");
 
 
         Flat flat = this.FlatRepository.GetById(dto.FlatId);
 
         if (flat == null)
-            throw new Exception("Plano não existente ou não encontrado");
+            throw new Exception("Plano não existente ou não encontrado.");
 
         Card card = this.Mapper.Map<Card>(dto.Card);
 
@@ -43,17 +40,34 @@ public class CustomerService
             }
         };
         
-        customer.CreateAccount(customer, dto.Address ?? new(), flat, card);
+        Address address = this.Mapper.Map<Address>(dto.Address);
         
-        this.CustomerRepository.Save(customer);
+        customer.CreateAccount(customer, address, flat, card);
+        
+        this.Repository.Save(customer);
         var result = this.Mapper.Map<CustomerDto>(customer);
 
         return result;
     }
-    public CustomerDto FindById(Guid id)
+    public override CustomerDto FindById(Guid id)
     {
-        var usuario = this.CustomerRepository.GetById(id);
-        var result = this.Mapper.Map<CustomerDto>(usuario);
+        var customer = this.Repository.GetById(id);
+        var result = this.Mapper.Map<CustomerDto>(customer);
         return result;
+    }
+
+    public override List<CustomerDto> FindAll(Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override CustomerDto Update(CustomerDto obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override bool Delete(CustomerDto obj)
+    {
+        throw new NotImplementedException();
     }
 }

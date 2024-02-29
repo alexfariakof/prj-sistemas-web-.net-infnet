@@ -1,5 +1,5 @@
-using Application.Account;
-using Application.Conta.Dto;
+using Application;
+using Application.Account.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -8,24 +8,12 @@ namespace WebApi.Controllers;
 [ApiController]
 public class CustomerController : ControllerBase
 {
-    private CustomerService _customerService;
+    private IService<CustomerDto> _customerService;
 
-    public CustomerController(CustomerService customerService)
+    public CustomerController(IService<CustomerDto> customerService)
     {
         _customerService = customerService;
     }
-
-    [HttpPost]
-    public IActionResult Criar(CustomerDto dto)
-    {
-        if (ModelState is { IsValid: false })
-            return BadRequest();
-
-        var result = this._customerService.Create(dto);
-
-        return Ok(result);
-    }
-
 
     [HttpGet("{id}")]
     public IActionResult FindById(Guid id)
@@ -39,4 +27,36 @@ public class CustomerController : ControllerBase
 
     }
 
+    [HttpPost]
+    public IActionResult Create([FromBody] CustomerDto dto)
+    {
+        if (ModelState is { IsValid: false })
+            return BadRequest();
+
+        var result = this._customerService.Create(dto);
+
+        return Ok(result);
+    }
+
+    [HttpPut]
+    public IActionResult Update(CustomerDto dto)
+    {
+        if (ModelState is { IsValid: false })
+            return BadRequest();
+
+        var result = this._customerService.Update(dto);
+
+        return Ok(result);
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(CustomerDto dto)
+    {
+        if (ModelState is { IsValid: false })
+            return BadRequest();
+
+        var result = this._customerService.Delete(dto);
+
+        return Ok(result);
+    }
 }

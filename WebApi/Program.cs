@@ -1,17 +1,35 @@
-using Application.Account;
-using Application.Conta.Profile;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Repository;
-using Repository.Repositories;
+using WebApi.CommonInjectDependence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Appliction Parameteres
+var appName = "Serviços de Streaming";
+var appVersion = "v1";
+var appDescription = $"API Serviços de Streaming.";
 
+// Add services to the container.
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc(appVersion,
+    new OpenApiInfo
+    {
+        Title = appName,
+        Version = appVersion,
+        Description = appDescription,
+        Contact = new OpenApiContact
+        {
+            Name = "Alex Ribeiro de Faria",
+            Url = new Uri("https://github.com/alexfariakof/Home_Broker_Chart")
+        }
+    });
+});
 
 builder.Services.AddDbContext<RegisterContext>(c =>
 {
@@ -19,14 +37,14 @@ builder.Services.AddDbContext<RegisterContext>(c =>
      .UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionString"));
 });
 
-builder.Services.AddAutoMapper(typeof(CustomerProfile).Assembly);
+// AutoMapper
+builder.Services.AddAutoMapper();
 
 //Repositories
-builder.Services.AddScoped<CustomerRepository>();
-builder.Services.AddScoped<FlatRepository>();
+builder.Services.AddRepositories();
 
 //Services
-builder.Services.AddScoped<CustomerService>();
+builder.Services.AddServices();
 
 var app = builder.Build();
 
@@ -43,7 +61,7 @@ app.UseStaticFiles();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
 }
 
 app.UseHttpsRedirection();

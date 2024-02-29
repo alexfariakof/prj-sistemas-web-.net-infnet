@@ -23,6 +23,8 @@ public abstract class AbstractAccount<T> : BaseModel
     {
         IsValidCreditCard(card.Number ?? "");
         card.Id = Guid.NewGuid();
+        card.Active = true;
+        card.Limit = 1000;
         card.CardBrand = CreditCardBrand.IdentifyCard(card.Number ?? "");
         card.CreateTransaction(customer, new Monetary(flat.Value), flat.Description ?? "");
         DisableActiveSigniture();

@@ -1,5 +1,4 @@
-﻿using __mock__;
-using Domain.Account.ValueObject;
+﻿using Domain.Account.ValueObject;
 
 namespace Domain.Account;
 public class LoginTest
