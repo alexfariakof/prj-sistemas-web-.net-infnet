@@ -2,6 +2,7 @@
 using Bogus;
 using Bogus.Extensions.Brazil;
 using Domain.Account.ValueObject;
+using Domain.Transactions.Agreggates;
 
 namespace __mock__;
 public static class MockCustomer
@@ -15,9 +16,20 @@ public static class MockCustomer
             .RuleFor(c => c.CPF, f => f.Person.Cpf())
             .RuleFor(c => c.Birth, f => f.Person.DateOfBirth)
             .RuleFor(c => c.Phone, f => new Phone { Number = f.Person.Phone })
-            .RuleFor(c => c.Addresses, MockAddress.GetListFaker(10))
+            .RuleFor(c => c.Addresses, MockAddress.GetListFaker(1))
+            .RuleFor(m => m.Cards, f => new List<Card>())
+            .RuleFor(m => m.Signatures, f => new List<Signature>())
             .Generate();
 
         return fakeCustomer;
+    }
+    public static List<Customer> GetListFaker(int count)
+    {
+        var customerList = new List<Customer>();
+        for (var i = 0; i < count; i++)
+        {
+            customerList.Add(GetFaker());
+        }
+        return customerList;
     }
 }

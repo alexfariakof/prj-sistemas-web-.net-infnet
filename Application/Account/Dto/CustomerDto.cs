@@ -1,8 +1,8 @@
-﻿using Domain.Account.ValueObject;
+﻿using Application.Transactions.Dto;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.Conta.Dto;
+namespace Application.Account.Dto;
 public class CustomerDto
 {    
     public Guid Id { get; set; }
@@ -25,10 +25,10 @@ public class CustomerDto
     public DateTime Birth { get; set; }
 
     [Required]
-    public Phone? Phone { get; set; }
+    public string? Phone { get; set; }
 
     [Required]
-    public Address? Address { get; set; }
+    public AddressDto? Address { get; set; }
 
     public Guid FlatId { get; set; }
 

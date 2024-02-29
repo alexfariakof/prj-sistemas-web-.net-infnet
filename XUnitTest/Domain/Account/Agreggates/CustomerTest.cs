@@ -1,5 +1,4 @@
 ﻿using Domain.Streaming.Agreggates;
-using __mock__;
 
 namespace Domain.Account;
 public class CustomerTest

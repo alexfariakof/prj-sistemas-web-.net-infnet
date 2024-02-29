@@ -9,13 +9,15 @@ public class MockCard
 {
     public static Card GetFaker()
     {
+        var validCreditCard = GenerateValidCreditCardNumber();
         var fakeCard = new Faker<Card>()
             .RuleFor(a => a.Id, f => f.Random.Guid())
             .RuleFor(a => a.Active, f => f.Random.Bool())
             .RuleFor(a => a.Limit, f => new Monetary(f.Random.Decimal(1000, 10000)))
-            .RuleFor(a => a.Number, f => GenerateValidCreditCardNumber())
-            .RuleFor(a => a.Validate, f => new ExpiryDate(new DateTime(DateTime.Now.Year + 5, f.Random.Int(1, 12), 1)))                
+            .RuleFor(a => a.Number, f => validCreditCard)
+            .RuleFor(a => a.Validate, f => new ExpiryDate(new DateTime(DateTime.Now.Year + 5, f.Random.Int(1, 12), 1)))
             .RuleFor(a => a.CVV, f => f.Random.Int(100, 999).ToString())
+            .RuleFor(a => a.CardBrand, f => CreditCardBrand.IdentifyCard(validCreditCard))
             .Generate();
 
         return fakeCard;

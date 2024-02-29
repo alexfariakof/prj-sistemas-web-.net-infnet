@@ -16,4 +16,13 @@ public class MockFlat
 
         return fakeFlat;
     }
+    public static List<Flat> GetListFaker(int count)
+    {
+        var flatList = new List<Flat>();
+        for (var i = 0; i < count; i++)
+        {
+            flatList.Add(GetFaker());
+        }
+        return flatList;
+    }
 }
