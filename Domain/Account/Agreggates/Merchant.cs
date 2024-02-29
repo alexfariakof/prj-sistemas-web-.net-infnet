@@ -12,6 +12,7 @@ public class Merchant : AbstractAccount<Merchant>
     {
         Name = merchant.Name;
         CNPJ = merchant.CNPJ;
+        Phone = merchant.Phone;
         Customer customer = new Customer()
         {
             Id = merchant.Id,

@@ -1,4 +1,5 @@
-﻿using Bogus;
+﻿using Application.Account.Dto;
+using Bogus;
 using Domain.Account.ValueObject;
 
 namespace __mock__;
@@ -28,5 +29,21 @@ public class MockAddress
             addressList.Add(GetFaker());
         }
         return addressList;
+    }
+    public static AddressDto GetDtoFromAddress(Address address)
+    {
+        var addressDto = new AddressDto
+        {
+            Zipcode = address.Zipcode,
+            Street = address.Street,
+            Number = address.Number,
+            Neighborhood = address.Neighborhood,
+            City = address.City,
+            State = address.State,
+            Complement = address.Complement,
+            Country = address.Country
+        };
+
+        return addressDto;
     }
 }
