@@ -8,8 +8,7 @@ namespace WebApi.Controllers;
 [ApiController]
 public class CustomerController : ControllerBase
 {
-    private IService<CustomerDto> _customerService;
-
+    private readonly IService<CustomerDto> _customerService;
     public CustomerController(IService<CustomerDto> customerService)
     {
         _customerService = customerService;

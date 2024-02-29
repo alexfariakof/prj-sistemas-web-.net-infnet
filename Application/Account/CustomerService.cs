@@ -67,7 +67,7 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
     {
         var customer = this.Mapper.Map<Customer>(dto);
         this.Repository.Update(customer);
-        return this.Mapper.Map<CustomerDto>(customer); ;
+        return this.Mapper.Map<CustomerDto>(customer);
     }
 
     public override bool Delete(CustomerDto dto)

@@ -68,7 +68,7 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
     {
         var merchant = this.Mapper.Map<Merchant>(dto);
         this.Repository.Update(merchant);
-        return this.Mapper.Map<MerchantDto>(merchant); ;
+        return this.Mapper.Map<MerchantDto>(merchant);
     }
 
     public override bool Delete(MerchantDto dto)

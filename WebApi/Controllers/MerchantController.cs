@@ -8,8 +8,7 @@ namespace WebApi.Controllers;
 [ApiController]
 public class MerchantController : ControllerBase
 {
-    private IService<MerchantDto> _merchantService;
-
+    private readonly IService<MerchantDto> _merchantService;
     public MerchantController(IService<MerchantDto> merchantService)
     {
         _merchantService = merchantService;
