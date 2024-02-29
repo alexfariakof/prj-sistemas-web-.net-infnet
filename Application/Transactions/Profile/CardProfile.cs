@@ -20,6 +20,7 @@ public class CardProfile : AutoMapper.Profile
                 d.Validate = s.Validate.Value;
                 d.CVV = "*************";
             });
+
+        CreateMap<ExpiryDate, DateTime>().ConvertUsing(src => src.Value);
     }
 }
-

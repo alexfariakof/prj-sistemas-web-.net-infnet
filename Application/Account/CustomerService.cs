@@ -58,16 +58,22 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
 
     public override List<CustomerDto> FindAll(Guid userId)
     {
-        throw new NotImplementedException();
+        var customers = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
+        var result = this.Mapper.Map<List<CustomerDto>>(customers);
+        return result;
     }
 
-    public override CustomerDto Update(CustomerDto obj)
+    public override CustomerDto Update(CustomerDto dto)
     {
-        throw new NotImplementedException();
+        var customer = this.Mapper.Map<Customer>(dto);
+        this.Repository.Update(customer);
+        return this.Mapper.Map<CustomerDto>(customer);
     }
 
-    public override bool Delete(CustomerDto obj)
+    public override bool Delete(CustomerDto dto)
     {
-        throw new NotImplementedException();
+        var customer = this.Mapper.Map<Customer>(dto);
+        this.Repository.Delete(customer);
+        return true; 
     }
 }

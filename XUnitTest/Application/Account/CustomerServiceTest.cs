@@ -123,13 +123,26 @@ public class CustomerServiceTest
     {
         // Arrange
         var mapperMock = new Mock<IMapper>();
-        var customerRepositoryMock = Usings.MockRepositorio(new List<Customer>());
         var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
 
+        var customers = MockCustomer.GetListFaker(3);
+        var customerDtos = MockCustomer.GetDtoListFromCustomerList(customers);
+        var customerRepositoryMock = Usings.MockRepositorio(customers);
+        var userId = customers.First().Id;
         var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
+        mapperMock.Setup(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>())).Returns(customerDtos.FindAll(c => c.Id.Equals(userId)));
+        
 
-        // Act & Assert
-        Assert.Throws<NotImplementedException>(() => customerService.FindAll(Guid.NewGuid()));
+        // Act
+        var result = customerService.FindAll(userId);
+
+        // Assert
+        customerRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>()), Times.Once);
+
+        Assert.NotNull(result);
+        Assert.Equal(customers.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
+        Assert.All(result, customerDto => Assert.Equal(userId, customerDto.Id));
     }
 
     [Fact]
@@ -191,9 +204,42 @@ public class CustomerServiceTest
         var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
 
         var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
+        var mockCustomer = MockCustomer.GetFaker();
+        var customerDto = new CustomerDto()
+        {
+            Name = mockCustomer.Name,
+            Email = mockCustomer.Login.Email,
+            Password = mockCustomer.Login.Password,
+            CPF = mockCustomer.CPF,
+            Birth = mockCustomer.Birth,
+            Phone = mockCustomer.Phone.Number,
+            Address = new AddressDto
+            {
+                Zipcode = mockCustomer.Addresses.Last().Zipcode,
+                Street = mockCustomer.Addresses.Last().Street,
+                Number = mockCustomer.Addresses.Last().Number,
+                Neighborhood = mockCustomer.Addresses.Last().Neighborhood,
+                City = mockCustomer.Addresses.Last().City,
+                State = mockCustomer.Addresses.Last().State,
+                Complement = mockCustomer.Addresses.Last().Complement,
+                Country = mockCustomer.Addresses.Last().Country
+            }
+        };
 
-        // Act & Assert
-        Assert.Throws<NotImplementedException>(() => customerService.Update(new CustomerDto()));
+        mapperMock.Setup(mapper => mapper.Map<Customer>(customerDto)).Returns(mockCustomer);
+        customerRepositoryMock.Setup(repo => repo.Update(mockCustomer));
+        mapperMock.Setup(mapper => mapper.Map<CustomerDto>(mockCustomer)).Returns(customerDto);
+
+        // Act
+        var result = customerService.Update(customerDto);
+
+        // Assert
+        mapperMock.Verify(mapper => mapper.Map<Customer>(customerDto), Times.Once);
+        customerRepositoryMock.Verify(repo => repo.Update(mockCustomer), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<CustomerDto>(mockCustomer), Times.Once);
+
+        Assert.NotNull(result);
+        Assert.Equal(customerDto.Name, result.Name);
     }
 
     [Fact]
@@ -205,8 +251,39 @@ public class CustomerServiceTest
         var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
 
         var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
+        var mockCustomer = MockCustomer.GetFaker();
+        var customerDto = new CustomerDto()
+        {
+            Name = mockCustomer.Name,
+            Email = mockCustomer.Login.Email,
+            Password = mockCustomer.Login.Password,
+            CPF = mockCustomer.CPF,
+            Birth = mockCustomer.Birth,
+            Phone = mockCustomer.Phone.Number,
+            Address = new AddressDto
+            {
+                Zipcode = mockCustomer.Addresses.Last().Zipcode,
+                Street = mockCustomer.Addresses.Last().Street,
+                Number = mockCustomer.Addresses.Last().Number,
+                Neighborhood = mockCustomer.Addresses.Last().Neighborhood,
+                City = mockCustomer.Addresses.Last().City,
+                State = mockCustomer.Addresses.Last().State,
+                Complement = mockCustomer.Addresses.Last().Complement,
+                Country = mockCustomer.Addresses.Last().Country
+            }
+        };
 
-        // Act & Assert
-        Assert.Throws<NotImplementedException>(() => customerService.Delete(new CustomerDto()));
+        mapperMock.Setup(mapper => mapper.Map<Customer>(customerDto)).Returns(mockCustomer);
+        customerRepositoryMock.Setup(repo => repo.Delete(mockCustomer));
+
+        // Act
+        var result = customerService.Delete(customerDto);
+
+        // Assert
+        mapperMock.Verify(mapper => mapper.Map<Customer>(customerDto), Times.Once);
+        customerRepositoryMock.Verify(repo => repo.Delete(mockCustomer), Times.Once);
+
+        Assert.True(result);
     }
+
 }

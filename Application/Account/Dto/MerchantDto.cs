@@ -26,7 +26,7 @@ public class MerchantDto
     public string? CNPJ { get; set; }
 
     [Required]
-    public Phone? Phone { get; set; }
+    public string? Phone { get; set; }
 
     [Required]
     public AddressDto? Address { get; set; }

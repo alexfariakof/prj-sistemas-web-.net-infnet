@@ -6,18 +6,18 @@ namespace WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class CustomerController : ControllerBase
+public class MerchantController : ControllerBase
 {
-    private readonly IService<CustomerDto> _customerService;
-    public CustomerController(IService<CustomerDto> customerService)
+    private readonly IService<MerchantDto> _merchantService;
+    public MerchantController(IService<MerchantDto> merchantService)
     {
-        _customerService = customerService;
+        _merchantService = merchantService;
     }
 
     [HttpGet("{id}")]
     public IActionResult FindById(Guid id)
     {
-        var result = this._customerService.FindById(id);
+        var result = this._merchantService.FindById(id);
 
         if (result == null)
             return NotFound();
@@ -27,34 +27,34 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CustomerDto dto)
+    public IActionResult Create([FromBody] MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
 
-        var result = this._customerService.Create(dto);
+        var result = this._merchantService.Create(dto);
 
         return Ok(result);
     }
 
     [HttpPut]
-    public IActionResult Update(CustomerDto dto)
+    public IActionResult Update(MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
 
-        var result = this._customerService.Update(dto);
+        var result = this._merchantService.Update(dto);
 
         return Ok(result);
     }
 
     [HttpDelete]
-    public IActionResult Delete(CustomerDto dto)
+    public IActionResult Delete(MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
 
-        var result = this._customerService.Delete(dto);
+        var result = this._merchantService.Delete(dto);
 
         return Ok(result);
     }
