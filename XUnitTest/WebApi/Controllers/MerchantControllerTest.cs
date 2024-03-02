@@ -15,14 +15,14 @@ public class MerchantControllerTest
     {
         var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
             };
         var identity = new ClaimsIdentity(claims, "UserId");
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         httpContext.Request.Headers["Authorization"] =
-            "Bearer " + Usings.GenerateJwtToken(userId);
+            "Bearer " + Usings.GenerateJwtToken(userId, "Merchant");
 
         mockController.ControllerContext = new ControllerContext
         {

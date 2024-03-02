@@ -1,9 +1,10 @@
 ﻿using Application.Account.Dto;
-using Application.Security;
+using Application.Authentication;
 using Application.Transactions.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
+using Domain.Core.Interfaces;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ public class CustomerServiceTest
     private Mock<IRepository<Flat>> flatRepositoryMock;
     private readonly CustomerService customerService;
     private readonly List<Customer> mockCustomerList = MockCustomer.GetListFaker(3);
+    private readonly Mock<ICrypto> cryptoMock;
     public CustomerServiceTest()
     {
         var configuration = new ConfigurationBuilder()
@@ -26,13 +28,14 @@ public class CustomerServiceTest
             .AddJsonFile("appsettings.json")
             .Build();
 
-        var signingConfigurations = SigningConfigurations.Instance;
+        var signingConfigurations = new SigningConfigurations();
         configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
 
         var tokenConfigurations = new TokenConfiguration();
         configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
 
         mapperMock = new Mock<IMapper>();
+        cryptoMock = new Mock<ICrypto>();
         customerRepositoryMock = Usings.MockRepositorio(mockCustomerList);
         flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
 
@@ -44,6 +47,7 @@ public class CustomerServiceTest
             tokenConfigurations
         );
     }
+
     [Fact]
     public void Create_Customer_Successfully()
     {
@@ -276,4 +280,38 @@ public class CustomerServiceTest
         Assert.True(result);
     }
 
+    [Fact]
+    public void Authentication_With_Valid_Credentials_Should_Return_AuthenticationDto()
+    {
+        // Arrange
+        var mockCustomer = mockCustomerList.First();
+        mockCustomer.Login.Password = "validPassword";
+        var loginDto = new LoginDto { Email = mockCustomer.Login.Email, Password = "validPassword" };
+        
+        customerRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Customer, bool>>>())).Returns(mockCustomerList.Where(c => c.Login.Email.Equals(mockCustomer.Login.Email)));
+        cryptoMock.Setup(crypto => crypto.Decrypt(It.IsAny<string>())).Returns(mockCustomer.Login.Password);
+
+        // Act
+        var result = customerService.Authentication(loginDto);
+
+        // Assert
+        customerRepositoryMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<Customer, bool>>>()), Times.Once);
+        Assert.NotNull(result);
+        Assert.NotNull(result.AccessToken);
+    }
+
+    [Fact]
+    public void Authentication_With_Invalid_Credentials_Should_Throw_Exception()
+    {
+        // Arrange
+        var mockCustomer = mockCustomerList.First();
+        var loginDto = new LoginDto { Email = "invalid.email@example.com", Password = "invalidPassword" };
+        customerRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Customer, bool>>>())).Returns(mockCustomerList.Where(c => c.Login.Email.Equals(mockCustomer.Login.Email)));
+        cryptoMock.Setup(crypto => crypto.Decrypt(It.IsAny<string>())).Returns(mockCustomer.Login.Password);
+
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentException>(() => customerService.Authentication(loginDto));
+        Assert.Equal("Usuário Inválido!", exception.Message);
+        customerRepositoryMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<Customer, bool>>>()), Times.Once);
+    }
 }

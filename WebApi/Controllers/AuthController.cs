@@ -1,5 +1,5 @@
-﻿using Application.Account;
-using Application.Account.Dto;
+﻿using Application.Account.Dto;
+using Application.Account.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +9,9 @@ namespace WebApi.Controllers;
 [ApiController]
 public class AuthController : Controller
 {
-    private readonly CustomerService _customerService;
-    private readonly MerchantService _merchantService;
-    public AuthController(CustomerService customerService, MerchantService merchantService)
+    private readonly ICustomerService _customerService;
+    private readonly IMerchantService _merchantService;
+    public AuthController(ICustomerService customerService, IMerchantService merchantService)
     {
         _customerService = customerService;
         _merchantService = merchantService;

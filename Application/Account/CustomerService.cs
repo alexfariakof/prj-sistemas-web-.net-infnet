@@ -1,4 +1,5 @@
 ﻿using Application.Account.Dto;
+using Application.Account.Interfaces;
 using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;
@@ -13,7 +14,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 
 namespace Application.Account;
-public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<CustomerDto>
+public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<CustomerDto>, ICustomerService
 {
     private readonly ICrypto _crypto = Crypto.GetInstance;
     private readonly SigningConfigurations _singingConfiguration;

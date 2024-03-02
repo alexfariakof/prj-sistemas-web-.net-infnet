@@ -1,4 +1,4 @@
-﻿namespace WebApi.Authentication;
+﻿namespace Application.Authentication;
 public class TokenConfigurationTest
 {
     [Fact]
