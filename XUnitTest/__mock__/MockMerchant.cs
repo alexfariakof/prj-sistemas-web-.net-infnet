@@ -9,11 +9,9 @@ namespace __mock__;
 public class MockMerchant
 {
     private static readonly Lazy<MockMerchant> instance = new Lazy<MockMerchant>(() => new MockMerchant());
-
     public static MockMerchant Instance => instance.Value;
 
     private readonly Lazy<Faker<Merchant>> fakerInstance;
-
     private MockMerchant()
     {
         fakerInstance = new Lazy<Faker<Merchant>>(() => new Faker<Merchant>());
