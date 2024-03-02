@@ -17,5 +17,5 @@ if (-not (Test-Path $projectAngular\node_modules)) {
 }
 
 # Executa Teste Unitários e gera o relatório de cobertura do Frontend 
-npm run test:coverage > $null 2>&1
+npm run test:coverage 
 
