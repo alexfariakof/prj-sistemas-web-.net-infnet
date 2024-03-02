@@ -1,5 +1,4 @@
-﻿
-using Application.Account.Dto;
+﻿using Application.Account.Dto;
 using Application.Transactions.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
@@ -27,11 +26,7 @@ public class MerchantServiceTest
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
-            Email = mockMerchant.Login.Email,
-            Password = mockMerchant.Login.Password,
-            CPF = mockMerchant.CPF,
             CNPJ = mockMerchant.CNPJ,
-            Phone = mockMerchant.Phone.Number,
             Address = new AddressDto
             {
                 Zipcode = mockMerchant.Addresses.Last().Zipcode,
@@ -165,11 +160,11 @@ public class MerchantServiceTest
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
-            Email = mockMerchant.Login.Email,
-            Password = mockMerchant.Login.Password,
-            CPF = mockMerchant.CPF,
+            Email = mockMerchant.Customer.Login.Email,
+            Password = mockMerchant.Customer.Login.Password,
+            CPF = mockMerchant.Customer.CPF,
             CNPJ = mockMerchant.CNPJ,
-            Phone = mockMerchant.Phone.Number,
+            Phone = mockMerchant.Customer.Phone.Number,
             Address = new AddressDto
             {
                 Zipcode = mockMerchant.Addresses.Last().Zipcode,
@@ -209,11 +204,11 @@ public class MerchantServiceTest
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
-            Email = mockMerchant.Login.Email,
-            Password = mockMerchant.Login.Password,
-            CPF = mockMerchant.CPF,
+            Email = mockMerchant.Customer.Login.Email,
+            Password = mockMerchant.Customer.Login.Password,
+            CPF = mockMerchant.Customer.CPF,
             CNPJ = mockMerchant.CNPJ,
-            Phone = mockMerchant.Phone.Number,
+            Phone = mockMerchant.Customer.Phone.Number,
             Address = new AddressDto
             {
                 Zipcode = mockMerchant.Addresses.Last().Zipcode,
@@ -256,11 +251,11 @@ public class MerchantServiceTest
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
-            Email = mockMerchant.Login.Email,
-            Password = mockMerchant.Login.Password,
-            CPF = mockMerchant.CPF,
+            Email = mockMerchant.Customer.Login.Email,
+            Password = mockMerchant.Customer.Login.Password,
+            CPF = mockMerchant.Customer.CPF,
             CNPJ = mockMerchant.CNPJ,
-            Phone = mockMerchant.Phone.Number,
+            Phone = mockMerchant.Customer.Phone.Number,
             Address = new AddressDto
             {
                 Zipcode = mockMerchant.Addresses.Last().Zipcode,

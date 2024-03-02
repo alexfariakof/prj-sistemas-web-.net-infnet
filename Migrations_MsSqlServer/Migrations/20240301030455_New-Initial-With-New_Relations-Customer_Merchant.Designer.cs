@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Migrations_MsSqlServer.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    partial class RegisterContextModelSnapshot : ModelSnapshot
+    [Migration("20240301030455_New-Initial-With-New_Relations-Customer_Merchant")]
+    partial class NewInitialWithNew_RelationsCustomer_Merchant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

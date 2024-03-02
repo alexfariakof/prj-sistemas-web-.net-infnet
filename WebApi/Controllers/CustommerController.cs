@@ -1,5 +1,6 @@
 using Application;
 using Application.Account.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -14,48 +15,85 @@ public class CustomerController : ControllerBase
         _customerService = customerService;
     }
 
-    [HttpGet("{id}")]
-    public IActionResult FindById(Guid id)
+    [HttpGet]
+    [ProducesResponseType((200), Type = typeof(CustomerDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((404), Type = null)]
+    public IActionResult FindById()
     {
-        var result = this._customerService.FindById(id);
+        try
+        {
+            var result = this._customerService.FindById(UserIdentity);
 
-        if (result == null)
-            return NotFound();
+            if (result == null)
+                return NotFound();
 
-        return Ok(result);
-
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPost]
+    [ProducesResponseType((200), Type = typeof(CustomerDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Create([FromBody] CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
-
-        var result = this._customerService.Create(dto);
-
-        return Ok(result);
+        try
+        {
+            var result = this._customerService.Create(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPut]
+    [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(CustomerDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Update(CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
 
-        var result = this._customerService.Update(dto);
-
-        return Ok(result);
+        try
+        {
+            dto.Id = UserIdentity;
+            var result = this._customerService.Update(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpDelete]
+    [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(bool))]
+    [ProducesResponseType((400), Type = typeof(string))]
+
     public IActionResult Delete(CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
 
-        var result = this._customerService.Delete(dto);
-
-        return Ok(result);
+        try
+        {
+            dto.Id = UserIdentity;
+            var result = this._customerService.Delete(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 }

@@ -1,14 +1,15 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Repository;
-using WebApi.CommonInjectDependence;
+using Repository.CommonInjectDependence;
+using Application.CommonInjectDependence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Appliction Parameteres
-var appName = "Serviços de Streaming";
+var appName = "ServiÃ§os de Streaming";
 var appVersion = "v1";
-var appDescription = $"API Serviços de Streaming.";
+var appDescription = $"API ServiÃ§os de Streaming.";
 
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -36,6 +37,9 @@ builder.Services.AddDbContext<RegisterContext>(c =>
     c.UseLazyLoadingProxies()
      .UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionString"));
 });
+
+// Autorization Configuratons
+builder.Services.AddAuthConfigurations(builder.Configuration);
 
 // AutoMapper
 builder.Services.AddAutoMapper();

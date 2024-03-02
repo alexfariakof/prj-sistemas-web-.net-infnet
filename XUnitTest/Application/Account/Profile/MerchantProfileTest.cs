@@ -53,11 +53,11 @@ public class MerchantProfileTest
         Assert.NotNull(merchant);
         Assert.Equal(merchantDto.Id, merchant.Id);
         Assert.Equal(merchantDto.Name, merchant.Name);
-        Assert.Equal(merchantDto.Email, merchant.Login.Email);
-        Assert.Equal(merchantDto.CPF, merchant.CPF);
+        Assert.Equal(merchantDto.Email, merchant.Customer.Login.Email);
+        Assert.Equal(merchantDto.CPF, merchant.Customer.CPF);
         Assert.Equal(merchantDto.CNPJ, merchant.CNPJ);
-        Assert.NotNull(merchant.Phone);
-        Assert.Equal(merchantDto.Phone, merchant.Phone?.Number);
+        Assert.NotNull(merchant.Customer.Phone);
+        Assert.Equal(merchantDto.Phone, merchant.Customer.Phone?.Number);
         Assert.NotNull(merchant.Addresses);
         Assert.NotNull(merchant.Cards);
     }
@@ -79,9 +79,9 @@ public class MerchantProfileTest
             Name = merchant.Name,
             Addresses = merchant.Addresses,
             Cards = merchant.Cards,
-            Login = merchant.Login,
-            CPF = merchant.CPF,
-            Phone = merchant.Phone,
+            Login = merchant.Customer.Login,
+            CPF = merchant.Customer.CPF,
+            Phone = merchant.Customer.Phone,
             Signatures = merchant.Signatures,
         };
         merchant.AddFlat(customer, MockFlat.GetFaker(), merchant.Cards.FirstOrDefault());
@@ -93,11 +93,11 @@ public class MerchantProfileTest
         Assert.NotNull(merchantDto);
         Assert.Equal(merchant.Id, merchantDto.Id);
         Assert.Equal(merchant.Name, merchantDto.Name);
-        Assert.Equal(merchant.Login.Email, merchantDto.Email);
-        Assert.Equal(merchant.CPF, merchantDto.CPF);
+        Assert.Equal(merchant.Customer.Login.Email, merchantDto.Email);
+        Assert.Equal(merchant.Customer.CPF, merchantDto.CPF);
         Assert.Equal(merchant.CNPJ, merchantDto.CNPJ);
         Assert.NotNull(merchantDto.Phone);
-        Assert.Equal(merchant.Phone?.Number, merchantDto.Phone);
+        Assert.Equal(merchant.Customer.Phone?.Number, merchantDto.Phone);
         Assert.NotNull(merchantDto.Address);
         Assert.Equal(merchant.Addresses.First().Zipcode, merchantDto.Address.Zipcode);
         Assert.Equal(merchant.Addresses.First().Street, merchantDto.Address.Street);

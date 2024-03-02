@@ -1,5 +1,6 @@
 using Application;
 using Application.Account.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -14,48 +15,89 @@ public class MerchantController : ControllerBase
         _merchantService = merchantService;
     }
 
-    [HttpGet("{id}")]
-    public IActionResult FindById(Guid id)
+    [HttpGet]
+    [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(MerchantDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((404), Type = null)]
+    public IActionResult FindById()
     {
-        var result = this._merchantService.FindById(id);
+        try
+        {
+            var result = this._merchantService.FindById(UserIdentity);
 
-        if (result == null)
-            return NotFound();
+            if (result == null)
+                return NotFound();
 
-        return Ok(result);
-
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPost]
+    [ProducesResponseType((200), Type = typeof(MerchantDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Create([FromBody] MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
+        try
+        {
+            var result = this._merchantService.Create(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
 
-        var result = this._merchantService.Create(dto);
-
-        return Ok(result);
     }
 
     [HttpPut]
+    [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(MerchantDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Update(MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
 
-        var result = this._merchantService.Update(dto);
+        try
+        {
+            dto.Id = UserIdentity;
+            var result = this._merchantService.Update(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
 
-        return Ok(result);
     }
 
     [HttpDelete]
+    [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(bool))]
+    [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Delete(MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
 
-        var result = this._merchantService.Delete(dto);
+        try
+        {
 
-        return Ok(result);
+            dto.Id = UserIdentity;
+            var result = this._merchantService.Delete(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+
     }
 }

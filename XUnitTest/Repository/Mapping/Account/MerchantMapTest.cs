@@ -10,7 +10,7 @@ public class MerchantMapTest
     [Fact]
     public void EntityConfiguration_IsValid()
     {
-        const int PROPERTY_COUNT = 9;
+        const int PROPERTY_COUNT = 8;
 
         // Arrange
         var options = new DbContextOptionsBuilder<MockRegisterContext>()
@@ -31,39 +31,19 @@ public class MerchantMapTest
             // Act
             var idProperty = entityType?.FindProperty("Id");
             var nameProperty = entityType?.FindProperty("Name");
-            var cpfProperty = entityType?.FindProperty("CPF");
-            var loginNavigation = entityType?.FindNavigation(nameof(Merchant.Login));
-            var emailProperty = loginNavigation?.TargetEntityType.FindProperty(nameof(Login.Email));
-            var passwordProperty = loginNavigation?.TargetEntityType.FindProperty(nameof(Login.Password));
-            var phoneNavigation = entityType?.FindNavigation(nameof(Customer.Phone));
-            var phoneProperty = phoneNavigation?.TargetEntityType.FindProperty(nameof(Phone.Number));
             var cnpjProperty = entityType?.FindProperty("CNPJ");
             var addressesNavigation = entityType?.FindNavigation("Addresses");
 
             // Assert
             Assert.NotNull(idProperty);
             Assert.NotNull(nameProperty);
-            Assert.NotNull(cpfProperty);
-            Assert.NotNull(loginNavigation);
-            Assert.NotNull(emailProperty);
-            Assert.NotNull(passwordProperty);
             Assert.NotNull(cnpjProperty);
-            Assert.NotNull(phoneNavigation);
-            Assert.NotNull(phoneProperty);
 
             Assert.True(idProperty.IsPrimaryKey());
             Assert.False(nameProperty.IsNullable);
             Assert.Equal(100, nameProperty.GetMaxLength());
-            Assert.False(emailProperty.IsNullable);
-            Assert.Equal(150, emailProperty.GetMaxLength());
-            Assert.False(passwordProperty.IsNullable);
-            Assert.Equal(255, passwordProperty.GetMaxLength());
             Assert.False(cnpjProperty.IsNullable);
             Assert.Equal(18, cnpjProperty.GetMaxLength());
-            Assert.False(cpfProperty.IsNullable);
-            Assert.Equal(14, cpfProperty.GetMaxLength());
-            Assert.False(phoneProperty.IsNullable);
-            Assert.Equal(50, phoneProperty.GetMaxLength());
             Assert.NotNull(addressesNavigation);
             Assert.True(addressesNavigation.IsCollection);
             Assert.NotNull(addressesNavigation?.ForeignKey.DeleteBehavior);

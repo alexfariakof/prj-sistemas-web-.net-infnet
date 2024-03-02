@@ -1,11 +1,12 @@
 ﻿using Application.Transactions.Dto;
-using Domain.Account.ValueObject;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Application.Account.Dto;
 public class MerchantDto
-{    
+{
+    [JsonIgnore]
     public Guid Id { get; set; }
 
     [Required]

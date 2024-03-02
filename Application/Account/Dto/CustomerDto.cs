@@ -1,10 +1,12 @@
 ﻿using Application.Transactions.Dto;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Application.Account.Dto;
 public class CustomerDto
-{    
+{
+    [JsonIgnore]
     public Guid Id { get; set; }
 
     [Required]

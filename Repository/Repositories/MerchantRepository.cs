@@ -15,6 +15,7 @@ public class MerchantRepository : RepositoryBase<Merchant>, IRepository<Merchant
         foreach (var card in entity.Cards) 
             card.CardBrand = dsCreditCardBrand.Where(c => card.CardBrand != null &&  c.Id == (int)card.CardBrand.CardBrand).FirstOrDefault();
 
+        this.Context.Add(entity.Customer);
         this.Context.Add(entity);       
         this.Context.SaveChanges();
     }

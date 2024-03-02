@@ -1,7 +1,8 @@
-﻿using Application.Account;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Application.CommonInjectDependence;
+using Application.Account;
 
-namespace WebApi.CommonInjectDependence;
+namespace CommonInjectDependence;
 public class ServiceInjectDependenceTest
 {
     [Fact]

@@ -26,7 +26,7 @@ public class MerchantTest
 
         // Assert
         Assert.Equal(merchantMock.Name, merchant.Name);
-        Assert.Equal(merchantMock.Login, merchant.Login) ;
+        Assert.Equal(merchantMock.Customer.Login, merchant.Customer.Login) ;
         Assert.Equal(merchantMock.CNPJ, merchant.CNPJ);
         Assert.Single(merchant.Cards, card);
     }
