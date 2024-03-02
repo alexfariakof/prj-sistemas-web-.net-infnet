@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 namespace WebApi.Controllers;
 public abstract class ControllerBase : Controller
 {
-    public ControllerBase() { }
+    protected ControllerBase() { }
     protected Guid UserIdentity
     {
         get
