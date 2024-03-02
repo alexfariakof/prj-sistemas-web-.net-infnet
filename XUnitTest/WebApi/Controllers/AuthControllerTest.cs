@@ -79,8 +79,7 @@ public class AuthControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value?.GetType()?.GetProperty("message")?.GetValue(result.Value, null) as string;
-        Assert.Equal("Erro ao realizar login!", message);
+        Assert.Equal("Erro ao realizar login!", result.Value);
     }
 
     [Fact]
@@ -96,8 +95,7 @@ public class AuthControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value?.GetType()?.GetProperty("message")?.GetValue(result.Value, null) as string;
-        Assert.Equal("Authentication failed", message);
+        Assert.Equal("Authentication failed", result.Value);
     }
 
     [Fact]
@@ -113,7 +111,6 @@ public class AuthControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value?.GetType()?.GetProperty("message")?.GetValue(result.Value, null) as string;
-        Assert.Equal("Exception_Occurs", message);
+        Assert.Equal("Exception_Occurs", result.Value);
     }
 }

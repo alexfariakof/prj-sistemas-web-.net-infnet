@@ -33,7 +33,7 @@ public class AuthController : Controller
                 var result = _customerService.Authentication(loginDto);
 
                 if (result == null)
-                    return BadRequest(new { message = "Erro ao realizar login!" });
+                    return BadRequest("Erro ao realizar login!");
 
                 return new OkObjectResult(result);
             }
@@ -42,16 +42,16 @@ public class AuthController : Controller
                 var result = _merchantService.Authentication(loginDto);
 
                 if (result == null)
-                    return BadRequest(new { message = "Erro ao realizar login!" });
+                    return BadRequest("Erro ao realizar login!");
 
                 return new OkObjectResult(result);
             }
 
-            return BadRequest(new { message = "Erro ao realizar login!" });
+            return BadRequest("Erro ao realizar login!") ;
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(ex.Message);
         }
     }
 }
