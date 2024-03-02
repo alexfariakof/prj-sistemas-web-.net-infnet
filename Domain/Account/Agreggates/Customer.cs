@@ -5,9 +5,11 @@ using Domain.Transactions.Agreggates;
 namespace Domain.Account.Agreggates;
 public class Customer : AbstractAccount<Customer>
 {
-    private const string PLAYLIST_NAME = "Favoritas";    
+    private const string PLAYLIST_NAME = "Favoritas";
+    public Login? Login { get; set; }
     public DateTime Birth { get; set; }
-    public Phone? Phone { get; set; }    
+    public string? CPF { get; set; } = String.Empty;
+    public Phone? Phone { get; set; }
     public virtual IList<PlaylistPersonal> Playlists { get; set; } = new List<PlaylistPersonal>();
     public virtual IList<Transaction> Transactions { get; set; } = new List<Transaction>();
     public override void CreateAccount(Customer customer, Address address, Flat flat, Card card)

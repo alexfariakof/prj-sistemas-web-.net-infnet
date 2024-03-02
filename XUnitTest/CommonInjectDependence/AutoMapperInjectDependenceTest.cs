@@ -1,8 +1,9 @@
-﻿using Application.Account.Profile;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Application.CommonInjectDependence;
+using Application.Account.Profile;
 using Application.Transactions.Profile;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace WebApi.CommonInjectDependence;
+namespace CommonInjectDependence;
 public class AutoMapperInjectDependenceTest
 {
     [Fact]

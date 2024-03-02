@@ -1,7 +1,8 @@
-﻿using Application.Account.Profile;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Application.Account.Profile;
 using Application.Transactions.Profile;
 
-namespace WebApi.CommonInjectDependence;
+namespace Application.CommonInjectDependence;
 public static class AutoMapperInjectDependence
 {
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)

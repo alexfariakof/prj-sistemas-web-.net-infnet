@@ -10,19 +10,18 @@ public class MerchantProfile : AutoMapper.Profile
     public MerchantProfile()
     {
         CreateMap<MerchantDto, Merchant>()
-            .ForMember(dest => dest.Login, opt => opt.MapFrom(src => new Login() { Email = src.Email, Password = src.Password }))
-            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => new Phone(src.Phone)))
             .ReverseMap();
 
         CreateMap<Merchant, MerchantDto>()
-            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone.Number))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Customer.Phone.Number))
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Addresses.FirstOrDefault()))
             .AfterMap((s, d) =>
             {
                 var flat = s.Signatures?.FirstOrDefault(c => c.Active)?.Flat;
                 if (flat != null)
                     d.FlatId = flat.Id;
-                d.Email = s.Login.Email;
+                d.Email = s.Customer.Login.Email;
+                d.CPF = s.Customer.CPF;
                 d.Password = "********";
             });
 

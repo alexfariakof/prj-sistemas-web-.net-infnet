@@ -1,9 +1,9 @@
-﻿using Domain.Account.Agreggates;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
-using Repository;
 using Repository.Repositories;
 
-namespace WebApi.CommonInjectDependence;
+namespace Repository.CommonInjectDependence;
 public static class RepositoryInjectDependence
 {
     public static IServiceCollection AddRepositories(this IServiceCollection services)

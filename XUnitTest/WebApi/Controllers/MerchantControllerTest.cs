@@ -1,27 +1,50 @@
 ﻿using Application;
 using Application.Account.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Security.Claims;
 using WebApi.Controllers;
 
 namespace WebApi.Tests.Controllers;
-
 public class MerchantControllerTest
 {
+    private Mock<IService<MerchantDto>> mockMerchantService;
+    private MerchantController mockController;
+    private void SetupBearerToken(Guid userId)
+    {
+        var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+            };
+        var identity = new ClaimsIdentity(claims, "UserId");
+        var claimsPrincipal = new ClaimsPrincipal(identity);
+
+        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+        httpContext.Request.Headers["Authorization"] =
+            "Bearer " + Usings.GenerateJwtToken(userId);
+
+        mockController.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+    }
+    public MerchantControllerTest()
+    {
+        mockMerchantService = new Mock<IService<MerchantDto>>();
+        mockController = new MerchantController(mockMerchantService.Object);
+    }
+
     [Fact]
     public void FindById_Returns_Ok_Result_When_Merchant_Found()
     {
-        // Arrange
-        var mockMerchantService = new Mock<IService<MerchantDto>>();
-        var merchantId = Guid.NewGuid();
-        var expectedMerchantDto = new MerchantDto { Id = merchantId, Name = "John Doe", Email = "john@example.com" };
-
-        mockMerchantService.Setup(service => service.FindById(merchantId)).Returns(expectedMerchantDto);
-
-        var controller = new MerchantController(mockMerchantService.Object);
-
+        // Arrange        
+        var expectedMerchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        SetupBearerToken(expectedMerchantDto.Id);
+        mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns(expectedMerchantDto);
+        
         // Act
-        var result = controller.FindById(merchantId) as OkObjectResult;
+        var result = mockController.FindById() as OkObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -33,15 +56,13 @@ public class MerchantControllerTest
     [Fact]
     public void FindById_Returns_NotFound_Result_When_Merchant_Not_Found()
     {
-        // Arrange
-        var mockMerchantService = new Mock<IService<MerchantDto>>();
-        var merchantId = Guid.NewGuid();
-        mockMerchantService.Setup(service => service.FindById(merchantId)).Returns((MerchantDto)null);
-
-        var controller = new MerchantController(mockMerchantService.Object);
+        // Arrange        
+        var expectedMerchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        SetupBearerToken(expectedMerchantDto.Id);
+        mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns((MerchantDto)null);
 
         // Act
-        var result = controller.FindById(merchantId) as NotFoundResult;
+        var result = mockController.FindById() as NotFoundResult;
 
         // Assert
         Assert.NotNull(result);
@@ -51,16 +72,13 @@ public class MerchantControllerTest
     [Fact]
     public void Create_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
-        // Arrange
-        var mockMerchantService = new Mock<IService<MerchantDto>>();
-        var validMerchantDto = new MerchantDto { Name = "John Doe", Email = "john@example.com" };
-
+        // Arrange        
+        var validMerchantDto  = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        SetupBearerToken(validMerchantDto.Id);
         mockMerchantService.Setup(service => service.Create(validMerchantDto)).Returns(validMerchantDto);
 
-        var controller = new MerchantController(mockMerchantService.Object);
-
         // Act
-        var result = controller.Create(validMerchantDto) as OkObjectResult;
+        var result = mockController.Create(validMerchantDto) as OkObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -73,12 +91,10 @@ public class MerchantControllerTest
     public void Create_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        var mockMerchantService = new Mock<IService<MerchantDto>>();
-        
-        var controller = new MerchantController(mockMerchantService.Object);
-        controller.ModelState.AddModelError("errorKey", "ErrorMessage");
+        SetupBearerToken(Guid.NewGuid());
+        mockController.ModelState.AddModelError("errorKey", "ErrorMessage");
         // Act
-        var result = controller.Create(It.IsAny<MerchantDto>()) as BadRequestResult;
+        var result = mockController.Create(It.IsAny<MerchantDto>()) as BadRequestResult;
 
         // Assert
         Assert.NotNull(result);
@@ -88,16 +104,13 @@ public class MerchantControllerTest
     [Fact]
     public void Update_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
-        // Arrange
-        var mockMerchantService = new Mock<IService<MerchantDto>>();
-        var validMerchantDto = new MerchantDto { Id = Guid.NewGuid(), Name = "Updated John Doe", Email = "updatedjohn@example.com" };
-
+        // Arrange        
+        var validMerchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        SetupBearerToken(validMerchantDto.Id);
         mockMerchantService.Setup(service => service.Update(validMerchantDto)).Returns(validMerchantDto);
-
-        var controller = new MerchantController(mockMerchantService.Object);
-
+        
         // Act
-        var result = controller.Update(validMerchantDto) as OkObjectResult;
+        var result = mockController.Update(validMerchantDto) as OkObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -109,14 +122,12 @@ public class MerchantControllerTest
     [Fact]
     public void Update_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
-        // Arrange
-        var mockMerchantService = new Mock<IService<MerchantDto>>();
-
-        var controller = new MerchantController(mockMerchantService.Object);
-        controller.ModelState.AddModelError("errorKey", "ErrorMessage");
+        // Arrange      
+        SetupBearerToken(Guid.NewGuid());
+        mockController.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(It.IsAny<MerchantDto>()) as BadRequestResult;
+        var result = mockController.Update(It.IsAny<MerchantDto>()) as BadRequestResult;
 
         // Assert
         Assert.NotNull(result);
@@ -126,16 +137,14 @@ public class MerchantControllerTest
     [Fact]
     public void Delete_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
-        // Arrange
-        var mockMerchantService = new Mock<IService<MerchantDto>>();
-        var mockMerchantDto = new MerchantDto { Name = "John Doe", Email = "john@example.com" };
+        // Arrange        
+        var mockMerchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        SetupBearerToken(mockMerchantDto.Id);
         mockMerchantService.Setup(service => service.Delete(It.IsAny<MerchantDto>())).Returns(true);
         mockMerchantService.Setup(service => service.FindById(mockMerchantDto.Id)).Returns(mockMerchantDto);
-
-        var controller = new MerchantController(mockMerchantService.Object);
-
+        
         // Act
-        var result = controller.Delete(mockMerchantDto) as ObjectResult;
+        var result = mockController.Delete(mockMerchantDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -148,13 +157,11 @@ public class MerchantControllerTest
     public void Delete_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        var mockMerchantService = new Mock<IService<MerchantDto>>();
-
-        var controller = new MerchantController(mockMerchantService.Object);
-        controller.ModelState.AddModelError("errorKey", "ErrorMessage");
+        SetupBearerToken(Guid.NewGuid());
+        mockController.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Delete((MerchantDto)null);
+        var result = mockController.Delete((MerchantDto)null);
 
         // Assert
         Assert.NotNull(result);

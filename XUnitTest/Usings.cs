@@ -7,6 +7,12 @@ using Domain.Core.Aggreggates;
 using Repository;
 using Domain.Account.Agreggates;
 using System.Linq.Expressions;
+using Application.Security;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -83,5 +89,36 @@ public static class Usings
         };
 
         return MockDbSet(creditCardBrandData);
+    }
+    public static string GenerateJwtToken(Guid userId)
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var signingConfigurations = SigningConfigurations.Instance;
+        configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
+
+        var tokenConfigurations = new TokenConfiguration();
+        configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
+
+        var securityKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(signingConfigurations.Key.ToString())
+        );
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[] { new Claim("UserId", userId.ToString()) };
+
+        var token = new JwtSecurityToken(
+            issuer: tokenConfigurations.Issuer,
+            audience: tokenConfigurations.Audience,
+            claims: claims,
+            expires: DateTime.Now.AddHours(tokenConfigurations.Seconds),
+            signingCredentials: credentials
+        );
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        return tokenHandler.WriteToken(token);
     }
 }

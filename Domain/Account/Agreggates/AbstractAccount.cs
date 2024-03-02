@@ -10,8 +10,6 @@ namespace Domain.Account.Agreggates;
 public abstract class AbstractAccount<T> : BaseModel
 {
     public string? Name { get; set; }
-    public string? CPF { get; set; } = String.Empty;
-    public Login? Login { get; set; }
     public virtual IList<Address> Addresses { get; set; } = new List<Address>();
     public virtual IList<Card> Cards { get; set; } = new List<Card>();    
     public virtual IList<Signature> Signatures { get; set; } = new List<Signature>();

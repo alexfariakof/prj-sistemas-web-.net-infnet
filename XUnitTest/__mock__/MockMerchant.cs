@@ -3,7 +3,6 @@ using Domain.Transactions.Agreggates;
 using Bogus;
 using Bogus.Extensions.Brazil;
 using Domain.Notifications;
-using Domain.Account.ValueObject;
 using Application.Account.Dto;
 
 namespace __mock__;
@@ -14,10 +13,8 @@ public static class MockMerchant
         var fakeMerchant = new Faker<Merchant>()
             .RuleFor(m => m.Id, f => f.Random.Guid())
             .RuleFor(m => m.Name, f => f.Name.FirstName())
-            .RuleFor(m => m.Login, MockLogin.GetFaker())
-            .RuleFor(m => m.CPF, f => f.Person.Cpf())
+            .RuleFor(m => m.Customer, MockCustomer.GetFaker())
             .RuleFor(m => m.CNPJ, f => f.Company.Cnpj())
-            .RuleFor(c => c.Phone, f => new Phone { Number = f.Person.Phone })
             .RuleFor(c => c.Addresses, MockAddress.GetListFaker(1))
             .RuleFor(m => m.Cards, f => new List<Card>())
             .RuleFor(m => m.Signatures, f => new List<Signature>())
@@ -40,11 +37,11 @@ public static class MockMerchant
         var fakeMerchantDto = new Faker<MerchantDto>()
             .RuleFor(c => c.Id, f => merchant.Id)
             .RuleFor(c => c.Name, f => merchant.Name)
-            .RuleFor(c => c.Email, f => merchant.Login.Email)
-            .RuleFor(c => c.Password, f => merchant.Login.Password)
-            .RuleFor(c => c.CPF, f => merchant.CPF)
+            .RuleFor(c => c.Email, f => merchant.Customer.Login.Email)
+            .RuleFor(c => c.Password, f => merchant.Customer.Login.Password)
+            .RuleFor(c => c.CPF, f => merchant.Customer.CPF)
             .RuleFor(c => c.CNPJ, f => merchant.CNPJ)
-            .RuleFor(c => c.Phone, f => merchant.Phone.Number)
+            .RuleFor(c => c.Phone, f => merchant.Customer.Phone.Number)
             .RuleFor(c => c.Address, f => MockAddress.GetDtoFromAddress(merchant.Addresses[0]))
             .RuleFor(c => c.FlatId, f => Guid.NewGuid())
             .Generate();
