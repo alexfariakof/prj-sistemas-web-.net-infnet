@@ -19,7 +19,7 @@ public class CustomerServiceTest
     private Mock<IRepository<Customer>> customerRepositoryMock;
     private Mock<IRepository<Flat>> flatRepositoryMock;
     private readonly CustomerService customerService;
-    private readonly List<Customer> mockCustomerList = MockCustomer.GetListFaker(3);
+    private readonly List<Customer> mockCustomerList = MockCustomer.Instance.GetListFaker(3);
     private readonly Mock<ICrypto> cryptoMock;
     public CustomerServiceTest()
     {
@@ -52,9 +52,9 @@ public class CustomerServiceTest
     public void Create_Customer_Successfully()
     {
         // Arrange
-        var mockCustomer = MockCustomer.GetFaker();
-        var mockCard = MockCard.GetFaker();
-        var mockFlat = MockFlat.GetFaker();
+        var mockCustomer = MockCustomer.Instance.GetFaker();
+        var mockCard = MockCard.Instance.GetFaker();
+        var mockFlat = MockFlat.Instance.GetFaker();
         var customerDto = new CustomerDto()
         {
             Name = mockCustomer.Name,
@@ -142,7 +142,7 @@ public class CustomerServiceTest
     public void FindAll_Customers_Successfully()
     {
         // Arrange
-        var customerDtos = MockCustomer.GetDtoListFromCustomerList(mockCustomerList);
+        var customerDtos = MockCustomer.Instance.GetDtoListFromCustomerList(mockCustomerList);
         var userId = mockCustomerList.First().Id;
         mapperMock.Setup(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>())).Returns(customerDtos.FindAll(c => c.Id.Equals(userId)));
 
@@ -203,7 +203,7 @@ public class CustomerServiceTest
     public void Update_Customer_Successfully()
     {
         // Arrange
-        var mockCustomer = MockCustomer.GetFaker();
+        var mockCustomer = MockCustomer.Instance.GetFaker();
         var customerDto = new CustomerDto()
         {
             Name = mockCustomer.Name,
@@ -245,7 +245,7 @@ public class CustomerServiceTest
     public void Delete_Customer_Successfully()
     {
         // Arrange
-        var mockCustomer = MockCustomer.GetFaker();
+        var mockCustomer = MockCustomer.Instance.GetFaker();
         var customerDto = new CustomerDto()
         {
             Name = mockCustomer.Name,

@@ -39,7 +39,7 @@ public class MerchantControllerTest
     public void FindById_Returns_Ok_Result_When_Merchant_Found()
     {
         // Arrange        
-        var expectedMerchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        var expectedMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         SetupBearerToken(expectedMerchantDto.Id);
         mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns(expectedMerchantDto);
         
@@ -57,7 +57,7 @@ public class MerchantControllerTest
     public void FindById_Returns_NotFound_Result_When_Merchant_Not_Found()
     {
         // Arrange        
-        var expectedMerchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        var expectedMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         SetupBearerToken(expectedMerchantDto.Id);
         mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns((MerchantDto)null);
 
@@ -73,7 +73,7 @@ public class MerchantControllerTest
     public void Create_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
         // Arrange        
-        var validMerchantDto  = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        var validMerchantDto  = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         SetupBearerToken(validMerchantDto.Id);
         mockMerchantService.Setup(service => service.Create(validMerchantDto)).Returns(validMerchantDto);
 
@@ -105,7 +105,7 @@ public class MerchantControllerTest
     public void Update_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
         // Arrange        
-        var validMerchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        var validMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         SetupBearerToken(validMerchantDto.Id);
         mockMerchantService.Setup(service => service.Update(validMerchantDto)).Returns(validMerchantDto);
         
@@ -138,7 +138,7 @@ public class MerchantControllerTest
     public void Delete_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
         // Arrange        
-        var mockMerchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        var mockMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         SetupBearerToken(mockMerchantDto.Id);
         mockMerchantService.Setup(service => service.Delete(It.IsAny<MerchantDto>())).Returns(true);
         mockMerchantService.Setup(service => service.FindById(mockMerchantDto.Id)).Returns(mockMerchantDto);

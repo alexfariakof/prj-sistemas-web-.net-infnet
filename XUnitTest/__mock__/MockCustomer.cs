@@ -6,25 +6,32 @@ using Domain.Transactions.Agreggates;
 using Application.Account.Dto;
 
 namespace __mock__;
-public static class MockCustomer
+public class MockCustomer
 {
-    public static Customer GetFaker()
+    private static readonly Lazy<MockCustomer> instance = new Lazy<MockCustomer>(() => new MockCustomer());
+
+    public static MockCustomer Instance => instance.Value;
+
+    private MockCustomer() { }
+
+    public Customer GetFaker()
     {
         var fakeCustomer = new Faker<Customer>()
             .RuleFor(c => c.Id, f => f.Random.Guid())
             .RuleFor(c => c.Name, f => f.Name.FirstName())
-            .RuleFor(c => c.Login, MockLogin.GetFaker())
+            .RuleFor(c => c.Login, MockLogin.Instance.GetFaker())
             .RuleFor(c => c.CPF, f => f.Person.Cpf())
             .RuleFor(c => c.Birth, f => f.Person.DateOfBirth)
             .RuleFor(c => c.Phone, f => new Phone { Number = f.Person.Phone })
-            .RuleFor(c => c.Addresses, MockAddress.GetListFaker(1))
+            .RuleFor(c => c.Addresses, MockAddress.Instance.GetListFaker(1))
             .RuleFor(m => m.Cards, f => new List<Card>())
             .RuleFor(m => m.Signatures, f => new List<Signature>())
             .Generate();
 
         return fakeCustomer;
     }
-    public static List<Customer> GetListFaker(int count)
+
+    public List<Customer> GetListFaker(int count)
     {
         var customerList = new List<Customer>();
         for (var i = 0; i < count; i++)
@@ -34,7 +41,7 @@ public static class MockCustomer
         return customerList;
     }
 
-    public static CustomerDto GetDtoFromCustomer(Customer customer)
+    public CustomerDto GetDtoFromCustomer(Customer customer)
     {
         var fakeCustomerDto = new Faker<CustomerDto>()
             .RuleFor(c => c.Id, f => customer.Id)
@@ -44,14 +51,14 @@ public static class MockCustomer
             .RuleFor(c => c.CPF, f => customer.CPF)
             .RuleFor(c => c.Birth, f => customer.Birth)
             .RuleFor(c => c.Phone, f => customer.Phone.Number)
-            .RuleFor(c => c.Address, f => MockAddress.GetDtoFromAddress(customer.Addresses[0]))
-            .RuleFor(c => c.FlatId, f => Guid.NewGuid()) 
+            .RuleFor(c => c.Address, f => MockAddress.Instance.GetDtoFromAddress(customer.Addresses[0]))
+            .RuleFor(c => c.FlatId, f => Guid.NewGuid())
             .Generate();
 
         return fakeCustomerDto;
     }
 
-    public static List<CustomerDto> GetDtoListFromCustomerList(List<Customer> customers)
+    public List<CustomerDto> GetDtoListFromCustomerList(List<Customer> customers)
     {
         var customerDtoList = new List<CustomerDto>();
 

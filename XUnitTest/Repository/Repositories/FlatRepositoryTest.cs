@@ -22,7 +22,7 @@ public class FlatRepositoryTest
     {
         // Arrange
         var repository = new FlatRepository(contextMock.Object);
-        var mockFlat = MockFlat.GetFaker();
+        var mockFlat = MockFlat.Instance.GetFaker();
 
         // Act
         repository.Save(mockFlat);
@@ -37,7 +37,7 @@ public class FlatRepositoryTest
     {
         // Arrange
         var repository = new FlatRepository(contextMock.Object);
-        var mockFlat = MockFlat.GetFaker();
+        var mockFlat = MockFlat.Instance.GetFaker();
 
         // Act
         repository.Update(mockFlat);
@@ -52,7 +52,7 @@ public class FlatRepositoryTest
     {
         // Arrange
         var repository = new FlatRepository(contextMock.Object);
-        var mockFlat = MockFlat.GetFaker();
+        var mockFlat = MockFlat.Instance.GetFaker();
 
         // Act
         repository.Delete(mockFlat);
@@ -67,7 +67,7 @@ public class FlatRepositoryTest
     {
         // Arrange
         var repository = new FlatRepository(contextMock.Object);
-        var flats = MockFlat.GetListFaker(10);
+        var flats = MockFlat.Instance.GetListFaker(10);
         var dbSetMock = Usings.MockDbSet(flats);
         contextMock.Setup(c => c.Set<Flat>()).Returns(dbSetMock.Object);
 
@@ -83,7 +83,7 @@ public class FlatRepositoryTest
     {
         // Arrange
         var repository = new FlatRepository(contextMock.Object);
-        var flat = MockFlat.GetFaker();
+        var flat = MockFlat.Instance.GetFaker();
         var flatId = flat.Id;
 
         contextMock.Setup(c => c.Set<Flat>().Find(flatId)).Returns(flat);
@@ -100,7 +100,7 @@ public class FlatRepositoryTest
     {
         // Arrange
         var repository = new FlatRepository(contextMock.Object);
-        var flats = MockFlat.GetListFaker(3);
+        var flats = MockFlat.Instance.GetListFaker(3);
         var mockFlat = flats.First();
         var dbSetMock = Usings.MockDbSet(flats);
         contextMock.Setup(c => c.Set<Flat>()).Returns(dbSetMock.Object);
@@ -118,7 +118,7 @@ public class FlatRepositoryTest
     {
         // Arrange
         var repository = new FlatRepository(contextMock.Object);
-        var flats = MockFlat.GetListFaker(10);
+        var flats = MockFlat.Instance.GetListFaker(10);
         var mockFlat = flats.First();
 
         var dbSetMock = Usings.MockDbSet(flats);
@@ -136,7 +136,7 @@ public class FlatRepositoryTest
     {
         // Arrange
         var repository = new FlatRepository(contextMock.Object);
-        var flats = MockFlat.GetListFaker(10);
+        var flats = MockFlat.Instance.GetListFaker(10);
         var dbSetMock = Usings.MockDbSet(flats);
         contextMock.Setup(c => c.Set<Flat>()).Returns(dbSetMock.Object);
 

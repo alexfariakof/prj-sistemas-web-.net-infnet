@@ -107,7 +107,7 @@ public class CustomerControllerTest
     public void Update_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
         // Arrange        
-        var validCustomerDto = MockCustomer.GetDtoFromCustomer(MockCustomer.GetFaker());
+        var validCustomerDto = MockCustomer.Instance.GetDtoFromCustomer(MockCustomer.Instance.GetFaker());
         mockCustomerService.Setup(service => service.Update(validCustomerDto)).Returns(validCustomerDto);
         SetupBearerToken(validCustomerDto.Id);
         // Act
@@ -139,7 +139,7 @@ public class CustomerControllerTest
     public void Delete_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
         // Arrange        
-        var mockCustomerDto = MockCustomer.GetDtoFromCustomer(MockCustomer.GetFaker());
+        var mockCustomerDto = MockCustomer.Instance.GetDtoFromCustomer(MockCustomer.Instance.GetFaker());
         mockCustomerService.Setup(service => service.Delete(It.IsAny<CustomerDto>())).Returns(true);
         mockCustomerService.Setup(service => service.FindById(mockCustomerDto.Id)).Returns(mockCustomerDto);
         SetupBearerToken(mockCustomerDto.Id);

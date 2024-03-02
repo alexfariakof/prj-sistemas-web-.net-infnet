@@ -1,29 +1,41 @@
 ﻿using Domain.Account.Agreggates;
-using Domain.Transactions.Agreggates;
 using Bogus;
 using Bogus.Extensions.Brazil;
 using Domain.Notifications;
 using Application.Account.Dto;
+using Domain.Transactions.Agreggates;
 
 namespace __mock__;
-public static class MockMerchant
+public class MockMerchant
 {
-    public static Merchant GetFaker()
+    private static readonly Lazy<MockMerchant> instance = new Lazy<MockMerchant>(() => new MockMerchant());
+
+    public static MockMerchant Instance => instance.Value;
+
+    private readonly Lazy<Faker<Merchant>> fakerInstance;
+
+    private MockMerchant()
     {
-        var fakeMerchant = new Faker<Merchant>()
+        fakerInstance = new Lazy<Faker<Merchant>>(() => new Faker<Merchant>());
+    }
+
+    private Faker<Merchant> Faker => fakerInstance.Value;
+
+    public Merchant GetFaker()
+    {
+        return Faker
             .RuleFor(m => m.Id, f => f.Random.Guid())
             .RuleFor(m => m.Name, f => f.Name.FirstName())
-            .RuleFor(m => m.Customer, MockCustomer.GetFaker())
+            .RuleFor(m => m.Customer, MockCustomer.Instance.GetFaker())
             .RuleFor(m => m.CNPJ, f => f.Company.Cnpj())
-            .RuleFor(c => c.Addresses, MockAddress.GetListFaker(1))
+            .RuleFor(c => c.Addresses, MockAddress.Instance.GetListFaker(1))
             .RuleFor(m => m.Cards, f => new List<Card>())
             .RuleFor(m => m.Signatures, f => new List<Signature>())
             .RuleFor(m => m.Notifications, f => new List<Notification>())
             .Generate();
-
-        return fakeMerchant;
     }
-    public static List<Merchant> GetListFaker(int count)
+
+    public List<Merchant> GetListFaker(int count)
     {
         var merchantList = new List<Merchant>();
         for (var i = 0; i < count; i++)
@@ -32,7 +44,8 @@ public static class MockMerchant
         }
         return merchantList;
     }
-    public static MerchantDto GetDtoFromMerchant(Merchant merchant)
+
+    public MerchantDto GetDtoFromMerchant(Merchant merchant)
     {
         var fakeMerchantDto = new Faker<MerchantDto>()
             .RuleFor(c => c.Id, f => merchant.Id)
@@ -42,13 +55,14 @@ public static class MockMerchant
             .RuleFor(c => c.CPF, f => merchant.Customer.CPF)
             .RuleFor(c => c.CNPJ, f => merchant.CNPJ)
             .RuleFor(c => c.Phone, f => merchant.Customer.Phone.Number)
-            .RuleFor(c => c.Address, f => MockAddress.GetDtoFromAddress(merchant.Addresses[0]))
+            .RuleFor(c => c.Address, f => MockAddress.Instance.GetDtoFromAddress(merchant.Addresses[0]))
             .RuleFor(c => c.FlatId, f => Guid.NewGuid())
             .Generate();
 
         return fakeMerchantDto;
     }
-    public static List<MerchantDto> GetDtoListFromMerchantList(List<Merchant> merchants)
+
+    public List<MerchantDto> GetDtoListFromMerchantList(List<Merchant> merchants)
     {
         var merchantDtoList = new List<MerchantDto>();
 

@@ -24,8 +24,8 @@ public class CustomerRepositoryTest
     {
         // Arrange
         var repository = new CustomerRepository(contextMock.Object);
-        var mockCustomer = MockCustomer.GetFaker();
-        mockCustomer.Cards = MockCard.GetListFaker(1);
+        var mockCustomer = MockCustomer.Instance.GetFaker();
+        mockCustomer.Cards = MockCard.Instance.GetListFaker(1);
         
         // Act
         repository.Save(mockCustomer);
@@ -40,8 +40,8 @@ public class CustomerRepositoryTest
     {
         // Arrange
         var repository = new CustomerRepository(contextMock.Object);
-        var mockCustomer = MockCustomer.GetFaker();
-        mockCustomer.Cards = MockCard.GetListFaker(1);
+        var mockCustomer = MockCustomer.Instance.GetFaker();
+        mockCustomer.Cards = MockCard.Instance.GetListFaker(1);
 
         // Act
         repository.Update(mockCustomer);
@@ -56,8 +56,8 @@ public class CustomerRepositoryTest
     {
         // Arrange
         var repository = new CustomerRepository(contextMock.Object);
-        var mockCustomer = MockCustomer.GetFaker();
-        mockCustomer.Cards = MockCard.GetListFaker(1);
+        var mockCustomer = MockCustomer.Instance.GetFaker();
+        mockCustomer.Cards = MockCard.Instance.GetListFaker(1);
 
         // Act
         repository.Delete(mockCustomer);
@@ -72,7 +72,7 @@ public class CustomerRepositoryTest
     {
         // Arrange
         var repository = new CustomerRepository(contextMock.Object);
-        var customers = MockCustomer.GetListFaker(10);
+        var customers = MockCustomer.Instance.GetListFaker(10);
         var dbSetMock = Usings.MockDbSet(customers);
         contextMock.Setup(c => c.Set<Customer>()).Returns(dbSetMock.Object);
 
@@ -88,7 +88,7 @@ public class CustomerRepositoryTest
     {
         // Arrange
         var repository = new CustomerRepository(contextMock.Object);
-        var customer = MockCustomer.GetFaker();
+        var customer = MockCustomer.Instance.GetFaker();
         var customerId = customer.Id;        
 
         contextMock.Setup(c => c.Set<Customer>().Find(customerId)).Returns(customer);
@@ -105,7 +105,7 @@ public class CustomerRepositoryTest
     {
         // Arrange
         var repository = new CustomerRepository(contextMock.Object);
-        var customers = MockCustomer.GetListFaker(10);
+        var customers = MockCustomer.Instance.GetListFaker(10);
         var mockCustomer = customers.First();
         var dbSetMock = Usings.MockDbSet(customers);        
         contextMock.Setup(c => c.Set<Customer>()).Returns(dbSetMock.Object);
@@ -123,7 +123,7 @@ public class CustomerRepositoryTest
     {
         // Arrange
         var repository = new CustomerRepository(contextMock.Object);
-        var customers = MockCustomer.GetListFaker(10);
+        var customers = MockCustomer.Instance.GetListFaker(10);
         var mockCustomer = customers.First();
 
         var dbSetMock = Usings.MockDbSet(customers);
@@ -141,7 +141,7 @@ public class CustomerRepositoryTest
     {
         // Arrange
         var repository = new CustomerRepository(contextMock.Object);
-        var customers = MockCustomer.GetListFaker(10);
+        var customers = MockCustomer.Instance.GetListFaker(10);
         var dbSetMock = Usings.MockDbSet(customers);
         contextMock.Setup(c => c.Set<Customer>()).Returns(dbSetMock.Object);
 

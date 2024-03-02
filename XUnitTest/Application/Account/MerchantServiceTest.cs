@@ -20,7 +20,7 @@ public class MerchantServiceTest
     private Mock<IRepository<Merchant>> merchantRepositoryMock;
     private Mock<IRepository<Flat>> flatRepositoryMock;
     private readonly MerchantService merchantService;    
-    private readonly List<Merchant> mockListMerchant = MockMerchant.GetListFaker(5);
+    private readonly List<Merchant> mockListMerchant = MockMerchant.Instance.GetListFaker(5);
     public MerchantServiceTest()
     {
         var configuration = new ConfigurationBuilder()
@@ -52,10 +52,10 @@ public class MerchantServiceTest
     public void Create_Merchant_Successfully()
     {
         // Arrange
-        var mockMerchant = MockMerchant.GetFaker();
-        var mockCard = MockCard.GetFaker();
-        var mockFlat = MockFlat.GetFaker();
-        var mockMerchantDto = MockMerchant.GetDtoFromMerchant(mockMerchant);
+        var mockMerchant = MockMerchant.Instance.GetFaker();
+        var mockCard = MockCard.Instance.GetFaker();
+        var mockFlat = MockFlat.Instance.GetFaker();
+        var mockMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(mockMerchant);
         mockMerchantDto.FlatId = mockFlat.Id;
         mockMerchantDto.Card = new CardDto()
         {
@@ -123,7 +123,7 @@ public class MerchantServiceTest
     public void FindAll_Merchants_Successfully()
     {
         // Arrange
-        var merchantDtos = MockMerchant.GetDtoListFromMerchantList(mockListMerchant);
+        var merchantDtos = MockMerchant.Instance.GetDtoListFromMerchantList(mockListMerchant);
         var userId = mockListMerchant.First().Id;
         mapperMock.Setup(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>())).Returns(merchantDtos.FindAll(c => c.Id.Equals(userId)));
         
@@ -143,9 +143,9 @@ public class MerchantServiceTest
     public void FindById_Merchant_Successfully()
     {
         // Arrange
-        var mockMerchants =  MockMerchant.GetListFaker(3);
+        var mockMerchants =  MockMerchant.Instance.GetListFaker(3);
 
-        var mockMerchant = MockMerchant.GetFaker();
+        var mockMerchant = MockMerchant.Instance.GetFaker();
         var merchantId = mockMerchant.Id;
         mockMerchants.Add(mockMerchant);
         mockMerchant.Id = merchantId;
@@ -187,7 +187,7 @@ public class MerchantServiceTest
     public void Update_Merchant_Successfully()
     {
         // Arrange
-        var mockMerchant = MockMerchant.GetFaker();
+        var mockMerchant = MockMerchant.Instance.GetFaker();
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
@@ -229,7 +229,7 @@ public class MerchantServiceTest
     public void Delete_Merchant_Successfully()
     {
         // Arrange
-        var mockMerchant = MockMerchant.GetFaker();
+        var mockMerchant = MockMerchant.Instance.GetFaker();
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
