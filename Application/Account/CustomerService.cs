@@ -19,7 +19,7 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
     private readonly ICrypto _crypto = Crypto.GetInstance;
     private readonly SigningConfigurations _singingConfiguration;
     private readonly TokenConfiguration _tokenConfiguration;
-    private IRepository<Flat> _flatRepository;
+    private readonly IRepository<Flat> _flatRepository;
 
     public CustomerService(IMapper mapper, IRepository<Customer> customerRepository, IRepository<Flat> flatRepository, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration) : base(mapper, customerRepository)
     {

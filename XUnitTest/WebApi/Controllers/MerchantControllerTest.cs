@@ -21,7 +21,7 @@ public class MerchantControllerTest
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers["Authorization"] =
+        httpContext.Request.Headers.Authorization =
             "Bearer " + Usings.GenerateJwtToken(userId, "Merchant");
 
         mockController.ControllerContext = new ControllerContext
@@ -168,4 +168,73 @@ public class MerchantControllerTest
         Assert.IsType<BadRequestResult>(result);
         mockMerchantService.Verify(b => b.Delete(It.IsAny<MerchantDto>()), Times.Never);
     }
+
+    [Fact]
+    public void FindById_Returns_BadRequest_Result_On_Exception()
+    {
+        // Arrange        
+        var merchantId = Guid.NewGuid();
+        mockMerchantService.Setup(service => service.FindById(merchantId)).Throws(new Exception("BadRequest_Erro_Message"));
+        SetupBearerToken(merchantId);
+
+        // Act
+        var result = mockController.FindById() as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
+    [Fact]
+    public void Create_Returns_BadRequest_Result_On_Exception()
+    {
+        // Arrange        
+        var invalidMerchantDto = new MerchantDto(); // Invalid DTO to trigger exception in the service
+        mockMerchantService.Setup(service => service.Create(invalidMerchantDto)).Throws(new Exception("BadRequest_Erro_Message"));
+
+        // Act
+        var result = mockController.Create(invalidMerchantDto) as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
+    [Fact]
+    public void Update_Returns_BadRequest_Result_On_Exception()
+    {
+        // Arrange        
+        var validMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
+        mockMerchantService.Setup(service => service.Update(validMerchantDto)).Throws(new Exception("BadRequest_Erro_Message"));
+        SetupBearerToken(validMerchantDto.Id);
+
+        // Act
+        var result = mockController.Update(validMerchantDto) as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
+    [Fact]
+    public void Delete_Returns_BadRequest_Result_On_Exception()
+    {
+        // Arrange        
+        var mockMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
+        mockMerchantService.Setup(service => service.Delete(It.IsAny<MerchantDto>())).Throws(new Exception("BadRequest_Erro_Message"));
+        mockMerchantService.Setup(service => service.FindById(mockMerchantDto.Id)).Returns(mockMerchantDto);
+        SetupBearerToken(mockMerchantDto.Id);
+
+        // Act
+        var result = mockController.Delete(mockMerchantDto) as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
 }

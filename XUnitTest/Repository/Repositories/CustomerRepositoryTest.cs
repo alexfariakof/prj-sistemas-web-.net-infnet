@@ -111,7 +111,7 @@ public class CustomerRepositoryTest
         contextMock.Setup(c => c.Set<Customer>()).Returns(dbSetMock.Object);
 
         // Act
-        var result = repository.Find(c => c.Name == mockCustomer.Name);
+        var result = repository.Find(c => c.Id == mockCustomer.Id);
 
         // Assert
         Assert.Single(result);

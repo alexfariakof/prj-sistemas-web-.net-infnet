@@ -19,7 +19,7 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
     private readonly ICrypto _crypto = Crypto.GetInstance;
     private readonly SigningConfigurations _singingConfiguration;
     private readonly TokenConfiguration _tokenConfiguration;
-    private IRepository<Flat> _flatRepository;
+    private readonly IRepository<Flat> _flatRepository;
     public MerchantService(IMapper mapper, IRepository<Merchant> merchantRepository, IRepository<Flat> flatRepository, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration) : base(mapper, merchantRepository)
     {
         _flatRepository = flatRepository;

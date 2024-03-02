@@ -11,7 +11,7 @@ public abstract class ControllerBase : Controller
         get
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var token = HttpContext.Request.Headers["Authorization"].ToString();
+            var token = HttpContext.Request.Headers.Authorization.ToString();
             var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
             var userId = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserId")?.Value;
             return new Guid(userId);
@@ -22,7 +22,7 @@ public abstract class ControllerBase : Controller
         get
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var token = HttpContext.Request.Headers["Authorization"].ToString();
+            var token = HttpContext.Request.Headers.Authorization.ToString();
             var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
             var userTypeClaim = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserType")?.Value;
 

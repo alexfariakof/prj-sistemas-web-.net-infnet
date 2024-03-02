@@ -111,7 +111,7 @@ public class MerchantRepositoryTest
         contextMock.Setup(c => c.Set<Merchant>()).Returns(dbSetMock.Object);
 
         // Act
-        var result = repository.Find(c => c.Name == mockMerchant.Name);
+        var result = repository.Find(c => c.Id == mockMerchant.Id);
 
         // Assert
         Assert.Single(result);
