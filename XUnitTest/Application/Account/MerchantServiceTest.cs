@@ -23,52 +23,37 @@ public class MerchantServiceTest
         var mockMerchant = MockMerchant.GetFaker();
         var mockCard = MockCard.GetFaker();
         var mockFlat = MockFlat.GetFaker();
-        var merchantDto = new MerchantDto()
+        var mockMerchantDto = MockMerchant.GetDtoFromMerchant(mockMerchant);
+        mockMerchantDto.FlatId = mockFlat.Id;
+        mockMerchantDto.Card = new CardDto()
         {
-            Name = mockMerchant.Name,
-            CNPJ = mockMerchant.CNPJ,
-            Address = new AddressDto
-            {
-                Zipcode = mockMerchant.Addresses.Last().Zipcode,
-                Street = mockMerchant.Addresses.Last().Street,
-                Number = mockMerchant.Addresses.Last().Number,
-                Neighborhood = mockMerchant.Addresses.Last().Neighborhood,
-                City = mockMerchant.Addresses.Last().City,
-                State = mockMerchant.Addresses.Last().State,
-                Complement = mockMerchant.Addresses.Last().Complement,
-                Country = mockMerchant.Addresses.Last().Country
-            },
-            FlatId = mockFlat.Id,
-            Card = new CardDto
-            {
-                Limit = 1000,
-                Number = mockCard.Number,
-                Validate = mockCard.Validate.Value,
-                CVV = mockCard.CVV
-            }
+            Limit = 1000,
+            Number = mockCard.Number,
+            Validate = mockCard.Validate.Value,
+            CVV = mockCard.CVV
         };
 
         flatRepositoryMock.Setup(repo => repo.GetById(mockFlat.Id)).Returns(mockFlat);
-        mapperMock.Setup(mapper => mapper.Map<Card>(merchantDto.Card)).Returns(mockCard);
-        mapperMock.Setup(mapper => mapper.Map<Address>(merchantDto.Address)).Returns(mockMerchant.Addresses.Last());
-        mapperMock.Setup(mapper => mapper.Map<Merchant>(merchantDto)).Returns(mockMerchant);
-        mapperMock.Setup(mapper => mapper.Map<MerchantDto>(It.IsAny<Merchant>())).Returns(merchantDto);
+        mapperMock.Setup(mapper => mapper.Map<Card>(mockMerchantDto.Card)).Returns(mockCard);
+        mapperMock.Setup(mapper => mapper.Map<Address>(mockMerchantDto.Address)).Returns(mockMerchant.Addresses.Last());
+        mapperMock.Setup(mapper => mapper.Map<Merchant>(mockMerchantDto)).Returns(mockMerchant);
+        mapperMock.Setup(mapper => mapper.Map<MerchantDto>(It.IsAny<Merchant>())).Returns(mockMerchantDto);
         
 
         // Act
-        var result = merchantService.Create(merchantDto);
+        var result = merchantService.Create(mockMerchantDto);
 
         // Assert
         merchantRepositoryMock.Verify(repo => repo.Exists(It.IsAny<Expression<Func<Merchant, bool>>>()), Times.Once);
         flatRepositoryMock.Verify(repo => repo.GetById(mockFlat.Id), Times.Once);
-        mapperMock.Verify(mapper => mapper.Map<Card>(merchantDto.Card), Times.Once);
-        mapperMock.Verify(mapper => mapper.Map<Address>(merchantDto.Address), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<Card>(mockMerchantDto.Card), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<Address>(mockMerchantDto.Address), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<MerchantDto>(It.IsAny<Merchant>()), Times.Once);
         merchantRepositoryMock.Verify(repo => repo.Save(It.IsAny<Merchant>()), Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(merchantDto.Name, result.Name);
-        Assert.Equal(merchantDto.Email, result.Email);
+        Assert.Equal(mockMerchantDto.Name, result.Name);
+        Assert.Equal(mockMerchantDto.Email, result.Email);
     }
 
     [Fact]
