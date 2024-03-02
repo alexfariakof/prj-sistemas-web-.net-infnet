@@ -70,10 +70,10 @@ public class CustomerProfileTest
             cfg.AddProfile<CustomerProfile>();
         }));
 
-        var customer = MockCustomer.GetFaker();
-        customer.AddAdress(MockAddress.GetFaker());        
-        customer.AddCard(MockCard.GetFaker());
-        customer.AddFlat(customer, MockFlat.GetFaker(), customer.Cards.FirstOrDefault());
+        var customer = MockCustomer.Instance.GetFaker();
+        customer.AddAdress(MockAddress.Instance.GetFaker());        
+        customer.AddCard(MockCard.Instance.GetFaker());
+        customer.AddFlat(customer, MockFlat.Instance.GetFaker(), customer.Cards.FirstOrDefault());
 
         // Act
         var customerDto = mapper.Map<CustomerDto>(customer);

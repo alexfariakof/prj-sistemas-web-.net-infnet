@@ -9,7 +9,7 @@ public class SignatureTest
     public void Should_Set_Properties_Correctly_Signature(bool active)
     {
         // Arrange
-        var fakeFlat = MockFlat.GetFaker();
+        var fakeFlat = MockFlat.Instance.GetFaker();
         var dtActivation = DateTime.Now;
 
         // Act

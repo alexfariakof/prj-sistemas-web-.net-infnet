@@ -5,9 +5,8 @@ using Moq;
 using Domain.Transactions.ValueObject;
 using Domain.Core.Aggreggates;
 using Repository;
-using Domain.Account.Agreggates;
 using System.Linq.Expressions;
-using Application.Security;
+using Application.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -90,14 +89,14 @@ public static class Usings
 
         return MockDbSet(creditCardBrandData);
     }
-    public static string GenerateJwtToken(Guid userId)
+    public static string GenerateJwtToken(Guid userId, string userType)
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json")
             .Build();
 
-        var signingConfigurations = SigningConfigurations.Instance;
+        var signingConfigurations = new SigningConfigurations();
         configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
 
         var tokenConfigurations = new TokenConfiguration();
@@ -108,7 +107,10 @@ public static class Usings
         );
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[] { new Claim("UserId", userId.ToString()) };
+        var claims = new[] { 
+            new Claim("UserId", userId.ToString()),
+            new Claim("UserType", userType)
+        };
 
         var token = new JwtSecurityToken(
             issuer: tokenConfigurations.Issuer,

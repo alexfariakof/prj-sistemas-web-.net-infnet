@@ -1,23 +1,20 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
-using Application.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Application.Authentication;
 
-namespace Application.CommonInjectDependence;
+namespace WebApi.CommonInjectDependence;
 public static class AutorizationInjectDependence
 {
     public static IServiceCollection AddAuthConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
-        SigningConfigurations signingConfigurations = SigningConfigurations.Instance;
-        services.AddSingleton(SigningConfigurations.Instance);
+        SigningConfigurations signingConfigurations = new SigningConfigurations();
+        services.AddSingleton(signingConfigurations);
 
         TokenConfiguration tokenConfigurations = new TokenConfiguration();
         new ConfigureFromConfigurationOptions<TokenConfiguration>(
             configuration.GetSection("TokenConfigurations")).Configure(tokenConfigurations);
 
-        SigningConfigurations.Instance.setTokenConfigurations(tokenConfigurations);
         services.AddSingleton(tokenConfigurations);
         services.AddAuthentication(authOptions =>
         {

@@ -7,7 +7,7 @@ public class AddressTest
     public void Should_Set_Properties_Correctly()
     {
         // Arrange
-        var mockAddress = MockAddress.GetFaker();
+        var mockAddress = MockAddress.Instance.GetFaker();
 
         // Act
         var address = new Address

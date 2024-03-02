@@ -10,7 +10,7 @@ public class PlaylistPersonalTests
     public void Should_Set_Properties_Correctly_PlaylistPersonal(bool isPublic, string name)
     {
         // Arrange 
-        var customer = MockCustomer.GetFaker();
+        var customer = MockCustomer.Instance.GetFaker();
         var dtCreated = DateTime.Now;
         // Act
         var playlist = new PlaylistPersonal

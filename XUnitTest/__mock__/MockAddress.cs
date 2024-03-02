@@ -1,11 +1,17 @@
-﻿using Application.Account.Dto;
+﻿using Domain.Account.ValueObject;
 using Bogus;
-using Domain.Account.ValueObject;
+using Application.Account.Dto;
 
 namespace __mock__;
 public class MockAddress
 {
-    public static Address GetFaker()
+    private static readonly Lazy<MockAddress> instance = new Lazy<MockAddress>(() => new MockAddress());
+
+    public static MockAddress Instance => instance.Value;
+
+    private MockAddress() { }
+
+    public Address GetFaker()
     {
         var fakeAddress = new Faker<Address>()
             .RuleFor(c => c.Id, f => f.Random.Guid())
@@ -21,7 +27,8 @@ public class MockAddress
 
         return fakeAddress;
     }
-    public static List<Address> GetListFaker(int count)
+
+    public List<Address> GetListFaker(int count)
     {
         var addressList = new List<Address>();
         for (var i = 0; i < count; i++)
@@ -30,7 +37,8 @@ public class MockAddress
         }
         return addressList;
     }
-    public static AddressDto GetDtoFromAddress(Address address)
+
+    public AddressDto GetDtoFromAddress(Address address)
     {
         var addressDto = new AddressDto
         {

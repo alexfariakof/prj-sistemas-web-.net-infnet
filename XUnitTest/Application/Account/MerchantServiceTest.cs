@@ -1,29 +1,61 @@
 ﻿using Application.Account.Dto;
+using Application.Authentication;
 using Application.Transactions.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
+using Domain.Core.Interfaces;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
+using Microsoft.Extensions.Configuration;
 using Moq;
+using Repository;
 using System.Linq.Expressions;
 
 namespace Application.Account;
 public class MerchantServiceTest
 {
+    private Mock<IMapper> mapperMock;
+    private readonly Mock<ICrypto> cryptoMock;
+    private Mock<IRepository<Merchant>> merchantRepositoryMock;
+    private Mock<IRepository<Flat>> flatRepositoryMock;
+    private readonly MerchantService merchantService;    
+    private readonly List<Merchant> mockListMerchant = MockMerchant.Instance.GetListFaker(5);
+    public MerchantServiceTest()
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var signingConfigurations = new SigningConfigurations();
+        configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
+
+        var tokenConfigurations = new TokenConfiguration();
+        configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
+
+        mapperMock = new Mock<IMapper>();
+        cryptoMock = new Mock<ICrypto>();
+        merchantRepositoryMock = Usings.MockRepositorio(mockListMerchant);
+        flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
+        
+        merchantService = new MerchantService(
+            mapperMock.Object,
+            merchantRepositoryMock.Object,
+            flatRepositoryMock.Object,
+            signingConfigurations,
+            tokenConfigurations
+        );
+    }
+
     [Fact]
     public void Create_Merchant_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var merchantRepositoryMock = Usings.MockRepositorio(new List<Merchant>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var merchantService = new MerchantService(mapperMock.Object, merchantRepositoryMock.Object, flatRepositoryMock.Object);
-        var mockMerchant = MockMerchant.GetFaker();
-        var mockCard = MockCard.GetFaker();
-        var mockFlat = MockFlat.GetFaker();
-        var mockMerchantDto = MockMerchant.GetDtoFromMerchant(mockMerchant);
+        var mockMerchant = MockMerchant.Instance.GetFaker();
+        var mockCard = MockCard.Instance.GetFaker();
+        var mockFlat = MockFlat.Instance.GetFaker();
+        var mockMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(mockMerchant);
         mockMerchantDto.FlatId = mockFlat.Id;
         mockMerchantDto.Card = new CardDto()
         {
@@ -60,12 +92,6 @@ public class MerchantServiceTest
     public void Create_Merchant_With_Existing_Email_Fails()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var merchantRepositoryMock = Usings.MockRepositorio(new List<Merchant>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var merchantService = new MerchantService(mapperMock.Object, merchantRepositoryMock.Object, flatRepositoryMock.Object);
-
         var merchantDto = new MerchantDto {  Email = "existing.email@example.com" };
 
         merchantRepositoryMock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<Merchant, bool>>>())).Returns(true);
@@ -81,12 +107,6 @@ public class MerchantServiceTest
     public void Create_Merchant_With_Nonexistent_Flat_Fails()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var merchantRepositoryMock = Usings.MockRepositorio(new List<Merchant>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var merchantService = new MerchantService(mapperMock.Object, merchantRepositoryMock.Object, flatRepositoryMock.Object);
-
         var merchantDto = new MerchantDto();
 
         flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns((Flat)null);
@@ -103,17 +123,10 @@ public class MerchantServiceTest
     public void FindAll_Merchants_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var merchants = MockMerchant.GetListFaker(3);
-        var merchantDtos = MockMerchant.GetDtoListFromMerchantList(merchants);
-        var merchantRepositoryMock = Usings.MockRepositorio(merchants);
-        var userId = merchants.First().Id;
-        var merchantService = new MerchantService(mapperMock.Object, merchantRepositoryMock.Object, flatRepositoryMock.Object);
+        var merchantDtos = MockMerchant.Instance.GetDtoListFromMerchantList(mockListMerchant);
+        var userId = mockListMerchant.First().Id;
         mapperMock.Setup(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>())).Returns(merchantDtos.FindAll(c => c.Id.Equals(userId)));
         
-
         // Act
         var result = merchantService.FindAll(userId);
 
@@ -122,7 +135,7 @@ public class MerchantServiceTest
         mapperMock.Verify(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>()), Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(merchants.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
+        Assert.Equal(mockListMerchant.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
         Assert.All(result, merchantDto => Assert.Equal(userId, merchantDto.Id));
     }
 
@@ -130,15 +143,9 @@ public class MerchantServiceTest
     public void FindById_Merchant_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var mockMerchants =  MockMerchant.GetListFaker(3);
-        
-        var merchantRepositoryMock = Usings.MockRepositorio(mockMerchants);
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
+        var mockMerchants =  MockMerchant.Instance.GetListFaker(3);
 
-        var merchantService = new MerchantService(mapperMock.Object, merchantRepositoryMock.Object, flatRepositoryMock.Object);        
-
-        var mockMerchant = MockMerchant.GetFaker();
+        var mockMerchant = MockMerchant.Instance.GetFaker();
         var merchantId = mockMerchant.Id;
         mockMerchants.Add(mockMerchant);
         mockMerchant.Id = merchantId;
@@ -180,12 +187,7 @@ public class MerchantServiceTest
     public void Update_Merchant_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var merchantRepositoryMock = Usings.MockRepositorio(new List<Merchant>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var merchantService = new MerchantService(mapperMock.Object, merchantRepositoryMock.Object, flatRepositoryMock.Object);
-        var mockMerchant = MockMerchant.GetFaker();
+        var mockMerchant = MockMerchant.Instance.GetFaker();
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
@@ -227,12 +229,7 @@ public class MerchantServiceTest
     public void Delete_Merchant_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var merchantRepositoryMock = Usings.MockRepositorio(new List<Merchant>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var merchantService = new MerchantService(mapperMock.Object, merchantRepositoryMock.Object, flatRepositoryMock.Object);
-        var mockMerchant = MockMerchant.GetFaker();
+        var mockMerchant = MockMerchant.Instance.GetFaker();
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
@@ -266,5 +263,38 @@ public class MerchantServiceTest
 
         Assert.True(result);
     }
+    [Fact]
+    public void Authentication_With_Valid_Credentials_Should_Return_AuthenticationDto()
+    {
+        // Arrange
+        var mockMerchant = mockListMerchant.First();
+        mockMerchant.Customer.Login.Password = "validPassword";
+        var loginDto = new LoginDto { Email = mockMerchant.Customer.Login.Email, Password = "validPassword" };
 
+        merchantRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Merchant, bool>>>())).Returns(mockListMerchant.Where(c => c.Customer.Login.Email.Equals(mockMerchant.Customer.Login.Email)));
+        cryptoMock.Setup(crypto => crypto.Decrypt(It.IsAny<string>())).Returns(mockMerchant.Customer.Login.Password);
+
+        // Act
+        var result = merchantService.Authentication(loginDto);
+
+        // Assert
+        merchantRepositoryMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<Merchant, bool>>>()), Times.Once);
+        Assert.NotNull(result);
+        Assert.NotNull(result.AccessToken);
+    }
+
+    [Fact]
+    public void Authentication_With_Invalid_Credentials_Should_Throw_Exception()
+    {
+        // Arrange
+        var mockCustomer = mockListMerchant.First();
+        var loginDto = new LoginDto { Email = "invalid.email@example.com", Password = "invalidPassword" };
+        merchantRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Merchant, bool>>>())).Returns(mockListMerchant.Where(c => c.Customer.Login.Email.Equals(mockCustomer.Customer.Login.Email)));
+        cryptoMock.Setup(crypto => crypto.Decrypt(It.IsAny<string>())).Returns(mockCustomer.Customer.Login.Password);
+
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentException>(() => merchantService.Authentication(loginDto));
+        Assert.Equal("Usuário Inválido!", exception.Message);
+        merchantRepositoryMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<Merchant, bool>>>()), Times.Once);
+    }
 }

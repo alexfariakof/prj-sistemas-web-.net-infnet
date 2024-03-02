@@ -1,4 +1,4 @@
-﻿namespace Application.Security;
+﻿namespace Application.Authentication;
 public class TokenConfigurationTest
 {
     [Fact]

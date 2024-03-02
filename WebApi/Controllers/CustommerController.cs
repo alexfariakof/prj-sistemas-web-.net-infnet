@@ -19,8 +19,11 @@ public class CustomerController : ControllerBase
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
+    [Authorize("Bearer")]
     public IActionResult FindById()
     {
+        if (UserType != UserType.Customer)  return Unauthorized();
+
         try
         {
             var result = this._customerService.FindById(UserIdentity);
@@ -32,7 +35,7 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(ex.Message);
         }
     }
 
@@ -50,7 +53,7 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(ex.Message);
         }
     }
 
@@ -60,6 +63,8 @@ public class CustomerController : ControllerBase
     [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Update(CustomerDto dto)
     {
+        if (UserType != UserType.Customer) return Unauthorized();
+
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -71,7 +76,7 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(ex.Message);
         }
     }
 
@@ -82,6 +87,8 @@ public class CustomerController : ControllerBase
 
     public IActionResult Delete(CustomerDto dto)
     {
+        if (UserType != UserType.Customer) return Unauthorized();
+
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -93,7 +100,7 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(ex.Message);
         }
     }
 }

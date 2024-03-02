@@ -1,5 +1,6 @@
 ﻿using Application.Account.Dto;
-using Application.Security;
+using Application.Account.Interfaces;
+using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
@@ -13,13 +14,17 @@ using System.Security.Claims;
 using System.Security.Principal;
 
 namespace Application.Account;
-public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<MerchantDto>
+public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<MerchantDto>, IMerchantService
 {
     private readonly ICrypto _crypto = Crypto.GetInstance;
-    private IRepository<Flat> FlatRepository { get; set; }
-    public MerchantService(IMapper mapper, IRepository<Merchant> merchantRepository, IRepository<Flat> flatRepository) : base(mapper, merchantRepository)
+    private readonly SigningConfigurations _singingConfiguration;
+    private readonly TokenConfiguration _tokenConfiguration;
+    private readonly IRepository<Flat> _flatRepository;
+    public MerchantService(IMapper mapper, IRepository<Merchant> merchantRepository, IRepository<Flat> flatRepository, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration) : base(mapper, merchantRepository)
     {
-        FlatRepository = flatRepository;
+        _flatRepository = flatRepository;
+        _singingConfiguration = singingConfiguration;
+        _tokenConfiguration = tokenConfiguration;
     }
     public override MerchantDto Create(MerchantDto dto)
     {
@@ -27,7 +32,7 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
             throw new Exception("Usuário já existente na base.");
 
 
-        Flat flat = this.FlatRepository.GetById(dto.FlatId);
+        Flat flat = this._flatRepository.GetById(dto.FlatId);
 
         if (flat == null)
             throw new Exception("Plano não existente ou não encontrado.");
@@ -107,11 +112,12 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
                 new[]
                 {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, user.Customer.Login.Email)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, user.Customer.Login.Email),
+                        new Claim("UserType", "Merchant"),
                 });
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            string token = SigningConfigurations.Instance.CreateToken(identity, handler, user.Id);
+            string token = _singingConfiguration.CreateToken(identity, handler, user.Id, _tokenConfiguration);
 
             return new AuthenticationDto
             {

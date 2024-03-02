@@ -15,7 +15,7 @@ public class MerchantProfileTest
             cfg.AddProfile<MerchantProfile>();
         }));
 
-        var merchantDto = MockMerchant.GetDtoFromMerchant(MockMerchant.GetFaker());
+        var merchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
 
         // Act
         var merchant = mapper.Map<Merchant>(merchantDto);
@@ -41,9 +41,9 @@ public class MerchantProfileTest
             cfg.AddProfile<MerchantProfile>();
         }));
 
-        var merchant = MockMerchant.GetFaker();
-        merchant.AddAdress(MockAddress.GetFaker());        
-        merchant.AddCard(MockCard.GetFaker());
+        var merchant = MockMerchant.Instance.GetFaker();
+        merchant.AddAdress(MockAddress.Instance.GetFaker());        
+        merchant.AddCard(MockCard.Instance.GetFaker());
 
         var customer = new Customer()
         {
@@ -55,7 +55,7 @@ public class MerchantProfileTest
             Phone = merchant.Customer.Phone,
             Signatures = merchant.Signatures,
         };
-        merchant.AddFlat(customer, MockFlat.GetFaker(), merchant.Cards.FirstOrDefault());
+        merchant.AddFlat(customer, MockFlat.Instance.GetFaker(), merchant.Cards.FirstOrDefault());
 
         // Act
         var merchantDto = mapper.Map<MerchantDto>(merchant);
