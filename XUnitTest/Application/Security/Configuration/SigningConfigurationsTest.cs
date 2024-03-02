@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 
-namespace Application.Security;
+namespace WebApi.Authentication;
 public class SigningConfigurationsTest
 {
     [Fact]

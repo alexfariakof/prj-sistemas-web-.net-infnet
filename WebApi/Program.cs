@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using Repository;
 using Repository.CommonInjectDependence;
 using Application.CommonInjectDependence;
+using WebApi.CommonInjectDependence;
 
 var builder = WebApplication.CreateBuilder(args);
 

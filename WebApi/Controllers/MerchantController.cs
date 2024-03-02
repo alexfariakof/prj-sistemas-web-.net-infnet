@@ -16,12 +16,14 @@ public class MerchantController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(MerchantDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
+    [Authorize("Bearer")]
     public IActionResult FindById()
     {
+        if (UserType != UserType.Merchant) return Unauthorized();
+
         try
         {
             var result = this._merchantService.FindById(UserIdentity);
@@ -57,11 +59,13 @@ public class MerchantController : ControllerBase
     }
 
     [HttpPut]
-    [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(MerchantDto))]
     [ProducesResponseType((400), Type = typeof(string))]
+    [Authorize("Bearer")]
     public IActionResult Update(MerchantDto dto)
     {
+        if (UserType != UserType.Merchant) return Unauthorized();
+
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -79,11 +83,13 @@ public class MerchantController : ControllerBase
     }
 
     [HttpDelete]
-    [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
+    [Authorize("Bearer")]
     public IActionResult Delete(MerchantDto dto)
     {
+        if (UserType != UserType.Merchant) return Unauthorized();
+
         if (ModelState is { IsValid: false })
             return BadRequest();
 

@@ -1,5 +1,5 @@
 ﻿using Application.Account.Dto;
-using Application.Security;
+using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
@@ -15,12 +15,16 @@ using System.Security.Principal;
 namespace Application.Account;
 public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<CustomerDto>
 {
-    private readonly ICrypto _crypto = Crypto.GetInstance;    
-    private IRepository<Flat> FlatRepository { get; set; }
+    private readonly ICrypto _crypto = Crypto.GetInstance;
+    private readonly SigningConfigurations _singingConfiguration;
+    private readonly TokenConfiguration _tokenConfiguration;
+    private IRepository<Flat> _flatRepository;
 
-    public CustomerService(IMapper mapper, IRepository<Customer> customerRepository, IRepository<Flat> flatRepository) : base(mapper, customerRepository)
+    public CustomerService(IMapper mapper, IRepository<Customer> customerRepository, IRepository<Flat> flatRepository, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration) : base(mapper, customerRepository)
     {
-        FlatRepository = flatRepository;
+        _flatRepository = flatRepository;
+        _singingConfiguration = singingConfiguration;
+        _tokenConfiguration = tokenConfiguration;
     }
     public override CustomerDto Create(CustomerDto dto)
     {
@@ -28,7 +32,7 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
             throw new Exception("Usuário já existente na base.");
 
 
-        Flat flat = this.FlatRepository.GetById(dto.FlatId);
+        Flat flat = this._flatRepository.GetById(dto.FlatId);
 
         if (flat == null)
             throw new Exception("Plano não existente ou não encontrado.");
@@ -101,11 +105,12 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
                 new[]
                 {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, user.Login.Email)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, user.Login.Email),
+                        new Claim("UserType", "Customer"),
                 });
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            string token = SigningConfigurations.Instance.CreateToken(identity, handler, user.Id);
+            string token = _singingConfiguration.CreateToken(identity, handler, user.Id, _tokenConfiguration);
 
             return new AuthenticationDto
             {

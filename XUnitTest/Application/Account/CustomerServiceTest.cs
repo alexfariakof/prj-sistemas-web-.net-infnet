@@ -1,25 +1,53 @@
 ﻿using Application.Account.Dto;
+using Application.Security;
 using Application.Transactions.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
+using Microsoft.Extensions.Configuration;
 using Moq;
+using Repository;
 using System.Linq.Expressions;
 
 namespace Application.Account;
 public class CustomerServiceTest
 {
+    private Mock<IMapper> mapperMock;
+    private Mock<IRepository<Customer>> customerRepositoryMock;
+    private Mock<IRepository<Flat>> flatRepositoryMock;
+    private readonly CustomerService customerService;
+    private readonly List<Customer> mockCustomerList = MockCustomer.GetListFaker(3);
+    public CustomerServiceTest()
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var signingConfigurations = SigningConfigurations.Instance;
+        configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
+
+        var tokenConfigurations = new TokenConfiguration();
+        configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
+
+        mapperMock = new Mock<IMapper>();
+        customerRepositoryMock = Usings.MockRepositorio(mockCustomerList);
+        flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
+
+        customerService = new CustomerService(
+            mapperMock.Object,
+            customerRepositoryMock.Object,
+            flatRepositoryMock.Object,
+            signingConfigurations,
+            tokenConfigurations
+        );
+    }
     [Fact]
     public void Create_Customer_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var customerRepositoryMock = Usings.MockRepositorio(new List<Customer>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
         var mockCustomer = MockCustomer.GetFaker();
         var mockCard = MockCard.GetFaker();
         var mockFlat = MockFlat.GetFaker();
@@ -79,12 +107,6 @@ public class CustomerServiceTest
     public void Create_Customer_With_Existing_Email_Fails()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var customerRepositoryMock = Usings.MockRepositorio(new List<Customer>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
-
         var customerDto = new CustomerDto {  Email = "existing.email@example.com" };
 
         customerRepositoryMock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<Customer, bool>>>())).Returns(true);
@@ -100,12 +122,6 @@ public class CustomerServiceTest
     public void Create_Customer_With_Nonexistent_Flat_Fails()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var customerRepositoryMock = Usings.MockRepositorio(new List<Customer>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
-
         var customerDto = new CustomerDto();
 
         flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns((Flat)null);
@@ -122,16 +138,9 @@ public class CustomerServiceTest
     public void FindAll_Customers_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var customers = MockCustomer.GetListFaker(3);
-        var customerDtos = MockCustomer.GetDtoListFromCustomerList(customers);
-        var customerRepositoryMock = Usings.MockRepositorio(customers);
-        var userId = customers.First().Id;
-        var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
+        var customerDtos = MockCustomer.GetDtoListFromCustomerList(mockCustomerList);
+        var userId = mockCustomerList.First().Id;
         mapperMock.Setup(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>())).Returns(customerDtos.FindAll(c => c.Id.Equals(userId)));
-        
 
         // Act
         var result = customerService.FindAll(userId);
@@ -141,7 +150,7 @@ public class CustomerServiceTest
         mapperMock.Verify(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>()), Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(customers.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
+        Assert.Equal(mockCustomerList.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
         Assert.All(result, customerDto => Assert.Equal(userId, customerDto.Id));
     }
 
@@ -149,17 +158,8 @@ public class CustomerServiceTest
     public void FindById_Customer_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var mockCustomers =  MockCustomer.GetListFaker(3);
-        
-        var customerRepositoryMock = Usings.MockRepositorio(mockCustomers);
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);        
-
-        var mockCustomer = MockCustomer.GetFaker();
+        var mockCustomer = mockCustomerList.Last();
         var customerId = mockCustomer.Id;
-        mockCustomers.Add(mockCustomer);
         mockCustomer.Id = customerId;
         var customerDto = new CustomerDto()
         {
@@ -199,11 +199,6 @@ public class CustomerServiceTest
     public void Update_Customer_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var customerRepositoryMock = Usings.MockRepositorio(new List<Customer>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
         var mockCustomer = MockCustomer.GetFaker();
         var customerDto = new CustomerDto()
         {
@@ -246,11 +241,6 @@ public class CustomerServiceTest
     public void Delete_Customer_Successfully()
     {
         // Arrange
-        var mapperMock = new Mock<IMapper>();
-        var customerRepositoryMock = Usings.MockRepositorio(new List<Customer>());
-        var flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-
-        var customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
         var mockCustomer = MockCustomer.GetFaker();
         var customerDto = new CustomerDto()
         {
