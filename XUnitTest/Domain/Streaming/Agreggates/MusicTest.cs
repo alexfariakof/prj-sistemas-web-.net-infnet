@@ -1,6 +1,5 @@
 ﻿using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
-using __mock__;
 
 namespace Domain.Streaming;
 public class MusicTest
@@ -49,7 +48,7 @@ public class MusicTest
     public void Should_Set_Properties_Correctly_PlaylistPersonal()
     {
         // Arrange
-        var fakeCustomer = MockCustomer.GetFaker();
+        var fakeCustomer = MockCustomer.Instance.GetFaker();
         var fakeMusic = MockMusic.GetFaker();
         var fakeMusicList = new List<Music> { fakeMusic };
 

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Repository.Mapping.Account;
-using __mock__;
 
 namespace Repository.Mapping;
 public class CustomerMapTest

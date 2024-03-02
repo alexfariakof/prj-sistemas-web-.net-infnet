@@ -57,10 +57,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasMaxLength(18)
                         .HasColumnType("varchar(18)");
 
-                    b.Property<string>("CPF")
-                        .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("varchar(14)");
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -68,6 +66,9 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
 
                     b.ToTable("Merchant", (string)null);
                 });
@@ -85,7 +86,9 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtCreated")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 31, 49, 231, DateTimeKind.Local).AddTicks(933));
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("tinyint(1)");
@@ -478,13 +481,35 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 31, 49, 268, DateTimeKind.Local).AddTicks(9831));
 
                     b.HasKey("MusicId", "PlaylistId");
 
                     b.HasIndex("PlaylistId");
 
                     b.ToTable("MusicPlayList");
+                });
+
+            modelBuilder.Entity("MusicPlayListPersonal", b =>
+                {
+                    b.Property<Guid>("MusicId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("PlaylistPersonalId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("DtAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 31, 49, 236, DateTimeKind.Local).AddTicks(2872));
+
+                    b.HasKey("MusicId", "PlaylistPersonalId");
+
+                    b.HasIndex("PlaylistPersonalId");
+
+                    b.ToTable("MusicPlayListPersonal");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
@@ -540,53 +565,12 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("Domain.Account.Agreggates.Merchant", b =>
                 {
-                    b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
-                        {
-                            b1.Property<Guid>("MerchantId")
-                                .HasColumnType("char(36)");
+                    b.HasOne("Domain.Account.Agreggates.Customer", "Customer")
+                        .WithOne()
+                        .HasForeignKey("Domain.Account.Agreggates.Merchant", "CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                            b1.Property<string>("Email")
-                                .IsRequired()
-                                .HasMaxLength(150)
-                                .HasColumnType("varchar(150)")
-                                .HasColumnName("Email");
-
-                            b1.Property<string>("Password")
-                                .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
-                                .HasColumnName("Password");
-
-                            b1.HasKey("MerchantId");
-
-                            b1.ToTable("Merchant");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MerchantId");
-                        });
-
-                    b.OwnsOne("Domain.Account.ValueObject.Phone", "Phone", b1 =>
-                        {
-                            b1.Property<Guid>("MerchantId")
-                                .HasColumnType("char(36)");
-
-                            b1.Property<string>("Number")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("varchar(50)")
-                                .HasColumnName("Phone");
-
-                            b1.HasKey("MerchantId");
-
-                            b1.ToTable("Merchant");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MerchantId");
-                        });
-
-                    b.Navigation("Login");
-
-                    b.Navigation("Phone");
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.PlaylistPersonal", b =>
@@ -825,15 +809,24 @@ namespace Migrations_MySqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Account.Agreggates.PlaylistPersonal", null)
+                    b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
                         .WithMany()
                         .HasForeignKey("PlaylistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
+            modelBuilder.Entity("MusicPlayListPersonal", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Music", null)
                         .WithMany()
-                        .HasForeignKey("PlaylistId")
+                        .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Account.Agreggates.PlaylistPersonal", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistPersonalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

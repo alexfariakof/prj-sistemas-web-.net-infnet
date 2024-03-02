@@ -8,7 +8,7 @@ public class AlbumTest
     public void Should_Set_Properties_Correctly_Album()
     {
         // Arrange
-        var fakeAlbum = MockAlbum.GetFaker();
+        var fakeAlbum = MockAlbum.Instance.GetFaker();
 
         // Act
         var album = new Album
