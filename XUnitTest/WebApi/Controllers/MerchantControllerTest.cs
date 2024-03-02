@@ -6,7 +6,7 @@ using Moq;
 using System.Security.Claims;
 using WebApi.Controllers;
 
-namespace WebApi.Tests.Controllers;
+namespace WebApi.Controllers;
 public class MerchantControllerTest
 {
     private Mock<IService<MerchantDto>> mockMerchantService;
@@ -236,5 +236,4 @@ public class MerchantControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("BadRequest_Erro_Message", result.Value);
     }
-
 }

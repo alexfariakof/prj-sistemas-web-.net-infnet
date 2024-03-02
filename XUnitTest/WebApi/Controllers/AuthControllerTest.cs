@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebApi.Controllers;
 
-namespace WebApi.Tests.Controllers;
+namespace WebApi.Controllers;
+
 public class AuthControllerTest
 {
     private readonly Mock<ICustomerService> mockCustomerService;

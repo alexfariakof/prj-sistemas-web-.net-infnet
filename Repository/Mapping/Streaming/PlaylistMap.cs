@@ -29,7 +29,7 @@ namespace Repository.Mapping.Streaming
                     j =>
                     {
                         j.HasKey("MusicId", "PlaylistId");
-                        j.Property<DateTime>("DtAdded");
+                        j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
                     });
         }
     }

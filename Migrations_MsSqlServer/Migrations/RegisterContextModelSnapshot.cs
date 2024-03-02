@@ -90,7 +90,9 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 22, 1, 327, DateTimeKind.Local).AddTicks(9884));
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
@@ -485,13 +487,35 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 22, 1, 412, DateTimeKind.Local).AddTicks(3176));
 
                     b.HasKey("MusicId", "PlaylistId");
 
                     b.HasIndex("PlaylistId");
 
                     b.ToTable("MusicPlayList");
+                });
+
+            modelBuilder.Entity("MusicPlayListPersonal", b =>
+                {
+                    b.Property<Guid>("MusicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PlaylistPersonalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DtAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 22, 1, 364, DateTimeKind.Local).AddTicks(6009));
+
+                    b.HasKey("MusicId", "PlaylistPersonalId");
+
+                    b.HasIndex("PlaylistPersonalId");
+
+                    b.ToTable("MusicPlayListPersonal");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
@@ -791,15 +815,24 @@ namespace Migrations_MsSqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Account.Agreggates.PlaylistPersonal", null)
+                    b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
                         .WithMany()
                         .HasForeignKey("PlaylistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
+            modelBuilder.Entity("MusicPlayListPersonal", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Music", null)
                         .WithMany()
-                        .HasForeignKey("PlaylistId")
+                        .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Account.Agreggates.PlaylistPersonal", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistPersonalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

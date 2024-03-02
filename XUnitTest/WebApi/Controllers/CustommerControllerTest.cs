@@ -6,7 +6,7 @@ using Moq;
 using System.Security.Claims;
 using WebApi.Controllers;
 
-namespace WebApi.Tests.Controllers;
+namespace WebApi.Controllers;
 public class CustomerControllerTest
 {
     private Mock<IService<CustomerDto>> mockCustomerService;
