@@ -48,10 +48,10 @@ public class DataSeederMerchant : IDataSeeder
             {
                     new Card()
                     {
-                        Number = "5564 7434 7840 3985",
-                        Validate = new ExpiryDate(new DateTime(2099, 1, 1)),
-                        CVV = "388",
-                        CardBrand = CreditCardBrand.IdentifyCard("5564 7434 7840 3985"),
+                        Number = "3478 932908 50247",
+                        Validate = new ExpiryDate(new DateTime(2025, 8, 4)),
+                        CVV = "7184",
+                        CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("3478 932908 50247").CardBrand).FirstOrDefault(),
                         Active = true
                     }
                 },

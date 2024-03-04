@@ -45,7 +45,7 @@ namespace DataSeeders.Implementations
                 Number = "5564 7434 7840 3985",
                 Validate = new ExpiryDate(new DateTime(2099, 1, 1)),
                 CVV = "388",
-                CardBrand = CreditCardBrand.IdentifyCard("5564 7434 7840 3985"),
+                CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("5564 7434 7840 3985").CardBrand).FirstOrDefault(),
                 Active = true
             };
             customer.AddCard(card);
@@ -72,6 +72,14 @@ namespace DataSeeders.Implementations
                 Country = "BasicCountryland"
             };
             customer.AddAdress(address);
+            card = new Card()
+            {
+                Number = "6011 3044 4018 2277",
+                Validate = new ExpiryDate(new DateTime(2024, 9, 4)),
+                CVV = "3541",
+                CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("6011 3044 4018 2277").CardBrand).FirstOrDefault(),
+                Active = true
+            };
             customer.AddCard(card);
             _context.Add(customer);
 
@@ -96,6 +104,14 @@ namespace DataSeeders.Implementations
                 Country = "StandardCountryland"
             };
             customer.AddAdress(address);
+            card = new Card()
+            {
+                Number = "5422 8010 8003 9910",
+                Validate = new ExpiryDate(new DateTime(2025, 4, 2)),
+                CVV = "549",
+                CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("5422 8010 8003 9910").CardBrand).FirstOrDefault(),
+                Active = true
+            };
             customer.AddCard(card);
             _context.Add(customer);
 
