@@ -15,7 +15,7 @@ public class MockAlbum
         var fakeAlbum = new Faker<Album>()
             .RuleFor(a => a.Id, f => f.Random.Guid())
             .RuleFor(a => a.Name, f => f.Commerce.ProductName())
-            .RuleFor(a => a.Music, f => MockMusic.GetListFaker(3))
+            .RuleFor(a => a.Musics, f => MockMusic.GetListFaker(3))
             .Generate();
 
         return fakeAlbum;

@@ -31,6 +31,25 @@ namespace Repository.Mapping.Streaming
                         j.HasKey("MusicId", "PlaylistId");
                         j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
                     });
+
+            builder.HasMany(x => x.Flats)
+                .WithMany(x => x.Playlists)
+                .UsingEntity<Dictionary<string, object>>(
+                "FlatPlayList",
+                j => j
+                .HasOne<Flat>()
+                .WithMany()
+                .HasForeignKey("FlatId"),
+                j => j
+                .HasOne<Playlist>()
+                .WithMany()
+                .HasForeignKey("PlaylistId"),
+                j =>
+                {
+                    j.HasKey("FlatId", "PlaylistId");
+                    j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
+                });
+
         }
     }
 }

@@ -9,7 +9,7 @@ public static class MockPlaylist
         var fakePlaylist = new Faker<Playlist>()
             .RuleFor(p => p.Id, f => f.Random.Guid())
             .RuleFor(p => p.Name, f => f.Lorem.Word())
-            .RuleFor(p => p.Flat, f => MockFlat.Instance.GetFaker())
+            .RuleFor(p => p.Flats, f => MockFlat.Instance.GetListFaker(3))
             .RuleFor(p => p.Musics, f => MockMusic.GetListFaker(3))
             .Generate();
 

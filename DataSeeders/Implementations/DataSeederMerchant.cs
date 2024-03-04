@@ -14,39 +14,38 @@ public class DataSeederMerchant : IDataSeeder
     }
     public void SeedData()
     {
-        if (!_context.Merchant.Any())
+        var merchant = new Merchant()
         {
-            var merchant = new Merchant()
+            Name = "Company Test",
+            CNPJ = "12.345.678/0001-90",
+            Customer = new()
             {
-                Name = "Company Test",
-                CNPJ = "12.345.678/0001-90",
-                Customer = new()
+                Name = "Owner Company",
+                Birth = new DateTime(1983, 1, 1),
+                CPF = "123.456.789-00",
+                Phone = "+5521992879325",
+                Login = new()
                 {
-                    Name = "Owner Company",
-                    Birth = new DateTime(1983, 1, 1),
-                    CPF = "123.456.789-01",
-                    Phone = "+5521992879319",
-                    Login = new()
-                    {
-                        Email = "company@test.com",
-                        Password = "12345"
-                    }
+                    Email = "company@test.com",
+                    Password = "12345"
                 },
-                Addresses = new[] {
+                Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa8")).FirstOrDefault()
+            },
+            Addresses = new[] {
                     new Address()
                     {
                         Zipcode = "12345-678",
-                        Street = "Main Street",
+                        Street = "Company Street",
                         Number = "123",
-                        Neighborhood = "Downtown",
-                        City = "Cityville",
+                        Neighborhood = "Company",
+                        City = "Companyville",
                         State = "ST",
                         Complement = "Apt 456",
-                        Country = "Countryland"
+                        Country = "CompanyCountryland"
                     }
                 },
-                Cards = new[]
-                {
+            Cards = new[]
+            {
                     new Card()
                     {
                         Number = "5564 7434 7840 3985",
@@ -55,19 +54,18 @@ public class DataSeederMerchant : IDataSeeder
                         CardBrand = CreditCardBrand.IdentifyCard("5564 7434 7840 3985"),
                         Active = true
                     }
-                } 
-            };
+                },
+        };
 
-            try
-            {
-                _context.Add(merchant);
-                _context.SaveChanges();
-            }
-            catch
-            {
-                _context.Add(merchant);
-                Console.WriteLine($"Dados já cadastrados na base de dados");
-            }
+        try
+        {
+            _context.Add(merchant);
+            _context.SaveChanges();
+        }
+        catch
+        {
+            _context.Add(merchant);
+            Console.WriteLine($"Dados já cadastrados na base de dados");
         }
     }
 }

@@ -23,7 +23,7 @@ public class DataSeederMusic : IDataSeeder
         var playlist = new Playlist
         {
             Name = "Example Playlist",
-            Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa8")).FirstOrDefault()
+            Flats = _context.Flat.ToList(),
         };
 
         var musicList = new List<Music>
@@ -32,38 +32,44 @@ public class DataSeederMusic : IDataSeeder
                 {
                     Name = "Song 1",
                     Duration = new Duration(30),
-                    Playlists = { playlist }
+                    Playlists = { playlist },
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
                 },
                 new Music
                 {
                     Name = "Song 2",
                     Duration = new Duration(15),
-                    Playlists = { playlist }
+                    Playlists = { playlist },
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
                 },
                 new Music
                 {
                     Name = "Song 3",
                     Duration = new Duration(45),
-                    Playlists = { playlist }
+                    Playlists = { playlist },
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
                 },
                 new Music
                 {
                     Name = "Song 4",
                     Duration = new Duration(5),
-                    Playlists = { playlist }
+                    Playlists = { playlist },
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
                 },
                 new Music
                 {
                     Name = "Song 5",
                     Duration = new Duration(55),
-                    Playlists = { playlist }
+                    Playlists = { playlist },
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
                 }
             };
 
         var album = new Album
         {
             Name = "Example Album",
-            Music = musicList
+            Musics = musicList,
+            Flats = _context.Flat.ToList()
         };
 
         band.AddAlbum(album);

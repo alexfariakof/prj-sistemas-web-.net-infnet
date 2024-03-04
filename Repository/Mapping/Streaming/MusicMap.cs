@@ -21,5 +21,24 @@ public class MusicMap : IEntityTypeConfiguration<Music>
 
         builder.HasMany(x => x.PersonalPlaylists).WithMany(m => m.Musics);
         builder.HasMany(x => x.Playlists).WithMany(m => m.Musics);
+
+        builder.HasMany(x => x.Flats)
+    .WithMany(x => x.Musics)
+    .UsingEntity<Dictionary<string, object>>(
+            "FlatMusic",
+            j => j
+            .HasOne<Flat>()
+            .WithMany()
+            .HasForeignKey("FlatId"),
+            j => j
+            .HasOne<Music>()
+            .WithMany()
+            .HasForeignKey("MusicId"),
+            j =>
+            {
+                j.HasKey("FlatId", "MusicId");
+                j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
+            });
+
     }
 }

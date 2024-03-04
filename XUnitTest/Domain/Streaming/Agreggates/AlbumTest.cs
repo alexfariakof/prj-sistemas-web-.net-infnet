@@ -15,13 +15,13 @@ public class AlbumTest
         {
             Id = fakeAlbum.Id,
             Name = fakeAlbum.Name,
-            Music = fakeAlbum.Music
+            Musics = fakeAlbum.Musics
         };
 
         // Assert
         Assert.Equal(fakeAlbum.Id, album.Id);
         Assert.Equal(fakeAlbum.Name, album.Name);
-        Assert.Equal(fakeAlbum.Music, album.Music);
+        Assert.Equal(fakeAlbum.Musics, album.Musics);
     }
 
     [Fact]
@@ -37,8 +37,8 @@ public class AlbumTest
         album.AddMusic(fakeMusicList);
 
         // Assert
-        Assert.Single(album.Music, fakeMusic);
-        Assert.True(fakeMusicList.Count < album.Music.Count);
+        Assert.Single(album.Musics, fakeMusic);
+        Assert.True(fakeMusicList.Count < album.Musics.Count);
     }
 
     [Fact]

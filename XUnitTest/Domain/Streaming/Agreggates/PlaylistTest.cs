@@ -1,5 +1,5 @@
 ﻿using Domain.Streaming.Agreggates;
-using __mock__;
+
 
 namespace Domain.Streaming;
 public class PlaylistTest
@@ -15,14 +15,14 @@ public class PlaylistTest
         {
             Id = fakePlaylist.Id,
             Name = fakePlaylist.Name,
-            Flat = fakePlaylist.Flat,
+            Flats = fakePlaylist.Flats,
             Musics = fakePlaylist.Musics
         };
 
         // Assert
         Assert.Equal(fakePlaylist.Id, playlist.Id);
         Assert.Equal(fakePlaylist.Name, playlist.Name);
-        Assert.Equal(fakePlaylist.Flat, playlist.Flat);
+        Assert.Equal(fakePlaylist.Flats, playlist.Flats);
         Assert.Equal(fakePlaylist.Musics, playlist.Musics);
     }
 

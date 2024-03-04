@@ -9,4 +9,5 @@ public class Music : BaseModel
     public Duration Duration { get; set; } = 0;
     public virtual IList<PlaylistPersonal> PersonalPlaylists { get; set; } = new List<PlaylistPersonal>();
     public virtual IList<Playlist> Playlists { get; set; } = new List<Playlist>();
+    public virtual IList<Flat> Flats { get; set; } = new List<Flat>();
 }
