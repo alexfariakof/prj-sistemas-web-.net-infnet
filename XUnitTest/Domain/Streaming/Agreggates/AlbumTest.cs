@@ -1,5 +1,4 @@
 ﻿using Domain.Streaming.Agreggates;
-using __mock__;
 
 namespace Domain.Streaming;
 public class AlbumTest
@@ -29,8 +28,8 @@ public class AlbumTest
     {
         // Arrange
         var album = new Album();
-        var fakeMusic = MockMusic.GetFaker();
-        var fakeMusicList = MockMusic.GetListFaker(2);
+        var fakeMusic = MockMusic.Instance.GetFaker();
+        var fakeMusicList = MockMusic.Instance.GetListFaker(2);
 
         // Act
         album.AddMusic(fakeMusic);
@@ -46,8 +45,8 @@ public class AlbumTest
     {
         // Arrange
         var album = new Album();
-        var fakeMusic = MockPlaylistPersonal.GetFaker();
-        var fakeMusicList = MockPlaylistPersonal.GetListFaker(2);
+        var fakeMusic = MockPlaylistPersonal.Instance.GetFaker();
+        var fakeMusicList = MockPlaylistPersonal.Instance.GetListFaker(2);
 
         // Act
         album.AddMusic(fakeMusic);

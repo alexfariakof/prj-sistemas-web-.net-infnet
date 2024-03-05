@@ -1,6 +1,5 @@
 ﻿using Domain.Streaming.Agreggates;
 
-
 namespace Domain.Streaming;
 public class PlaylistTest
 {
@@ -8,7 +7,7 @@ public class PlaylistTest
     public void Should_Set_Properties_Correctly_Playlist()
     {
         // Arrange
-        var fakePlaylist = MockPlaylist.GetFaker();
+        var fakePlaylist = MockPlaylist.Instance.GetFaker();
 
         // Act
         var playlist = new Playlist
@@ -31,8 +30,8 @@ public class PlaylistTest
     {
         // Arrange
         var playlist = new Playlist();
-        var fakeMusic = MockMusic.GetFaker();
-        var fakeMusicList = MockMusic.GetListFaker(2);
+        var fakeMusic = MockMusic.Instance.GetFaker();
+        var fakeMusicList = MockMusic.Instance.GetListFaker(2);
 
         // Act
         playlist.Musics.Add(fakeMusic);

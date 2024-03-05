@@ -52,7 +52,8 @@ public class DataSeederMerchant : IDataSeeder
                         Validate = new ExpiryDate(new DateTime(2025, 8, 4)),
                         CVV = "7184",
                         CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("3478 932908 50247").CardBrand).FirstOrDefault(),
-                        Active = true
+                        Active = true,
+                        Limit = 5000m
                     }
                 },
         };

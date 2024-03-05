@@ -46,7 +46,8 @@ namespace DataSeeders.Implementations
                 Validate = new ExpiryDate(new DateTime(2099, 1, 1)),
                 CVV = "388",
                 CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("5564 7434 7840 3985").CardBrand).FirstOrDefault(),
-                Active = true
+                Active = true,
+                Limit = 1000m
             };
             customer.AddCard(card);
             _context.Add(customer);
@@ -78,7 +79,8 @@ namespace DataSeeders.Implementations
                 Validate = new ExpiryDate(new DateTime(2024, 9, 4)),
                 CVV = "3541",
                 CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("6011 3044 4018 2277").CardBrand).FirstOrDefault(),
-                Active = true
+                Active = true,
+                Limit = 1200m
             };
             customer.AddCard(card);
             _context.Add(customer);
@@ -110,7 +112,8 @@ namespace DataSeeders.Implementations
                 Validate = new ExpiryDate(new DateTime(2025, 4, 2)),
                 CVV = "549",
                 CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("5422 8010 8003 9910").CardBrand).FirstOrDefault(),
-                Active = true
+                Active = true,
+                Limit = 2000m
             };
             customer.AddCard(card);
             _context.Add(customer);
