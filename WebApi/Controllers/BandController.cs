@@ -20,15 +20,14 @@ public class BandController : ControllerBase
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    //[Authorize("Bearer")]
+    [Authorize("Bearer")]
     public IActionResult FindById([FromQuery] Guid bandId)
     {
-        //if (UserType != UserType.Merchant) return Unauthorized();
+        if (UserType != UserType.Customer) return Unauthorized();
 
         try
         {
             var result = this._bandService.FindById(bandId);
-
             if (result == null)
                 return NotFound();
 
@@ -43,8 +42,10 @@ public class BandController : ControllerBase
     [HttpPost]
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
+    [Authorize("Bearer")]
     public IActionResult Create([FromBody] BandDto dto)
     {
+
         if (ModelState is { IsValid: false })
             return BadRequest();
         try
@@ -95,7 +96,6 @@ public class BandController : ControllerBase
 
         try
         {
-
             var result = this._bandService.Delete(dto);
             return Ok(result);
         }

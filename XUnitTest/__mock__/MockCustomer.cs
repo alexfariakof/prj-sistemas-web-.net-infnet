@@ -8,66 +8,87 @@ using Application.Account.Dto;
 namespace __mock__;
 public class MockCustomer
 {
-    private static readonly Lazy<MockCustomer> instance = new Lazy<MockCustomer>(() => new MockCustomer());
-
-    public static MockCustomer Instance => instance.Value;
+    private static MockCustomer _instance;
+    private static readonly object LockObject = new object();
+    public static MockCustomer Instance
+    {
+        get
+        {
+            lock (LockObject)
+            {
+                return _instance ??= new MockCustomer();
+            }
+        }
+    }
 
     private MockCustomer() { }
 
     public Customer GetFaker()
     {
-        var fakeCustomer = new Faker<Customer>()
-            .RuleFor(c => c.Id, f => f.Random.Guid())
-            .RuleFor(c => c.Name, f => f.Name.FirstName())
-            .RuleFor(c => c.Login, MockLogin.Instance.GetFaker())
-            .RuleFor(c => c.CPF, f => f.Person.Cpf())
-            .RuleFor(c => c.Birth, f => f.Person.DateOfBirth)
-            .RuleFor(c => c.Phone, f => new Phone { Number = f.Person.Phone })
-            .RuleFor(c => c.Addresses, MockAddress.Instance.GetListFaker(1))
-            .RuleFor(m => m.Cards, f => new List<Card>())
-            .RuleFor(m => m.Signatures, f => new List<Signature>())
-            .Generate();
+        lock (LockObject)
+        {
+            var fakeCustomer = new Faker<Customer>()
+                .RuleFor(c => c.Id, f => f.Random.Guid())
+                .RuleFor(c => c.Name, f => f.Name.FirstName())
+                .RuleFor(c => c.Login, MockLogin.Instance.GetFaker())
+                .RuleFor(c => c.CPF, f => f.Person.Cpf())
+                .RuleFor(c => c.Birth, f => f.Person.DateOfBirth)
+                .RuleFor(c => c.Phone, f => new Phone { Number = f.Person.Phone })
+                .RuleFor(c => c.Addresses, MockAddress.Instance.GetListFaker(1))
+                .RuleFor(m => m.Cards, f => new List<Card>())
+                .RuleFor(m => m.Signatures, f => new List<Signature>())
+                .Generate();
 
-        return fakeCustomer;
+            return fakeCustomer;
+        }
     }
 
     public List<Customer> GetListFaker(int count)
     {
-        var customerList = new List<Customer>();
-        for (var i = 0; i < count; i++)
+        lock (LockObject)
         {
-            customerList.Add(GetFaker());
+            var customerList = new List<Customer>();
+            for (var i = 0; i < count; i++)
+            {
+                customerList.Add(GetFaker());
+            }
+            return customerList;
         }
-        return customerList;
     }
 
     public CustomerDto GetDtoFromCustomer(Customer customer)
     {
-        var fakeCustomerDto = new Faker<CustomerDto>()
-            .RuleFor(c => c.Id, f => customer.Id)
-            .RuleFor(c => c.Name, f => customer.Name)
-            .RuleFor(c => c.Email, f => customer.Login.Email)
-            .RuleFor(c => c.Password, f => customer.Login.Password)
-            .RuleFor(c => c.CPF, f => customer.CPF)
-            .RuleFor(c => c.Birth, f => customer.Birth)
-            .RuleFor(c => c.Phone, f => customer.Phone.Number)
-            .RuleFor(c => c.Address, f => MockAddress.Instance.GetDtoFromAddress(customer.Addresses[0]))
-            .RuleFor(c => c.FlatId, f => Guid.NewGuid())
-            .Generate();
+        lock (LockObject)
+        {
+            var fakeCustomerDto = new Faker<CustomerDto>()
+                .RuleFor(c => c.Id, f => customer.Id)
+                .RuleFor(c => c.Name, f => customer.Name)
+                .RuleFor(c => c.Email, f => customer.Login.Email)
+                .RuleFor(c => c.Password, f => customer.Login.Password)
+                .RuleFor(c => c.CPF, f => customer.CPF)
+                .RuleFor(c => c.Birth, f => customer.Birth)
+                .RuleFor(c => c.Phone, f => customer.Phone.Number)
+                .RuleFor(c => c.Address, f => MockAddress.Instance.GetDtoFromAddress(customer.Addresses[0]))
+                .RuleFor(c => c.FlatId, f => Guid.NewGuid())
+                .Generate();
 
-        return fakeCustomerDto;
+            return fakeCustomerDto;
+        }
     }
 
-    public List<CustomerDto> GetDtoListFromCustomerList(List<Customer> customers)
+    public List<CustomerDto> GetDtoListFromCustomerList(IList<Customer> customers)
     {
-        var customerDtoList = new List<CustomerDto>();
-
-        foreach (var customer in customers)
+        lock (LockObject)
         {
-            var customerDto = GetDtoFromCustomer(customer);
-            customerDtoList.Add(customerDto);
-        }
+            var customerDtoList = new List<CustomerDto>();
 
-        return customerDtoList;
+            foreach (var customer in customers)
+            {
+                var customerDto = GetDtoFromCustomer(customer);
+                customerDtoList.Add(customerDto);
+            }
+
+            return customerDtoList;
+        }
     }
 }

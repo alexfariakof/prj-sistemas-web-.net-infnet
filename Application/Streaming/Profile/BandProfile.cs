@@ -1,7 +1,7 @@
 ﻿using Application.Streaming.Dto;
 using Domain.Streaming.Agreggates;
 
-namespace Application.Account.Profile;
+namespace Application.Streaming.Profile;
 public class BandProfile : AutoMapper.Profile
 {
     public BandProfile() 
@@ -16,8 +16,8 @@ public class BandProfile : AutoMapper.Profile
             {
 
             });
-        
 
+        CreateMap<MusicDto, Music>().ReverseMap();
         CreateMap<AlbumDto, Album>().ReverseMap();
     }
 }

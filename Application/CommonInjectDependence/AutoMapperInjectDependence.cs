@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Application.Account.Profile;
 using Application.Transactions.Profile;
+using Application.Streaming.Profile;
 
 namespace Application.CommonInjectDependence;
 public static class AutoMapperInjectDependence

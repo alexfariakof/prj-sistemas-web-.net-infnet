@@ -18,6 +18,7 @@ public class LoginDto
 public enum UserType
 {
     Customer,
-    Merchant
+    Merchant,
+    Admin
 }
 

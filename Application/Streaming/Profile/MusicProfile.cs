@@ -1,7 +1,7 @@
 ﻿using Application.Streaming.Dto;
 using Domain.Streaming.Agreggates;
 
-namespace Application.Account.Profile;
+namespace Application.Streaming.Profile;
 public class MusicProfile : AutoMapper.Profile
 {
     public MusicProfile() 
@@ -14,5 +14,6 @@ public class MusicProfile : AutoMapper.Profile
         CreateMap<Music, MusicDto>()
             //.ForMember(dest => dest.FlatId, opt => opt.MapFrom(src => src.Flats.Any() ? src.Flats.First().Id : Guid.Empty))
             .ForMember(dest => dest.PlaylistId, opt => opt.MapFrom(src => src.Playlists.Any() ? src.Playlists.First().Id : Guid.Empty));
+        CreateMap<PlaylistDto, Playlist>().ReverseMap();
     }
 }

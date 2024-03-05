@@ -5,9 +5,9 @@ using Application.Account.Dto;
 namespace __mock__;
 public class MockAddress
 {
-    private static readonly Lazy<MockAddress> instance = new Lazy<MockAddress>(() => new MockAddress());
+    private static readonly Lazy<MockAddress> _instance = new Lazy<MockAddress>(() => new MockAddress());
 
-    public static MockAddress Instance => instance.Value;
+    public static MockAddress Instance => _instance.Value;
 
     private MockAddress() { }
 
