@@ -37,11 +37,64 @@ public class BandControllerTest
     }
 
     [Fact]
+    public void FindAll_Returns_Ok_Result_When_List_Band_Found()
+    {
+        // Arrange        
+        var userId = Guid.NewGuid();
+        var bandList = MockBand.Instance.GetListFaker(2);
+        var expectedBandDtoList = MockBand.Instance.GetDtoListFromBandList(bandList);
+        mockBandService.Setup(service => service.FindAll(userId)).Returns(expectedBandDtoList);
+        SetupBearerToken(userId);
+
+        // Act
+        var result = controller.FindAll() as OkObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+        Assert.IsType<List<BandDto>>(result.Value);
+        Assert.Equal(expectedBandDtoList, result.Value);
+    }
+
+    [Fact]
+    public void FindAll_Returns_NotFound_Result_When_List_Band_Not_Found()
+    {
+        // Arrange        
+        var userId = Guid.NewGuid();
+        mockBandService.Setup(service => service.FindAll(userId)).Returns((List<BandDto>)null);
+        SetupBearerToken(userId);
+
+        // Act
+        var result = controller.FindAll() as NotFoundResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NotFoundResult>(result);
+    }
+
+    [Fact]
+    public void FindAll_Returns_BadRequest_Result_On_Exception()
+    {
+        // Arrange        
+        var userId = Guid.NewGuid();
+        mockBandService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
+        SetupBearerToken(userId);
+
+        // Act
+        var result = controller.FindAll() as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
+    [Fact]
     public void FindById_Returns_Ok_Result_When_Band_Found()
     {
         // Arrange        
         var band = MockBand.Instance.GetFaker();
-        var expectedBandDto = MockBand.Instance.GetDtoFromBand(band) ;
+        var expectedBandDto = MockBand.Instance.GetDtoFromBand(band);
         mockBandService.Setup(service => service.FindById(band.Id)).Returns(expectedBandDto);
         SetupBearerToken(Guid.NewGuid());
 

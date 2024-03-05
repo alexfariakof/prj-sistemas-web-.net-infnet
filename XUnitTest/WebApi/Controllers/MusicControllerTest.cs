@@ -37,6 +37,59 @@ public class MusicControllerTest
     }
 
     [Fact]
+    public void FindAll_Returns_Ok_Result_When_List_Music_Found()
+    {
+        // Arrange        
+        var userId = Guid.NewGuid();
+        var musicList = MockMusic.Instance.GetListFaker(2);
+        var expectedMusicDtoList = MockMusic.Instance.GetDtoListFromMusicList(musicList);
+        mockMusicService.Setup(service => service.FindAll(userId)).Returns(expectedMusicDtoList);
+        SetupBearerToken(userId);
+
+        // Act
+        var result = controller.FindAll() as OkObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+        Assert.IsType<List<MusicDto>>(result.Value);
+        Assert.Equal(expectedMusicDtoList, result.Value);
+    }
+
+    [Fact]
+    public void FindAll_Returns_NotFound_Result_When_List_Music_Not_Found()
+    {
+        // Arrange        
+        var userId = Guid.NewGuid();
+        mockMusicService.Setup(service => service.FindAll(userId)).Returns((List<MusicDto>)null);
+        SetupBearerToken(userId);
+
+        // Act
+        var result = controller.FindAll() as NotFoundResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NotFoundResult>(result);
+    }
+
+    [Fact]
+    public void FindAll_Returns_BadRequest_Result_On_Exception()
+    {
+        // Arrange        
+        var userId = Guid.NewGuid();
+        mockMusicService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
+        SetupBearerToken(userId);
+
+        // Act
+        var result = controller.FindAll() as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
+    [Fact]
     public void FindById_Returns_Ok_Result_When_Music_Found()
     {
         // Arrange        
