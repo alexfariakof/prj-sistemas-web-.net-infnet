@@ -1,12 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Application.Streaming.Dto;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace Application.Streaming.Dto;
-public class PlaylistDto : IValidatableObject
+namespace Application.Account.Dto;
+public class PlaylistPersonalDto : IValidatableObject
 {
     public Guid? Id { get; set; }
     public string? Name { get; set; }
     public IList<MusicDto> Musics { get; set; } = new List<MusicDto>();
 
+    [JsonIgnore]
+    public Guid CustumerId { get; set; }
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (validationContext.Items.TryGetValue("HttpMethod", out var httpMethod) && httpMethod is string method)
@@ -23,7 +27,7 @@ public class PlaylistDto : IValidatableObject
 
             if (method.Equals("DELETE", StringComparison.OrdinalIgnoreCase) && Id == null)
             {
-                yield return new ValidationResult("ID is required for delete requests.", new[] { nameof(Id) });
+                yield return new ValidationResult("ID is required for Delete requests.", new[] { nameof(Id) });
             }
         }
     }

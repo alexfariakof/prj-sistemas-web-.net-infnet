@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Security.Claims;
-using WebApi.Controllers;
 
 namespace WebApi.Controllers;
 public class CustomerControllerTest
 {
     private Mock<IService<CustomerDto>> mockCustomerService;
+    private Mock<IService<PlaylistPersonalDto>> mockPlaylistPersonalService;
+
     private CustomerController controller;
     private void SetupBearerToken(Guid userId)
     {
@@ -34,7 +35,8 @@ public class CustomerControllerTest
     public CustomerControllerTest()
     {
         mockCustomerService = new Mock<IService<CustomerDto>>();
-        controller = new CustomerController(mockCustomerService.Object);
+        mockPlaylistPersonalService = new Mock<IService<PlaylistPersonalDto>>();
+        controller = new CustomerController(mockCustomerService.Object, mockPlaylistPersonalService.Object);
     }
 
     [Fact]

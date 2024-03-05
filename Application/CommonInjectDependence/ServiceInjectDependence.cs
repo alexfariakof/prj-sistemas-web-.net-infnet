@@ -13,6 +13,7 @@ public static class ServiceInjectDependence
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IMerchantService, MerchantService>();
         services.AddScoped<IService<CustomerDto>, CustomerService>();
+        services.AddScoped<IService<PlaylistPersonalDto>, PlaylistPesonalService>();
         services.AddScoped<IService<MerchantDto>, MerchantService>();
         services.AddScoped<IService<BandDto>, BandService>();
         services.AddScoped<IService<MusicDto>, MusicService>();
