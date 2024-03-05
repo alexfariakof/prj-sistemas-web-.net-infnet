@@ -27,7 +27,7 @@ public class MockAlbum
         return fakeAlbum;
     }
 
-    public IList<Album> GetListFaker(int count)
+    public List<Album> GetListFaker(int count)
     {
         var albumList = new List<Album>();
 
@@ -52,7 +52,7 @@ public class MockAlbum
         return albumDto;
     }
 
-    public List<AlbumDto> GetListDto(IList<Album> albums)
+    public List<AlbumDto> GetDtoListFromAlbumList(IList<Album> albums)
     {
         var albumDtoList = new List<AlbumDto>();
 

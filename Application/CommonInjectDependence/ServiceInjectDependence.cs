@@ -17,6 +17,7 @@ public static class ServiceInjectDependence
         services.AddScoped<IService<BandDto>, BandService>();
         services.AddScoped<IService<MusicDto>, MusicService>();
         services.AddScoped<IService<PlaylistDto>, PlaylistService>();
+        services.AddScoped<IService<AlbumDto>, AlbumService>();        
         return services;
     }
 }
