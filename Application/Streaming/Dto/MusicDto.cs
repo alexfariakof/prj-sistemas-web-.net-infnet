@@ -11,5 +11,5 @@ public class MusicDto
 
     [Required]
     public Guid FlatId { get; set; }
-    public Guid PlaylistId { get; set; }
+    public Guid AlbumId { get; set; }
 }

@@ -18,6 +18,7 @@ public class MusicProfileTest
         var mockMusic = MockMusic.Instance.GetFaker();
         mockMusic.Playlists.Add(MockPlaylist.Instance.GetFaker());
         mockMusic.Playlists.First().Musics.Add(mockMusic);
+        mockMusic.Album.AddMusic(mockMusic);
         var musicDto = MockMusic.Instance.GetDtoFromMusic(mockMusic);
 
         // Act
@@ -28,7 +29,7 @@ public class MusicProfileTest
         Assert.Equal(musicDto.Id, music.Id);
         Assert.Equal(musicDto.Name, music.Name);
         Assert.NotNull(music.Playlists);
-        Assert.NotEmpty(music.Playlists);
+        Assert.Empty(music.Playlists);
     }
 
     [Fact]
@@ -50,7 +51,6 @@ public class MusicProfileTest
         Assert.NotNull(musicDto);
         Assert.Equal(music.Id, musicDto.Id);
         Assert.Equal(music.Name, musicDto.Name);
-        Assert.NotNull(musicDto.PlaylistId);
-        Assert.Equal(music.Playlists.First().Id, musicDto.PlaylistId);
+        Assert.NotNull(musicDto.AlbumId);
     }
 }

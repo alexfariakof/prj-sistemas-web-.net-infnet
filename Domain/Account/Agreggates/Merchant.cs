@@ -13,6 +13,7 @@ public class Merchant : AbstractAccount<Merchant>
     {
         Name = merchant.Name;
         CNPJ = merchant.CNPJ;
+        merchant.Customer.Flat = flat;
         Customer = merchant.Customer;
         AddAdress(address);
         AddFlat(merchant.Customer, flat, card);

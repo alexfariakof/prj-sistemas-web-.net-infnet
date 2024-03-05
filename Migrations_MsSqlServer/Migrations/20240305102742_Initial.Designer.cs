@@ -12,8 +12,8 @@ using Repository;
 namespace Migrations_MsSqlServer.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20240302222202_Add-DefaultValue-ToCColumns-DtAdded")]
-    partial class AddDefaultValueToCColumnsDtAdded
+    [Migration("20240305102742_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,12 +42,17 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
 
+                    b.Property<Guid>("FlatId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FlatId");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -95,7 +100,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 22, 1, 327, DateTimeKind.Local).AddTicks(9884));
+                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 590, DateTimeKind.Local).AddTicks(3278));
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
@@ -320,7 +325,7 @@ namespace Migrations_MsSqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AlbumId")
+                    b.Property<Guid>("AlbumId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -341,17 +346,12 @@ namespace Migrations_MsSqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("FlatId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FlatId");
 
                     b.ToTable("Playlist", (string)null);
                 });
@@ -481,22 +481,82 @@ namespace Migrations_MsSqlServer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MusicPlayList", b =>
+            modelBuilder.Entity("FlatAlbum", b =>
                 {
-                    b.Property<Guid>("MusicId")
+                    b.Property<Guid>("FlatId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PlaylistId")
+                    b.Property<Guid>("AlbumId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 22, 1, 412, DateTimeKind.Local).AddTicks(3176));
+                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 609, DateTimeKind.Local).AddTicks(8733));
 
-                    b.HasKey("MusicId", "PlaylistId");
+                    b.HasKey("FlatId", "AlbumId");
 
-                    b.HasIndex("PlaylistId");
+                    b.HasIndex("AlbumId");
+
+                    b.ToTable("FlatAlbum");
+                });
+
+            modelBuilder.Entity("FlatMusic", b =>
+                {
+                    b.Property<Guid>("FlatsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MusicsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DtAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 624, DateTimeKind.Local).AddTicks(8180));
+
+                    b.HasKey("FlatsId", "MusicsId");
+
+                    b.HasIndex("MusicsId");
+
+                    b.ToTable("FlatMusic");
+                });
+
+            modelBuilder.Entity("FlatPlayList", b =>
+                {
+                    b.Property<Guid>("FlatsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PlaylistsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DtAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 635, DateTimeKind.Local).AddTicks(9641));
+
+                    b.HasKey("FlatsId", "PlaylistsId");
+
+                    b.HasIndex("PlaylistsId");
+
+                    b.ToTable("FlatPlayList");
+                });
+
+            modelBuilder.Entity("MusicPlayList", b =>
+                {
+                    b.Property<Guid>("MusicsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PlaylistsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DtAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 630, DateTimeKind.Local).AddTicks(3473));
+
+                    b.HasKey("MusicsId", "PlaylistsId");
+
+                    b.HasIndex("PlaylistsId");
 
                     b.ToTable("MusicPlayList");
                 });
@@ -512,7 +572,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 22, 1, 364, DateTimeKind.Local).AddTicks(6009));
+                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 595, DateTimeKind.Local).AddTicks(708));
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
@@ -523,6 +583,12 @@ namespace Migrations_MsSqlServer.Migrations
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
+                    b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
+                        .WithMany()
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
@@ -566,6 +632,8 @@ namespace Migrations_MsSqlServer.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
                         });
+
+                    b.Navigation("Flat");
 
                     b.Navigation("Login");
 
@@ -677,10 +745,11 @@ namespace Migrations_MsSqlServer.Migrations
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Music", b =>
                 {
-                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
-                        .WithMany("Music")
+                    b.HasOne("Domain.Streaming.Agreggates.Album", "Album")
+                        .WithMany("Musics")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
                         {
@@ -700,17 +769,10 @@ namespace Migrations_MsSqlServer.Migrations
                                 .HasForeignKey("MusicId");
                         });
 
+                    b.Navigation("Album");
+
                     b.Navigation("Duration")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Playlist", b =>
-                {
-                    b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
-                        .WithMany()
-                        .HasForeignKey("FlatId");
-
-                    b.Navigation("Flat");
                 });
 
             modelBuilder.Entity("Domain.Transactions.Agreggates.Card", b =>
@@ -810,17 +872,62 @@ namespace Migrations_MsSqlServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MusicPlayList", b =>
+            modelBuilder.Entity("FlatAlbum", b =>
                 {
+                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
+                        .WithMany()
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Flat", null)
+                        .WithMany()
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FlatMusic", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Flat", null)
+                        .WithMany()
+                        .HasForeignKey("FlatsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Streaming.Agreggates.Music", null)
                         .WithMany()
-                        .HasForeignKey("MusicId")
+                        .HasForeignKey("MusicsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FlatPlayList", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Flat", null)
+                        .WithMany()
+                        .HasForeignKey("FlatsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
                         .WithMany()
-                        .HasForeignKey("PlaylistId")
+                        .HasForeignKey("PlaylistsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MusicPlayList", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Music", null)
+                        .WithMany()
+                        .HasForeignKey("MusicsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -870,9 +977,9 @@ namespace Migrations_MsSqlServer.Migrations
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Album", b =>
                 {
-                    b.Navigation("Music");
-
                     b.Navigation("MusicPersonal");
+
+                    b.Navigation("Musics");
                 });
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Band", b =>

@@ -7,13 +7,14 @@ public class MusicProfile : AutoMapper.Profile
     public MusicProfile() 
     {
         CreateMap<MusicDto, Music>()
-            //.ForMember(dest => dest.Flats, opt => opt.MapFrom(src => new List<Flat> { new Flat { Id = src.FlatId } }))
-            .ForMember(dest => dest.Playlists, opt => opt.MapFrom(src => new List<Playlist> { new Playlist { Id = src.PlaylistId } }))
+            .ForMember(dest => dest.Album, opt => opt.MapFrom(src => src.AlbumId ))
             .ReverseMap();
 
         CreateMap<Music, MusicDto>()
-            //.ForMember(dest => dest.FlatId, opt => opt.MapFrom(src => src.Flats.Any() ? src.Flats.First().Id : Guid.Empty))
-            .ForMember(dest => dest.PlaylistId, opt => opt.MapFrom(src => src.Playlists.Any() ? src.Playlists.First().Id : Guid.Empty));
-        CreateMap<PlaylistDto, Playlist>().ReverseMap();
+            .ForMember(dest => dest.AlbumId, opt => opt.MapFrom(src => src.Album.Id))
+            .ReverseMap();
+
+        CreateMap<AlbumDto, Album>()
+            .ReverseMap();
     }
 }

@@ -41,23 +41,6 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Birth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CPF = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Flat",
                 columns: table => new
                 {
@@ -72,20 +55,15 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Merchant",
+                name: "Playlist",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CNPJ = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CPF = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Merchant", x => x.Id);
+                    table.PrimaryKey("PK_Playlist", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,18 +86,23 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Playlist",
+                name: "Customer",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Birth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CPF = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Playlist", x => x.Id);
+                    table.PrimaryKey("PK_Customer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Playlist_Flat_FlatId",
+                        name: "FK_Customer_Flat_FlatId",
                         column: x => x.FlatId,
                         principalTable: "Flat",
                         principalColumn: "Id",
@@ -127,31 +110,197 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Adresses",
+                name: "FlatPlayList",
+                columns: table => new
+                {
+                    FlatsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlaylistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 635, DateTimeKind.Local).AddTicks(9641))
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlatPlayList", x => new { x.FlatsId, x.PlaylistsId });
+                    table.ForeignKey(
+                        name: "FK_FlatPlayList_Flat_FlatsId",
+                        column: x => x.FlatsId,
+                        principalTable: "Flat",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FlatPlayList_Playlist_PlaylistsId",
+                        column: x => x.PlaylistsId,
+                        principalTable: "Playlist",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FlatAlbum",
+                columns: table => new
+                {
+                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 609, DateTimeKind.Local).AddTicks(8733))
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlatAlbum", x => new { x.FlatId, x.AlbumId });
+                    table.ForeignKey(
+                        name: "FK_FlatAlbum_Album_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Album",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FlatAlbum_Flat_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flat",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Music",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Duration = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Music", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Music_Album_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Album",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Merchant",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CNPJ = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Merchant", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Merchant_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlaylistPersonal",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    DtCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 590, DateTimeKind.Local).AddTicks(3278)),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlaylistPersonal", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlaylistPersonal_Album_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Album",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PlaylistPersonal_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FlatMusic",
+                columns: table => new
+                {
+                    FlatsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MusicsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 624, DateTimeKind.Local).AddTicks(8180))
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlatMusic", x => new { x.FlatsId, x.MusicsId });
+                    table.ForeignKey(
+                        name: "FK_FlatMusic_Flat_FlatsId",
+                        column: x => x.FlatsId,
+                        principalTable: "Flat",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FlatMusic_Music_MusicsId",
+                        column: x => x.MusicsId,
+                        principalTable: "Music",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MusicPlayList",
+                columns: table => new
+                {
+                    MusicsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlaylistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 630, DateTimeKind.Local).AddTicks(3473))
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MusicPlayList", x => new { x.MusicsId, x.PlaylistsId });
+                    table.ForeignKey(
+                        name: "FK_MusicPlayList_Music_MusicsId",
+                        column: x => x.MusicsId,
+                        principalTable: "Music",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MusicPlayList_Playlist_PlaylistsId",
+                        column: x => x.PlaylistsId,
+                        principalTable: "Playlist",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Address",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Zipcode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Street = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Number = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Neighborhood = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Neighborhood = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     State = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Complement = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Complement = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Adresses", x => x.Id);
+                    table.PrimaryKey("PK_Address", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Adresses_Customer_CustomerId",
+                        name: "FK_Address_Customer_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customer",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Adresses_Merchant_MerchantId",
+                        name: "FK_Address_Merchant_MerchantId",
                         column: x => x.MerchantId,
                         principalTable: "Merchant",
                         principalColumn: "Id");
@@ -166,7 +315,7 @@ namespace Migrations_MsSqlServer.Migrations
                     Limit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Number = table.Column<string>(type: "nvarchar(19)", maxLength: 19, nullable: false),
                     CardBrandId = table.Column<int>(type: "int", nullable: false),
-                    Validate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Validate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CVV = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -231,7 +380,7 @@ namespace Migrations_MsSqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     DtActivation = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -249,8 +398,7 @@ namespace Migrations_MsSqlServer.Migrations
                         name: "FK_Signature_Flat_FlatId",
                         column: x => x.FlatId,
                         principalTable: "Flat",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Signature_Merchant_MerchantId",
                         column: x => x.MerchantId,
@@ -259,28 +407,26 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlaylistPersonal",
+                name: "MusicPlayListPersonal",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    DtCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    MusicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlaylistPersonalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 595, DateTimeKind.Local).AddTicks(708))
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlaylistPersonal", x => x.Id);
+                    table.PrimaryKey("PK_MusicPlayListPersonal", x => new { x.MusicId, x.PlaylistPersonalId });
                     table.ForeignKey(
-                        name: "FK_PlaylistPersonal_Album_AlbumId",
-                        column: x => x.AlbumId,
-                        principalTable: "Album",
-                        principalColumn: "Id");
+                        name: "FK_MusicPlayListPersonal_Music_MusicId",
+                        column: x => x.MusicId,
+                        principalTable: "Music",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PlaylistPersonal_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        name: "FK_MusicPlayListPersonal_PlaylistPersonal_PlaylistPersonalId",
+                        column: x => x.PlaylistPersonalId,
+                        principalTable: "PlaylistPersonal",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -318,57 +464,6 @@ namespace Migrations_MsSqlServer.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Music",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Duration = table.Column<int>(type: "int", maxLength: 50, nullable: false),
-                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    PlaylistPersonalId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Music", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Music_Album_AlbumId",
-                        column: x => x.AlbumId,
-                        principalTable: "Album",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Music_PlaylistPersonal_PlaylistPersonalId",
-                        column: x => x.PlaylistPersonalId,
-                        principalTable: "PlaylistPersonal",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MusicPlayList",
-                columns: table => new
-                {
-                    MusicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlaylistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MusicPlayList", x => new { x.MusicId, x.PlaylistId });
-                    table.ForeignKey(
-                        name: "FK_MusicPlayList_Music_MusicId",
-                        column: x => x.MusicId,
-                        principalTable: "Music",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MusicPlayList_Playlist_PlaylistId",
-                        column: x => x.PlaylistId,
-                        principalTable: "Playlist",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "CardBrand",
                 columns: new[] { "Id", "Name" },
@@ -384,13 +479,13 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Adresses_CustomerId",
-                table: "Adresses",
+                name: "IX_Address_CustomerId",
+                table: "Address",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Adresses_MerchantId",
-                table: "Adresses",
+                name: "IX_Address_MerchantId",
+                table: "Address",
                 column: "MerchantId");
 
             migrationBuilder.CreateIndex(
@@ -414,19 +509,46 @@ namespace Migrations_MsSqlServer.Migrations
                 column: "MerchantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customer_FlatId",
+                table: "Customer",
+                column: "FlatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FlatAlbum_AlbumId",
+                table: "FlatAlbum",
+                column: "AlbumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FlatMusic_MusicsId",
+                table: "FlatMusic",
+                column: "MusicsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FlatPlayList_PlaylistsId",
+                table: "FlatPlayList",
+                column: "PlaylistsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Merchant_CustomerId",
+                table: "Merchant",
+                column: "CustomerId",
+                unique: true,
+                filter: "[CustomerId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Music_AlbumId",
                 table: "Music",
                 column: "AlbumId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Music_PlaylistPersonalId",
-                table: "Music",
-                column: "PlaylistPersonalId");
+                name: "IX_MusicPlayList_PlaylistsId",
+                table: "MusicPlayList",
+                column: "PlaylistsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MusicPlayList_PlaylistId",
-                table: "MusicPlayList",
-                column: "PlaylistId");
+                name: "IX_MusicPlayListPersonal_PlaylistPersonalId",
+                table: "MusicPlayListPersonal",
+                column: "PlaylistPersonalId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notification_DestinationId",
@@ -442,11 +564,6 @@ namespace Migrations_MsSqlServer.Migrations
                 name: "IX_Notification_SenderId",
                 table: "Notification",
                 column: "SenderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Playlist_FlatId",
-                table: "Playlist",
-                column: "FlatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlaylistPersonal_AlbumId",
@@ -488,10 +605,22 @@ namespace Migrations_MsSqlServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Adresses");
+                name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "FlatAlbum");
+
+            migrationBuilder.DropTable(
+                name: "FlatMusic");
+
+            migrationBuilder.DropTable(
+                name: "FlatPlayList");
 
             migrationBuilder.DropTable(
                 name: "MusicPlayList");
+
+            migrationBuilder.DropTable(
+                name: "MusicPlayListPersonal");
 
             migrationBuilder.DropTable(
                 name: "Notification");
@@ -503,19 +632,19 @@ namespace Migrations_MsSqlServer.Migrations
                 name: "Transaction");
 
             migrationBuilder.DropTable(
-                name: "Music");
-
-            migrationBuilder.DropTable(
                 name: "Playlist");
 
             migrationBuilder.DropTable(
-                name: "Card");
+                name: "Music");
 
             migrationBuilder.DropTable(
                 name: "PlaylistPersonal");
 
             migrationBuilder.DropTable(
-                name: "Flat");
+                name: "Card");
+
+            migrationBuilder.DropTable(
+                name: "Album");
 
             migrationBuilder.DropTable(
                 name: "CardBrand");
@@ -524,13 +653,13 @@ namespace Migrations_MsSqlServer.Migrations
                 name: "Merchant");
 
             migrationBuilder.DropTable(
-                name: "Album");
+                name: "Band");
 
             migrationBuilder.DropTable(
                 name: "Customer");
 
             migrationBuilder.DropTable(
-                name: "Band");
+                name: "Flat");
         }
     }
 }

@@ -20,15 +20,12 @@ namespace Repository.Mapping.Streaming
                     "MusicPlayList",
                     j => j
                         .HasOne<Music>()
-                        .WithMany()
-                        .HasForeignKey("MusicId"),
+                        .WithMany(),
                     j => j
                         .HasOne<Playlist>()
-                        .WithMany()
-                        .HasForeignKey("PlaylistId"),
+                        .WithMany(),
                     j =>
                     {
-                        j.HasKey("MusicId", "PlaylistId");
                         j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
                     });
 
@@ -38,18 +35,14 @@ namespace Repository.Mapping.Streaming
                 "FlatPlayList",
                 j => j
                 .HasOne<Flat>()
-                .WithMany()
-                .HasForeignKey("FlatId"),
+                .WithMany(),
                 j => j
                 .HasOne<Playlist>()
-                .WithMany()
-                .HasForeignKey("PlaylistId"),
+                .WithMany(),
                 j =>
                 {
-                    j.HasKey("FlatId", "PlaylistId");
                     j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
                 });
-
         }
     }
 }
