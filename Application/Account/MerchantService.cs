@@ -29,13 +29,13 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
     public override MerchantDto Create(MerchantDto dto)
     {
         if (this.Repository.Exists(x => x.Customer.Login != null && x.Customer.Login.Email == dto.Email))
-            throw new Exception("Usuário já existente na base.");
+            throw new ArgumentException("Usuário já existente na base.");
 
 
         Flat flat = this._flatRepository.GetById(dto.FlatId);
 
         if (flat == null)
-            throw new Exception("Plano não existente ou não encontrado.");
+            throw new ArgumentException("Plano não existente ou não encontrado.");
 
         Card card = this.Mapper.Map<Card>(dto.Card);
 

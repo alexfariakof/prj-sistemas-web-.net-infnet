@@ -11,7 +11,7 @@ public class BandService : ServiceBase<BandDto, Band>, IService<BandDto>, IBandS
     public override BandDto Create(BandDto dto)
     {
         if (Repository.Exists(x => x.Name != null && x.Name == dto.Name))
-            throw new Exception("Banda já existente.");
+            throw new ArgumentException("Banda já existente.");
 
         Band band = Mapper.Map<Band>(dto);
 
