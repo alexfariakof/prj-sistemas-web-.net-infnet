@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Application.CommonInjectDependence;
 using Application.Account;
+using Application.Streaming;
 
 namespace CommonInjectDependence;
 public class ServiceInjectDependenceTest
@@ -17,5 +18,9 @@ public class ServiceInjectDependenceTest
         // Assert
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(CustomerService)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(MerchantService)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(BandService)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(MusicService)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(PlaylistService)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(AlbumService)));
     }
 }
