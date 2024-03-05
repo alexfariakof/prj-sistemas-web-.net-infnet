@@ -73,6 +73,7 @@ public class DataSeederMusic : IDataSeeder
         };
 
         band.AddAlbum(album);
+        musicList.ForEach(m => m.Album = album);
 
         try
         {

@@ -8,16 +8,16 @@ namespace WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class BandController : ControllerBase
+public class MusicController : ControllerBase
 {
-    private readonly IService<BandDto> _bandService;
-    public BandController(IService<BandDto> bandService)
+    private readonly IService<MusicDto> _musicService;
+    public MusicController(IService<MusicDto> musicService)
     {
-        _bandService = bandService;
+        _musicService = musicService;
     }
 
     [HttpGet]
-    [ProducesResponseType((200), Type = typeof(List<BandDto>))]
+    [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [Authorize("Bearer")]
@@ -27,7 +27,7 @@ public class BandController : ControllerBase
 
         try
         {
-            var result = this._bandService.FindAll(UserIdentity);
+            var result = this._musicService.FindAll(UserIdentity);
             if (result == null)
                 return NotFound();
 
@@ -39,18 +39,19 @@ public class BandController : ControllerBase
         }
     }
 
-    [HttpGet("{bandId}")]
-    [ProducesResponseType((200), Type = typeof(BandDto))]
+
+    [HttpGet("{musicId}")]
+    [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [Authorize("Bearer")]
-    public IActionResult FindById([FromRoute] Guid bandId)
+    public IActionResult FindById([FromRoute] Guid musicId)
     {
         if (UserType != UserType.Customer) return Unauthorized();
 
         try
         {
-            var result = this._bandService.FindById(bandId);
+            var result = this._musicService.FindById(musicId);
             if (result == null)
                 return NotFound();
 
@@ -63,17 +64,17 @@ public class BandController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType((200), Type = typeof(BandDto))]
+    [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [Authorize("Bearer")]
-    public IActionResult Create([FromBody] BandDto dto)
+    public IActionResult Create([FromBody] MusicDto dto)
     {
 
         if (ModelState is { IsValid: false })
             return BadRequest();
         try
         {
-            var result = this._bandService.Create(dto);
+            var result = this._musicService.Create(dto);
             return Ok(result);
         }
         catch (Exception ex)
@@ -84,10 +85,10 @@ public class BandController : ControllerBase
     }
 
     [HttpPut]
-    [ProducesResponseType((200), Type = typeof(BandDto))]
+    [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [Authorize("Bearer")]
-    public IActionResult Update(BandDto dto)
+    public IActionResult Update(MusicDto dto)
     {
         if (UserType != UserType.Customer) return Unauthorized();
 
@@ -96,7 +97,7 @@ public class BandController : ControllerBase
 
         try
         {
-            var result = this._bandService.Update(dto);
+            var result = this._musicService.Update(dto);
             return Ok(result);
         }
         catch (Exception ex)
@@ -110,7 +111,7 @@ public class BandController : ControllerBase
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [Authorize("Bearer")]
-    public IActionResult Delete(BandDto dto)
+    public IActionResult Delete(MusicDto dto)
     {
         if (UserType != UserType.Customer) return Unauthorized();
 
@@ -119,7 +120,7 @@ public class BandController : ControllerBase
 
         try
         {
-            var result = this._bandService.Delete(dto);
+            var result = this._musicService.Delete(dto);
             return Ok(result);
         }
         catch (Exception ex)

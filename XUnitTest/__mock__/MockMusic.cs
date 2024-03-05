@@ -18,8 +18,10 @@ public class MockMusic
             .RuleFor(m => m.Id, f => f.Random.Guid())
             .RuleFor(m => m.Name, f => f.Commerce.ProductName())
             .RuleFor(m => m.Duration, f => new Duration(f.Random.Int(60, 600)))
+            .RuleFor(m => m.Album, new Album())
             .RuleFor(m => m.Playlists, new List<Playlist>())
             .Generate();
+        
         return fakeMusic;
     }
 
@@ -44,8 +46,7 @@ public class MockMusic
             Id = music.Id,
             Name = music.Name,
             Duration = music.Duration.Value,
-            FlatId = Guid.NewGuid(),
-            PlaylistId = music.Playlists.First().Id
+            FlatId = Guid.NewGuid()
         };
 
         return musicDto;

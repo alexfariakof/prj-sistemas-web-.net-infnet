@@ -19,24 +19,21 @@ public class MusicMap : IEntityTypeConfiguration<Music>
             c.Property(x => x.Value).HasColumnName("Duration").IsRequired().HasMaxLength(50);
         });
 
-        builder.HasMany(x => x.PersonalPlaylists).WithMany(m => m.Musics);
+        builder.HasOne(x => x.Album).WithMany(m => m.Musics);
         builder.HasMany(x => x.Playlists).WithMany(m => m.Musics);
 
         builder.HasMany(x => x.Flats)
-    .WithMany(x => x.Musics)
-    .UsingEntity<Dictionary<string, object>>(
+            .WithMany(x => x.Musics)
+            .UsingEntity<Dictionary<string, object>>(
             "FlatMusic",
             j => j
             .HasOne<Flat>()
-            .WithMany()
-            .HasForeignKey("FlatId"),
+            .WithMany(),
             j => j
             .HasOne<Music>()
-            .WithMany()
-            .HasForeignKey("MusicId"),
+            .WithMany(),
             j =>
             {
-                j.HasKey("FlatId", "MusicId");
                 j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
             });
 

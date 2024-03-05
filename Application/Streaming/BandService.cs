@@ -19,16 +19,16 @@ public class BandService : ServiceBase<BandDto, Band>, IService<BandDto>, IBandS
         var result = Mapper.Map<BandDto>(band);
         return result;
     }
-    public override BandDto FindById(Guid id)
+    public override BandDto FindById(Guid bandId)
     {
-        var band = Repository.GetById(id);
+        var band = Repository.GetById(bandId);
         var result = Mapper.Map<BandDto>(band);
         return result;
     }
 
-    public override List<BandDto> FindAll(Guid bandId)
+    public override List<BandDto> FindAll(Guid userId)
     {
-        var bands = Repository.GetAll().Where(c => c.Id == bandId).ToList();
+        var bands = Repository.GetAll().ToList();
         var result = Mapper.Map<List<BandDto>>(bands);
         return result;
     }

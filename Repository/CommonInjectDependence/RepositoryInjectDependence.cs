@@ -12,6 +12,7 @@ public static class RepositoryInjectDependence
         services.AddScoped(typeof(IRepository<Merchant>), typeof(MerchantRepository));
         services.AddScoped(typeof(IRepository<Flat>), typeof(FlatRepository));
         services.AddScoped(typeof(IRepository<Band>), typeof(BandRepository));
+        services.AddScoped(typeof(IRepository<Music>), typeof(MusicRepository));
         return services;
     }
 }
