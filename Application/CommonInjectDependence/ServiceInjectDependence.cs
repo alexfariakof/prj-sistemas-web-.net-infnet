@@ -2,8 +2,6 @@
 using Application.Account;
 using Application.Account.Dto;
 using Application.Account.Interfaces;
-using Application.Account.Dto;
-using Application.Account;
 
 namespace Application.CommonInjectDependence;
 public static class ServiceInjectDependence

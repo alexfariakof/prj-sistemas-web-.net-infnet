@@ -31,7 +31,7 @@ public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRep
     /// </remarks>
     public override void Update(PlaylistPersonal entity)
     {
-        var entityToUpdate = this.Context.Set<PlaylistPersonal>().ToList().Where(p => p.Id.Equals(entity.Id)).First();
+        var entityToUpdate = this.Context.Set<PlaylistPersonal>().ToList().First(p => p.Id.Equals(entity.Id));
 
         var dsMusic = this.Context.Set<Music>().ToList();
         entityToUpdate.Musics = entity.Musics.Select(music => dsMusic.First(m => m.Id == music.Id)).ToList();
