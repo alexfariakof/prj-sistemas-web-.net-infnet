@@ -1,10 +1,10 @@
-﻿using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
+﻿using Application.Account.Dto;
+using Application.Account.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using Repository;
 
-namespace Application.Streaming;
+namespace Application.Account;
 public class MusicService : ServiceBase<MusicDto, Music>, IService<MusicDto>, IMusicService
 {
     public MusicService(IMapper mapper, IRepository<Music> musicRepository) : base(mapper, musicRepository)  { }

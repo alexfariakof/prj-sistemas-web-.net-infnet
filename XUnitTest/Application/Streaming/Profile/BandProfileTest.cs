@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Application.Streaming.Profile;
-using Application.Streaming.Dto;
+using Application.Account.Profile;
+using Application.Account.Dto;
 using Domain.Streaming.Agreggates;
 
-namespace Application.Streaming;
+namespace Application.Account;
 public class BandProfileTest
 {
     [Fact]

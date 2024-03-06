@@ -1,7 +1,9 @@
 using Application;
 using Application.Account.Dto;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Controllers;
 
@@ -11,10 +13,13 @@ public class CustomerController : ControllerBase
 {
     private readonly IService<CustomerDto> _customerService;
     private readonly IService<PlaylistPersonalDto> _playlistService;
-    public CustomerController(IService<CustomerDto> customerService, IService<PlaylistPersonalDto> playlistService)
+    private readonly IValidator<PlaylistPersonalDto> _validator;
+
+    public CustomerController(IService<CustomerDto> customerService, IService<PlaylistPersonalDto> playlistService, IValidator<PlaylistPersonalDto> validator)
     {
         _customerService = customerService;
         _playlistService = playlistService;
+        _validator = validator;
     }
 
     [HttpGet]
@@ -48,6 +53,7 @@ public class CustomerController : ControllerBase
     {
         if (ModelState is { IsValid: false })
             return BadRequest();
+
         try
         {
             var result = this._customerService.Create(dto);
@@ -111,7 +117,7 @@ public class CustomerController : ControllerBase
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [Authorize("Bearer")]
-    public IActionResult FindAll()
+    public IActionResult FindAllPlaylist()
     {
         if (UserType != UserType.Customer) return Unauthorized();
 
@@ -134,7 +140,7 @@ public class CustomerController : ControllerBase
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [Authorize("Bearer")]
-    public IActionResult FindById([FromRoute] Guid playlistId)
+    public IActionResult FindByIdPlaylist([FromRoute] Guid playlistId)
     {
         if (UserType != UserType.Customer) return Unauthorized();
 
@@ -156,12 +162,19 @@ public class CustomerController : ControllerBase
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [Authorize("Bearer")]
-    public IActionResult Create([FromBody] PlaylistPersonalDto dto)
+    public IActionResult CreatePlaylist([FromBody] PlaylistPersonalDto dto)
     {
         if (UserType != UserType.Customer) return Unauthorized();
 
-        if (ModelState is { IsValid: false })
-            return BadRequest();
+        var validationResults = new List<ValidationResult>();
+        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
+        {
+            { "HttpMethod", "POST" }
+        }), validationResults, validateAllProperties: true);
+
+        if (!isValid)
+            return BadRequest(validationResults.Select(error => error.ErrorMessage));
+
         try
         {
             dto.CustumerId = UserIdentity;
@@ -172,19 +185,25 @@ public class CustomerController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-
     }
 
     [HttpPut("MyPlaylist")]
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [Authorize("Bearer")]
-    public IActionResult Update(PlaylistPersonalDto dto)
+    public IActionResult UpdatePlaylist(PlaylistPersonalDto dto)
     {
         if (UserType != UserType.Customer) return Unauthorized();
 
-        if (ModelState is { IsValid: false })
-            return BadRequest();
+        var validationResults = new List<ValidationResult>();
+        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
+        {
+            { "HttpMethod", "PUT" }
+        }), validationResults, validateAllProperties: true);
+
+        if (!isValid)
+            return BadRequest(validationResults.Select(error => error.ErrorMessage));
+
 
         try
         {
@@ -203,12 +222,18 @@ public class CustomerController : ControllerBase
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [Authorize("Bearer")]
-    public IActionResult Delete(PlaylistPersonalDto dto)
+    public IActionResult DeletePlaylist(PlaylistPersonalDto dto)
     {
         if (UserType != UserType.Customer) return Unauthorized();
 
-        if (ModelState is { IsValid: false })
-            return BadRequest();
+        var validationResults = new List<ValidationResult>();
+        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
+        {
+            { "HttpMethod", "DELETE" }
+        }), validationResults, validateAllProperties: true);
+
+        if (!isValid)
+            return BadRequest(validationResults.Select(error => error.ErrorMessage));
 
         try
         {

@@ -1,5 +1,5 @@
 ﻿using Application;
-using Application.Streaming.Dto;
+using Application.Account.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -244,7 +244,7 @@ public class PlaylistControllerTest
         // Arrange        
         var mockPlaylistDto = MockPlaylist.Instance.GetDtoFromPlaylist(MockPlaylist.Instance.GetFaker());
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistDto>())).Returns(true);
-        mockPlaylistService.Setup(service => service.FindById(mockPlaylistDto.Id)).Returns(mockPlaylistDto);
+        mockPlaylistService.Setup(service => service.FindById(mockPlaylistDto.Id.Value)).Returns(mockPlaylistDto);
         SetupBearerToken(Guid.NewGuid());
 
         // Act
@@ -279,7 +279,7 @@ public class PlaylistControllerTest
         // Arrange        
         var mockPlaylistDto = MockPlaylist.Instance.GetDtoFromPlaylist(MockPlaylist.Instance.GetFaker());
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistDto>())).Throws(new Exception("BadRequest_Erro_Message"));
-        mockPlaylistService.Setup(service => service.FindById(mockPlaylistDto.Id)).Returns(mockPlaylistDto);
+        mockPlaylistService.Setup(service => service.FindById(mockPlaylistDto.Id.Value)).Returns(mockPlaylistDto);
         SetupBearerToken(Guid.NewGuid());
 
         // Act

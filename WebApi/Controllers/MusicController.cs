@@ -1,6 +1,6 @@
 using Application;
 using Application.Account.Dto;
-using Application.Streaming.Dto;
+using Application.Account.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

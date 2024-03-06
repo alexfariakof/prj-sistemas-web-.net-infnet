@@ -19,9 +19,20 @@ public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRep
         this.Context.SaveChanges();
     }
 
+    /// <summary>
+    /// Atualiza uma entidade PlaylistPersonal no contexto.
+    /// </summary>
+    /// <param name="entity">A entidade PlaylistPersonal a ser atualizada.</param>
+    /// <remarks>
+    /// Utilizar LINQ diretamente em um contexto sem convertê-lo em um objeto concreto torna
+    /// a unidade de trabalho menos testável ou intestável devido à sua dependência direta da infraestrutura do banco de dados.
+    /// Recomenda-se o uso de métodos ou extensões específicas para consultas LINQ no contexto
+    /// para melhorar a modularidade, desacoplamento e a testabilidade do código.
+    /// </remarks>
     public override void Update(PlaylistPersonal entity)
     {
-        var entityToUpdate = this.Context.PlaylistPersonal.Where(p => p.Id.Equals(entity.Id)).First();
+        var entityToUpdate = this.Context.Set<PlaylistPersonal>().ToList().Where(p => p.Id.Equals(entity.Id)).First();
+
         var dsMusic = this.Context.Set<Music>().ToList();
         entityToUpdate.Musics = entity.Musics.Select(music => dsMusic.First(m => m.Id == music.Id)).ToList();
         this.Context.Update(entityToUpdate);

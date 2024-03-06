@@ -1,5 +1,5 @@
 ﻿using Application;
-using Application.Streaming.Dto;
+using Application.Account.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

@@ -1,5 +1,6 @@
 ﻿using Application;
 using Application.Account.Dto;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -10,6 +11,7 @@ public class CustomerControllerTest
 {
     private Mock<IService<CustomerDto>> mockCustomerService;
     private Mock<IService<PlaylistPersonalDto>> mockPlaylistPersonalService;
+    private Mock<IValidator<PlaylistPersonalDto>> mockValidator;
 
     private CustomerController controller;
     private void SetupBearerToken(Guid userId)
@@ -36,7 +38,8 @@ public class CustomerControllerTest
     {
         mockCustomerService = new Mock<IService<CustomerDto>>();
         mockPlaylistPersonalService = new Mock<IService<PlaylistPersonalDto>>();
-        controller = new CustomerController(mockCustomerService.Object, mockPlaylistPersonalService.Object);
+        mockValidator = new Mock<IValidator<PlaylistPersonalDto>>();
+        controller = new CustomerController(mockCustomerService.Object, mockPlaylistPersonalService.Object, mockValidator.Object);
     }
 
     [Fact]
@@ -130,7 +133,7 @@ public class CustomerControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(It.IsAny<CustomerDto>()) as BadRequestResult;
+        var result = controller.Update(new()) as BadRequestResult;
 
         // Assert
         Assert.NotNull(result);

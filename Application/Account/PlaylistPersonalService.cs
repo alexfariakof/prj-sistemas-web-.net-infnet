@@ -1,13 +1,13 @@
 ﻿using Application.Account.Dto;
-using Application.Streaming.Dto.Interfaces;
+using Application.Account.Dto.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Repository;
 
-namespace Application.Streaming;
-public class PlaylistPesonalService : ServiceBase<PlaylistPersonalDto, PlaylistPersonal>, IService<PlaylistPersonalDto>, IPlaylistPersonalService
+namespace Application.Account;
+public class PlaylistPersonalService : ServiceBase<PlaylistPersonalDto, PlaylistPersonal>, IService<PlaylistPersonalDto>, IPlaylistPersonalService
 {
-    public PlaylistPesonalService(IMapper mapper, IRepository<PlaylistPersonal> playlistPersonalRepository) : base(mapper, playlistPersonalRepository)  { }
+    public PlaylistPersonalService(IMapper mapper, IRepository<PlaylistPersonal> playlistPersonalRepository) : base(mapper, playlistPersonalRepository)  { }
     public override PlaylistPersonalDto Create(PlaylistPersonalDto dto)
     {
         if (Repository.Exists(x => x.Name != null && x.Name == dto.Name))

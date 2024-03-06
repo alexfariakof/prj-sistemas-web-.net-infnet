@@ -25,5 +25,6 @@ public class RepositoryInjectDependenceTest
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Music>) && descriptor.ImplementationType == typeof(MusicRepository)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Playlist>) && descriptor.ImplementationType == typeof(PlaylistRepository)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Album>) && descriptor.ImplementationType == typeof(AlbumRepository)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<PlaylistPersonal>) && descriptor.ImplementationType == typeof(PlaylistPersonalRepository)));
     }
 }

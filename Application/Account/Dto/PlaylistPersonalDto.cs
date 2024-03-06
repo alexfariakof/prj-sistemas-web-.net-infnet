@@ -1,4 +1,4 @@
-﻿using Application.Streaming.Dto;
+﻿using Application.Account.Dto;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -17,17 +17,17 @@ public class PlaylistPersonalDto : IValidatableObject
         {
             if (method.Equals("POST", StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(Name))
             {
-                yield return new ValidationResult("Name is required for PUT requests.", new[] { nameof(Name) });
+                yield return new ValidationResult("Name is required for create a playlist.", new[] { nameof(Name) });
             }
 
             if (method.Equals("PUT", StringComparison.OrdinalIgnoreCase) && Id == null)
             {
-                yield return new ValidationResult("ID is required for PUT requests.", new[] { nameof(Id) });
+                yield return new ValidationResult("ID is required for update a playlist.", new[] { nameof(Id) });
             }
 
             if (method.Equals("DELETE", StringComparison.OrdinalIgnoreCase) && Id == null)
             {
-                yield return new ValidationResult("ID is required for Delete requests.", new[] { nameof(Id) });
+                yield return new ValidationResult("ID is required for delete a playlist.", new[] { nameof(Id) });
             }
         }
     }
