@@ -20,17 +20,29 @@ namespace Repository.Mapping.Streaming
                     "MusicPlayList",
                     j => j
                         .HasOne<Music>()
-                        .WithMany()
-                        .HasForeignKey("MusicId"),
+                        .WithMany(),
                     j => j
                         .HasOne<Playlist>()
-                        .WithMany()
-                        .HasForeignKey("PlaylistId"),
+                        .WithMany(),
                     j =>
                     {
-                        j.HasKey("MusicId", "PlaylistId");
                         j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
                     });
+
+            builder.HasMany(x => x.Flats)
+                .WithMany(x => x.Playlists)
+                .UsingEntity<Dictionary<string, object>>(
+                "FlatPlayList",
+                j => j
+                .HasOne<Flat>()
+                .WithMany(),
+                j => j
+                .HasOne<Playlist>()
+                .WithMany(),
+                j =>
+                {
+                    j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
+                });
         }
     }
 }

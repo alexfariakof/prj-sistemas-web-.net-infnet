@@ -23,6 +23,7 @@ public class CustomerMap : BaseAccountMap<Customer>
             c.WithOwner();
         });
         
+        builder.HasOne(x => x.Flat).WithMany();
         builder.HasMany(x => x.Addresses).WithOne();
         builder.HasMany(x => x.Cards).WithOne();
         builder.HasMany(x => x.Signatures).WithOne();

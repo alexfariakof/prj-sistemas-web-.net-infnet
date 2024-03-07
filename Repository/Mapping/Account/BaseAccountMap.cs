@@ -10,7 +10,7 @@ public abstract class BaseAccountMap<T> : IEntityTypeConfiguration<T> where T : 
         builder.ToTable(typeof(T).Name);        
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(100);        
+        builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
 
         ConfigureCustom(builder);
     }

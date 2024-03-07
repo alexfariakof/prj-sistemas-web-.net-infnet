@@ -10,6 +10,7 @@ public class Customer : AbstractAccount<Customer>
     public DateTime Birth { get; set; }
     public string? CPF { get; set; } = String.Empty;
     public Phone? Phone { get; set; }
+    public virtual Flat Flat { get; set; }
     public virtual IList<PlaylistPersonal> Playlists { get; set; } = new List<PlaylistPersonal>();
     public virtual IList<Transaction> Transactions { get; set; } = new List<Transaction>();
     public override void CreateAccount(Customer customer, Address address, Flat flat, Card card)
@@ -19,6 +20,7 @@ public class Customer : AbstractAccount<Customer>
         Birth = customer.Birth;
         CPF = customer.CPF;
         Phone = customer.Phone;        
+        Flat = flat;
         AddAdress(address);
         AddFlat(customer, flat, card);
         AddCard(card);

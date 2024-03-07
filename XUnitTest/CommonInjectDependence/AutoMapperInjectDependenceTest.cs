@@ -20,5 +20,9 @@ public class AutoMapperInjectDependenceTest
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(MerchantProfile)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(AddressProfile)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(CardProfile)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(BandProfile)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(MusicProfile)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(AlbumProfile)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(PlaylistProfile)));
     }
 }

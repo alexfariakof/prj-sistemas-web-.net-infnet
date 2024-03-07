@@ -36,12 +36,17 @@ namespace Migrations_MySqlServer.Migrations
                         .HasMaxLength(14)
                         .HasColumnType("varchar(14)");
 
+                    b.Property<Guid>("FlatId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FlatId");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -88,7 +93,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 31, 49, 231, DateTimeKind.Local).AddTicks(933));
+                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 907, DateTimeKind.Local).AddTicks(2226));
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("tinyint(1)");
@@ -334,17 +339,12 @@ namespace Migrations_MySqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("FlatId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FlatId");
 
                     b.ToTable("Playlist", (string)null);
                 });
@@ -472,6 +472,66 @@ namespace Migrations_MySqlServer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FlatAlbum", b =>
+                {
+                    b.Property<Guid>("FlatId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("AlbumId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("DtAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 923, DateTimeKind.Local).AddTicks(8379));
+
+                    b.HasKey("FlatId", "AlbumId");
+
+                    b.HasIndex("AlbumId");
+
+                    b.ToTable("FlatAlbum");
+                });
+
+            modelBuilder.Entity("FlatMusic", b =>
+                {
+                    b.Property<Guid>("FlatId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MusicId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("DtAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 932, DateTimeKind.Local).AddTicks(9285));
+
+                    b.HasKey("FlatId", "MusicId");
+
+                    b.HasIndex("MusicId");
+
+                    b.ToTable("FlatMusic");
+                });
+
+            modelBuilder.Entity("FlatPlayList", b =>
+                {
+                    b.Property<Guid>("FlatId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("PlaylistId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("DtAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 942, DateTimeKind.Local).AddTicks(6149));
+
+                    b.HasKey("FlatId", "PlaylistId");
+
+                    b.HasIndex("PlaylistId");
+
+                    b.ToTable("FlatPlayList");
+                });
+
             modelBuilder.Entity("MusicPlayList", b =>
                 {
                     b.Property<Guid>("MusicId")
@@ -483,7 +543,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 31, 49, 268, DateTimeKind.Local).AddTicks(9831));
+                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 937, DateTimeKind.Local).AddTicks(7164));
 
                     b.HasKey("MusicId", "PlaylistId");
 
@@ -503,7 +563,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 2, 19, 31, 49, 236, DateTimeKind.Local).AddTicks(2872));
+                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 909, DateTimeKind.Local).AddTicks(9331));
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
@@ -514,6 +574,12 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
+                    b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
+                        .WithMany()
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
@@ -557,6 +623,8 @@ namespace Migrations_MySqlServer.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
                         });
+
+                    b.Navigation("Flat");
 
                     b.Navigation("Login");
 
@@ -669,7 +737,7 @@ namespace Migrations_MySqlServer.Migrations
             modelBuilder.Entity("Domain.Streaming.Agreggates.Music", b =>
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Album", null)
-                        .WithMany("Music")
+                        .WithMany("Musics")
                         .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -693,15 +761,6 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.Navigation("Duration")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Streaming.Agreggates.Playlist", b =>
-                {
-                    b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
-                        .WithMany()
-                        .HasForeignKey("FlatId");
-
-                    b.Navigation("Flat");
                 });
 
             modelBuilder.Entity("Domain.Transactions.Agreggates.Card", b =>
@@ -801,6 +860,51 @@ namespace Migrations_MySqlServer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FlatAlbum", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
+                        .WithMany()
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Flat", null)
+                        .WithMany()
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FlatMusic", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Flat", null)
+                        .WithMany()
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Music", null)
+                        .WithMany()
+                        .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FlatPlayList", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Flat", null)
+                        .WithMany()
+                        .HasForeignKey("FlatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MusicPlayList", b =>
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Music", null)
@@ -861,9 +965,9 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Album", b =>
                 {
-                    b.Navigation("Music");
-
                     b.Navigation("MusicPersonal");
+
+                    b.Navigation("Musics");
                 });
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Band", b =>

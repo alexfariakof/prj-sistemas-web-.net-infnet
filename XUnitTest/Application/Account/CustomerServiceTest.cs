@@ -116,7 +116,7 @@ public class CustomerServiceTest
         customerRepositoryMock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<Customer, bool>>>())).Returns(true);
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() => customerService.Create(customerDto));
+        var exception = Assert.Throws<ArgumentException>(() => customerService.Create(customerDto));
         Assert.Equal("Usuário já existente na base.", exception.Message);
         customerRepositoryMock.Verify(repo => repo.Exists(It.IsAny<Expression<Func<Customer, bool>>>()), Times.Once);
         flatRepositoryMock.Verify(repo => repo.GetById(It.IsAny<Guid>()), Times.Never);
@@ -131,7 +131,7 @@ public class CustomerServiceTest
         flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns((Flat)null);
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() => customerService.Create(customerDto));
+        var exception = Assert.Throws<ArgumentException>(() => customerService.Create(customerDto));
         Assert.Equal("Plano não existente ou não encontrado.", exception.Message);
 
         flatRepositoryMock.Verify(repo => repo.GetById(It.IsAny<Guid>()), Times.Once);

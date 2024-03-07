@@ -97,7 +97,7 @@ public class MerchantServiceTest
         merchantRepositoryMock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<Merchant, bool>>>())).Returns(true);
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() => merchantService.Create(merchantDto));
+        var exception = Assert.Throws<ArgumentException>(() => merchantService.Create(merchantDto));
         Assert.Equal("Usuário já existente na base.", exception.Message);
         merchantRepositoryMock.Verify(repo => repo.Exists(It.IsAny<Expression<Func<Merchant, bool>>>()), Times.Once);
         flatRepositoryMock.Verify(repo => repo.GetById(It.IsAny<Guid>()), Times.Never);
@@ -112,7 +112,7 @@ public class MerchantServiceTest
         flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns((Flat)null);
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() => merchantService.Create(merchantDto));
+        var exception = Assert.Throws<ArgumentException>(() => merchantService.Create(merchantDto));
         Assert.Equal("Plano não existente ou não encontrado.", exception.Message);
 
         flatRepositoryMock.Verify(repo => repo.GetById(It.IsAny<Guid>()), Times.Once);

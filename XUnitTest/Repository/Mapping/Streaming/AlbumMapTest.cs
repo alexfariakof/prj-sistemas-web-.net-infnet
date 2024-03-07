@@ -30,7 +30,7 @@ public class AlbumMapTest
             // Act
             var idProperty = entityType?.FindProperty("Id");
             var nameProperty = entityType?.FindProperty("Name");
-            var musicNavigation = entityType?.FindNavigation("Music");
+            var musicNavigation = entityType?.FindNavigation("Musics");
 
             // Assert
             Assert.NotNull(idProperty);

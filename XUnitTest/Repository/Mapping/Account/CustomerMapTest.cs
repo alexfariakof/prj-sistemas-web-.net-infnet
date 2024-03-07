@@ -10,7 +10,7 @@ public class CustomerMapTest
     [Fact]
     public void EntityConfiguration_IsValid()
     {
-        const int PROPERTY_COUNT = 10;
+        const int PROPERTY_COUNT = 12;
         // Arrange
         var options = new DbContextOptionsBuilder<MockRegisterContext>()
             .UseInMemoryDatabase(databaseName: "InMemoryDatabase_CustomerMapTest")
@@ -37,11 +37,12 @@ public class CustomerMapTest
             var cpfProperty = entityType?.FindProperty("CPF");
             var phoneNavigation = entityType?.FindNavigation(nameof(Customer.Phone));
             var phoneProperty = phoneNavigation?.TargetEntityType.FindProperty(nameof(Phone.Number));
+            var flatNavigation = entityType?.FindNavigation("Flat");
             var playlistsNavigation = entityType?.FindNavigation("Playlists");
             var addressesNavigation = entityType?.FindNavigation("Addresses");
             
             // Assert
-            // Assert.NotNull(idProperty);
+            Assert.NotNull(idProperty);
             Assert.NotNull(nameProperty);
             Assert.NotNull(loginNavigation);
             Assert.NotNull(emailProperty);
@@ -50,7 +51,10 @@ public class CustomerMapTest
             Assert.NotNull(cpfProperty);
             Assert.NotNull(phoneNavigation);
             Assert.NotNull(phoneProperty);
-
+            Assert.NotNull(flatNavigation);
+            Assert.NotNull(playlistsNavigation);
+            Assert.NotNull(addressesNavigation);
+            
 
             Assert.True(idProperty?.IsPrimaryKey());
             Assert.False(nameProperty.IsNullable);
@@ -64,10 +68,10 @@ public class CustomerMapTest
             Assert.Equal(14, cpfProperty.GetMaxLength());
             Assert.False(phoneProperty.IsNullable);
             Assert.Equal(50, phoneProperty.GetMaxLength());
-            Assert.NotNull(playlistsNavigation);
+            Assert.False(flatNavigation.IsCollection);
+            Assert.NotNull(flatNavigation?.ForeignKey.DeleteBehavior);
             Assert.True(playlistsNavigation.IsCollection);
             Assert.NotNull(playlistsNavigation?.ForeignKey.DeleteBehavior);
-            Assert.NotNull(addressesNavigation);
             Assert.True(addressesNavigation.IsCollection);
             Assert.NotNull(addressesNavigation?.ForeignKey.DeleteBehavior);
 
