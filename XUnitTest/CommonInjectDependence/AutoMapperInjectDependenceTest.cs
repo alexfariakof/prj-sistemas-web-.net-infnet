@@ -2,7 +2,6 @@
 using Application.CommonInjectDependence;
 using Application.Account.Profile;
 using Application.Transactions.Profile;
-using Application.Account.Profile;
 
 namespace CommonInjectDependence;
 public class AutoMapperInjectDependenceTest

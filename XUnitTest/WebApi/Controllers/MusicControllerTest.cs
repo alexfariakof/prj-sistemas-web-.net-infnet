@@ -22,7 +22,7 @@ public class MusicControllerTest
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         httpContext.Request.Headers.Authorization =
-            "Bearer " + Usings.GenerateJwtToken(userId, "Customer");
+            "Bearer " + Usings.GenerateJwtToken(userId, "UserId");
 
         controller.ControllerContext = new ControllerContext
         {
