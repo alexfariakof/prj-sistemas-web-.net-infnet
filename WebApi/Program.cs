@@ -69,7 +69,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsStaging())
+    app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
