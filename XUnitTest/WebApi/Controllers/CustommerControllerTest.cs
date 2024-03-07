@@ -1,29 +1,31 @@
 ﻿using Application;
 using Application.Account.Dto;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Security.Claims;
-using WebApi.Controllers;
 
 namespace WebApi.Controllers;
 public class CustomerControllerTest
 {
     private Mock<IService<CustomerDto>> mockCustomerService;
+    private Mock<IService<PlaylistPersonalDto>> mockPlaylistPersonalService;
+    private Mock<IValidator<PlaylistPersonalDto>> mockValidator;
+
     private CustomerController controller;
-    private void SetupBearerToken(Guid userId)
+    private void SetupBearerToken(Guid userId, UserType userType = UserType.Customer)
     {
         var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim("UserType", "Customer")
+                new Claim(ClaimTypes.Role, userType.ToString())
             };
         var identity = new ClaimsIdentity(claims, "UserId");
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers.Authorization =
-            "Bearer " + Usings.GenerateJwtToken(userId, "Customer");
+        httpContext.Request.Headers.Authorization = "Bearer " + Usings.GenerateJwtToken(userId, userType.ToString());
 
         controller.ControllerContext = new ControllerContext
         {
@@ -34,7 +36,24 @@ public class CustomerControllerTest
     public CustomerControllerTest()
     {
         mockCustomerService = new Mock<IService<CustomerDto>>();
-        controller = new CustomerController(mockCustomerService.Object);
+        mockPlaylistPersonalService = new Mock<IService<PlaylistPersonalDto>>();
+        mockValidator = new Mock<IValidator<PlaylistPersonalDto>>();
+        controller = new CustomerController(mockCustomerService.Object, mockPlaylistPersonalService.Object, mockValidator.Object);
+    }
+
+    [Fact]
+    public void FindById_Returns_Unauthorized_Result_When_User_Not_Customer()
+    {
+        // Arrange
+        var userIdentity = Guid.NewGuid();
+        SetupBearerToken(userIdentity, UserType.Merchant);
+
+        // Act
+        var result = controller.FindById() as UnauthorizedResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<UnauthorizedResult>(result);
     }
 
     [Fact]
@@ -71,7 +90,7 @@ public class CustomerControllerTest
         Assert.NotNull(result);
         Assert.IsType<NotFoundResult>(result);
     }
-
+    
     [Fact]
     public void Create_Returns_Ok_Result_When_ModelState_Is_Valid()
     {
@@ -96,11 +115,26 @@ public class CustomerControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Create(It.IsAny<CustomerDto>()) as BadRequestResult;
+        var result = controller.Create(new()) as BadRequestResult;
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestResult>(result);
+    }
+
+    [Fact]
+    public void Update_Returns_Unauthorized_Result_When_User_Not_Customer()
+    {
+        // Arrange
+        var userIdentity = Guid.NewGuid();
+        SetupBearerToken(userIdentity, UserType.Merchant);
+
+        // Act
+        var result = controller.Update((CustomerDto)null) as UnauthorizedResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<UnauthorizedResult>(result);
     }
 
     [Fact]
@@ -128,7 +162,7 @@ public class CustomerControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(It.IsAny<CustomerDto>()) as BadRequestResult;
+        var result = controller.Update(new()) as BadRequestResult;
 
         // Assert
         Assert.NotNull(result);
@@ -162,7 +196,7 @@ public class CustomerControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Delete((CustomerDto)null);
+        var result = controller.Delete(new());
 
         // Assert
         Assert.NotNull(result);

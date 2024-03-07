@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Application.Account.Profile;
 using Application.Transactions.Profile;
-using Application.Streaming.Profile;
 
 namespace Application.CommonInjectDependence;
 public static class AutoMapperInjectDependence
@@ -16,6 +15,7 @@ public static class AutoMapperInjectDependence
         services.AddAutoMapper(typeof(MusicProfile).Assembly);
         services.AddAutoMapper(typeof(AlbumProfile).Assembly);        
         services.AddAutoMapper(typeof(PlaylistProfile).Assembly);
+        services.AddAutoMapper(typeof(PlaylistPersonalProfile).Assembly);
         return services;
     }
 }

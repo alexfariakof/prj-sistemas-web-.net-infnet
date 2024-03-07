@@ -1,4 +1,4 @@
-﻿namespace Application.Streaming.Dto.Interfaces;
+﻿namespace Application.Account.Dto.Interfaces;
 public interface IAlbumService
 {
     AlbumDto Create(AlbumDto obj);

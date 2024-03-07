@@ -1,7 +1,7 @@
-﻿using Application.Streaming.Dto;
+﻿using Application.Account.Dto;
 using Domain.Streaming.Agreggates;
 
-namespace Application.Streaming.Profile;
+namespace Application.Account.Profile;
 public class AlbumProfile : AutoMapper.Profile
 {
     public AlbumProfile() 

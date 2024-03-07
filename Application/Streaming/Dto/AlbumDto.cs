@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Application.Streaming.Dto;
+namespace Application.Account.Dto;
 public class AlbumDto
 {
     public Guid Id { get; set; }

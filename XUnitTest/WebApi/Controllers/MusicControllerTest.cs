@@ -1,5 +1,5 @@
 ﻿using Application;
-using Application.Streaming.Dto;
+using Application.Account.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -22,7 +22,7 @@ public class MusicControllerTest
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         httpContext.Request.Headers.Authorization =
-            "Bearer " + Usings.GenerateJwtToken(userId, "Customer");
+            "Bearer " + Usings.GenerateJwtToken(userId, "UserId");
 
         controller.ControllerContext = new ControllerContext
         {

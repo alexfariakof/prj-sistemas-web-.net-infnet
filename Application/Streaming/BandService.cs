@@ -1,10 +1,10 @@
-﻿using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
+﻿using Application.Account.Dto;
+using Application.Account.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using Repository;
 
-namespace Application.Streaming;
+namespace Application.Account;
 public class BandService : ServiceBase<BandDto, Band>, IService<BandDto>, IBandService
 {
     public BandService(IMapper mapper, IRepository<Band> bandRepository) : base(mapper, bandRepository)  { }

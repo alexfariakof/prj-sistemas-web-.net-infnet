@@ -2,8 +2,6 @@
 using Application.Account;
 using Application.Account.Dto;
 using Application.Account.Interfaces;
-using Application.Streaming.Dto;
-using Application.Streaming;
 
 namespace Application.CommonInjectDependence;
 public static class ServiceInjectDependence
@@ -13,6 +11,7 @@ public static class ServiceInjectDependence
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IMerchantService, MerchantService>();
         services.AddScoped<IService<CustomerDto>, CustomerService>();
+        services.AddScoped<IService<PlaylistPersonalDto>, PlaylistPersonalService>();
         services.AddScoped<IService<MerchantDto>, MerchantService>();
         services.AddScoped<IService<BandDto>, BandService>();
         services.AddScoped<IService<MusicDto>, MusicService>();

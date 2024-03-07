@@ -1,11 +1,11 @@
 ﻿using Moq;
 using System.Linq.Expressions;
-using Application.Streaming.Dto;
+using Application.Account.Dto;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using Repository;
 
-namespace Application.Streaming;
+namespace Application.Account;
 public class AlbumServiceTest
 {
     private readonly Mock<IMapper> mapperMock;

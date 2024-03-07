@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Application.CommonInjectDependence;
 using Application.Account;
-using Application.Streaming;
 
 namespace CommonInjectDependence;
 public class ServiceInjectDependenceTest
