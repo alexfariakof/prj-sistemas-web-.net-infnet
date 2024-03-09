@@ -4,6 +4,8 @@ using Repository;
 using Repository.CommonInjectDependence;
 using Application.CommonInjectDependence;
 using WebApi.CommonInjectDependence;
+using Application;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,7 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
+builder.Services.AddSingleton<IValidatorFactory, ServiceProviderValidatorFactory>();
 builder.Services.AddDbContext<RegisterContext>(c =>
 {
     c.UseLazyLoadingProxies()
@@ -63,13 +66,14 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsStaging())
+    app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

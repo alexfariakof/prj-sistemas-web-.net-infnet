@@ -1,5 +1,6 @@
 using Application;
 using Application.Account.Dto;
+using Domain.Account.ValueObject;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,11 @@ public class CustomerController : ControllerBase
     private readonly IService<PlaylistPersonalDto> _playlistService;
     private readonly IValidator<PlaylistPersonalDto> _validator;
 
-    public CustomerController(IService<CustomerDto> customerService, IService<PlaylistPersonalDto> playlistService, IValidator<PlaylistPersonalDto> validator)
+    public CustomerController(IService<CustomerDto> customerService, IService<PlaylistPersonalDto> playlistService, IValidatorFactory validatorFactory)
     {
         _customerService = customerService;
         _playlistService = playlistService;
-        _validator = validator;
+        _validator = validatorFactory.GetValidator<PlaylistPersonalDto>(); 
     }
 
     [HttpGet]
@@ -29,7 +30,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindById()
     {
-        if (UserType != UserType.Customer)  return Unauthorized();
+        if (UserType != UserTypeEnum.Customer)  return Unauthorized();
 
         try
         {
@@ -71,7 +72,7 @@ public class CustomerController : ControllerBase
     [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Update(CustomerDto dto)
     {
-        if (UserType != UserType.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -95,7 +96,7 @@ public class CustomerController : ControllerBase
 
     public IActionResult Delete(CustomerDto dto)
     {
-        if (UserType != UserType.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -119,7 +120,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindAllPlaylist()
     {
-        if (UserType != UserType.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
         try
         {
@@ -142,7 +143,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindByIdPlaylist([FromRoute] Guid playlistId)
     {
-        if (UserType != UserType.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
         try
         {
@@ -164,7 +165,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult CreatePlaylist([FromBody] PlaylistPersonalDto dto)
     {
-        if (UserType != UserType.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
         var validationResults = new List<ValidationResult>();
         bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
@@ -193,7 +194,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult UpdatePlaylist(PlaylistPersonalDto dto)
     {
-        if (UserType != UserType.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
         var validationResults = new List<ValidationResult>();
         bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
@@ -215,7 +216,6 @@ public class CustomerController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-
     }
 
     [HttpDelete("MyPlaylist")]
@@ -224,7 +224,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult DeletePlaylist(PlaylistPersonalDto dto)
     {
-        if (UserType != UserType.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
         var validationResults = new List<ValidationResult>();
         bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
@@ -245,6 +245,5 @@ public class CustomerController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-
     }
 }

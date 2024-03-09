@@ -1,5 +1,6 @@
 ﻿using Application;
 using Application.Account.Dto;
+using Domain.Account.ValueObject;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,10 @@ public class CustomerControllerTest
 {
     private Mock<IService<CustomerDto>> mockCustomerService;
     private Mock<IService<PlaylistPersonalDto>> mockPlaylistPersonalService;
-    private Mock<IValidator<PlaylistPersonalDto>> mockValidator;
+    private Mock<IValidatorFactory> mockValidator;
 
     private CustomerController controller;
-    private void SetupBearerToken(Guid userId, UserType userType = UserType.Customer)
+    private void SetupBearerToken(Guid userId, UserTypeEnum userType = UserTypeEnum.Customer)
     {
         var claims = new List<Claim>
             {
@@ -37,7 +38,7 @@ public class CustomerControllerTest
     {
         mockCustomerService = new Mock<IService<CustomerDto>>();
         mockPlaylistPersonalService = new Mock<IService<PlaylistPersonalDto>>();
-        mockValidator = new Mock<IValidator<PlaylistPersonalDto>>();
+        mockValidator = new Mock<IValidatorFactory>();
         controller = new CustomerController(mockCustomerService.Object, mockPlaylistPersonalService.Object, mockValidator.Object);
     }
 
@@ -46,7 +47,7 @@ public class CustomerControllerTest
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity, UserType.Merchant);
+        SetupBearerToken(userIdentity, UserTypeEnum.Merchant);
 
         // Act
         var result = controller.FindById() as UnauthorizedResult;
@@ -127,7 +128,7 @@ public class CustomerControllerTest
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity, UserType.Merchant);
+        SetupBearerToken(userIdentity, UserTypeEnum.Merchant);
 
         // Act
         var result = controller.Update((CustomerDto)null) as UnauthorizedResult;

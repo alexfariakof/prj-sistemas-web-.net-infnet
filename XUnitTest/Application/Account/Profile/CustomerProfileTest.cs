@@ -21,7 +21,7 @@ public class CustomerProfileTest
             Id = Guid.NewGuid(),
             Name = "John Doe",
             Email = "john.doe@example.com",
-            Password = "password123",
+            Password = "password123",            
             CPF = "12345678901",
             Birth = new DateTime(1990, 1, 1),
             Phone = "123456789",
@@ -53,7 +53,7 @@ public class CustomerProfileTest
         Assert.NotNull(customer);
         Assert.Equal(customerDto.Id, customer.Id);
         Assert.Equal(customerDto.Name, customer.Name);
-        Assert.Equal(customerDto.Email, customer.Login.Email);
+        Assert.Equal(customerDto.Email, customer.User.Login.Email);
         Assert.Equal(customerDto.CPF, customer.CPF);
         Assert.Equal(customerDto.Birth, customer.Birth);
         Assert.NotNull(customer.Phone);
@@ -82,7 +82,7 @@ public class CustomerProfileTest
         Assert.NotNull(customerDto);
         Assert.Equal(customer.Id, customerDto.Id);
         Assert.Equal(customer.Name, customerDto.Name);
-        Assert.Equal(customer.Login.Email, customerDto.Email);
+        Assert.Equal(customer.User.Login.Email, customerDto.Email);
         Assert.Equal(customer.CPF, customerDto.CPF);
         Assert.Equal(customer.Birth, customerDto.Birth);
         Assert.NotNull(customerDto.Phone);

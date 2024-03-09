@@ -1,6 +1,5 @@
 ﻿using Application.Account.Dto;
 using Application.Account.Interfaces;
-using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
@@ -9,26 +8,19 @@ using Domain.Core.Interfaces;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Repository;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
 
 namespace Application.Account;
 public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<MerchantDto>, IMerchantService
 {
     private readonly ICrypto _crypto = Crypto.GetInstance;
-    private readonly SigningConfigurations _singingConfiguration;
-    private readonly TokenConfiguration _tokenConfiguration;
     private readonly IRepository<Flat> _flatRepository;
-    public MerchantService(IMapper mapper, IRepository<Merchant> merchantRepository, IRepository<Flat> flatRepository, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration) : base(mapper, merchantRepository)
+    public MerchantService(IMapper mapper, IRepository<Merchant> merchantRepository, IRepository<Flat> flatRepository) : base(mapper, merchantRepository)
     {
         _flatRepository = flatRepository;
-        _singingConfiguration = singingConfiguration;
-        _tokenConfiguration = tokenConfiguration;
     }
     public override MerchantDto Create(MerchantDto dto)
     {
-        if (this.Repository.Exists(x => x.Customer.Login != null && x.Customer.Login.Email == dto.Email))
+        if (this.Repository.Exists(x => x.User.Login != null && x.User.Login.Email == dto.Email))
             throw new ArgumentException("Usuário já existente na base.");
 
 
@@ -39,21 +31,27 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
 
         Card card = this.Mapper.Map<Card>(dto.Card);
 
+        User user = new()
+        {
+            Login = new()
+            {
+                Email = dto.Email ?? "",
+                Password = dto.Password ?? ""
+            }
+        };
+
         Merchant merchant = new()
         {
             Id = Guid.NewGuid(),
             Name = dto.Name,
             CNPJ = dto.CNPJ,
+            User = user,
             Customer = new()
             {
                 Name = dto.Name,
                 CPF = dto.CPF,
                 Phone = dto.Phone,
-                Login = new()
-                {
-                    Email = dto.Email ?? "",
-                    Password = dto.Password ?? ""
-                }
+                User = user
             }
         };
 
@@ -92,40 +90,5 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
         var merchant = this.Mapper.Map<Merchant>(dto);
         this.Repository.Delete(merchant);
         return true;
-    }
-    public AuthenticationDto Authentication(LoginDto dto)
-    {
-        bool credentialsValid = false;
-
-        var user = this.Repository.Find(c => c.Customer.Login.Email.Equals(dto.Email)).FirstOrDefault();
-        if (user == null)
-            throw new ArgumentException("Usuário inexistente!");
-        else
-        {
-            credentialsValid = user != null && !String.IsNullOrEmpty(user.Customer.Login.Password) && !String.IsNullOrEmpty(user.Customer.Login.Email) && (_crypto.Decrypt(user.Customer.Login.Password).Equals(dto.Password));
-        }
-
-        if (credentialsValid)
-        {
-            ClaimsIdentity identity = new ClaimsIdentity(
-                new GenericIdentity(user.Customer.Login.Email, "Login"),
-                new[]
-                {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, user.Customer.Login.Email),
-                        new Claim("UserType", "Merchant"),
-                });
-
-            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            string token = _singingConfiguration.CreateToken(identity, handler, user.Id, _tokenConfiguration);
-
-            return new AuthenticationDto
-            {
-                AccessToken = token
-            };
-
-        }
-        throw new ArgumentException("Usuário Inválido!");
-    }
-
+    } 
 }

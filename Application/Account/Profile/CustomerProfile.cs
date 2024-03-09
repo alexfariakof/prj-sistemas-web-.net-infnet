@@ -10,11 +10,15 @@ public class CustomerProfile : AutoMapper.Profile
     public CustomerProfile() 
     {
         CreateMap<CustomerDto, Customer>()
-            .ForMember(dest => dest.Login, opt => opt.MapFrom(src => new Login() { Email = src.Email, Password = src.Password } ))
+            .ForMember(dest => dest.User, opt => opt.MapFrom(src 
+            =>  new User() {  
+                UserType = new UserType(UserTypeEnum.Customer),
+                Login = new Login() { Email = src.Email, Password = src.Password }}  ))
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => new Phone(src.Phone)))
             .ReverseMap();
 
         CreateMap<Customer, CustomerDto>()
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Login.Email))
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone.Number))
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Addresses.FirstOrDefault()))
             //.ForMember(dest => dest.Card, opt => opt.MapFrom(src => src.Cards.FirstOrDefault(c => c.Active)))
@@ -23,7 +27,6 @@ public class CustomerProfile : AutoMapper.Profile
                 var flat = s.Signatures?.FirstOrDefault(c => c.Active)?.Flat;
                 if (flat != null)
                     d.FlatId = flat.Id;
-                d.Email = s.Login.Email;
                 d.Password = "********";
             });
         

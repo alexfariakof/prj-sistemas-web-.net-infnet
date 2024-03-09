@@ -67,6 +67,19 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Album",
                 columns: table => new
                 {
@@ -86,36 +99,12 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Birth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CPF = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Customer_Flat_FlatId",
-                        column: x => x.FlatId,
-                        principalTable: "Flat",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FlatPlayList",
                 columns: table => new
                 {
                     FlatsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlaylistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 635, DateTimeKind.Local).AddTicks(9641))
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 8, 21, 42, 14, 245, DateTimeKind.Local).AddTicks(6972))
                 },
                 constraints: table =>
                 {
@@ -135,12 +124,33 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    DtCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 8, 21, 42, 14, 132, DateTimeKind.Local).AddTicks(9814)),
+                    UserTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_UserType_UserTypeId",
+                        column: x => x.UserTypeId,
+                        principalTable: "UserType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FlatAlbum",
                 columns: table => new
                 {
                     FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 609, DateTimeKind.Local).AddTicks(8733))
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 8, 21, 42, 14, 152, DateTimeKind.Local).AddTicks(9728))
                 },
                 constraints: table =>
                 {
@@ -180,48 +190,30 @@ namespace Migrations_MsSqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Merchant",
+                name: "Customer",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CNPJ = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Birth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CPF = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Merchant", x => x.Id);
+                    table.PrimaryKey("PK_Customer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Merchant_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        name: "FK_Customer_Flat_FlatId",
+                        column: x => x.FlatId,
+                        principalTable: "Flat",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlaylistPersonal",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    DtCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 590, DateTimeKind.Local).AddTicks(3278)),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlaylistPersonal", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlaylistPersonal_Album_AlbumId",
-                        column: x => x.AlbumId,
-                        principalTable: "Album",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PlaylistPersonal_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        name: "FK_Customer_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id");
                 });
 
@@ -231,7 +223,7 @@ namespace Migrations_MsSqlServer.Migrations
                 {
                     FlatsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MusicsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 624, DateTimeKind.Local).AddTicks(8180))
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 8, 21, 42, 14, 181, DateTimeKind.Local).AddTicks(4821))
                 },
                 constraints: table =>
                 {
@@ -256,7 +248,7 @@ namespace Migrations_MsSqlServer.Migrations
                 {
                     MusicsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlaylistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 630, DateTimeKind.Local).AddTicks(3473))
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 8, 21, 42, 14, 226, DateTimeKind.Local).AddTicks(2506))
                 },
                 constraints: table =>
                 {
@@ -273,6 +265,58 @@ namespace Migrations_MsSqlServer.Migrations
                         principalTable: "Playlist",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Merchant",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CNPJ = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Merchant", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Merchant_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Merchant_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlaylistPersonal",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    DtCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 8, 21, 42, 14, 125, DateTimeKind.Local).AddTicks(9471)),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlaylistPersonal", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlaylistPersonal_Album_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Album",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PlaylistPersonal_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -412,7 +456,7 @@ namespace Migrations_MsSqlServer.Migrations
                 {
                     MusicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlaylistPersonalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 5, 7, 27, 41, 595, DateTimeKind.Local).AddTicks(708))
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 8, 21, 42, 14, 131, DateTimeKind.Local).AddTicks(1473))
                 },
                 constraints: table =>
                 {
@@ -478,6 +522,16 @@ namespace Migrations_MsSqlServer.Migrations
                     { 99, "Invalid" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "UserType",
+                columns: new[] { "Id", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "Customer" },
+                    { 3, "Merchant" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Address_CustomerId",
                 table: "Address",
@@ -514,6 +568,11 @@ namespace Migrations_MsSqlServer.Migrations
                 column: "FlatId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customer_UserId",
+                table: "Customer",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FlatAlbum_AlbumId",
                 table: "FlatAlbum",
                 column: "AlbumId");
@@ -534,6 +593,11 @@ namespace Migrations_MsSqlServer.Migrations
                 column: "CustomerId",
                 unique: true,
                 filter: "[CustomerId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Merchant_UserId",
+                table: "Merchant",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Music_AlbumId",
@@ -599,6 +663,11 @@ namespace Migrations_MsSqlServer.Migrations
                 name: "IX_Transaction_MerchantId",
                 table: "Transaction",
                 column: "MerchantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_UserTypeId",
+                table: "User",
+                column: "UserTypeId");
         }
 
         /// <inheritdoc />
@@ -660,6 +729,12 @@ namespace Migrations_MsSqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Flat");
+
+            migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
+                name: "UserType");
         }
     }
 }
