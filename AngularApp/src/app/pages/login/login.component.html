@@ -1,0 +1,44 @@
+<div class="d-flex align-items-center justify-content-center flex-grow-1 fs-6 fs-sm-5 fs-md-4 fs-lg-3">
+  <div class="d-flex flex-column m-2 b-0  align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Email</mat-label>
+      <input matInput required id="email" name="email" formControlName="email" type="text"
+        placeholder="Entre com o seu email" [ngClass]="{
+      'is-invalid text-danger':
+        loginForm.get('email')?.errors?.['required'] &&
+        loginForm.get('email')?.touched
+    }" />
+      <mat-icon matSuffix>
+        <i class="text-danger bi bi-exclamation-circle position-absolute mx-2 top-0 end-0" [ngClass]="{
+        'error-bi-input':
+          loginForm.get('email')?.hasError('required') &&
+          loginForm.get('email')?.touched,
+        'not-error-input':
+          !loginForm.get('email')?.hasError('required') ||
+          !loginForm.get('email')?.touched
+      }">
+        </i>
+      </mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Senha</mat-label>
+      <input matInput required id="senha" name="senha" formControlName="senha" type="passwrod"
+        placeholder="Entre com a sua senha" [type]="showPassword ? 'text' : 'password'" [ngClass]="{
+      'is-invalid':
+        loginForm.get('senha')?.errors?.['required'] &&
+        loginForm.get('senha')?.touched
+    }" />
+      <i class="position-absolute my-3 top-0 end-0" (click)="onTooglePassword()" [ngClass]="eyeIconClass"
+        [class.text-danger]="
+      loginForm.get('senha')?.hasError('required') &&
+      loginForm.get('senha')?.touched
+    "></i>
+    </mat-form-field>
+    <div class="input-group mt-3 d-flex flex-column align-items-center justify-content-center">
+      <button type="submit" class="btn btn-primary w-100" [ngClass]="{ disabled: !loginForm.valid }"
+        [disabled]="!loginForm.valid">
+        Entrar
+      </button>
+    </div>
+  </div>
+</div>
