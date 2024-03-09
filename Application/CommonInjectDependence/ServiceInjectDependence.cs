@@ -8,8 +8,7 @@ public static class ServiceInjectDependence
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<IMerchantService, MerchantService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IService<CustomerDto>, CustomerService>();
         services.AddScoped<IService<PlaylistPersonalDto>, PlaylistPersonalService>();
         services.AddScoped<IService<MerchantDto>, MerchantService>();

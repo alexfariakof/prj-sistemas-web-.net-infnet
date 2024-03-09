@@ -9,12 +9,10 @@ namespace WebApi.Controllers;
 [ApiController]
 public class AuthController : Controller
 {
-    private readonly ICustomerService _customerService;
-    private readonly IMerchantService _merchantService;
-    public AuthController(ICustomerService customerService, IMerchantService merchantService)
+    private readonly IUserService _userService;
+    public AuthController(IUserService userService)
     {
-        _customerService = customerService;
-        _merchantService = merchantService;
+        _userService = userService;
     }
 
     [AllowAnonymous]
@@ -28,26 +26,12 @@ public class AuthController : Controller
 
         try
         {
-            if (loginDto.Type == UserType.Customer)
-            {
-                var result = _customerService.Authentication(loginDto);
+            var result = _userService.Authentication(loginDto);
+            if (result == null)
+                return BadRequest("Erro ao realizar login!");
 
-                if (result == null)
-                    return BadRequest("Erro ao realizar login!");
+            return new OkObjectResult(result);
 
-                return new OkObjectResult(result);
-            }
-            else if (loginDto.Type == UserType.Merchant)
-            {
-                var result = _merchantService.Authentication(loginDto);
-
-                if (result == null)
-                    return BadRequest("Erro ao realizar login!");
-
-                return new OkObjectResult(result);
-            }
-
-            return BadRequest("Erro ao realizar login!") ;
         }
         catch (Exception ex)
         {

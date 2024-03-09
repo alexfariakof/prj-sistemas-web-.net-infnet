@@ -1,5 +1,4 @@
 ﻿using Application.Account.Dto;
-using Application.Authentication;
 using Application.Transactions.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
@@ -7,7 +6,6 @@ using Domain.Account.ValueObject;
 using Domain.Core.Interfaces;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
-using Microsoft.Extensions.Configuration;
 using Moq;
 using Repository;
 using System.Linq.Expressions;
@@ -22,17 +20,7 @@ public class MerchantServiceTest
     private readonly MerchantService merchantService;    
     private readonly List<Merchant> mockListMerchant = MockMerchant.Instance.GetListFaker(5);
     public MerchantServiceTest()
-    {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        var signingConfigurations = new SigningConfigurations();
-        configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
-
-        var tokenConfigurations = new TokenConfiguration();
-        configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
+    {        
 
         mapperMock = new Mock<IMapper>();
         cryptoMock = new Mock<ICrypto>();
@@ -42,9 +30,7 @@ public class MerchantServiceTest
         merchantService = new MerchantService(
             mapperMock.Object,
             merchantRepositoryMock.Object,
-            flatRepositoryMock.Object,
-            signingConfigurations,
-            tokenConfigurations
+            flatRepositoryMock.Object
         );
     }
 
@@ -152,8 +138,8 @@ public class MerchantServiceTest
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
-            Email = mockMerchant.Customer.Login.Email,
-            Password = mockMerchant.Customer.Login.Password,
+            Email = mockMerchant.User.Login.Email,
+            Password = mockMerchant.User.Login.Password,
             CPF = mockMerchant.Customer.CPF,
             CNPJ = mockMerchant.CNPJ,
             Phone = mockMerchant.Customer.Phone.Number,
@@ -191,8 +177,8 @@ public class MerchantServiceTest
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
-            Email = mockMerchant.Customer.Login.Email,
-            Password = mockMerchant.Customer.Login.Password,
+            Email = mockMerchant.User.Login.Email,
+            Password = mockMerchant.User.Login.Password,
             CPF = mockMerchant.Customer.CPF,
             CNPJ = mockMerchant.CNPJ,
             Phone = mockMerchant.Customer.Phone.Number,
@@ -233,8 +219,8 @@ public class MerchantServiceTest
         var merchantDto = new MerchantDto()
         {
             Name = mockMerchant.Name,
-            Email = mockMerchant.Customer.Login.Email,
-            Password = mockMerchant.Customer.Login.Password,
+            Email = mockMerchant.User.Login.Email,
+            Password = mockMerchant.User.Login.Password,
             CPF = mockMerchant.Customer.CPF,
             CNPJ = mockMerchant.CNPJ,
             Phone = mockMerchant.Customer.Phone.Number,
@@ -262,39 +248,5 @@ public class MerchantServiceTest
         merchantRepositoryMock.Verify(repo => repo.Delete(mockMerchant), Times.Once);
 
         Assert.True(result);
-    }
-    [Fact]
-    public void Authentication_With_Valid_Credentials_Should_Return_AuthenticationDto()
-    {
-        // Arrange
-        var mockMerchant = mockListMerchant.First();
-        mockMerchant.Customer.Login.Password = "validPassword";
-        var loginDto = new LoginDto { Email = mockMerchant.Customer.Login.Email, Password = "validPassword" };
-
-        merchantRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Merchant, bool>>>())).Returns(mockListMerchant.Where(c => c.Customer.Login.Email.Equals(mockMerchant.Customer.Login.Email)));
-        cryptoMock.Setup(crypto => crypto.Decrypt(It.IsAny<string>())).Returns(mockMerchant.Customer.Login.Password);
-
-        // Act
-        var result = merchantService.Authentication(loginDto);
-
-        // Assert
-        merchantRepositoryMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<Merchant, bool>>>()), Times.Once);
-        Assert.NotNull(result);
-        Assert.NotNull(result.AccessToken);
-    }
-
-    [Fact]
-    public void Authentication_With_Invalid_Credentials_Should_Throw_Exception()
-    {
-        // Arrange
-        var mockCustomer = mockListMerchant.First();
-        var loginDto = new LoginDto { Email = "invalid.email@example.com", Password = "invalidPassword" };
-        merchantRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Merchant, bool>>>())).Returns(mockListMerchant.Where(c => c.Customer.Login.Email.Equals(mockCustomer.Customer.Login.Email)));
-        cryptoMock.Setup(crypto => crypto.Decrypt(It.IsAny<string>())).Returns(mockCustomer.Customer.Login.Password);
-
-        // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => merchantService.Authentication(loginDto));
-        Assert.Equal("Usuário Inválido!", exception.Message);
-        merchantRepositoryMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<Merchant, bool>>>()), Times.Once);
     }
 }

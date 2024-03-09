@@ -23,7 +23,11 @@ namespace DataSeeders.Implementations
                 Birth = new DateTime(1990, 1, 1),
                 CPF = "123.456.789-01",
                 Phone = new Phone { Number = "+5521993879312" },
-                Login = new Login { Email = "free@user.com", Password = "12345" },
+                User = new User()
+                {
+                    Login = new Login { Email = "free@user.com", Password = "12345" },
+                    UserType = _context.UserType.Where(u => u.Id.Equals(2)).First()
+                },
                 Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).FirstOrDefault()
             };
 
@@ -58,7 +62,11 @@ namespace DataSeeders.Implementations
                 Birth = new DateTime(1992, 1, 1),
                 CPF = "123.456.789-02",
                 Phone = new Phone { Number = "+5521993879312" },
-                Login = new Login { Email = "basic@user.com", Password = "12345" },
+                User = new User()
+                {
+                    Login = new Login { Email = "basic@user.com", Password = "12345" },
+                    UserType = _context.UserType.Where(u => u.Id.Equals(2)).First()
+                },
                 Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")).FirstOrDefault()
             };
             address = new Address()
@@ -91,7 +99,11 @@ namespace DataSeeders.Implementations
                 Birth = new DateTime(1993, 1, 1),
                 CPF = "123.456.789-03",
                 Phone = new Phone { Number = "+5521993879312" },
-                Login = new Login { Email = "standard@user.com", Password = "12345" },
+                User = new User()
+                {
+                    Login = new Login { Email = "standard@user.com", Password = "12345" },
+                    UserType = _context.UserType.Where(u => u.Id.Equals(2)).First()
+                },
                 Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa7")).FirstOrDefault()
             };
             address = new Address()

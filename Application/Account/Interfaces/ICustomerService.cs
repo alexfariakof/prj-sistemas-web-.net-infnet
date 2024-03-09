@@ -8,5 +8,4 @@ public interface ICustomerService
     CustomerDto FindById(Guid id);
     CustomerDto Update(CustomerDto obj);
     bool Delete(CustomerDto obj);
-    AuthenticationDto Authentication(LoginDto dto);
 }

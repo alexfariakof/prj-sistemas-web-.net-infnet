@@ -8,6 +8,7 @@ public static class RepositoryInjectDependence
 {
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
+        services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));
         services.AddScoped(typeof(IRepository<Customer>), typeof(CustomerRepository));
         services.AddScoped(typeof(IRepository<Merchant>), typeof(MerchantRepository));
         services.AddScoped(typeof(IRepository<Flat>), typeof(FlatRepository));

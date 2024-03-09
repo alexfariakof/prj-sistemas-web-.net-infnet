@@ -2,17 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
 #nullable disable
 
-namespace Migrations_MySqlServer.Migrations
+namespace Migrations_MsSqlServer.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20240304021913_Add-Relations-Flat-to-Custumer-Music-Album-Playlists-with-DtAdded")]
-    partial class AddRelationsFlattoCustumerMusicAlbumPlaylistswithDtAdded
+    [Migration("20240309004215_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,33 +24,40 @@ namespace Migrations_MySqlServer.Migrations
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Birth")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CPF")
                         .IsRequired()
                         .HasMaxLength(14)
-                        .HasColumnType("varchar(14)");
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<Guid>("FlatId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FlatId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -58,25 +66,31 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
                         .HasMaxLength(18)
-                        .HasColumnType("varchar(18)");
+                        .HasColumnType("nvarchar(18)");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CustomerId] IS NOT NULL");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Merchant", (string)null);
                 });
@@ -85,26 +99,26 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AlbumId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtCreated")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 907, DateTimeKind.Local).AddTicks(2226));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 125, DateTimeKind.Local).AddTicks(9471));
 
                     b.Property<bool>("IsPublic")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -119,22 +133,22 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtActivation")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("FlatId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -147,54 +161,75 @@ namespace Migrations_MySqlServer.Migrations
                     b.ToTable("Signature", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Account.Agreggates.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DtCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 132, DateTimeKind.Local).AddTicks(9814));
+
+                    b.Property<int>("UserTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserTypeId");
+
+                    b.ToTable("User", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Account.ValueObject.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Complement")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Country")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Neighborhood")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("State")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Zipcode")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -205,36 +240,70 @@ namespace Migrations_MySqlServer.Migrations
                     b.ToTable("Address", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Account.ValueObject.UserType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Customer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Merchant"
+                        });
+                });
+
             modelBuilder.Entity("Domain.Notifications.Notification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DestinationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtNotification")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("varchar(250)");
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("NotificationType")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("SenderId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
@@ -251,15 +320,15 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BandId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -272,22 +341,22 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Backdrop")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -298,17 +367,17 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1024)
-                        .HasColumnType("varchar(1024)");
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -319,15 +388,15 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AlbumId")
-                        .HasColumnType("char(36)");
+                    b.Property<Guid>("AlbumId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -340,12 +409,12 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -356,29 +425,29 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("CVV")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("CardBrandId")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("CustomerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(19)
-                        .HasColumnType("varchar(19)");
+                        .HasColumnType("nvarchar(19)");
 
                     b.HasKey("Id");
 
@@ -395,24 +464,24 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CardId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CorrelationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("DtTransaction")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("MerchantId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -429,9 +498,11 @@ namespace Migrations_MySqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -478,15 +549,15 @@ namespace Migrations_MySqlServer.Migrations
             modelBuilder.Entity("FlatAlbum", b =>
                 {
                     b.Property<Guid>("FlatId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AlbumId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 923, DateTimeKind.Local).AddTicks(8379));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 152, DateTimeKind.Local).AddTicks(9728));
 
                     b.HasKey("FlatId", "AlbumId");
 
@@ -497,60 +568,60 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("FlatMusic", b =>
                 {
-                    b.Property<Guid>("FlatId")
-                        .HasColumnType("char(36)");
+                    b.Property<Guid>("FlatsId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MusicId")
-                        .HasColumnType("char(36)");
+                    b.Property<Guid>("MusicsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 932, DateTimeKind.Local).AddTicks(9285));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 181, DateTimeKind.Local).AddTicks(4821));
 
-                    b.HasKey("FlatId", "MusicId");
+                    b.HasKey("FlatsId", "MusicsId");
 
-                    b.HasIndex("MusicId");
+                    b.HasIndex("MusicsId");
 
                     b.ToTable("FlatMusic");
                 });
 
             modelBuilder.Entity("FlatPlayList", b =>
                 {
-                    b.Property<Guid>("FlatId")
-                        .HasColumnType("char(36)");
+                    b.Property<Guid>("FlatsId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PlaylistId")
-                        .HasColumnType("char(36)");
+                    b.Property<Guid>("PlaylistsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 942, DateTimeKind.Local).AddTicks(6149));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 245, DateTimeKind.Local).AddTicks(6972));
 
-                    b.HasKey("FlatId", "PlaylistId");
+                    b.HasKey("FlatsId", "PlaylistsId");
 
-                    b.HasIndex("PlaylistId");
+                    b.HasIndex("PlaylistsId");
 
                     b.ToTable("FlatPlayList");
                 });
 
             modelBuilder.Entity("MusicPlayList", b =>
                 {
-                    b.Property<Guid>("MusicId")
-                        .HasColumnType("char(36)");
+                    b.Property<Guid>("MusicsId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PlaylistId")
-                        .HasColumnType("char(36)");
+                    b.Property<Guid>("PlaylistsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 937, DateTimeKind.Local).AddTicks(7164));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 226, DateTimeKind.Local).AddTicks(2506));
 
-                    b.HasKey("MusicId", "PlaylistId");
+                    b.HasKey("MusicsId", "PlaylistsId");
 
-                    b.HasIndex("PlaylistId");
+                    b.HasIndex("PlaylistsId");
 
                     b.ToTable("MusicPlayList");
                 });
@@ -558,15 +629,15 @@ namespace Migrations_MySqlServer.Migrations
             modelBuilder.Entity("MusicPlayListPersonal", b =>
                 {
                     b.Property<Guid>("MusicId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PlaylistPersonalId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 3, 23, 19, 11, 909, DateTimeKind.Local).AddTicks(9331));
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 131, DateTimeKind.Local).AddTicks(1473));
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
@@ -583,40 +654,21 @@ namespace Migrations_MySqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("char(36)");
-
-                            b1.Property<string>("Email")
-                                .IsRequired()
-                                .HasMaxLength(150)
-                                .HasColumnType("varchar(150)")
-                                .HasColumnName("Email");
-
-                            b1.Property<string>("Password")
-                                .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
-                                .HasColumnName("Password");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
+                    b.HasOne("Domain.Account.Agreggates.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.Account.ValueObject.Phone", "Phone", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("varchar(50)")
+                                .HasColumnType("nvarchar(50)")
                                 .HasColumnName("Phone");
 
                             b1.HasKey("CustomerId");
@@ -629,9 +681,9 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.Navigation("Flat");
 
-                    b.Navigation("Login");
-
                     b.Navigation("Phone");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.Merchant", b =>
@@ -641,7 +693,15 @@ namespace Migrations_MySqlServer.Migrations
                         .HasForeignKey("Domain.Account.Agreggates.Merchant", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("Domain.Account.Agreggates.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.PlaylistPersonal", b =>
@@ -672,6 +732,45 @@ namespace Migrations_MySqlServer.Migrations
                         .HasForeignKey("MerchantId");
 
                     b.Navigation("Flat");
+                });
+
+            modelBuilder.Entity("Domain.Account.Agreggates.User", b =>
+                {
+                    b.HasOne("Domain.Account.ValueObject.UserType", "UserType")
+                        .WithMany("Users")
+                        .HasForeignKey("UserTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Email")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("nvarchar(150)")
+                                .HasColumnName("Email");
+
+                            b1.Property<string>("Password")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("nvarchar(255)")
+                                .HasColumnName("Password");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("User");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("Login")
+                        .IsRequired();
+
+                    b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("Domain.Account.ValueObject.Address", b =>
@@ -719,7 +818,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
                         {
                             b1.Property<Guid>("FlatId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")
@@ -739,15 +838,16 @@ namespace Migrations_MySqlServer.Migrations
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Music", b =>
                 {
-                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
+                    b.HasOne("Domain.Streaming.Agreggates.Album", "Album")
                         .WithMany("Musics")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
                         {
                             b1.Property<Guid>("MusicId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("Value")
                                 .HasMaxLength(50)
@@ -761,6 +861,8 @@ namespace Migrations_MySqlServer.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("MusicId");
                         });
+
+                    b.Navigation("Album");
 
                     b.Navigation("Duration")
                         .IsRequired();
@@ -785,7 +887,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Limit", b1 =>
                         {
                             b1.Property<Guid>("CardId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")
@@ -802,10 +904,10 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Transactions.ValueObject.ExpiryDate", "Validate", b1 =>
                         {
                             b1.Property<Guid>("CardId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<DateTime>("Value")
-                                .HasColumnType("datetime(6)")
+                                .HasColumnType("datetime2")
                                 .HasColumnName("Validate");
 
                             b1.HasKey("CardId");
@@ -843,7 +945,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
                         {
                             b1.Property<Guid>("TransactionId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,2)")
@@ -882,13 +984,13 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Flat", null)
                         .WithMany()
-                        .HasForeignKey("FlatId")
+                        .HasForeignKey("FlatsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Streaming.Agreggates.Music", null)
                         .WithMany()
-                        .HasForeignKey("MusicId")
+                        .HasForeignKey("MusicsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -897,13 +999,13 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Flat", null)
                         .WithMany()
-                        .HasForeignKey("FlatId")
+                        .HasForeignKey("FlatsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
                         .WithMany()
-                        .HasForeignKey("PlaylistId")
+                        .HasForeignKey("PlaylistsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -912,13 +1014,13 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Music", null)
                         .WithMany()
-                        .HasForeignKey("MusicId")
+                        .HasForeignKey("MusicsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
                         .WithMany()
-                        .HasForeignKey("PlaylistId")
+                        .HasForeignKey("PlaylistsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -964,6 +1066,11 @@ namespace Migrations_MySqlServer.Migrations
                     b.Navigation("Signatures");
 
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("Domain.Account.ValueObject.UserType", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Album", b =>

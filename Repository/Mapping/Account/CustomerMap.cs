@@ -15,14 +15,7 @@ public class CustomerMap : BaseAccountMap<Customer>
             c.Property(x => x.Number).HasColumnName("Phone").HasMaxLength(50).IsRequired();
             c.WithOwner();
         });
-
-        builder.OwnsOne<Login>(e => e.Login, c =>
-        {
-            c.Property(x => x.Email).HasColumnName("Email").HasMaxLength(150).IsRequired();
-            c.Property(x => x.Password).HasColumnName("Password").HasMaxLength(255).IsRequired();
-            c.WithOwner();
-        });
-        
+       
         builder.HasOne(x => x.Flat).WithMany();
         builder.HasMany(x => x.Addresses).WithOne();
         builder.HasMany(x => x.Cards).WithOne();
