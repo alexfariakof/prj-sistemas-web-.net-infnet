@@ -1,7 +1,30 @@
-﻿<mat-toolbar color="primary" class="d-flex ">
-    <a class="justify-content-start text-light  text-decoration-none" href="home">Spotify Lite</a>
-    <a class="justify-content-end ms-auto btn btn-light" role="button" href="login"  aria-expanded="true">Acesso</a>
-  </mat-toolbar>
+﻿<mat-toolbar color="primary" class="d-flex">
+  <a class="justify-content-start text-light text-decoration-none" href="home">Spotify Lite</a>
+  <div class="d-flex justify-content-end ms-auto">
+      <ul class="list-unstyled mb-0 mx-2 ms-auto ">
+          <li class="nav-item dropdown">
+              <button class="nav-link button" role="button" data-bs-toggle="dropdown" aria-expanded="true">Inscreva-se</button>
+              <ul class="dropdown-menu dropdown-menu-light text-small text-center shadow" style="left: -150%" aria-labelledby="dropdown">
+                  <li >
+                      <button class="nav-link dropdown-item" >
+                          <a type="button" class="btn btn-light" href="cliente" >Cliente</a>
+                      </button>
+                  </li>
+                  <li>
+                      <button class="nav-link dropdown-item" click="alert('Comerciante')">
+                        <a type="button" class="btn btn-light" href="comerciante">Comerciante</a>
+                      </button>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+    <a class="btn btn-light rounded-4 ms-auto mx-2" role="button" href="login"  aria-expanded="true">Entrar</a>
+  </div>
+</mat-toolbar>
+<div>
+<router-outlet></router-outlet>
+</div>
+
 <div>
   <router-outlet></router-outlet>
 </div>
