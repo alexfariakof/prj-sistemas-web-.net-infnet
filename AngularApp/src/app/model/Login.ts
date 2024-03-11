@@ -1,5 +1,4 @@
 export interface Login {
-  email?: string;
-  senha: string;
-  confirmaSenha?: string;
+  email: string;
+  password: string;
 }

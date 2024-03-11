@@ -2,7 +2,8 @@
   <div
     class="d-flex flex-column m-2 border border-2 border-primary rounded-4 align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3">
     <form class="d-flex flex-column m-2 b-0  align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3"
-      [formGroup]="loginForm">
+    (submit)="onLoginClick()"
+    [formGroup]="loginForm">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
         <input matInput required id="email" name="email" formControlName="email" type="text"
@@ -25,16 +26,16 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Senha</mat-label>
-        <input matInput required id="senha" name="senha" formControlName="senha" type="passwrod"
-          placeholder="Entre com a sua senha" [type]="showPassword ? 'text' : 'password'" [ngClass]="{
+        <input matInput required id="password" name="password" formControlName="password" type="passwrod"
+          placeholder="Entre com a sua password" [type]="showPassword ? 'text' : 'password'" [ngClass]="{
       'is-invalid':
-        loginForm.get('senha')?.errors?.['required'] &&
-        loginForm.get('senha')?.touched
+        loginForm.get('password')?.errors?.['required'] &&
+        loginForm.get('password')?.touched
     }" />
         <i class="position-absolute my-3 top-0 end-0" (click)="onTooglePassword()" [ngClass]="eyeIconClass"
           [class.text-danger]="
-      loginForm.get('senha')?.hasError('required') &&
-      loginForm.get('senha')?.touched
+      loginForm.get('password')?.hasError('required') &&
+      loginForm.get('password')?.touched
     "></i>
       </mat-form-field>
       <div class="input-group d-flex flex-column align-items-center justify-content-center">

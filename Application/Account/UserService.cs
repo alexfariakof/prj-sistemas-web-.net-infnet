@@ -51,7 +51,8 @@ public class UserService : IUserService
 
             return new AuthenticationDto
             {
-                AccessToken = token
+                AccessToken = token,
+                Authenticated = true
             };
 
         }

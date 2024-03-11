@@ -44,8 +44,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "3mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -79,7 +79,8 @@
               "buildTarget": "AngularApp:build:production"
             },
             "development": {
-              "buildTarget": "AngularApp:build:development"
+              "buildTarget": "AngularApp:build:development",
+              "proxyConfig": "src/proxy.conf.js"
             }
           },
           "defaultConfiguration": "development",
