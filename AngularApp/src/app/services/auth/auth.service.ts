@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const accessToken = this.accessTokenSubject.getValue() || localStorage.getItem('@token');
+    const accessToken = this.accessTokenSubject.getValue() ?? localStorage.getItem('@token');
     if (accessToken === null || accessToken === undefined) {
       this.clearLocalStorage();
       return false;

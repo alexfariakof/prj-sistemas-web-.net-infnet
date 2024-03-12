@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from './services';
 import { Router } from '@angular/router';
 @Component({
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -18,8 +18,6 @@ export class AppComponent implements OnInit {
     this.authService.clearLocalStorage();
     this.router.navigate(['/']);
   }
-
-  ngOnInit() { }
 
   title = 'AngularApp';
 }

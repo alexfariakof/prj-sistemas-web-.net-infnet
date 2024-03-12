@@ -1,5 +1,5 @@
 export interface Music {
-  id: String;
+  id: string;
   name: string;
   duration: number;
   flatId?: string;
