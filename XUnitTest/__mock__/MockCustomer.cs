@@ -30,7 +30,7 @@ public class MockCustomer
             var fakeCustomer = new Faker<Customer>()
                 .RuleFor(c => c.Id, f => f.Random.Guid())
                 .RuleFor(c => c.Name, f => f.Name.FirstName())
-                .RuleFor(c => c.Login, MockLogin.Instance.GetFaker())
+                .RuleFor(c => c.User, MockUser.Instance.GetFaker())
                 .RuleFor(c => c.CPF, f => f.Person.Cpf())
                 .RuleFor(c => c.Birth, f => f.Person.DateOfBirth)
                 .RuleFor(c => c.Phone, f => new Phone { Number = f.Person.Phone })
@@ -39,6 +39,7 @@ public class MockCustomer
                 .RuleFor(m => m.Signatures, f => new List<Signature>())
                 .Generate();
 
+            fakeCustomer.User.UserType = new UserType(UserTypeEnum.Customer);
             return fakeCustomer;
         }
     }
@@ -63,8 +64,8 @@ public class MockCustomer
             var fakeCustomerDto = new Faker<CustomerDto>()
                 .RuleFor(c => c.Id, f => customer.Id)
                 .RuleFor(c => c.Name, f => customer.Name)
-                .RuleFor(c => c.Email, f => customer.Login.Email)
-                .RuleFor(c => c.Password, f => customer.Login.Password)
+                .RuleFor(c => c.Email, f => customer.User.Login.Email)
+                .RuleFor(c => c.Password, f => customer.User.Login.Password)
                 .RuleFor(c => c.CPF, f => customer.CPF)
                 .RuleFor(c => c.Birth, f => customer.Birth)
                 .RuleFor(c => c.Phone, f => customer.Phone.Number)

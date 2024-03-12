@@ -47,9 +47,14 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FlatId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -73,11 +78,16 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId")
                         .IsUnique()
                         .HasFilter("[CustomerId] IS NOT NULL");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Merchant", (string)null);
                 });
@@ -97,7 +107,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 590, DateTimeKind.Local).AddTicks(3278));
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 125, DateTimeKind.Local).AddTicks(9471));
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
@@ -146,6 +156,27 @@ namespace Migrations_MsSqlServer.Migrations
                     b.HasIndex("MerchantId");
 
                     b.ToTable("Signature", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Account.Agreggates.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DtCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 132, DateTimeKind.Local).AddTicks(9814));
+
+                    b.Property<int>("UserTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserTypeId");
+
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Account.ValueObject.Address", b =>
@@ -204,6 +235,40 @@ namespace Migrations_MsSqlServer.Migrations
                     b.HasIndex("MerchantId");
 
                     b.ToTable("Address", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Account.ValueObject.UserType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Customer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Merchant"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Notifications.Notification", b =>
@@ -489,7 +554,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 609, DateTimeKind.Local).AddTicks(8733));
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 152, DateTimeKind.Local).AddTicks(9728));
 
                     b.HasKey("FlatId", "AlbumId");
 
@@ -509,7 +574,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 624, DateTimeKind.Local).AddTicks(8180));
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 181, DateTimeKind.Local).AddTicks(4821));
 
                     b.HasKey("FlatsId", "MusicsId");
 
@@ -529,7 +594,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 635, DateTimeKind.Local).AddTicks(9641));
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 245, DateTimeKind.Local).AddTicks(6972));
 
                     b.HasKey("FlatsId", "PlaylistsId");
 
@@ -549,7 +614,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 630, DateTimeKind.Local).AddTicks(3473));
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 226, DateTimeKind.Local).AddTicks(2506));
 
                     b.HasKey("MusicsId", "PlaylistsId");
 
@@ -569,7 +634,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 5, 7, 27, 41, 595, DateTimeKind.Local).AddTicks(708));
+                        .HasDefaultValue(new DateTime(2024, 3, 8, 21, 42, 14, 131, DateTimeKind.Local).AddTicks(1473));
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
@@ -586,30 +651,11 @@ namespace Migrations_MsSqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Email")
-                                .IsRequired()
-                                .HasMaxLength(150)
-                                .HasColumnType("nvarchar(150)")
-                                .HasColumnName("Email");
-
-                            b1.Property<string>("Password")
-                                .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasColumnName("Password");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
+                    b.HasOne("Domain.Account.Agreggates.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.OwnsOne("Domain.Account.ValueObject.Phone", "Phone", b1 =>
                         {
@@ -632,9 +678,9 @@ namespace Migrations_MsSqlServer.Migrations
 
                     b.Navigation("Flat");
 
-                    b.Navigation("Login");
-
                     b.Navigation("Phone");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.Merchant", b =>
@@ -644,7 +690,15 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasForeignKey("Domain.Account.Agreggates.Merchant", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("Domain.Account.Agreggates.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.PlaylistPersonal", b =>
@@ -675,6 +729,45 @@ namespace Migrations_MsSqlServer.Migrations
                         .HasForeignKey("MerchantId");
 
                     b.Navigation("Flat");
+                });
+
+            modelBuilder.Entity("Domain.Account.Agreggates.User", b =>
+                {
+                    b.HasOne("Domain.Account.ValueObject.UserType", "UserType")
+                        .WithMany("Users")
+                        .HasForeignKey("UserTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Domain.Account.ValueObject.Login", "Login", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Email")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("nvarchar(150)")
+                                .HasColumnName("Email");
+
+                            b1.Property<string>("Password")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("nvarchar(255)")
+                                .HasColumnName("Password");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("User");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("Login")
+                        .IsRequired();
+
+                    b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("Domain.Account.ValueObject.Address", b =>
@@ -970,6 +1063,11 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Navigation("Signatures");
 
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("Domain.Account.ValueObject.UserType", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Album", b =>

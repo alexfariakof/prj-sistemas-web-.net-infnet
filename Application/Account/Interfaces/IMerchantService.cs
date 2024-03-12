@@ -8,5 +8,4 @@ public interface IMerchantService
     MerchantDto FindById(Guid id);
     MerchantDto Update(MerchantDto obj);
     bool Delete(MerchantDto obj);
-    AuthenticationDto Authentication(LoginDto dto);
 }

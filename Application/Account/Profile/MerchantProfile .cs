@@ -20,8 +20,8 @@ public class MerchantProfile : AutoMapper.Profile
                 var flat = s.Signatures?.FirstOrDefault(c => c.Active)?.Flat;
                 if (flat != null)
                     d.FlatId = flat.Id;
-                d.Email = s.Customer.Login.Email;
-                d.CPF = s.Customer.CPF;
+                d.Email = s.User.Login.Email;
+                d.CNPJ= s.CNPJ;
                 d.Password = "********";
             });
 

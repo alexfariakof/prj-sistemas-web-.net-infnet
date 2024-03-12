@@ -21,8 +21,4 @@
     <ProjectReference Include="..\DataSeeders\DataSeeders.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
 </Project>
