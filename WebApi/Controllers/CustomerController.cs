@@ -47,9 +47,9 @@ public class CustomerController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost]    
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((400), Type = typeof(string))]    
     public IActionResult Create([FromBody] CustomerDto dto)
     {
         if (ModelState is { IsValid: false })

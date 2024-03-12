@@ -12,7 +12,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CustomInterceptor } from './interceptors/http.interceptor.service';
 
-
 @NgModule({
   declarations: [AppComponent ],
   imports: [ BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule,
