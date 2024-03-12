@@ -52,9 +52,9 @@ public class UserService : IUserService
             return new AuthenticationDto
             {
                 AccessToken = token,
-                Authenticated = true
+                Authenticated = true,                
+                UserType = user.UserType.Description
             };
-
         }
         throw new ArgumentException("Usuário Inválido!");
     }

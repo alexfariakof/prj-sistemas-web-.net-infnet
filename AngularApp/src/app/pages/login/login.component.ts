@@ -13,7 +13,7 @@ import { catchError, map } from 'rxjs';
   standalone: true,
   imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 
 export class LoginComponent implements OnInit {
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formbuilder.group({
       email: ['user@custumer.com', [Validators.required, Validators.email]],
       password: ['12345', Validators.required]
-    }) as FormGroup & Login;
+    }) as (FormGroup & Login) | any;
   }
 
   onLoginClick() {
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/myplaylist']);
       },
       error :(response : any) =>  {
-        alert('Erro Auntenticação!');
+        alert(response.error);
       },
       complete() {
 

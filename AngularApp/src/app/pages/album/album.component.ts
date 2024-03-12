@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './album.component.html',
-  styleUrl: './album.component.css'
+  styleUrls: ['./album.component.css']
 })
 export class AlbumComponent {
 

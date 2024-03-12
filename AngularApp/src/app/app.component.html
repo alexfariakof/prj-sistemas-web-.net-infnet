@@ -1,6 +1,6 @@
 ﻿<mat-toolbar color="primary" class="d-flex">
   <a class="justify-content-start text-light text-decoration-none" href="#">Spotify Lite</a>
-  <div class="d-flex justify-content-end ms-auto">
+  <div class="d-flex justify-content-end ms-auto" *ngIf="isAuthenticated()" >
       <ul class="list-unstyled mb-0 mx-2 ms-auto ">
           <li class="nav-item dropdown">
               <button class="nav-link button" role="button" data-bs-toggle="dropdown" aria-expanded="true">Inscreva-se</button>
@@ -11,7 +11,7 @@
                       </button>
                   </li>
                   <li>
-                      <button class="nav-link dropdown-item" click="alert('Comerciante')">
+                      <button class="nav-link dropdown-item" >
                         <a type="button" class="btn btn-light" href="comerciante">Comerciante</a>
                       </button>
                   </li>
@@ -19,6 +19,9 @@
           </li>
       </ul>
     <a class="btn btn-light rounded-4 ms-auto mx-2" role="button" href="login"  aria-expanded="true">Entrar</a>
+  </div>
+  <div class="d-flex justify-content-end ms-auto" *ngIf="!isAuthenticated()" >
+    <button class="btn btn-light rounded-4 ms-auto mx-2" role="button" (click)="logout()"  aria-expanded="true">Sair</button>
   </div>
 </mat-toolbar>
 <router-outlet></router-outlet>

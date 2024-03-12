@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   imports: [ MatCardModule, MatButtonModule, CommonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
   bands:[] | any = null;

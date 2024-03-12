@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './merchant.component.html',
-  styleUrl: './merchant.component.css'
+  styleUrls: ['./merchant.component.css']
 })
 export class MerchantComponent {
 

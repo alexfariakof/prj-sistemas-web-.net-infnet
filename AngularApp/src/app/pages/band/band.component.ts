@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './band.component.html',
-  styleUrl: './band.component.css'
+  styleUrls: ['./band.component.css']
 })
 export class BandComponent {
 
