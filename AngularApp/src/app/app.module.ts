@@ -15,7 +15,7 @@ import { CustomInterceptor } from './interceptors/http.interceptor.service';
 
 @NgModule({
   declarations: [AppComponent ],
-  imports: [ BrowserModule,BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule,
+  imports: [ BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule,
     MatToolbarModule, MatFormFieldModule, MatInputModule, MatDatepickerModule  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, },
