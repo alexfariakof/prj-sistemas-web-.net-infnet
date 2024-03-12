@@ -9,7 +9,8 @@ using Domain.Transactions.ValueObject;
 namespace Domain.Account.Agreggates;
 public abstract class AbstractAccount<T> : BaseModel
 {
-    public string? Name { get; set; }    
+    public string? Name { get; set; }
+    public virtual User User { get; set; } = new User();
     public virtual IList<Address> Addresses { get; set; } = new List<Address>();
     public virtual IList<Card> Cards { get; set; } = new List<Card>();    
     public virtual IList<Signature> Signatures { get; set; } = new List<Signature>();

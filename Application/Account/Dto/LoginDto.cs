@@ -11,14 +11,4 @@ public class LoginDto
     [Required]
     [PasswordPropertyText]
     public string? Password { get; set; }
-
-    [Required]
-    public UserType Type { get; set; }
 }
-public enum UserType
-{
-    Customer,
-    Merchant,
-    Admin
-}
-

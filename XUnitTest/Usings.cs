@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Domain.Account.ValueObject;
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -73,7 +74,6 @@ public static class Usings
         _mock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<T, bool>>>()));
         return _mock;
     }
-
     public static Mock<DbSet<CreditCardBrand>> MockDataSetCreditCardBrand()
     {
         var creditCardBrandData = new List<CreditCardBrand>
@@ -89,6 +89,18 @@ public static class Usings
 
         return MockDbSet(creditCardBrandData);
     }
+    public static Mock<DbSet<UserType>> MockDataSetUserType()
+    {
+        var userTypeData = new List<UserType>
+        {
+            new UserType(UserTypeEnum.Admin),
+            new UserType(UserTypeEnum.Customer),
+            new UserType(UserTypeEnum.Merchant)
+        };
+
+        return MockDbSet(userTypeData);
+    }
+
     public static string GenerateJwtToken(Guid userId, string userType)
     {
         var configuration = new ConfigurationBuilder()

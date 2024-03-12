@@ -4,6 +4,7 @@ using Bogus.Extensions.Brazil;
 using Domain.Notifications;
 using Application.Account.Dto;
 using Domain.Transactions.Agreggates;
+using Domain.Account.ValueObject;
 
 namespace __mock__;
 public class MockMerchant
@@ -35,16 +36,23 @@ public class MockMerchant
     {
         lock (LockObject)
         {
-            return Faker
+            var mockUser = MockUser.Instance.GetFaker();
+            var mockCustomer = MockCustomer.Instance.GetFaker();
+            mockCustomer.User = mockUser;
+            var fakeMerchant = Faker
                 .RuleFor(m => m.Id, f => f.Random.Guid())
                 .RuleFor(m => m.Name, f => f.Name.FirstName())
-                .RuleFor(m => m.Customer, MockCustomer.Instance.GetFaker())
+                .RuleFor(c => c.User, mockUser)
+                .RuleFor(m => m.Customer, mockCustomer)
                 .RuleFor(m => m.CNPJ, f => f.Company.Cnpj())
                 .RuleFor(c => c.Addresses, MockAddress.Instance.GetListFaker(1))
                 .RuleFor(m => m.Cards, f => new List<Card>())
                 .RuleFor(m => m.Signatures, f => new List<Signature>())
                 .RuleFor(m => m.Notifications, f => new List<Notification>())
                 .Generate();
+            fakeMerchant.User.UserType = new UserType(UserTypeEnum.Merchant);
+            return fakeMerchant;
+
         }
     }
 
@@ -68,8 +76,8 @@ public class MockMerchant
             var fakeMerchantDto = new Faker<MerchantDto>()
                 .RuleFor(c => c.Id, f => merchant.Id)
                 .RuleFor(c => c.Name, f => merchant.Name)
-                .RuleFor(c => c.Email, f => merchant.Customer.Login.Email)
-                .RuleFor(c => c.Password, f => merchant.Customer.Login.Password)
+                .RuleFor(c => c.Email, f => merchant.User.Login.Email)
+                .RuleFor(c => c.Password, f => merchant.User.Login.Password)
                 .RuleFor(c => c.CPF, f => merchant.Customer.CPF)
                 .RuleFor(c => c.CNPJ, f => merchant.CNPJ)
                 .RuleFor(c => c.Phone, f => merchant.Customer.Phone.Number)

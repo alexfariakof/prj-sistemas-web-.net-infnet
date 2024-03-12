@@ -12,6 +12,7 @@ public class Merchant : AbstractAccount<Merchant>
     public override void CreateAccount(Merchant merchant, Address address,  Flat flat, Card card)
     {
         Name = merchant.Name;
+        User.UserType = new UserType(UserTypeEnum.Merchant);
         CNPJ = merchant.CNPJ;
         merchant.Customer.Flat = flat;
         Customer = merchant.Customer;
