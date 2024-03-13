@@ -10,8 +10,8 @@ export const routes: Routes = [
     { path: '',  pathMatch: 'full', redirectTo: '' },
     { path: '', component: HomeComponent },
     { path: "login", component: LoginComponent},
-    { path: "cliente", component: CustomerComponent},
-    { path: "comerciante", component: MerchantComponent},
+    { path: "account/customer", component: CustomerComponent},
+    { path: "account/merchant", component: MerchantComponent},
     { path: "myplaylist", component: MyplaylistComponent},
 ];
 
