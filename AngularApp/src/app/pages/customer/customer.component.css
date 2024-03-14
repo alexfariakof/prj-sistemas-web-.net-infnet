@@ -11,7 +11,7 @@
   display: flex;
 }
 
-.logadouro {
+.logradouro {
   flex: 1;
   width: 70%;
 }
@@ -22,6 +22,22 @@
   margin-left: 4px;
 }
 .complement {
+  flex: 0 0 5%;
+  width: 19%;
+  margin-left: 4px;
+}
+
+.neighborhood {
+  flex: 1;
+  width: 40%;
+}
+
+.city {
+  width: 40%;
+  margin-left: 4px;
+}
+
+.state {
   flex: 0 0 5%;
   width: 19%;
   margin-left: 4px;

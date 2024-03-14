@@ -11,7 +11,7 @@ export class BandService {
 
   constructor(public httpClient: HttpClient) { }
 
-  public getALlBand(): Observable<Band[]> {
+  public getAllBand(): Observable<Band[]> {
     return this.httpClient.get<Band[]>(`${ this.routeUrl }`);
   }
 }
