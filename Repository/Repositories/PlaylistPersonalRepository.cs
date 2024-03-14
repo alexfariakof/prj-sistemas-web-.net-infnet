@@ -12,7 +12,6 @@ public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRep
 
     public override void Save(PlaylistPersonal entity)
     {
-
         var dsMusic = this.Context.Set<Music>().ToList();
         entity.Musics = entity.Musics.Select(music => dsMusic.First(m =>  m.Id == music.Id)).ToList();
         this.Context.Add(entity);
@@ -32,7 +31,6 @@ public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRep
     public override void Update(PlaylistPersonal entity)
     {
         var entityToUpdate = this.Context.Set<PlaylistPersonal>().ToList().First(p => p.Id.Equals(entity.Id));
-
         var dsMusic = this.Context.Set<Music>().ToList();
         entityToUpdate.Musics = entity.Musics.Select(music => dsMusic.First(m => m.Id == music.Id)).ToList();
         this.Context.Update(entityToUpdate);
