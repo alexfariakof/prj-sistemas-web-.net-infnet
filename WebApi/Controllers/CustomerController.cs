@@ -1,7 +1,6 @@
 using Application;
 using Application.Account.Dto;
 using Domain.Account.ValueObject;
-using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -14,13 +13,11 @@ public class CustomerController : ControllerBase
 {
     private readonly IService<CustomerDto> _customerService;
     private readonly IService<PlaylistPersonalDto> _playlistService;
-    private readonly IValidator<PlaylistPersonalDto> _validator;
 
-    public CustomerController(IService<CustomerDto> customerService, IService<PlaylistPersonalDto> playlistService, IValidatorFactory validatorFactory)
+    public CustomerController(IService<CustomerDto> customerService, IService<PlaylistPersonalDto> playlistService)
     {
         _customerService = customerService;
         _playlistService = playlistService;
-        _validator = validatorFactory.GetValidator<PlaylistPersonalDto>(); 
     }
 
     [HttpGet]
@@ -174,9 +171,7 @@ public class CustomerController : ControllerBase
         }), validationResults, validateAllProperties: true);
 
         if (!isValid)
-            return BadRequest(validationResults.Select(error => error.ErrorMessage));
-
-        try
+            return BadRequest(validationResults.Select(error => error.ErrorMessage)); try
         {
             dto.CustumerId = UserIdentity;
             var result = this._playlistService.Create(dto);
@@ -204,7 +199,6 @@ public class CustomerController : ControllerBase
 
         if (!isValid)
             return BadRequest(validationResults.Select(error => error.ErrorMessage));
-
 
         try
         {

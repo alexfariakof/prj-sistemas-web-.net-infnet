@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
-import { CustomerComponent } from './pages/customer/customer.component';
-import { MerchantComponent } from './pages/merchant/merchant.component';
+import { MerchantComponent } from './pages/account/merchant/merchant.component';
 import { MyplaylistComponent } from './pages/myplaylist/myplaylist.component';
+import { CustomerComponent } from './pages/account/customer/customer.component';
 
 export const routes: Routes = [
     { path: '',  pathMatch: 'full', redirectTo: '' },
