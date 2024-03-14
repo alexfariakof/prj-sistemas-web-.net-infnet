@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, NgModule, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormBuilder, FormGroup, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
