@@ -1,5 +1,4 @@
 import { Customer } from 'src/app/model';
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -12,7 +11,7 @@ export class CustomerService {
 
   constructor(public httpClient: HttpClient) { }
 
-  public Create(customer: Customer): Observable<any> {
+  public create(customer: Customer): Observable<any> {
     return this.httpClient.post<Customer>(`${ this.routeUrl }`, customer);
   }
 

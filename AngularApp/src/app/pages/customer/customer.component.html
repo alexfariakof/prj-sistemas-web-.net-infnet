@@ -71,7 +71,7 @@
       </div>
     </mat-form-field>
     <div class="d-flex" class="justify-content-start w-100">
-      <mat-form-field appearance="outline" class="logadouro">
+      <mat-form-field appearance="outline" class="logradouro">
         <mat-label>Endereço</mat-label>
         <input matInput id="logradouro" name="logradouro" formControlName="street" type="text" class="form-control"
           placeholder="Entre com o logradouro" [ngClass]="{
@@ -87,6 +87,25 @@
       <mat-form-field appearance="outline" class="complement">
         <mat-label>Complemento</mat-label>
         <input matInput id="complement" name="complement" formControlName="complement" type="text" class="form-control" placeholder="Complemento" />
+      </mat-form-field>
+    </div>
+    <div class="d-flex" class="justify-content-start w-100">
+      <mat-form-field appearance="outline" class="neighborhood">
+        <mat-label>Bairro</mat-label>
+        <input matInput id="neighborhood" name="neighborhood" formControlName="neighborhood" type="text" class="form-control"
+          placeholder="Entre com o bairro" [ngClass]="{
+                'is-invalid':
+                  !createAccountForm.get('neighborhood').valid &&
+                  createAccountForm.get('neighborhood')?.touched
+              }" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="city">
+        <mat-label>Cidade</mat-label>
+        <input matInput id="city" name="city" formControlName="city" type="text" class="form-control" placeholder="Cidade" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="state">
+        <mat-label>Estado</mat-label>
+        <input matInput id="state" name="state" formControlName="state" type="text" class="form-control" placeholder="Estado" />
       </mat-form-field>
     </div>
     <div class="d-flex" class="justify-content-start w-100">

@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -8,9 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import * as dayjs from 'dayjs';
-import { map, catchError } from 'rxjs';
-import { Address, Card, Customer } from 'src/app/model';
-import { CustomerService } from 'src/app/services';
+import { Address, Customer } from 'src/app/model';
+import { AddressService, CustomerService } from 'src/app/services';
 
 @Component({
   selector: 'app-customer',
@@ -29,8 +27,8 @@ export class CustomerComponent implements OnInit {
   constructor(
     public formbuilder: FormBuilder,
     public router: Router,
-    private http: HttpClient,
-    public customerService: CustomerService) { }
+    public customerService: CustomerService,
+    public addressService: AddressService) { }
 
   ngOnInit(): void {
     const address: Address={};
@@ -46,6 +44,9 @@ export class CustomerComponent implements OnInit {
       street: ['', [Validators.required]],
       number: [''],
       complement: [''],
+      neighborhood: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      state: ['', [Validators.required]],
       cardNumber: ['', [Validators.required]],
       cardValidate: ['', [Validators.required]],
       cardCVV: ['', [Validators.required]],
@@ -71,8 +72,11 @@ export class CustomerComponent implements OnInit {
     };
     customer.address.number = this.createAccountForm.get("number").value;
     customer.address.complement = this.createAccountForm.get("complement").value;
+    customer.address.neighborhood = this.createAccountForm.get("neighborhood").value;
+    customer.address.city = this.createAccountForm.get("city").value;
+    customer.address.state = this.createAccountForm.get("state").value;
 
-    this.customerService.Create(customer)
+    this.customerService.create(customer)
     .subscribe({
       next: (response:any) => {
         if (response != null) {
@@ -92,26 +96,22 @@ export class CustomerComponent implements OnInit {
   }
 
   buscarCEP() {
-    const cep = this.createAccountForm.get('zipcode').value.replace('-','');
-    if (cep) {
-      this.http.get(`https://viacep.com.br/ws/${cep}/json`)
-        .subscribe((response: any) => {
-          const address: Address = {
-            zipcode: response.cep,
-            street: response.logradouro,
-            complement: response.complemento,
-            city: response.bairro,
-            state: response.localidade,
-            country: response.uf,
-          };
-
-          this.createAccountForm.patchValue({
-            street: response.logradouro,
-            address: address
-          });
+    const cep = this.createAccountForm.get('zipcode').value.replace('-', '');
+    this.addressService.buscarCep(cep).subscribe((address: Address) => {
+      if (address) {
+        this.createAccountForm.patchValue({
+          street: address.street,
+          neighborhood: address.neighborhood,
+          city: address.city,
+          state: address.state,
+          address: address
         });
-    }
+      } else {
+        alert('Endereço não encontrado!')
+      }
+    });
   }
+
   onTooglePassword = (): void => {
     this.showPassword = !this.showPassword;
     this.eyeIconClass = (this.eyeIconClass === 'bi-eye') ? 'bi-eye-slash' : 'bi-eye';
