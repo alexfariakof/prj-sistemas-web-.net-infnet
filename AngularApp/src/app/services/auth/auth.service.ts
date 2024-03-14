@@ -9,7 +9,7 @@ import { Auth, Login } from 'src/app/model';
 
 export class AuthService {
   private accessTokenSubject = new BehaviorSubject<string | undefined>(undefined);
-  public routeUrl:string = 'auth';
+  private routeUrl:string = 'auth';
 
   accessToken$ = this.accessTokenSubject.asObservable();
 

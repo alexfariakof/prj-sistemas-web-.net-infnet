@@ -194,7 +194,7 @@ public class MusicControllerTest
         // Arrange        
         var mockMusicDto = MockMusic.Instance.GetDtoFromMusic(MockMusic.Instance.GetFaker());
         mockMusicService.Setup(service => service.Delete(It.IsAny<MusicDto>())).Returns(true);
-        mockMusicService.Setup(service => service.FindById(mockMusicDto.Id)).Returns(mockMusicDto);
+        mockMusicService.Setup(service => service.FindById(mockMusicDto.Id.Value)).Returns(mockMusicDto);
         SetupBearerToken(Guid.NewGuid());
 
         // Act
@@ -279,7 +279,7 @@ public class MusicControllerTest
         // Arrange        
         var mockMusicDto = MockMusic.Instance.GetDtoFromMusic(MockMusic.Instance.GetFaker());
         mockMusicService.Setup(service => service.Delete(It.IsAny<MusicDto>())).Throws(new Exception("BadRequest_Erro_Message"));
-        mockMusicService.Setup(service => service.FindById(mockMusicDto.Id)).Returns(mockMusicDto);
+        mockMusicService.Setup(service => service.FindById(mockMusicDto.Id.Value)).Returns(mockMusicDto);
         SetupBearerToken(Guid.NewGuid());
 
         // Act

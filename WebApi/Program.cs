@@ -4,8 +4,6 @@ using Repository;
 using Repository.CommonInjectDependence;
 using Application.CommonInjectDependence;
 using WebApi.CommonInjectDependence;
-using Application;
-using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +33,6 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-builder.Services.AddSingleton<IValidatorFactory, ServiceProviderValidatorFactory>();
 builder.Services.AddDbContext<RegisterContext>(c =>
 {
     c.UseLazyLoadingProxies()

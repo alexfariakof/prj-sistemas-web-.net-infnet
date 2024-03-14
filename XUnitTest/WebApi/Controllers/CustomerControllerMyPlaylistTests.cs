@@ -1,7 +1,6 @@
 using Application;
 using Application.Account.Dto;
 using Domain.Account.ValueObject;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -12,7 +11,6 @@ public class CustomerControllerMyPlaylistTests
 {
     private readonly Mock<IService<CustomerDto>> mockCustomerService;
     private readonly Mock<IService<PlaylistPersonalDto>> mockPlaylistService;
-    private readonly Mock<IValidatorFactory> mockValidator;
     private readonly CustomerController controller;
     private void SetupBearerToken(Guid userId, UserTypeEnum userType = UserTypeEnum.Customer)
     {
@@ -38,8 +36,7 @@ public class CustomerControllerMyPlaylistTests
         // Arrange
         mockCustomerService = new Mock<IService<CustomerDto>>();
         mockPlaylistService = new Mock<IService<PlaylistPersonalDto>>();
-        mockValidator = new Mock<IValidatorFactory>();
-        controller = new CustomerController(mockCustomerService.Object, mockPlaylistService.Object, mockValidator.Object);
+        controller = new CustomerController(mockCustomerService.Object, mockPlaylistService.Object);
     }
 
     [Fact]
