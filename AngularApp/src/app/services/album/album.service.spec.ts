@@ -24,8 +24,14 @@ describe('AlbumService', () => {
   it('should fetch albums from API via GET', () => {
     // Arrange
     const mockAlbums: Album[] = [
-      { id: '1', name: 'Album 1' },
-      { id: '2', name: 'Album 2' }
+      {
+        id: '1', name: 'Album 1',
+        bandId: ''
+      },
+      {
+        id: '2', name: 'Album 2',
+        bandId: ''
+      }
     ];
 
     // Act

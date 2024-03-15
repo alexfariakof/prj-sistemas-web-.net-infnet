@@ -1,26 +1,41 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoadingComponent } from '../components';
-
+import { AuthService } from '../services';
 
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
   private activeRequests: number = 0;
   private isModalOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private authService: AuthService, private modalService: NgbModal) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.showLoader();
 
-    return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
-        return throwError(() => error);
+    return this.authService.accessToken$.pipe(
+
+      switchMap((accessToken) => {
+          const modifiedRequest = request.clone({
+          url: `${request.url}`,
+          setHeaders: {
+            Authorization: `Bearer ${localStorage.getItem('@token') ?? accessToken}`
+          }
+        });
+        return next.handle(modifiedRequest).pipe(
+          catchError((error: HttpErrorResponse) => {
+            return throwError(() => error);
+          }),
+          finalize(() => this.hideLoader())
+        );
       }),
-      finalize(() => this.hideLoader())
+      catchError((error) => {
+        console.log(error);
+        return throwError(() => error);
+      })
     );
   }
 

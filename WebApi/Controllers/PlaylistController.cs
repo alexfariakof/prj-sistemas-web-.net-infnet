@@ -20,11 +20,8 @@ public class PlaylistController : ControllerBase
     [ProducesResponseType((200), Type = typeof(List<PlaylistDto>))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
     public IActionResult FindAll()
     {
-        if (UserType != UserTypeEnum.Customer) return Unauthorized();
-
         try
         {
             var result = this._playlistService.FindAll(UserIdentity);
@@ -43,11 +40,8 @@ public class PlaylistController : ControllerBase
     [ProducesResponseType((200), Type = typeof(PlaylistDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
     public IActionResult FindById([FromRoute] Guid playlistId)
     {
-        if (UserType != UserTypeEnum.Customer) return Unauthorized();
-
         try
         {
             var result = this._playlistService.FindById(playlistId);
@@ -68,6 +62,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Create([FromBody] PlaylistDto dto)
     {
+        if (UserType != UserTypeEnum.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -89,7 +84,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(PlaylistDto dto)
     {
-        if (UserType != UserTypeEnum.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -112,7 +107,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(PlaylistDto dto)
     {
-        if (UserType != UserTypeEnum.Customer) return Unauthorized();
+        if (UserType != UserTypeEnum.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();

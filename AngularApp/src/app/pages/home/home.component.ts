@@ -1,19 +1,37 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { Component, OnInit } from '@angular/core';
+import { Playlist } from 'src/app/model';
+import { PlaylistService } from 'src/app/services';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [ MatCardModule, MatButtonModule, CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
-  bands:[] | any = null;
+export class HomeComponent implements OnInit {
+  bands: [] = [];
+  hasStyle: string = '';
+  playlist: Playlist[] = [];
 
-  goToDetail = (item:any) =>{
+  constructor(public playlistService: PlaylistService) { }
 
+  ngOnInit(): void {
+    this.getListOfPlaylist();
+  }
+
+  getListOfPlaylist = (): void => {
+    this.playlistService.getAllPlaylist().subscribe({
+      next: (response: Playlist[]) => {
+        if (response != null) {
+          this.playlist = response;
+        }
+        else {
+          throw (response);
+        }
+      },
+      error: (response: any) => {
+        console.log(response.error);
+      },
+      complete() { }
+    });
   }
 }

@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     .subscribe({
       next: (result: Boolean) => {
         if (result === true)
-          this.router.navigate(['/myplaylist']);
+          this.router.navigate(['/favorites']);
       },
       error :(response : any) =>  {
         alert(response.error);

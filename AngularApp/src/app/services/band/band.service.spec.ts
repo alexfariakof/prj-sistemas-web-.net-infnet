@@ -28,8 +28,14 @@ describe('BandService', () => {
   it('should fetch bands from API via GET', () => {
     // Arrange
     const mockBands: Band[] = [
-      { id: '1', name: 'Band 1', description: 'Description 1', backdrop: 'Backdrop 1', album: { id: '1', name: 'Album 1' } },
-      { id: '2', name: 'Band 2', description: 'Description 2', backdrop: 'Backdrop 2', album: { id: '2', name: 'Album 2' } }
+      { id: '1', name: 'Band 1', description: 'Description 1', backdrop: 'Backdrop 1', album: {
+        id: '1', name: 'Album 1',
+        bandId: '0001'
+      } },
+      { id: '2', name: 'Band 2', description: 'Description 2', backdrop: 'Backdrop 2', album: {
+        id: '2', name: 'Album 2',
+        bandId: '0002'
+      } }
     ];
 
     // Act

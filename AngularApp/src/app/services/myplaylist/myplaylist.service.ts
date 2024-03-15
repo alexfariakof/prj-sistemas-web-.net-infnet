@@ -14,4 +14,8 @@ export class MyPlaylistService {
   public getAllPlaylist(): Observable<Playlist[]> {
     return this.httpClient.get<Playlist[]>(`${ this.routeUrl }`);
   }
+
+  public getPlaylist(playlistId: string): Observable<Playlist> {
+    return this.httpClient.get<Playlist>(`${ this.routeUrl }/${playlistId}`);
+  }
 }

@@ -42,7 +42,7 @@ describe('LoginComponent', () => {
     // Assert
     expect(authService.signIn).toHaveBeenCalled();
     expect(authService.createAccessToken).toHaveBeenCalled();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/myplaylist']);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/favorites']);
   }));
 
   it('onLoginClick should display error alert on authentication failure', fakeAsync(() => {

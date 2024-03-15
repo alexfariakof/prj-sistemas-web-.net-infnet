@@ -11,11 +11,17 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CustomInterceptor } from './interceptors/http.interceptor.service';
+import { AlbumModule } from './pages/album/album.module';
+import { BandModule } from './pages/band/band.module';
+import { HomeModule } from './pages/home/home.module';
+import { MusicModule } from './pages/musics/musics.module';
+import { MyplaylistModule } from './pages/myplaylist/myplaylist.module';
 
 @NgModule({
   declarations: [AppComponent ],
   imports: [ BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule,
-    MatToolbarModule, MatFormFieldModule, MatInputModule, MatDatepickerModule  ],
+    MatToolbarModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
+  AlbumModule, BandModule, HomeModule, MusicModule, MyplaylistModule  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, },
   ],

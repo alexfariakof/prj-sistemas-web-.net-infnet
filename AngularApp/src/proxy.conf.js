@@ -8,6 +8,7 @@ const PROXY_CONFIG = [
     context: [
       "/auth",
       "/customer",
+      "/customer/myplaylist",
       "/merchant",
       "/album",
       "/band",
