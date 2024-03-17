@@ -1,17 +1,13 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth, Login } from 'src/app/model';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { AuthService } from 'src/app/services';
-import { catchError, map } from 'rxjs';
+import { AuthProvider } from 'src/app/provider/auth.provider';
+import { map, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -24,21 +20,24 @@ export class LoginComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     public router: Router,
-    public authService: AuthService) {}
+    public authService: AuthService,
+    private authProvider: AuthProvider) {}
 
   ngOnInit(): void {
     this.loginForm = this.formbuilder.group({
       email: ['user@custumer.com', [Validators.required, Validators.email]],
       password: ['12345', Validators.required]
     }) as (FormGroup & Login) | any;
+    document.body.style.overflowY = 'hidden';
   }
 
   onLoginClick() {
     let login: Login = this.loginForm.getRawValue();
-    this.authService.signIn(login).pipe(
-      map((response: Auth | any) => {
+    this.authService.signIn(login)
+    .pipe(
+      map((response: Auth) => {
         if (response.authenticated) {
-          return this.authService.createAccessToken(response);
+          return response;
         }
         else {
           throw (response);
@@ -49,16 +48,19 @@ export class LoginComponent implements OnInit {
       })
     )
     .subscribe({
-      next: (result: Boolean) => {
-        if (result === true)
-          this.router.navigate(['/myplaylist']);
+      next: (response) => {
+        if (response) {
+          this.authProvider.createAccessToken(response);
+          this.router.navigate(['/']);
+        }
+        else {
+          throw (response);
+        }
       },
       error :(response : any) =>  {
         alert(response.error);
       },
-      complete() {
-
-      }
+      complete() { }
     });
   }
 

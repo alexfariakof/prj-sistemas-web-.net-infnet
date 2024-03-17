@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoadingComponent } from '../components';
-
-
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
   private activeRequests: number = 0;
@@ -15,13 +13,19 @@ export class CustomInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.showLoader();
-
-    return next.handle(request).pipe(
+    const modifiedRequest = request.clone({
+      url: `${request.url}`,
+      setHeaders: {
+        Authorization: `Bearer ${localStorage.getItem('@token') ?? ''}`
+      }
+    });
+    return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
         return throwError(() => error);
       }),
       finalize(() => this.hideLoader())
     );
+
   }
 
   private showLoader(): void {

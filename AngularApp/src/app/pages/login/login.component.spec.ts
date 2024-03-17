@@ -15,7 +15,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, HttpClientTestingModule, BrowserAnimationsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
       providers:[AuthService]
     })
     .compileComponents();
@@ -32,7 +32,6 @@ describe('LoginComponent', () => {
   it('onLoginClick should call authService signIn method and navigate to myplaylist on success', fakeAsync(() => {
     // Arrange
     spyOn(authService, 'signIn').and.returnValue(of({ authenticated: true }));
-    spyOn(authService, 'createAccessToken').and.returnValue(true);
     spyOn(component.router, 'navigate');
 
     // Act
@@ -41,8 +40,7 @@ describe('LoginComponent', () => {
 
     // Assert
     expect(authService.signIn).toHaveBeenCalled();
-    expect(authService.createAccessToken).toHaveBeenCalled();
-    expect(component.router.navigate).toHaveBeenCalledWith(['/myplaylist']);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/']);
   }));
 
   it('onLoginClick should display error alert on authentication failure', fakeAsync(() => {

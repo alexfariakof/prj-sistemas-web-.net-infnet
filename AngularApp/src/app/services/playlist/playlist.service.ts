@@ -6,8 +6,9 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class PlaylistService {
-  public routeUrl:string = 'playlist';
+  public routeUrl:string = 'api/playlist';
 
   constructor(public httpClient: HttpClient) { }
 

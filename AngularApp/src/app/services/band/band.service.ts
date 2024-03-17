@@ -6,12 +6,17 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class BandService {
-  public routeUrl:string = 'band';
+  public routeUrl:string = 'api/band';
 
   constructor(public httpClient: HttpClient) { }
 
   public getAllBand(): Observable<Band[]> {
     return this.httpClient.get<Band[]>(`${ this.routeUrl }`);
+  }
+
+  public getBandById(bandId: string): Observable<Band> {
+    return this.httpClient.get<Band>(`${ this.routeUrl }/${bandId}`);
   }
 }

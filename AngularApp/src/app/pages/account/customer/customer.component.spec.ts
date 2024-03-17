@@ -15,7 +15,7 @@ describe('CustomerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CustomerComponent, BrowserAnimationsModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule],
       providers:[AddressService]
     })
     .compileComponents();

@@ -1,17 +1,24 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthService } from './auth.service';
-import { Auth } from 'src/app/model';
+import { Auth, Login } from 'src/app/model';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
 
 describe('Unit Test AuthService', () => {
-  let authService: AuthService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers:[AuthService]
+      providers:[AuthService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
     });
-    authService = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', inject([AuthService], (service: AuthService) => {
@@ -19,50 +26,32 @@ describe('Unit Test AuthService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should set and get access token', () => {
-    // Arrange
-    const fakeAuth: Auth = {
-      accessToken: 'fakeToken',
-      expiration: '2023-01-01T00:00:00Z',
-      authenticated: true,
-      created: '2023-01-01T00:00:00Z',
-      refreshToken: 'fakeToken',
-    };
+  it('should send a POST request to the api/auth endpoint', inject(
+    [AuthService, HttpTestingController],
+    (service: AuthService, httpMock: HttpTestingController) => {
+      const loginData: Login = {
+        email: 'teste@teste.com',
+        password: 'teste',
+      };
 
-    // Act
-    authService.createAccessToken(fakeAuth);
+      const mockResponse: Auth = {
+        accessToken: 'fakeToken',
+        expiration: '2023-01-01T00:00:00Z',
+        authenticated: true,
+        created: '2023-01-01T00:00:00Z',
+        refreshToken: 'fakeToken',
+        usertype: 'customer'
+      };
 
-    // Assert
-    expect(authService.isAuthenticated()).toBe(true);
-    expect(localStorage.getItem('@token')).toBe('fakeToken');
-  });
+      service.signIn(loginData).subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/auth';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('POST');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
 
-  it('should clear local storage', () => {
-    // Act
-    authService.clearLocalStorage();
-
-    // Assert
-    expect(authService.isAuthenticated()).toBeFalsy();
-    expect(localStorage.getItem('@token')).toBeNull();
-  });
-
-  it('should catch error on creating access token', () => {
-    // Arrange
-    spyOn(localStorage, 'setItem').and.throwError('Fake error');
-
-    const fakeAuth: Auth = {
-      accessToken: undefined,
-      expiration: '2023-01-01T00:00:00Z',
-      authenticated: false,
-      created: '',
-      refreshToken: 'fakeToken',
-    };
-
-    // Act
-    const result = authService.createAccessToken(fakeAuth);
-
-    // Assert
-    expect(result).toBeFalsy();
-  });
 });
-

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component,  Inject, OnInit } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -67,8 +67,9 @@ export default abstract class AccountComponent implements OnInit {
     else if (accountType === 'merchant') {
       this.createAccountForm.get('birth').disable();
       this.showBirthField = false;
-
     }
+
+
   }
 
   abstract onSaveClick(): void;

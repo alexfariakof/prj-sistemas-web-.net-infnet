@@ -1,23 +1,53 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { AuthService } from '../services';
-
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { Auth } from '../model';
 @Injectable({
   providedIn: 'root',
 })
 
 export class AuthProvider implements CanActivate {
+  private accessTokenSubject = new BehaviorSubject<string | undefined>(undefined);
 
-  constructor(private authService: AuthService, private router: Router) {}
+  accessToken$ = this.accessTokenSubject.asObservable();
+
+  constructor() {
+    try {
+      const accessToken = localStorage.getItem('@token');
+      if (accessToken) {
+        this.setAccessToken(accessToken);
+      } else {
+        this.clearLocalStorage();
+      }
+    } catch {
+      this.clearLocalStorage();
+    }
+  }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
-    const isAuthenticated = this.authService.isAuthenticated();
+    return this.isAuthenticated();
+  }
 
-    if (isAuthenticated) {
-      return true;
-    } else {
-      this.router.navigate(['/']);
+  public clearLocalStorage() {
+    this.setAccessToken(undefined);
+    localStorage.clear();
+  }
+
+  private setAccessToken(token: string | undefined) {
+    this.accessTokenSubject.next(token);
+  }
+
+  isAuthenticated(): boolean {
+    const accessToken = this.accessTokenSubject.getValue() ?? localStorage.getItem('@token') ;
+    if (accessToken === null || accessToken === undefined) {
+      this.clearLocalStorage();
       return false;
     }
+    return true;
+  }
+
+  createAccessToken(auth: Auth): void {
+    localStorage.setItem('@token', auth.accessToken ?? '');
+    this.setAccessToken(auth.accessToken);
   }
 }

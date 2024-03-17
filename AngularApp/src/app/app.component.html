@@ -1,27 +1,3 @@
-﻿<mat-toolbar color="primary" class="d-flex">
-  <a class="justify-content-start text-light text-decoration-none" href="#">Spotify Lite</a>
-  <div class="d-flex justify-content-end ms-auto" *ngIf="isAuthenticated()" >
-      <ul class="list-unstyled mb-0 mx-2 ms-auto ">
-          <li class="nav-item dropdown">
-              <button class="nav-link button" role="button" data-bs-toggle="dropdown" aria-expanded="true">Inscreva-se</button>
-              <ul class="dropdown-menu dropdown-menu-light text-small text-center shadow" style="left: -150%" aria-labelledby="dropdown">
-                  <li >
-                      <button class="nav-link dropdown-item" >
-                          <a type="button" class="btn btn-light" href="account/customer" >Cliente</a>
-                      </button>
-                  </li>
-                  <li>
-                      <button class="nav-link dropdown-item" >
-                        <a type="button" class="btn btn-light" href="account/merchant">Comerciante</a>
-                      </button>
-                  </li>
-              </ul>
-          </li>
-      </ul>
-    <a class="btn btn-light rounded-4 ms-auto mx-2" role="button" href="login"  aria-expanded="true">Entrar</a>
-  </div>
-  <div class="d-flex justify-content-end ms-auto" *ngIf="!isAuthenticated()" >
-    <button class="btn btn-light rounded-4 ms-auto mx-2" role="button" (click)="logout()"  aria-expanded="true">Sair</button>
-  </div>
-</mat-toolbar>
+﻿<app-tool-bar></app-tool-bar>
 <router-outlet></router-outlet>
+

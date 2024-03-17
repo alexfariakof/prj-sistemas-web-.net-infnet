@@ -1,19 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Customer } from 'src/app/model';
 import { AddressService, CustomerService } from 'src/app/services';
 import AccountComponent from '../account.component';
-import { CommonModule } from '@angular/common';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-customer',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule],
   templateUrl: './../account.component.html',
   styleUrls: ['./../account.component.css']
 })

@@ -6,4 +6,5 @@ export * from './customer/customer.service';
 export * from './merchant/merchnat.service';
 export * from './music/music.service';
 export * from './myplaylist/myplaylist.service';
+export * from './myplaylist/myplaylist.manager.service';
 export * from './playlist/playlist.service';
