@@ -13,7 +13,7 @@ import { MerchantComponent } from './merchant/merchant.component'
 @NgModule({
   declarations: [CustomerComponent, MerchantComponent ],
   imports: [AccountRoutingModule, CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],
-  exports: [CustomerComponent,MerchantComponent]
+  exports: [CustomerComponent, MerchantComponent]
 })
 
 export class AccountModule { }

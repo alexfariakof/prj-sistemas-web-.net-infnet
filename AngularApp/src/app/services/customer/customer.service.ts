@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
+
 export class CustomerService {
   private routeUrl:string = 'api/customer';
 
@@ -14,5 +15,4 @@ export class CustomerService {
   public create(customer: Customer): Observable<any> {
     return this.httpClient.post<Customer>(`${ this.routeUrl }`, customer);
   }
-
 }

@@ -26,7 +26,7 @@ describe('BandService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should send a get request to the api/album endpoint', inject(
+  it('getAllBand should send a get request to the api/band endpoint', inject(
     [BandService, HttpTestingController],
     (service: BandService, httpMock: HttpTestingController) => {
         const mockResponse: Band[] = [
@@ -55,4 +55,25 @@ describe('BandService', () => {
     }
   ));
 
+  it('getBandById should send a get request to the api/band endpoint', inject(
+    [BandService, HttpTestingController],
+    (service: BandService, httpMock: HttpTestingController) => {
+        const mockResponse: Band =
+        {
+          id: '1', name: 'Band 1',
+          album: { id: '1', name: 'Album 1', bandId: '1' },
+          description: 'Band Description 1',
+          backdrop: ''
+        };
+
+      service.getBandById('1').subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/band/1';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
 });

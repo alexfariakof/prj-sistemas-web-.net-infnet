@@ -24,7 +24,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   declarations: [AppComponent ],
   imports: [ BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule, FlexLayoutModule,
     MatToolbarModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
-   MyplaylistModule, AlbumModule, BandModule, MusicModule,
+    MyplaylistModule, AlbumModule, BandModule, MusicModule,
     ToolBarModule, AddFavoritesModule, FavoritesBarModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, },

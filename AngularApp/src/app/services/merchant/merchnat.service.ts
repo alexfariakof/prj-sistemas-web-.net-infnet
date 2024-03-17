@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
+
 export class MerchantService {
   private routeUrl:string = 'api/merchant';
 

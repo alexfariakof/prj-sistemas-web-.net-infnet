@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class PlaylistService {
   public routeUrl:string = 'api/playlist';
 
