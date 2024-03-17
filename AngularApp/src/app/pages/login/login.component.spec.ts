@@ -15,7 +15,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, HttpClientTestingModule, BrowserAnimationsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
       providers:[AuthService]
     })
     .compileComponents();

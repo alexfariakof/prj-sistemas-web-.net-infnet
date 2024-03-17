@@ -16,7 +16,7 @@ describe('AccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AccountComponent, BrowserAnimationsModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule],
       providers:[AddressService]
     })
     .compileComponents();

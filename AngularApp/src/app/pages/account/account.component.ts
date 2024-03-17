@@ -1,11 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { Component,  Inject, OnInit } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as dayjs from 'dayjs';
 import { Address, Customer, Merchant } from 'src/app/model';
@@ -13,8 +7,6 @@ import { AddressService, CustomerService, MerchantService } from 'src/app/servic
 
 @Component({
   selector: 'app-account-form',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
