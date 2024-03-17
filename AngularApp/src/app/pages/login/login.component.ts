@@ -12,8 +12,6 @@ import { map, catchError, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
