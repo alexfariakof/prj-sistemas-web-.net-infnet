@@ -1,7 +1,7 @@
 <div class="content-full-height d-flex align-items-center justify-content-center bg-dark fs-6 fs-sm-5 fs-md-4 fs-lg-3" >
   <div class="d-flex flex-column m-2 border border-2 border-primary bg-dark-subtle rounded-4 align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3">
     <form class="d-flex flex-column m-3 b-0  align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3"
-      (ngSubmit)="onLoginClick()" [formGroup]="loginForm" no-validate>
+      (ngSubmit)="onLoginClick()" [formGroup]="loginForm" >
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
         <input matInput required id="email" name="email" formControlName="email" type="text"
@@ -16,8 +16,8 @@
         <i class="position-absolute my-3 top-0 end-0" (click)="onTooglePassword()" [ngClass]="eyeIconClass"
           [class.text-danger]="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched"></i>
       </mat-form-field>
-      <div class="input-group d-flex flex-column align-items-center justify-content-center">
-        <button mat-raised-button color="primary" type="submit" class="btn btn-primary w-100" [ngClass]="{ disabled: !loginForm.valid }"
+      <div class="input-group d-flex flex-column align-items-center justify-content-center mb-1">
+        <button type="submit" class="btn btn-primary w-100" [ngClass]="{ disabled: !loginForm.valid }"
           [disabled]="!loginForm.valid">
           Entrar
         </button>

@@ -17,7 +17,6 @@ export class MyplaylistComponent implements OnInit {
     public myPlaylistService: MyPlaylistService) { }
 
   ngOnInit(): void {
-
     this.route.params.subscribe(params => {
       const playlistId = params['playlistId'];
         this.getMyplaylist(playlistId);

@@ -6,6 +6,7 @@ import { MerchantComponent } from './pages/account/merchant/merchant.component';
 import { AlbumComponent } from './pages/album/album.component';
 import { MusicComponent } from './pages/musics/musics.component';
 import { LoginComponent } from './pages/login/login.component';
+import { MyplaylistComponent } from './pages/myplaylist/myplaylist.component';
 
 export const routes: Routes = [
     { path: '',  pathMatch: 'full', redirectTo: '' },
@@ -13,7 +14,7 @@ export const routes: Routes = [
     { path: "login", component: LoginComponent},
     { path: "account/customer", component: CustomerComponent},
     { path: "account/merchant", component: MerchantComponent},
-    { path: "favorites", loadChildren: () => import('./pages/myplaylist/myplaylist.module').then(m => m.MyplaylistModule)},
+    { path: "favorites/:playlistId", component: MyplaylistComponent},
     { path: 'band', component: BandComponent},
     { path: 'band/:bandId', component: BandComponent},
     { path: 'album', component: AlbumComponent},

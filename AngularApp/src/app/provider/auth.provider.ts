@@ -25,13 +25,7 @@ export class AuthProvider implements CanActivate {
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
-    const isAuthenticated = this.isAuthenticated();
-
-    if (isAuthenticated) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.isAuthenticated();
   }
 
   public clearLocalStorage() {

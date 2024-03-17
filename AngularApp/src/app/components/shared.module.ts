@@ -5,9 +5,9 @@ import { CommonModule } from "@angular/common";
 import { AddFavoritesModule } from "./add-favorites/add-favorites.module";
 import { FavoritesBarModule } from "./favorites-bar/favorites-bar.module";
 
-@NgModule({  
+@NgModule({
   imports: [CommonModule, AddFavoritesModule, FavoritesBarModule ],
-  exports: [AddFavoritesComponent, FavoritesBarComponent],
+  exports: [CommonModule, AddFavoritesComponent, FavoritesBarComponent],
 })
 
 export class SharedModule { }

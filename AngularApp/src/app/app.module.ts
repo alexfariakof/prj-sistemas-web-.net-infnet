@@ -17,12 +17,14 @@ import { BandModule } from './pages/band/band.module';
 import { MusicModule } from './pages/musics/musics.module';
 import { AddFavoritesModule } from './components/add-favorites/add-favorites.module';
 import { FavoritesBarModule } from './components/favorites-bar/favorites-bar.module';
+import { MyplaylistModule } from './pages/myplaylist/myplaylist.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [AppComponent ],
-  imports: [ BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule,
-    MatToolbarModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, 
-    AlbumModule, BandModule, MusicModule, 
+  imports: [ BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule, FlexLayoutModule,
+    MatToolbarModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
+   MyplaylistModule, AlbumModule, BandModule, MusicModule,
     ToolBarModule, AddFavoritesModule, FavoritesBarModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, },

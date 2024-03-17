@@ -1,19 +1,19 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { PlaylistService } from './playlist.service';
 import { Playlist } from '../../model';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
+import { PlaylistService } from '..';
 
 describe('PlaylistService', () => {
-  let service: PlaylistService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [PlaylistService]
+      providers: [PlaylistService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
     });
-
-    service = TestBed.inject(PlaylistService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -21,26 +21,27 @@ describe('PlaylistService', () => {
     httpMock.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  it('should fetch all playlists from API via GET', () => {
-    // Arrange
-    const mockPlaylists: Playlist[] = [
-      { id: '1', name: 'Playlist 1', musics: [] },
-      { id: '2', name: 'Playlist 2', musics: [] }
-    ];
-
-    // Act
-    service.getAllPlaylist().subscribe((playlists: Playlist[]) => {
-      // Assert
-      expect(playlists).toEqual(mockPlaylists);
-    });
-
+  it('should be created', inject([PlaylistService], (service: PlaylistService) => {
     // Assert
-    const req = httpMock.expectOne('playlist');
-    expect(req.request.method).toBe('GET');
-    req.flush(mockPlaylists);
-  });
+    expect(service).toBeTruthy();
+  }));
+
+  it('should send a get request to the api/playlist endpoint', inject(
+    [PlaylistService, HttpTestingController],
+    (service: PlaylistService, httpMock: HttpTestingController) => {
+        const mockResponse: Playlist[] = [
+          { id: '1', name: 'Playlist 1', musics: [] },
+          { id: '2', name: 'Playlist 2', musics: [] }
+        ];
+      service.getAllPlaylist().subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/playlist';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
 });

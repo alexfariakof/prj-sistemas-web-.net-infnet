@@ -1,19 +1,19 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { CustomerService } from './customer.service';
-import { Customer } from 'src/app/model';
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpTestingController, HttpClientTestingModule } from "@angular/common/http/testing";
+import { TestBed, inject } from "@angular/core/testing";
+import { CustomInterceptor } from "src/app/interceptors/http.interceptor.service";
+import { Customer } from "src/app/model";
+import { CustomerService } from "./customer.service";
 
 describe('CustomerService', () => {
-  let service: CustomerService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CustomerService]
+      providers: [CustomerService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
     });
-
-    service = TestBed.inject(CustomerService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -21,40 +21,42 @@ describe('CustomerService', () => {
     httpMock.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  it('should create customer via POST request', () => {
-    // Arrange
-    const mockCustomer: Customer = {
-      name: 'John Doe',
-      email: 'john@example.com',
-      password: 'password123',
-      cpf: '12345678901',
-      birth: '1990-01-01',
-      phone: '123456789',
-      address: {
-        zipcode: '12345-678',
-        street: 'Main St',
-        number: '123',
-        neighborhood: 'Downtown',
-        city: 'City',
-        state: 'State'
-      },
-      flatId: '',
-      card: {}
-    };
-
-    // Act
-    service.create(mockCustomer).subscribe((response: any) => {
-      // Assert
-      expect(response).toBeTruthy();
-    });
-
+  it('should be created', inject([CustomerService], (service: CustomerService) => {
     // Assert
-    const req = httpMock.expectOne('customer');
-    expect(req.request.method).toBe('POST');
-    req.flush({});
-  });
+    expect(service).toBeTruthy();
+  }));
+
+  it('should send a post request to the api/album endpoint', inject(
+    [CustomerService, HttpTestingController],
+    (service: CustomerService, httpMock: HttpTestingController) => {
+        const mockResponse: Customer = {
+          name: 'John Doe',
+          email: 'john@example.com',
+          password: 'password123',
+          cpf: '12345678901',
+          birth: '1990-01-01',
+          phone: '123456789',
+          address: {
+            zipcode: '12345-678',
+            street: 'Main St',
+            number: '123',
+            neighborhood: 'Downtown',
+            city: 'City',
+            state: 'State'
+          },
+          flatId: '',
+          card: {}
+        };
+
+      service.create(mockResponse).subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/customer';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('POST');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
 });

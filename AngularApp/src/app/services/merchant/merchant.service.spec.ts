@@ -1,20 +1,19 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Merchant } from 'src/app/model';
-import { Address } from 'src/app/model';
-import { MerchantService } from '..';
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpTestingController, HttpClientTestingModule } from "@angular/common/http/testing";
+import { TestBed, inject } from "@angular/core/testing";
+import { CustomInterceptor } from "src/app/interceptors/http.interceptor.service";
+import { Address, Merchant } from "src/app/model";
+import { MerchantService } from "..";
 
 describe('MerchantService', () => {
-  let service: MerchantService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [MerchantService]
+      providers: [MerchantService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
     });
-
-    service = TestBed.inject(MerchantService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -22,12 +21,15 @@ describe('MerchantService', () => {
     httpMock.verify();
   });
 
-  it('should be created', () => {
+  it('should be created', inject([MerchantService], (service: MerchantService) => {
+    // Assert
     expect(service).toBeTruthy();
-  });
+  }));
 
-  it('should create merchant via POST request', () => {
-    // Arrange
+  it('should send a post request to the api/merchant endpoint', inject(
+    [MerchantService, HttpTestingController],
+    (service: MerchantService, httpMock: HttpTestingController) => {
+      // Arrange
     const mockAddress: Address = {
       zipcode: '99999-999',
       street: 'Rua Example',
@@ -37,7 +39,7 @@ describe('MerchantService', () => {
       state: 'Estado Example',
       country: 'BR'
     };
-    const mockMerchant: Merchant = {
+    const mockResponse: Merchant = {
       name: "John Doe",
       email: "user@merchant.com",
       password: "12345",
@@ -53,15 +55,16 @@ describe('MerchantService', () => {
       }
     };
 
-    // Act
-    service.create(mockMerchant).subscribe((response: any) => {
-      // Assert
-      expect(response).toBeTruthy();
-    });
+      service.create(mockResponse).subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/merchant';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('POST');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
 
-    // Assert
-    const req = httpMock.expectOne('merchant');
-    expect(req.request.method).toBe('POST');
-    req.flush({});
-  });
 });
+
