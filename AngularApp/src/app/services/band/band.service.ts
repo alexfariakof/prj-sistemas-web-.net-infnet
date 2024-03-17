@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BandService {
-  public routeUrl:string = 'band';
+  public routeUrl:string = 'api/band';
 
   constructor(public httpClient: HttpClient) { }
 

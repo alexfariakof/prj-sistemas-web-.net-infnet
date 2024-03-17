@@ -4,19 +4,19 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoadingComponent } from '../components';
-import { AuthService } from '../services';
+import { AuthProvider } from '../provider/auth.provider';
 
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
   private activeRequests: number = 0;
   private isModalOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private authService: AuthService, private modalService: NgbModal) {}
+  constructor(private authProvider: AuthProvider, private modalService: NgbModal) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.showLoader();
 
-    return this.authService.accessToken$.pipe(
+    return this.authProvider.accessToken$.pipe(
 
       switchMap((accessToken) => {
           const modifiedRequest = request.clone({

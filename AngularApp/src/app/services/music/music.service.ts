@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MusicService {
-  public routeUrl:string = 'music';
+  public routeUrl:string = 'api/music';
 
   constructor(public httpClient: HttpClient) { }
 

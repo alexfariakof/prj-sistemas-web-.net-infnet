@@ -4,7 +4,6 @@ import { Music, Playlist } from 'src/app/model';
 import { MyPlaylistService } from 'src/app/services';
 @Component({
   selector: 'app-myplaylist',
-
   templateUrl: './myplaylist.component.html',
   styleUrls: ['./myplaylist.component.css']
 })

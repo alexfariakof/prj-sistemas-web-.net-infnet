@@ -1,15 +1,13 @@
-import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FlexLayoutModule } from "@angular/flex-layout";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { AlbumComponent } from "./album.component";
-import { AddFavoritesModule } from "src/app/components/add-favorites/add-favorites.module";
-import { FavoritesBarModule } from "src/app/components/favorites-bar/favorites-bar.module";
+import { SharedModule } from "src/app/components/shared.module";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [AlbumComponent],
-  imports: [MatCardModule, MatButtonModule, CommonModule, FlexLayoutModule, FavoritesBarModule, AddFavoritesModule],
+  imports: [MatCardModule, MatButtonModule, FlexLayoutModule, SharedModule],
   exports: [AlbumComponent]
 })
 

@@ -1,22 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth, Login } from 'src/app/model';
+import { AuthService } from 'src/app/services';
+import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AuthService } from 'src/app/services';
-import { catchError, map } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
+import { AuthProvider } from 'src/app/provider/auth.provider';
+import { map, catchError, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
+  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   loginForm: (FormGroup & Login) | any;
   showPassword = false;
   eyeIconClass: string = 'bi-eye';
@@ -24,7 +27,13 @@ export class LoginComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     public router: Router,
-    public authService: AuthService) {}
+    public authService: AuthService,
+    private authProvider: AuthProvider) {}
+
+  ngOnDestroy(): void {
+     this.destroy$.next();
+     this.destroy$.complete();
+  }
 
   ngOnInit(): void {
     this.loginForm = this.formbuilder.group({
@@ -35,10 +44,11 @@ export class LoginComponent implements OnInit {
 
   onLoginClick() {
     let login: Login = this.loginForm.getRawValue();
-    this.authService.signIn(login).pipe(
-      map((response: Auth | any) => {
+    this.authService.signIn(login)
+    .pipe(
+      map((response: Auth) => {
         if (response.authenticated) {
-          return this.authService.createAccessToken(response);
+          return response;
         }
         else {
           throw (response);
@@ -49,16 +59,19 @@ export class LoginComponent implements OnInit {
       })
     )
     .subscribe({
-      next: (result: Boolean) => {
-        if (result === true)
-          this.router.navigate(['/favorites']);
+      next: (response) => {
+        if (response) {
+          this.authProvider.createAccessToken(response);
+          this.router.navigate(['/']);
+        }
+        else {
+          throw (response);
+        }
       },
       error :(response : any) =>  {
         alert(response.error);
       },
-      complete() {
-
-      }
+      complete() { }
     });
   }
 

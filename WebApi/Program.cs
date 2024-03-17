@@ -12,6 +12,17 @@ var appName = "Serviços de Streaming";
 var appVersion = "v1";
 var appDescription = $"API Serviços de Streaming.";
 
+// Add Cors Configuration 
+builder.Services.AddCors(c =>
+{
+    c.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();

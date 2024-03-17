@@ -1,7 +1,7 @@
 <div class="content-full-height d-flex align-items-center justify-content-center bg-dark fs-6 fs-sm-5 fs-md-4 fs-lg-3" >
   <div class="d-flex flex-column m-2 border border-2 border-primary bg-dark-subtle rounded-4 align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3">
     <form class="d-flex flex-column m-3 b-0  align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3"
-      (submit)="onLoginClick()" [formGroup]="loginForm">
+      (ngSubmit)="onLoginClick()" [formGroup]="loginForm" no-validate>
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
         <input matInput required id="email" name="email" formControlName="email" type="text"
@@ -17,15 +17,15 @@
           [class.text-danger]="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched"></i>
       </mat-form-field>
       <div class="input-group d-flex flex-column align-items-center justify-content-center">
-        <button type="submit" class="btn btn-primary w-100" [ngClass]="{ disabled: !loginForm.valid }"
+        <button mat-raised-button color="primary" type="submit" class="btn btn-primary w-100" [ngClass]="{ disabled: !loginForm.valid }"
           [disabled]="!loginForm.valid">
           Entrar
         </button>
       </div>
       <small>
         Não tem uma conta? Inscreva-se como
-        <a class="m-0 p-1 btn btn-link" href="account/customer">cliente</a>ou
-        <a class="m-0 p-1 btn btn-link" href="account/merchant">comerciante</a>
+        <a class="m-0 p-1 " href="account/customer">cliente</a>ou
+        <a class="m-0 p-1 " href="account/merchant">comerciante</a>
       </small>
     </form>
   </div>

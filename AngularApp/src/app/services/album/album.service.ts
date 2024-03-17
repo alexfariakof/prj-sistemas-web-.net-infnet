@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AlbumService {
-  public routeUrl:string = 'album';
+  public routeUrl:string = 'api/album';
 
   constructor(public httpClient: HttpClient) { }
 

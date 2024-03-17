@@ -1,14 +1,13 @@
 import { NgModule } from "@angular/core";
 import { MyplaylistComponent } from "./myplaylist.component";
-import { CommonModule } from "@angular/common";
-import { FlexLayoutModule } from "@angular/flex-layout";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { FavoritesBarModule } from "src/app/components/favorites-bar/favorites-bar.module";
-
+import { SharedModule } from "src/app/components/shared.module";
+import { MyplaylistRoutingModule } from "./myplaylist.routing.module";
+import { FlexLayoutModule } from "@angular/flex-layout";
 @NgModule({
   declarations: [MyplaylistComponent],
-  imports: [MatCardModule, MatButtonModule, CommonModule, FlexLayoutModule, FavoritesBarModule],
+  imports: [MyplaylistRoutingModule, FlexLayoutModule, MatCardModule, MatButtonModule, SharedModule],
   exports: [MyplaylistComponent]
 })
 
