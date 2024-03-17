@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { map, catchError } from 'rxjs';
 import { Playlist } from 'src/app/model';
-import { MyPlaylistService } from 'src/app/services';
-
+import { PlaylistManagerService } from '../../services';
 @Component({
   selector: 'app-add-favorites',
   templateUrl: './add-favorites.component.html',
@@ -11,36 +9,12 @@ import { MyPlaylistService } from 'src/app/services';
 export class AddFavoritesComponent implements OnInit {
   myPlaylist: Playlist[] = [];
 
-  constructor(public myPlaylistService: MyPlaylistService) { }
+  constructor(private playlistManagerService: PlaylistManagerService) { }
 
   ngOnInit(): void {
-    this.getListOfMyplaylist();
-  }
-
-  getListOfMyplaylist = (): void => {
-    this.myPlaylistService.getAllPlaylist()
-    .pipe(
-      map((response: Playlist[]) => {
-        if (response ?? response) {
-          return response;
-        }
-        else {
-          throw (response);
-        }
-      }),
-      catchError((error) => {
-        throw (error);
-      })
-    )    
-    .subscribe({
-      next: (response: Playlist[]) => {
-        if (response != null) 
-          this.myPlaylist = response;
-      },
-      error: (response: any) => {
-        console.log(response.error);
-      },
-      complete() { }
+    this.playlistManagerService.playlists$.subscribe(playlists => {
+      this.myPlaylist = playlists;
     });
   }
+
 }

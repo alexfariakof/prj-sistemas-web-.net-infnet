@@ -1,14 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth, Login } from 'src/app/model';
 import { AuthService } from 'src/app/services';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { AuthProvider } from 'src/app/provider/auth.provider';
-import { map, catchError, Subject } from 'rxjs';
+import { map, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +12,7 @@ import { map, catchError, Subject } from 'rxjs';
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class LoginComponent implements OnInit {
   loginForm: (FormGroup & Login) | any;
   showPassword = false;
   eyeIconClass: string = 'bi-eye';
@@ -28,16 +23,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private authProvider: AuthProvider) {}
 
-  ngOnDestroy(): void {
-     this.destroy$.next();
-     this.destroy$.complete();
-  }
-
   ngOnInit(): void {
     this.loginForm = this.formbuilder.group({
       email: ['user@custumer.com', [Validators.required, Validators.email]],
       password: ['12345', Validators.required]
     }) as (FormGroup & Login) | any;
+    document.body.style.overflowY = 'hidden';
   }
 
   onLoginClick() {

@@ -4,6 +4,7 @@ import { Playlist } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
 import { MyPlaylistService } from '..';
+import { PlaylistCacheService } from './myplaylist.cache.service';
 
 describe('MyPlaylistService', () => {
   let httpMock: HttpTestingController;
@@ -11,7 +12,7 @@ describe('MyPlaylistService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [MyPlaylistService,
+      providers: [MyPlaylistService, PlaylistCacheService,
         { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
     });
     httpMock = TestBed.inject(HttpTestingController);
