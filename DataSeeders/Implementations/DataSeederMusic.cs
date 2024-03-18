@@ -407,6 +407,8 @@ public class DataSeederMusic : IDataSeeder
             band.AddAlbum(album);
             musicList.ForEach(m => m.Album = album);
             _context.Music.AddRange(musicList);
+            _context.Add(album);
+            _context.Add(band);
             _context.SaveChanges();
         }
         catch
