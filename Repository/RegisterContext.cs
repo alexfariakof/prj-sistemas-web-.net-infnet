@@ -23,6 +23,7 @@ public class RegisterContext: DbContext
     public DbSet<Flat> Flat { get; set; }
     public DbSet<Music> Music { get; set; }    
     public DbSet<Playlist> Playlist { get; set; }
+    public DbSet<Genre> Genre { get; set; }
     public DbSet<Card> Card { get; set; }
     public DbSet<CreditCardBrand> CardBrand { get; set; }
     public DbSet<Transaction> Transaction { get; set; }

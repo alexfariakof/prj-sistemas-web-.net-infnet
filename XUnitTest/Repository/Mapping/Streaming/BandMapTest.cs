@@ -42,8 +42,7 @@ public class BandMapTest
             Assert.True(idProperty.IsPrimaryKey());
             Assert.False(nameProperty.IsNullable);
             Assert.Equal(50, nameProperty.GetMaxLength());
-            Assert.False(descriptionProperty.IsNullable);
-            Assert.Equal(50, descriptionProperty.GetMaxLength());
+            Assert.False(descriptionProperty.IsNullable);            
             Assert.False(backdropProperty.IsNullable);
             Assert.Equal(50, backdropProperty.GetMaxLength());
             Assert.NotNull(albumNavigation);

@@ -13,8 +13,10 @@ namespace Repository.Mapping.Streaming
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.Backdrop).IsRequired();
 
             builder.HasMany(x => x.Musics).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Genres).WithMany(m => m.Albums);
 
             builder.HasMany(x => x.Flats)
                 .WithMany(x => x.Albums)

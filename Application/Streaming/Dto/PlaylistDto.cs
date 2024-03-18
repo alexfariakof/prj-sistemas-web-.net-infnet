@@ -5,6 +5,7 @@ public class PlaylistDto : IValidatableObject
 {
     public Guid? Id { get; set; }
     public string? Name { get; set; }
+    public string? Backdrop { get; set; }
     public IList<MusicDto> Musics { get; set; } = new List<MusicDto>();
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

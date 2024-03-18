@@ -9,7 +9,7 @@ public class MusicMapTest
     [Fact]
     public void EntityConfiguration_IsValid()
     {
-        const int PROPERTY_COUNT = 5;
+        const int PROPERTY_COUNT = 6;
         // Arrange
         var options = new DbContextOptionsBuilder<MockRegisterContext>()
             .UseInMemoryDatabase(databaseName: "InMemoryDatabase_MusicMap_MusicMapTest")
@@ -29,6 +29,7 @@ public class MusicMapTest
             // Act
             var idProperty = entityType?.FindProperty("Id");
             var nameProperty = entityType?.FindProperty("Name");
+            var urlProperty = entityType?.FindProperty("Url");
             var durationProperty = entityType?.FindNavigation("Duration")?.ForeignKey.Properties.First();
             var albumNavigation = entityType?.FindNavigation("Album");
 
@@ -37,6 +38,7 @@ public class MusicMapTest
             Assert.NotNull(nameProperty);
             Assert.NotNull(durationProperty);
             Assert.NotNull(albumNavigation);
+            Assert.NotNull(urlProperty);            
 
             Assert.True(idProperty.IsPrimaryKey());
             Assert.False(nameProperty.IsNullable);
