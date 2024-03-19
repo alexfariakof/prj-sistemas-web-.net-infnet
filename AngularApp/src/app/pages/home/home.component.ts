@@ -1,4 +1,3 @@
-import { MyPlaylistService } from './../../services/myplaylist/myplaylist.service';
 import { Component, OnInit } from '@angular/core';
 import { Playlist } from 'src/app/model';
 import { PlaylistManagerService, PlaylistService } from 'src/app/services';

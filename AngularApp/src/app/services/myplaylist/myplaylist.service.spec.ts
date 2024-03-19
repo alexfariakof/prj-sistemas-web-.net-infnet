@@ -67,4 +67,68 @@ describe('MyPlaylistService', () => {
     }
   ));
 
+  it('getPlaylist should send a get request to the api/customer/myplaylist endpoint', inject(
+    [MyPlaylistService, HttpTestingController],
+    (service: MyPlaylistService, httpMock: HttpTestingController) => {
+        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
+;
+      service.getPlaylist('1').subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/customer/myplaylist/1';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
+  it('createPlaylist should send a post request to the api/customer/myplaylist endpoint', inject(
+    [MyPlaylistService, HttpTestingController],
+    (service: MyPlaylistService, httpMock: HttpTestingController) => {
+        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
+;
+      service.createPlaylist(mockResponse).subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/customer/myplaylist';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('POST');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
+  it('updatePlaylist should send a put request to the api/customer/myplaylist endpoint', inject(
+    [MyPlaylistService, HttpTestingController],
+    (service: MyPlaylistService, httpMock: HttpTestingController) => {
+        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
+;
+      service.updatePlaylist(mockResponse).subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/customer/myplaylist';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('PUT');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
+  it('deletePlaylist should send a delete request to the api/customer/myplaylist endpoint', inject(
+    [MyPlaylistService, HttpTestingController],
+    (service: MyPlaylistService, httpMock: HttpTestingController) => {
+        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
+;
+      service.deletePlaylist('1').subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/customer/myplaylist/1';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('DELETE');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
 });

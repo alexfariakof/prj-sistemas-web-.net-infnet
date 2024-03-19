@@ -18,8 +18,8 @@ export class FavoritesBarComponent implements OnInit {
     });
   }
 
-  removoPlaylist(playlistId: string | any): void {
-    this.playlistManagerService.deletePlaylist(playlistId).subscribe(playlists => {
+  removoPlaylist(playlistId?: string): void {
+    this.playlistManagerService.deletePlaylist(playlistId ?? '').subscribe(playlists => {
       this.myPlaylist = playlists;
     });
   }
