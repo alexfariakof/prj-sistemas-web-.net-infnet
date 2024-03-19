@@ -173,7 +173,7 @@ public class CustomerController : ControllerBase
         if (!isValid)
             return BadRequest(validationResults.Select(error => error.ErrorMessage)); try
         {
-            dto.CustumerId = UserIdentity;
+            dto.CustomerId = UserIdentity;
             var result = this._playlistService.Create(dto);
             return Ok(result);
         }
@@ -202,7 +202,7 @@ public class CustomerController : ControllerBase
 
         try
         {
-            dto.CustumerId = UserIdentity;
+            dto.CustomerId = UserIdentity;
             var result = this._playlistService.Update(dto);
             return Ok(result);
         }
@@ -232,7 +232,7 @@ public class CustomerController : ControllerBase
 
         try
         {
-            dto.CustumerId = UserIdentity;
+            dto.CustomerId = UserIdentity;
             var result = this._playlistService.Delete(dto);
             return Ok(result);
         }

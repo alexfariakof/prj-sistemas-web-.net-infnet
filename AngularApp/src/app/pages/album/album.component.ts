@@ -9,6 +9,7 @@ import { AlbumService, PlaylistManagerService } from 'src/app/services';
   styleUrls: ['./album.component.css']
 })
 export class AlbumComponent implements OnInit {
+
   album: Album = {
     id: '',
     name: '',
@@ -63,6 +64,16 @@ export class AlbumComponent implements OnInit {
       error: (response: any) => {
         alert(response.error);
       }
+    });
+  }
+
+  onAddPlaylist = (playlistId?: string, musicId?: string) =>{
+    const playlist: Playlist = {
+      id: playlistId,
+      musics: [{id: musicId }]
+    };
+    this.playlistManagerService.updatePlaylist(playlist).subscribe(() => {
+      alert('Música adicionada ao favoritos!');
     });
   }
 }

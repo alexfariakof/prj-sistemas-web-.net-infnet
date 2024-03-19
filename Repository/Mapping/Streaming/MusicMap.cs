@@ -36,7 +36,7 @@ public class MusicMap : IEntityTypeConfiguration<Music>
             .WithMany(),
             j =>
             {
-                j.Property<DateTime>("DtAdded").ValueGeneratedOnAddOrUpdate();
+                j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();
             });
 
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Playlist } from 'src/app/model';
 import { PlaylistManagerService } from '../../services';
 @Component({
@@ -7,8 +7,9 @@ import { PlaylistManagerService } from '../../services';
   styleUrls: ['./add-favorites.component.css']
 })
 export class AddFavoritesComponent implements OnInit {
-  myPlaylist: Playlist[] = [];
+  @Output() addToFavoritesEvent: EventEmitter<string> = new EventEmitter<string>();
 
+  myPlaylist: Playlist[] = [];
   constructor(private playlistManagerService: PlaylistManagerService) { }
 
   ngOnInit(): void {
@@ -17,5 +18,14 @@ export class AddFavoritesComponent implements OnInit {
         this.playlistManagerService.playlists$.subscribe(playlists => {
             this.myPlaylist = playlists;
     });
+
+  }
+
+  addToPlaylist(playlistId?: string): void {
+    alert(playlistId);
+  }
+
+  onAddToFavoritesClick(playlistId?: string): void {
+    this.addToFavoritesEvent.emit(playlistId);
   }
 }

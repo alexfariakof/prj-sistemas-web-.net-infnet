@@ -32,7 +32,7 @@ namespace Repository.Mapping.Streaming
                 j =>
                 {
                     j.HasKey("FlatId", "AlbumId");
-                    j.Property<DateTime>("DtAdded").ValueGeneratedOnAddOrUpdate();
+                    j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();
                 });
         }
     }

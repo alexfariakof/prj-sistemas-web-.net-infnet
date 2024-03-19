@@ -14,6 +14,7 @@ public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRep
     {
         var dsMusic = this.Context.Set<Music>().ToList();
         entity.Musics = entity.Musics.Select(music => dsMusic.First(m =>  m.Id == music.Id)).ToList();
+        entity.Customer = this.Context.Set<Customer>().ToList().Where(c => c.User.Id.Equals(entity.CustomerId)).FirstOrDefault();
         this.Context.Add(entity);
         this.Context.SaveChanges();
     }
@@ -33,6 +34,7 @@ public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRep
         var entityToUpdate = this.Context.Set<PlaylistPersonal>().ToList().First(p => p.Id.Equals(entity.Id));
         var dsMusic = this.Context.Set<Music>().ToList();
         entityToUpdate.Musics = entity.Musics.Select(music => dsMusic.First(m => m.Id == music.Id)).ToList();
+        entityToUpdate.Customer = this.Context.Set<Customer>().ToList().Where(c => c.User.Id.Equals(entity.CustomerId)).FirstOrDefault();
         this.Context.Update(entityToUpdate);
         this.Context.SaveChanges();
     }

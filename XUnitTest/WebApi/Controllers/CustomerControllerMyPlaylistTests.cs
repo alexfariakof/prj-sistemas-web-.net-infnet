@@ -304,7 +304,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
-        var userIdentity = playlistDto.CustumerId;
+        var userIdentity = playlistDto.CustomerId;
         SetupBearerToken(userIdentity);
 
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(true);
@@ -325,7 +325,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange        
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
-        var userIdentity = playlistDto.CustumerId;
+        var userIdentity = playlistDto.CustomerId;
         SetupBearerToken(userIdentity);
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(() => throw new Exception("Failed to delete the playlist."));
 

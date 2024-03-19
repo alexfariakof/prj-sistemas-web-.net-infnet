@@ -9,8 +9,7 @@ public class PlaylistPersonalDto : IValidatableObject
     public IList<MusicDto> Musics { get; set; } = new List<MusicDto>();
 
     [JsonIgnore]
-    public Guid CustumerId { get; set; }
-
+    public Guid CustomerId { get; set; }
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var playlist = (PlaylistPersonalDto)validationContext.ObjectInstance;

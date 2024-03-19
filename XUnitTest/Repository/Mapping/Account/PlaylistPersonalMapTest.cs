@@ -9,7 +9,7 @@ public class PlaylistPersonalMapTest
     [Fact]
     public void EntityConfiguration_IsValid()
     {
-        const int PROPERTY_COUNT = 4;
+        const int PROPERTY_COUNT = 5;
         // Arrange
         var options = new DbContextOptionsBuilder<MockRegisterContext>()
             .UseInMemoryDatabase(databaseName: "InMemoryDatabase_PlaylistPersonalMapTest")
@@ -29,17 +29,20 @@ public class PlaylistPersonalMapTest
             var idProperty = entityType?.FindProperty("Id");
             var nameProperty = entityType?.FindProperty("Name");
             var isPublicProperty = entityType?.FindProperty("IsPublic");
+            var customerIdProperty = entityType?.FindProperty("CustomerId");
             var dtCreatedProperty = entityType?.FindProperty("DtCreated");
 
             // Assert
             Assert.NotNull(idProperty);
             Assert.NotNull(nameProperty);
             Assert.NotNull(isPublicProperty);
+            Assert.NotNull(customerIdProperty);            
             Assert.NotNull(dtCreatedProperty);
 
             Assert.True(idProperty.IsPrimaryKey());
             Assert.False(nameProperty.IsNullable);
             Assert.Equal(50, nameProperty.GetMaxLength());
+            Assert.False(customerIdProperty.IsNullable);            
             Assert.False(isPublicProperty.IsNullable);
             Assert.False(dtCreatedProperty.IsNullable);
             Assert.Equal(PROPERTY_COUNT, propsCount);
