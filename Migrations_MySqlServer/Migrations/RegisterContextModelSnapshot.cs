@@ -131,9 +131,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 4, DateTimeKind.Local).AddTicks(3398));
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("tinyint(1)");
@@ -191,9 +190,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 10, DateTimeKind.Local).AddTicks(2687));
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("UserTypeId")
                         .HasColumnType("int");
@@ -347,7 +345,7 @@ namespace Migrations_MySqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("BandId")
+                    b.Property<Guid>("BandId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
@@ -600,9 +598,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 29, DateTimeKind.Local).AddTicks(5382));
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatId", "AlbumId");
 
@@ -620,9 +617,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 45, DateTimeKind.Local).AddTicks(6478));
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatsId", "MusicsId");
 
@@ -640,9 +636,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 61, DateTimeKind.Local).AddTicks(2152));
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatsId", "PlaylistsId");
 
@@ -690,9 +685,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 54, DateTimeKind.Local).AddTicks(5161));
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("MusicsId", "PlaylistsId");
 
@@ -710,9 +704,8 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 8, DateTimeKind.Local).AddTicks(9706));
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
@@ -915,7 +908,8 @@ namespace Migrations_MySqlServer.Migrations
                     b.HasOne("Domain.Streaming.Agreggates.Band", null)
                         .WithMany("Albums")
                         .HasForeignKey("BandId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Flat", b =>

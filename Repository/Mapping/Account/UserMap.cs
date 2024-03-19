@@ -11,7 +11,7 @@ public class UserMap : IEntityTypeConfiguration<User>
         builder.ToTable("User"); 
         builder.HasKey(u => u.Id);
         builder.Property(u => u.Id).ValueGeneratedOnAdd();
-        builder.Property(u => u.DtCreated).HasDefaultValue(DateTime.Now);
+        builder.Property(u => u.DtCreated).ValueGeneratedOnAddOrUpdate();
                 
         builder.HasOne(x => x.UserType)
                   .WithMany(cb => cb.Users)

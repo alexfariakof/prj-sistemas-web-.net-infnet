@@ -14,7 +14,6 @@ namespace Repository.Mapping.Streaming
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Backdrop).IsRequired();
-
             builder.HasMany(x => x.Musics).WithOne().OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(x => x.Genres).WithMany(m => m.Albums);
 
@@ -33,7 +32,7 @@ namespace Repository.Mapping.Streaming
                 j =>
                 {
                     j.HasKey("FlatId", "AlbumId");
-                    j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
+                    j.Property<DateTime>("DtAdded").ValueGeneratedOnAddOrUpdate();
                 });
         }
     }
