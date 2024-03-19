@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, catchError } from 'rxjs';
-import { Auth, Playlist } from 'src/app/model';
+import { Playlist } from 'src/app/model';
 import { PlaylistService } from 'src/app/services';
 
 @Component({
@@ -23,7 +22,7 @@ export class HomeComponent implements OnInit {
     this.playlistService.getAllPlaylist()
     .subscribe({
       next: (response: Playlist[]) => {
-        if (response != null) 
+        if (response != null)
           this.playlist = response;
       },
       error: (response: any) => {

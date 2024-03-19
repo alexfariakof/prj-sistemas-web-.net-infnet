@@ -30,7 +30,7 @@ public class MusicMapTest
             var idProperty = entityType?.FindProperty("Id");
             var nameProperty = entityType?.FindProperty("Name");
             var urlProperty = entityType?.FindProperty("Url");
-            var durationProperty = entityType?.FindNavigation("Duration")?.ForeignKey.Properties.First();
+            var durationProperty = entityType?.FindNavigation("Duration")?.ForeignKey.Properties.FirstOrDefault();
             var albumNavigation = entityType?.FindNavigation("Album");
 
             // Assert
