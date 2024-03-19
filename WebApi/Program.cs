@@ -35,7 +35,6 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-
 if (builder.Environment.IsStaging())
 {
     builder.Services.AddDbContext<RegisterContext>(c => c.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
@@ -64,7 +63,6 @@ builder.Services.AddRepositories();
 builder.Services.AddServices();
 
 var app = builder.Build();
-
 
 if (app.Environment.IsStaging())
 {    
