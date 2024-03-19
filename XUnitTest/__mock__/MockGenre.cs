@@ -14,7 +14,7 @@ public class MockGenre
     {
         var fakeGenre = new Faker<Genre>()
             .RuleFor(c => c.Id, f => f.Random.Guid())
-            .RuleFor(a => a.Name, f => f.Address.ZipCode())
+            .RuleFor(a => a.Name, f => f.Music.Genre())
             .Generate();
 
         return fakeGenre;
@@ -22,12 +22,11 @@ public class MockGenre
 
     public List<Genre> GetListFaker(int count)
     {
-        var addressList = new List<Genre>();
+        var genreList = new List<Genre>();
         for (var i = 0; i < count; i++)
         {
-            addressList.Add(GetFaker());
+            genreList.Add(GetFaker());
         }
-        return addressList;
-    }
-    
+        return genreList;
+    }    
 }

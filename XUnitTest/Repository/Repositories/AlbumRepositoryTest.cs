@@ -11,7 +11,7 @@ public class AlbumRepositoryTest
     {
         // Arrange
         var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase Album")
+            .UseInMemoryDatabase(databaseName: "TestDatabase_AlbumRepositoryTest")
             .Options;
 
         contextMock = new Mock<RegisterContext>(options);
@@ -106,7 +106,7 @@ public class AlbumRepositoryTest
         contextMock.Setup(c => c.Set<Album>()).Returns(dbSetMock.Object);
 
         // Act
-        var result = repository.Find(f => f.Name == mockAlbum.Name);
+        var result = repository.Find(f => f.Id == mockAlbum.Id);
 
         // Assert
         Assert.Single(result);

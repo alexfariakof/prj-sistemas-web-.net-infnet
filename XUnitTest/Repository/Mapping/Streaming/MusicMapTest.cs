@@ -12,7 +12,7 @@ public class MusicMapTest
         const int PROPERTY_COUNT = 6;
         // Arrange
         var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_MusicMap_MusicMapTest")
+            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_MusicMapTest")
             .Options;
 
         using (var context = new MockRegisterContext(options))

@@ -20,4 +20,14 @@ public class MockUser
 
         return fakeLogin;
     }
+    public List<User> GetListFaker(int count)
+    {
+        var userList = new List<User>();
+        for (var i = 0; i < count; i++)
+        {
+            userList.Add(GetFaker());
+        }
+        return userList;
+    }
+
 }

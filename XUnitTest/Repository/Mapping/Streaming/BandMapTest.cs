@@ -13,7 +13,7 @@ public class BandMapTest
 
         // Arrange
         var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_BandMapTest")
             .Options;
 
         using (var context = new MockRegisterContext(options))
