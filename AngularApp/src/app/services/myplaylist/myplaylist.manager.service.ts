@@ -19,6 +19,15 @@ export class PlaylistManagerService {
     this.getListOfPlaylists().subscribe();
   }
 
+  getCachedPlaylist(): Playlist[] {
+    const cachedPlaylists = this.playlistCacheService.getPlaylistCache();
+    if (cachedPlaylists) {
+      this.playlistsSubject.next(cachedPlaylists);
+      return cachedPlaylists;
+    }
+    return [];
+  }
+
   getListOfPlaylists(): Observable<Playlist[]> {
     const cachedPlaylists = this.playlistCacheService.getPlaylistCache();
     if (cachedPlaylists) {

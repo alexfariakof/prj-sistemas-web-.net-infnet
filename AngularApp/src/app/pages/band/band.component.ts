@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Band, Music, Playlist } from 'src/app/model';
+import { Album, Band, Playlist } from 'src/app/model';
 import { MyPlaylistService, BandService } from 'src/app/services';
 @Component({
   selector: 'app-band',
@@ -8,19 +8,8 @@ import { MyPlaylistService, BandService } from 'src/app/services';
   styleUrls: ['./band.component.css']
 })
 export class BandComponent implements OnInit {
-  band: Band = {
-    id: '',
-    name: '',
-    description: '',
-    backdrop: '',
-    album: {
-      id: '',
-      name: '',
-      bandId: '',
-      backdrop: ''
-    }
-  };
-  musics: Music[] = [];
+  band: Band | any = {};
+  albums: Album[] = [];
   hasStyle: string = '';
   myPlaylist: Playlist[] = [];
 
@@ -43,7 +32,7 @@ export class BandComponent implements OnInit {
       next: (response: Band) => {
         if (response != null) {
           this.band = response;
-          this.musics = response.album?.musics ?? [];
+          this.albums = response.albums ?? [];
         }
         else {
           throw (response);

@@ -12,9 +12,6 @@ export class AddFavoritesComponent implements OnInit {
   constructor(private playlistManagerService: PlaylistManagerService) { }
 
   ngOnInit(): void {
-    this.playlistManagerService.playlists$.subscribe(playlists => {
-      this.myPlaylist = playlists;
-    });
+    this.myPlaylist = this.playlistManagerService.getCachedPlaylist();
   }
-
 }

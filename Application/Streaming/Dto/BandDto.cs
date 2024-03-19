@@ -13,5 +13,5 @@ public class BandDto
 
     [Required]
     public string Backdrop { get; set; }
-    public AlbumDto Album { get; set; }
+    public List<AlbumDto> Albums { get; set; }
 }

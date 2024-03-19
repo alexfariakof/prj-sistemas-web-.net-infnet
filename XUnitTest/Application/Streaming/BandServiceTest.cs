@@ -31,7 +31,7 @@ public class BandServiceTest
             Name = mockBandService.Name,
             Description = mockBandService.Description,
             Backdrop = mockBandService.Backdrop,
-            Album = MockAlbum.Instance.GetDtoFromAlbum(mockBandService.Albums.FirstOrDefault())
+            Albums = MockAlbum.Instance.GetDtoListFromAlbumList(mockBandService.Albums)
         };
 
         bandRepositoryMock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<Band, bool>>>())).Returns(false);
@@ -51,7 +51,7 @@ public class BandServiceTest
         Assert.Equal(bandDto.Name, result.Name);
         Assert.Equal(bandDto.Description, result.Description);
         Assert.Equal(bandDto.Backdrop, result.Backdrop);
-        Assert.NotNull(result.Album);
+        Assert.NotNull(result.Albums);
     }
 
     [Fact]
