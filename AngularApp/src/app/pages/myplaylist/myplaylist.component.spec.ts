@@ -3,7 +3,7 @@ import { MyplaylistComponent } from './myplaylist.component';
 import { ActivatedRoute } from '@angular/router';
 import { MyPlaylistService } from 'src/app/services';
 import { of, throwError } from 'rxjs';
-import { Playlist, Music } from 'src/app/model';
+import { Playlist } from 'src/app/model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('MyplaylistComponent', () => {
@@ -39,9 +39,16 @@ describe('MyplaylistComponent', () => {
     const mockPlaylist: Playlist = {
       id: '1',
       name: 'Playlist 1',
+      backdrop: 'http://backdrop1.jpg',
       musics: [
-        { id: '1', name: 'Music 1', duration: 20 },
-        { id: '2', name: 'Music 2', duration: 30 }
+        {
+          id: '1', name: 'Music 1', duration: 20,
+          url: 'http://music1.mp3'
+        },
+        {
+          id: '2', name: 'Music 2', duration: 30,
+          url: 'http://music2.mp3'
+        }
       ]
     };
     spyOn(myPlaylistService, 'getPlaylist').and.returnValue(of(mockPlaylist));

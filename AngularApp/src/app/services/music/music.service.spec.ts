@@ -30,8 +30,14 @@ describe('MusicService', () => {
     [MusicService, HttpTestingController],
     (service: MusicService, httpMock: HttpTestingController) => {
         const mockResponse: Music[] = [
-          { id: '1', name: 'Song 1', duration: 180 },
-          { id: '2', name: 'Song 2', duration: 200 }
+          {
+            id: '1', name: 'Song 1', duration: 180,
+            url: 'http://music1.mp3'
+          },
+          {
+            id: '2', name: 'Song 2', duration: 200,
+            url: 'http://music2.mp3'
+          }
         ];
 
       service.getAllMusic().subscribe((response: any) => {

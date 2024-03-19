@@ -78,13 +78,7 @@ describe('BandComponent', () => {
 
     // Assert
     expect(bandService.getBandById).toHaveBeenCalledWith('1');
-    expect(component.band).toEqual({
-      id: '',
-      name: '',
-      description: '',
-      backdrop: '',
-      album: { id: '', name: '', bandId: '' }
-    });
+    expect(component.band).toEqual({});
     expect(component.albums).toEqual([]);
   }));
 

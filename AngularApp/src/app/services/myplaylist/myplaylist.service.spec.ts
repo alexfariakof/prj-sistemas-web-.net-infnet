@@ -31,8 +31,14 @@ describe('MyPlaylistService', () => {
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
         const mockResponse: Playlist[] = [
-          { id: '1', name: 'Playlist 1', musics: [] },
-          { id: '2', name: 'Playlist 2', musics: [] }
+          {
+            id: '1', name: 'Playlist 1', musics: [],
+            backdrop: 'http://backdrop1.jpg'
+          },
+          {
+            id: '2', name: 'Playlist 2', musics: [],
+            backdrop: 'http://backdrop2.jpg'
+          }
         ];
       service.getAllPlaylist().subscribe((response: any) => {
         expect(response).toBeTruthy();
@@ -48,7 +54,7 @@ describe('MyPlaylistService', () => {
   it('getPlaylist should send a get request to the api/customer/myplaylist endpoint', inject(
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
-        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', musics: [] };
+        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
 ;
       service.getPlaylist('1').subscribe((response: any) => {
         expect(response).toBeTruthy();

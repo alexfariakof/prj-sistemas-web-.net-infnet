@@ -32,13 +32,19 @@ describe('BandService', () => {
         const mockResponse: Band[] = [
         {
           id: '1', name: 'Band 1',
-          album: { id: '1', name: 'Album 1', bandId: '1' },
+          albums: [{
+            id: '1', name: 'Album 1', bandId: '1',
+            backdrop: ''
+          }],
           description: 'Band Description 1',
           backdrop: ''
         },
         {
           id: '2', name: 'Band 2',
-          album: { id: '2', name: 'Album 2', bandId: '2' },
+          albums:[{
+            id: '2', name: 'Album 2', bandId: '2',
+            backdrop: ''
+          }],
           description: 'Band Description 2',
           backdrop: ''
         }
@@ -61,7 +67,10 @@ describe('BandService', () => {
         const mockResponse: Band =
         {
           id: '1', name: 'Band 1',
-          album: { id: '1', name: 'Album 1', bandId: '1' },
+          albums: [{
+            id: '1', name: 'Album 1', bandId: '1',
+            backdrop: ''
+          }],
           description: 'Band Description 1',
           backdrop: ''
         };
