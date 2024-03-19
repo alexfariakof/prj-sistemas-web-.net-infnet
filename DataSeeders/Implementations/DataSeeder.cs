@@ -11,6 +11,7 @@ public class DataSeeder : IDataSeeder
     public void SeedData()
     {
         new DataSeederFlat(_context).SeedData();
+        new DataSeederUserType(_context).SeedData();
         new DataSeederGenre(_context).SeedData();
         new DataSeederCustomer(_context).SeedData();
         new DataSeederMerchant(_context).SeedData();            

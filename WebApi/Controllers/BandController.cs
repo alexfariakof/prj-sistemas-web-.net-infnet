@@ -20,7 +20,6 @@ public class BandController : ControllerBase
     [ProducesResponseType((200), Type = typeof(List<BandDto>))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
     public IActionResult FindAll()
     {
         if (UserType != UserTypeEnum.Customer) return Unauthorized();
@@ -43,7 +42,6 @@ public class BandController : ControllerBase
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
     public IActionResult FindById([FromRoute] Guid bandId)
     {
         if (UserType != UserTypeEnum.Customer) return Unauthorized();

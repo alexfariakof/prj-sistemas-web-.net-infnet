@@ -65,10 +65,11 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
+
 if (app.Environment.IsStaging())
-{
-    app.Urls.Add("http://0.0.0.0:7204");
-    app.Urls.Add("https://0.0.0.0:5146");
+{    
+    app.Urls.Add("http://0.0.0.0:5146");
+    app.Urls.Add("https://0.0.0.0:7204");
 }
 
 app.UseDefaultFiles();
@@ -79,7 +80,6 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
 }
-
 
 if (app.Environment.IsStaging())    
 {
@@ -99,7 +99,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapFallbackToFile("/index.html");
-
+if (app.Environment.IsProduction() || app.Environment.IsStaging())
+    app.MapFallbackToFile("/index.html");
 
 app.Run();
