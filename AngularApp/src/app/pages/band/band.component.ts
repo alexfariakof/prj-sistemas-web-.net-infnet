@@ -16,7 +16,8 @@ export class BandComponent implements OnInit {
     album: {
       id: '',
       name: '',
-      bandId: ''
+      bandId: '',
+      backdrop: ''
     }
   };
   musics: Music[] = [];

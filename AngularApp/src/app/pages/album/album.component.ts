@@ -12,7 +12,8 @@ export class AlbumComponent implements OnInit {
   album: Album = {
     id: '',
     name: '',
-    bandId: ''
+    bandId: '',
+    backdrop: ''
   };
   musics: Music[] = [];
   hasStyle: string = '';
