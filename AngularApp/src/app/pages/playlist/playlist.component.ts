@@ -28,7 +28,7 @@ export class PlaylistComponent implements OnInit {
       next: (response: Playlist) => {
         if (response ?? {}) {
           this.playlist = response;
-          this.musics = response.musics;
+          this.musics = response.musics ?? [];
         }
         else {
           throw (response);

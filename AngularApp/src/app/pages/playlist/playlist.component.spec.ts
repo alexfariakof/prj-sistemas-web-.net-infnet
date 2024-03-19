@@ -77,9 +77,9 @@ describe('PlaylistComponent', () => {
     expect(component.musics).toEqual([]);
   }));
 
-  it('should handle null response when retrieving playlist', fakeAsync(() => {
+  it('should handle empty object {} response when retrieving playlist', fakeAsync(() => {
     // Arrange
-    const mockPlaylist: Playlist| any = null;
+    const mockPlaylist: Playlist | any = {};
     spyOn(playlistService, 'getPlaylistById').and.returnValue(of(mockPlaylist));
 
     // Act
