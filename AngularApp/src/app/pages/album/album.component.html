@@ -4,6 +4,7 @@
     <img mat-card-image [src]="album.backdrop" height="200px" />
   </a>
   <h2 class="text-center text-light">{{album.name}}</h2>
+  <i class="nav-link button bi bi-plus text-light " width="32" height="32" role="button" (click)="addToFavorites(album)">Adicionar este album ao Favoritos</i>
   <div fxLayout="row " fxLayoutGap="grid" *ngFor="let item of musics" fx>
     <mat-card class="mat-elevation-z4 ms-2 my-2" fxFlex="100">
       <mat-card-header>

@@ -1,8 +1,8 @@
 import { Music } from "./music";
 
 export interface Playlist {
-  id: string;
+  id?: string;
   name: string;
-  backdrop: string;
+  backdrop?: string;
   musics: Music[];
 }

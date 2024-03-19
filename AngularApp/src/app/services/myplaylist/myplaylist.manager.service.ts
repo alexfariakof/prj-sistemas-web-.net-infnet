@@ -22,7 +22,6 @@ export class PlaylistManagerService {
   getCachedPlaylist(): Playlist[] {
     const cachedPlaylists = this.playlistCacheService.getPlaylistCache();
     if (cachedPlaylists) {
-      this.playlistsSubject.next(cachedPlaylists);
       return cachedPlaylists;
     }
     return [];
@@ -32,18 +31,56 @@ export class PlaylistManagerService {
     const cachedPlaylists = this.playlistCacheService.getPlaylistCache();
     if (cachedPlaylists) {
       this.playlistsSubject.next(cachedPlaylists);
-      return this.playlists$;
-    } else {
-      return this.myPlaylistService.getAllPlaylist().pipe(
-        tap(playlists => {
-          this.playlistCacheService.setPlaylistCache(playlists);
-          this.playlistsSubject.next(playlists);
-        }),
-        catchError(error => {
-          this.playlistsSubject.error(error);
-          return [];
-        })
-      );
     }
+
+    return this.myPlaylistService.getAllPlaylist().pipe(
+      tap(playlists => {
+        this.playlistCacheService.setPlaylistCache(playlists);
+        this.playlistsSubject.next(playlists);
+      }),
+      catchError(error => {
+        this.playlistsSubject.error(error);
+        return [];
+      })
+    );
+  }
+
+  createPlaylist(newPlaylist: Playlist): Observable<Playlist> {
+    return this.myPlaylistService.createPlaylist(newPlaylist).pipe(
+      tap(playlist => {
+        const updatedPlaylists = this.playlistCacheService.addToCache(playlist);
+        this.playlistsSubject.next(updatedPlaylists);
+      }),
+      catchError(error => {
+        this.playlistsSubject.error(error);
+        return [];
+      })
+    );
+  }
+
+  updatePlaylist(updatedPlaylist: Playlist): Observable<Playlist> {
+    return this.myPlaylistService.updatePlaylist(updatedPlaylist).pipe(
+      tap(playlist => {
+        const updatedPlaylists = this.playlistCacheService.updateCache(playlist);
+        this.playlistsSubject.next(updatedPlaylists);
+      }),
+      catchError(error => {
+        this.playlistsSubject.error(error);
+        return [];
+      })
+    );
+  }
+
+  deletePlaylist(playlistId: string): Observable<any> {
+    return this.myPlaylistService.deletePlaylist(playlistId).pipe(
+      tap(() => {
+        const updatedPlaylists = this.playlistCacheService.removeFromCache(playlistId);
+        this.playlistsSubject.next(updatedPlaylists);
+      }),
+      catchError(error => {
+        this.playlistsSubject.error(error);
+        return [];
+      })
+    );
   }
 }

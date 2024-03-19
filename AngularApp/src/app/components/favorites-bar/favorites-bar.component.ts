@@ -17,4 +17,10 @@ export class FavoritesBarComponent implements OnInit {
       this.myPlaylist = playlists;
     });
   }
+
+  removoPlaylist(playlistId: string | any): void {
+    this.playlistManagerService.deletePlaylist(playlistId).subscribe(playlists => {
+      this.myPlaylist = playlists;
+    });
+  }
 }

@@ -212,14 +212,15 @@ public class CustomerController : ControllerBase
         }
     }
 
-    [HttpDelete("MyPlaylist")]
+    [HttpDelete("MyPlaylist/{playlistId}")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [Authorize("Bearer")]
-    public IActionResult DeletePlaylist(PlaylistPersonalDto dto)
+    public IActionResult DeletePlaylist([FromRoute] Guid playlistId)
     {
         if (UserType != UserTypeEnum.Customer) return Unauthorized();
-
+        
+        var dto = new PlaylistPersonalDto { Id = playlistId };
         var validationResults = new List<ValidationResult>();
         bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
         {

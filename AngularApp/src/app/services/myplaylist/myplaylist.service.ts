@@ -25,4 +25,16 @@ export class MyPlaylistService {
   public getPlaylist(playlistId: string): Observable<Playlist> {
     return this.httpClient.get<Playlist>(`${this.routeUrl}/${playlistId}`);
   }
+
+  public createPlaylist(playlist: Playlist): Observable<Playlist> {
+    return this.httpClient.post<Playlist>(`${this.routeUrl}`, playlist);
+  }
+
+  public updatePlaylist(playlist: Playlist): Observable<Playlist> {
+    return this.httpClient.put<Playlist>(`${this.routeUrl}`, playlist);
+   }
+
+  public deletePlaylist(playlistId: string): Observable<Playlist> {
+    return this.httpClient.delete<Playlist>(`${this.routeUrl}/${ playlistId }`);
+  }
 }

@@ -1,6 +1,7 @@
+import { MyPlaylistService } from './../../services/myplaylist/myplaylist.service';
 import { Component, OnInit } from '@angular/core';
 import { Playlist } from 'src/app/model';
-import { PlaylistService } from 'src/app/services';
+import { PlaylistManagerService, PlaylistService } from 'src/app/services';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit {
   hasStyle: string = '';
   playlist: Playlist[] = [];
 
-  constructor(public playlistService: PlaylistService) { }
+  constructor(public playlistService: PlaylistService, private playlistManagerService: PlaylistManagerService) { }
 
   ngOnInit() : void {
     this.getListOfPlaylist();
@@ -27,8 +28,20 @@ export class HomeComponent implements OnInit {
       },
       error: (response: any) => {
         console.log(response.error);
-      },
-      complete() { }
+      }
     });
+  }
+
+  addToFavorites = (playlist: Playlist): void => {
+    this.playlistManagerService.createPlaylist(playlist).subscribe({
+      next: (response: Playlist) => {
+        if (response)
+          alert('Playlist Criada com sucesso!');
+      },
+      error: (response: any) => {
+        alert(response.error);
+      }
+    });
+
   }
 }

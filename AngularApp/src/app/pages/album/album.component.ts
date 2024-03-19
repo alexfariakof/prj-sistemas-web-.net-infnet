@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Album, Music} from 'src/app/model';
-import { AlbumService } from 'src/app/services';
+import { Album, Music, Playlist} from 'src/app/model';
+import { AlbumService, PlaylistManagerService } from 'src/app/services';
 
 @Component({
   selector: 'app-album',
@@ -20,7 +20,8 @@ export class AlbumComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public albumService: AlbumService
+    public albumService: AlbumService,
+    private playlistManagerService: PlaylistManagerService
     ) { }
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class AlbumComponent implements OnInit {
   getAlbum = (albumId: string): void => {
     this.albumService.getAlbumById(albumId).subscribe({
       next: (response: Album) => {
-        if (response != null) {
+        if (response) {
           this.album = response;
           this.musics = response.musics ?? [];
         }
@@ -47,4 +48,22 @@ export class AlbumComponent implements OnInit {
       complete() { }
     });
   }
+
+  addToFavorites = (album: Album): void => {
+    const playlist: Playlist =
+    {
+      name: album.name,
+      musics: album.musics ?? []
+    }
+    this.playlistManagerService.createPlaylist(playlist).subscribe({
+      next: (response: Playlist) => {
+        if (response)
+          alert('Playlist Criada com sucesso!');
+      },
+      error: (response: any) => {
+        alert(response.error);
+      }
+    });
+  }
 }
+

@@ -9,7 +9,7 @@ import { MyPlaylistService } from 'src/app/services';
 })
 export class MyplaylistComponent implements OnInit {
   hasStyle: string = '';
-  myPlaylist: Playlist[] = [];
+  myPlaylist: Playlist | any = {};
   musics: Music[] = [];
 
   constructor(
@@ -27,6 +27,7 @@ export class MyplaylistComponent implements OnInit {
     this.myPlaylistService.getPlaylist(playlistId).subscribe({
       next: (response: Playlist) => {
         if (response != null) {
+          this.myPlaylist = response;
           this.musics = response.musics;
         }
         else {
