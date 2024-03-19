@@ -15,4 +15,11 @@ export class PlaylistService {
   public getAllPlaylist(): Observable<Playlist[]> {
     return this.httpClient.get<Playlist[]>(`${ this.routeUrl }`);
   }
+
+  public getPlaylistById(playlistId: string): Observable<Playlist> {
+    return this.httpClient.get<Playlist>(`${ this.routeUrl }/${ playlistId }`);
+  }
+
+
+
 }

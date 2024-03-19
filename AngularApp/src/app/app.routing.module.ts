@@ -4,11 +4,13 @@ import { BandComponent } from './pages/band/band.component';
 import { AlbumComponent } from './pages/album/album.component';
 import { MusicComponent } from './pages/musics/musics.component';
 import { MyplaylistComponent } from './pages/myplaylist/myplaylist.component';
+import { PlaylistComponent } from './pages/playlist/playlist.component';
 
 export const routes: Routes = [
     { path: '',  pathMatch: 'full', redirectTo: '' },
     { path: '', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) },
     { path: "login", loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
+    { path: "playlist/:playlistId", component: PlaylistComponent },
     { path: "account/customer", loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule)},
     { path: "account/merchant", loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule)},
     { path: "favorites/:playlistId", component: MyplaylistComponent},

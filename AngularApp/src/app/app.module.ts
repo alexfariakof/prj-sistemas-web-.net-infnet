@@ -19,12 +19,13 @@ import { AddFavoritesModule } from './components/add-favorites/add-favorites.mod
 import { FavoritesBarModule } from './components/favorites-bar/favorites-bar.module';
 import { MyplaylistModule } from './pages/myplaylist/myplaylist.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { PlaylistModule } from './pages/playlist/playlist.module';
 
 @NgModule({
   declarations: [AppComponent ],
   imports: [ BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule, FlexLayoutModule,
     MatToolbarModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
-    MyplaylistModule, AlbumModule, BandModule, MusicModule,
+    MyplaylistModule, PlaylistModule, AlbumModule, BandModule, MusicModule,
     ToolBarModule, AddFavoritesModule, FavoritesBarModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, },

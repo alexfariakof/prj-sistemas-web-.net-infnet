@@ -41,9 +41,10 @@ describe('AlbumComponent', () => {
       id: '1',
       name: 'Album 1',
       bandId: '1',
+      backdrop: 'http://backdrop1.jpg',
       musics: [
-        { id: '1', name: 'Music 1', duration: 20 },
-        { id: '2', name: 'Music 2', duration: 30 }
+        { id: '1', name: 'Music 1', duration: 20, url: 'http://music1.mp3' },
+        { id: '2', name: 'Music 2', duration: 30, url: 'http://music2.mp3' }
       ]
     };
     spyOn(albumService, 'getAlbumById').and.returnValue(of(mockAlbum));
@@ -69,7 +70,7 @@ describe('AlbumComponent', () => {
 
     // Assert
     expect(albumService.getAlbumById).toHaveBeenCalledWith('1');
-    expect(component.album).toEqual({ id: '', name: '', bandId: '' });
+    expect(component.album).toEqual({ id: '', name: '', bandId: '', backdrop: '' });
     expect(component.musics).toEqual([]);
   }));
 
@@ -84,7 +85,7 @@ describe('AlbumComponent', () => {
 
     // Assert
     expect(albumService.getAlbumById).toHaveBeenCalledWith('1');
-    expect(component.album).toEqual({ id: '', name: '', bandId: '' });
+    expect(component.album).toEqual({ id: '', name: '', bandId: '', backdrop: '' });
     expect(component.musics).toEqual([]);
   }));
 });

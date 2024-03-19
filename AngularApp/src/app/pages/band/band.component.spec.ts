@@ -44,12 +44,16 @@ describe('BandComponent', () => {
       name: 'Band 1',
       description: 'Description',
       backdrop: 'Backdrop',
-      album: {
+      albums: [{
         id: '1',
         name: 'Album 1',
         bandId: '1',
-        musics: [{ id: '1', name: 'Song 1', duration: 300 }]
-      }
+        musics: [{
+          id: '1', name: 'Song 1', duration: 300,
+          url: ''
+        }],
+        backdrop: ''
+      }]
     };
     spyOn(bandService, 'getBandById').and.returnValue(of(mockBand));
 
@@ -60,7 +64,7 @@ describe('BandComponent', () => {
     // Assert
     expect(bandService.getBandById).toHaveBeenCalledWith('1');
     expect(component.band).toEqual(mockBand);
-    expect(component.musics).toEqual(mockBand.album.musics ?? []);
+    expect(component.albums).toEqual(mockBand.albums ?? []);
   }));
 
   it('should handle error when retrieving band information', fakeAsync(() => {
@@ -74,14 +78,8 @@ describe('BandComponent', () => {
 
     // Assert
     expect(bandService.getBandById).toHaveBeenCalledWith('1');
-    expect(component.band).toEqual({
-      id: '',
-      name: '',
-      description: '',
-      backdrop: '',
-      album: { id: '', name: '', bandId: '' }
-    });
-    expect(component.musics).toEqual([]);
+    expect(component.band).toEqual({});
+    expect(component.albums).toEqual([]);
   }));
 
 });

@@ -32,11 +32,13 @@ describe('AlbumService', () => {
         const mockResponse: Album[] = [
         {
           id: '1', name: 'Album 1',
-          bandId: ''
+          bandId: '',
+          backdrop: ''
         },
         {
           id: '2', name: 'Album 2',
-          bandId: ''
+          bandId: '',
+          backdrop: ''
         }
       ];
 

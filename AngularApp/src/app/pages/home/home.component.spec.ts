@@ -30,8 +30,8 @@ describe('HomeComponent', () => {
   it('should retrieve list of playlists on initialization', fakeAsync(() => {
     // Arrange
     const mockPlaylists: Playlist[] = [
-      { id: '1', name: 'Playlist 1', musics: [] },
-      { id: '2', name: 'Playlist 2', musics: [] }
+      { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] },
+      { id: '2', name: 'Playlist 2', backdrop: 'http://backdrop1.jpg', musics: [] }
     ];
 
     spyOn(playlistService, 'getAllPlaylist').and.returnValue(of(mockPlaylists));

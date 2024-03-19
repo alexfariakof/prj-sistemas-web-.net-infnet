@@ -20,7 +20,6 @@ public class MusicController : ControllerBase
     [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
     public IActionResult FindAll()
     {
         if (UserType != UserTypeEnum.Customer) return Unauthorized();
@@ -44,7 +43,6 @@ public class MusicController : ControllerBase
     [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
     public IActionResult FindById([FromRoute] Guid musicId)
     {
         if (UserType != UserTypeEnum.Customer) return Unauthorized();

@@ -7,11 +7,11 @@ public class BandProfile : AutoMapper.Profile
     public BandProfile() 
     {
         CreateMap<BandDto, Band>()
-            .ForMember(dest => dest.Albums, opt => opt.MapFrom(src => new List<AlbumDto>() { src.Album }))
+            .ForMember(dest => dest.Albums, opt => opt.MapFrom(src => src.Albums ))
             .ReverseMap();
 
         CreateMap<Band, BandDto>()
-            .ForMember(dest => dest.Album, opt => opt.MapFrom(src => src.Albums.FirstOrDefault()))
+            .ForMember(dest => dest.Albums, opt => opt.MapFrom(src => src.Albums))
             .AfterMap((s, d) =>
             {
 

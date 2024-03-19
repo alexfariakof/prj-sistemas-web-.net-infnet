@@ -21,6 +21,7 @@ export class CustomInterceptor implements HttpInterceptor {
     });
     return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
+        console.log(() => error.message);
         return throwError(() => error);
       }),
       finalize(() => this.hideLoader())

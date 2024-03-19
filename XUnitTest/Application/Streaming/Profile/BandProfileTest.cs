@@ -52,7 +52,7 @@ public class BandProfileTest
         Assert.Equal(band.Name, bandDto.Name);
         Assert.Equal(band.Description, bandDto.Description);
         Assert.Equal(band.Backdrop, bandDto.Backdrop);
-        Assert.NotNull(bandDto.Album);
-        Assert.Equal(band.Albums.First().Id, bandDto.Album.Id);
+        Assert.NotNull(bandDto.Albums);
+        Assert.Equal(band.Albums.Count(), bandDto.Albums.Count());
     }
 }
