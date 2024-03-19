@@ -13,6 +13,9 @@ namespace Repository.Mapping.Streaming
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.Backdrop).IsRequired();
+            
+            builder.HasMany(x => x.Genres).WithMany(x => x.Playlists);
 
             builder.HasMany(x => x.Musics)
                     .WithMany(x => x.Playlists)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Migrations_MsSqlServer.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    partial class RegisterContextModelSnapshot : ModelSnapshot
+    [Migration("20240318022619_Fix-Description-Prop-Band")]
+    partial class FixDescriptionPropBand
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,7 +140,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 17, 35, 507, DateTimeKind.Local).AddTicks(3310));
+                        .HasDefaultValue(new DateTime(2024, 3, 17, 23, 26, 18, 66, DateTimeKind.Local).AddTicks(9991));
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
@@ -197,7 +200,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 17, 35, 514, DateTimeKind.Local).AddTicks(5419));
+                        .HasDefaultValue(new DateTime(2024, 3, 17, 23, 26, 18, 71, DateTimeKind.Local).AddTicks(8937));
 
                     b.Property<int>("UserTypeId")
                         .HasColumnType("int");
@@ -610,7 +613,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 17, 35, 541, DateTimeKind.Local).AddTicks(8736));
+                        .HasDefaultValue(new DateTime(2024, 3, 17, 23, 26, 18, 96, DateTimeKind.Local).AddTicks(8833));
 
                     b.HasKey("FlatId", "AlbumId");
 
@@ -630,7 +633,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 17, 35, 573, DateTimeKind.Local).AddTicks(7200));
+                        .HasDefaultValue(new DateTime(2024, 3, 17, 23, 26, 18, 120, DateTimeKind.Local).AddTicks(3624));
 
                     b.HasKey("FlatsId", "MusicsId");
 
@@ -650,7 +653,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 17, 35, 596, DateTimeKind.Local).AddTicks(362));
+                        .HasDefaultValue(new DateTime(2024, 3, 17, 23, 26, 18, 138, DateTimeKind.Local).AddTicks(4880));
 
                     b.HasKey("FlatsId", "PlaylistsId");
 
@@ -700,7 +703,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 17, 35, 582, DateTimeKind.Local).AddTicks(5563));
+                        .HasDefaultValue(new DateTime(2024, 3, 17, 23, 26, 18, 131, DateTimeKind.Local).AddTicks(8624));
 
                     b.HasKey("MusicsId", "PlaylistsId");
 
@@ -720,7 +723,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 17, 35, 512, DateTimeKind.Local).AddTicks(3707));
+                        .HasDefaultValue(new DateTime(2024, 3, 17, 23, 26, 18, 70, DateTimeKind.Local).AddTicks(5052));
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 

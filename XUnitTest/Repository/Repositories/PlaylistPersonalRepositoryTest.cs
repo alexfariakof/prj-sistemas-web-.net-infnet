@@ -117,7 +117,7 @@ public class PlaylistPersonalRepositoryTest
         contextMock.Setup(c => c.Set<PlaylistPersonal>()).Returns(dbSetMock.Object);
 
         // Act
-        var result = repository.Find(f => f.Name == mockPlaylistPersonal.Name);
+        var result = repository.Find(f => f.Id == mockPlaylistPersonal.Id);
 
         // Assert
         Assert.Single(result);

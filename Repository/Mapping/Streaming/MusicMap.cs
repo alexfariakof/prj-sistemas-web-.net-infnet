@@ -13,6 +13,7 @@ public class MusicMap : IEntityTypeConfiguration<Music>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
+        builder.Property(x => x.Url).IsRequired();
 
         builder.OwnsOne<Duration>(d => d.Duration, c =>
         {
@@ -21,6 +22,7 @@ public class MusicMap : IEntityTypeConfiguration<Music>
 
         builder.HasOne(x => x.Album).WithMany(m => m.Musics);
         builder.HasMany(x => x.Playlists).WithMany(m => m.Musics);
+        builder.HasMany(x => x.Genres).WithMany(m => m.Musics);
 
         builder.HasMany(x => x.Flats)
             .WithMany(x => x.Musics)

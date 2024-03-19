@@ -4,6 +4,8 @@ using Repository;
 using Repository.CommonInjectDependence;
 using Application.CommonInjectDependence;
 using WebApi.CommonInjectDependence;
+using DataSeeders;
+using DataSeeders.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,17 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 var appName = "Serviços de Streaming";
 var appVersion = "v1";
 var appDescription = $"API Serviços de Streaming.";
-
-// Add Cors Configuration 
-builder.Services.AddCors(c =>
-{
-    c.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
 
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -44,11 +35,21 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-builder.Services.AddDbContext<RegisterContext>(c =>
+
+if (builder.Environment.IsStaging())
 {
-    c.UseLazyLoadingProxies()
-     .UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionString"));
-});
+    builder.Services.AddDbContext<RegisterContext>(c => c.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
+    builder.Services.AddTransient<IDataSeeder, DataSeeder>();
+}
+else
+{
+
+    builder.Services.AddDbContext<RegisterContext>(c =>
+    {
+        c.UseLazyLoadingProxies()
+        .UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString"));
+    });
+}
 
 // Autorization Configuratons
 builder.Services.AddAuthConfigurations(builder.Configuration);
@@ -73,16 +74,27 @@ if (app.Environment.IsStaging())
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
 }
 
-if (!app.Environment.IsStaging())
-    app.UseHttpsRedirection();
 
+if (app.Environment.IsStaging())    
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var dataSeeder = services.GetRequiredService<IDataSeeder>();
+        dataSeeder.SeedData();
+    }
+}
+else
+{
+    app.UseHttpsRedirection();
+}
+    
 app.UseAuthorization();
 
 app.MapControllers();

@@ -22,6 +22,36 @@ namespace Migrations_MySqlServer.Migrations
                 .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("AlbumGenre", b =>
+                {
+                    b.Property<Guid>("AlbumsId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("GenresId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("AlbumsId", "GenresId");
+
+                    b.HasIndex("GenresId");
+
+                    b.ToTable("AlbumGenre");
+                });
+
+            modelBuilder.Entity("BandGenre", b =>
+                {
+                    b.Property<Guid>("BandsId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("GenresId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("BandsId", "GenresId");
+
+                    b.HasIndex("GenresId");
+
+                    b.ToTable("BandGenre");
+                });
+
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -103,7 +133,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 8, 22, 57, 23, 990, DateTimeKind.Local).AddTicks(5589));
+                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 4, DateTimeKind.Local).AddTicks(3398));
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("tinyint(1)");
@@ -163,7 +193,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 8, 22, 57, 24, 0, DateTimeKind.Local).AddTicks(3502));
+                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 10, DateTimeKind.Local).AddTicks(2687));
 
                     b.Property<int>("UserTypeId")
                         .HasColumnType("int");
@@ -313,6 +343,10 @@ namespace Migrations_MySqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("Backdrop")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<Guid?>("BandId")
                         .HasColumnType("char(36)");
 
@@ -336,13 +370,11 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.Property<string>("Backdrop")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -375,6 +407,22 @@ namespace Migrations_MySqlServer.Migrations
                     b.ToTable("Flat", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Streaming.Agreggates.Genre", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genre", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Streaming.Agreggates.Music", b =>
                 {
                     b.Property<Guid>("Id")
@@ -389,6 +437,10 @@ namespace Migrations_MySqlServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
@@ -401,6 +453,10 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<string>("Backdrop")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -546,7 +602,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 8, 22, 57, 24, 14, DateTimeKind.Local).AddTicks(8631));
+                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 29, DateTimeKind.Local).AddTicks(5382));
 
                     b.HasKey("FlatId", "AlbumId");
 
@@ -566,7 +622,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 8, 22, 57, 24, 33, DateTimeKind.Local).AddTicks(932));
+                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 45, DateTimeKind.Local).AddTicks(6478));
 
                     b.HasKey("FlatsId", "MusicsId");
 
@@ -586,13 +642,43 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 8, 22, 57, 24, 46, DateTimeKind.Local).AddTicks(8138));
+                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 61, DateTimeKind.Local).AddTicks(2152));
 
                     b.HasKey("FlatsId", "PlaylistsId");
 
                     b.HasIndex("PlaylistsId");
 
                     b.ToTable("FlatPlayList");
+                });
+
+            modelBuilder.Entity("GenreMusic", b =>
+                {
+                    b.Property<Guid>("GenresId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MusicsId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("GenresId", "MusicsId");
+
+                    b.HasIndex("MusicsId");
+
+                    b.ToTable("GenreMusic");
+                });
+
+            modelBuilder.Entity("GenrePlaylist", b =>
+                {
+                    b.Property<Guid>("GenresId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("PlaylistsId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("GenresId", "PlaylistsId");
+
+                    b.HasIndex("PlaylistsId");
+
+                    b.ToTable("GenrePlaylist");
                 });
 
             modelBuilder.Entity("MusicPlayList", b =>
@@ -606,7 +692,7 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 8, 22, 57, 24, 41, DateTimeKind.Local).AddTicks(4891));
+                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 54, DateTimeKind.Local).AddTicks(5161));
 
                     b.HasKey("MusicsId", "PlaylistsId");
 
@@ -626,13 +712,43 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 3, 8, 22, 57, 23, 997, DateTimeKind.Local).AddTicks(3297));
+                        .HasDefaultValue(new DateTime(2024, 3, 18, 20, 31, 24, 8, DateTimeKind.Local).AddTicks(9706));
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
                     b.HasIndex("PlaylistPersonalId");
 
                     b.ToTable("MusicPlayListPersonal");
+                });
+
+            modelBuilder.Entity("AlbumGenre", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Album", null)
+                        .WithMany()
+                        .HasForeignKey("AlbumsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BandGenre", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Band", null)
+                        .WithMany()
+                        .HasForeignKey("BandsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Account.Agreggates.Customer", b =>
@@ -989,6 +1105,36 @@ namespace Migrations_MySqlServer.Migrations
                     b.HasOne("Domain.Streaming.Agreggates.Flat", null)
                         .WithMany()
                         .HasForeignKey("FlatsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GenreMusic", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Music", null)
+                        .WithMany()
+                        .HasForeignKey("MusicsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GenrePlaylist", b =>
+                {
+                    b.HasOne("Domain.Streaming.Agreggates.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

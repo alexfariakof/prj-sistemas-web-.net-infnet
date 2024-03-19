@@ -106,7 +106,7 @@ public class BandRepositoryTest
         contextMock.Setup(c => c.Set<Band>()).Returns(dbSetMock.Object);
 
         // Act
-        var result = repository.Find(f => f.Name == mockBand.Name);
+        var result = repository.Find(f => f.Id == mockBand.Id);
 
         // Assert
         Assert.Single(result);
