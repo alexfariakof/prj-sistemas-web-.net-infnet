@@ -21,10 +21,6 @@ export class AddFavoritesComponent implements OnInit {
 
   }
 
-  addToPlaylist(playlistId?: string): void {
-    alert(playlistId);
-  }
-
   onAddToFavoritesClick(playlistId?: string): void {
     this.addToFavoritesEvent.emit(playlistId);
   }

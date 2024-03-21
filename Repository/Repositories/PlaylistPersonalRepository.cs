@@ -12,9 +12,9 @@ public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRep
 
     public override void Save(PlaylistPersonal entity)
     {
-        var dsMusic = this.Context.Set<Music>().ToList();
-        entity.Musics = entity.Musics.Select(music => dsMusic.First(m =>  m.Id == music.Id)).ToList();
-        entity.Customer = this.Context.Set<Customer>().ToList().Where(c => c.User.Id.Equals(entity.CustomerId)).FirstOrDefault();
+        entity.Customer = this.Context.Set<Customer>().FirstOrDefault(c => c.User.Id.Equals(entity.CustomerId));
+        var loadedMusics = this.Context.Set<Music>().Where(m => entity.Musics.Select(em => em.Id).Contains(m.Id)).ToList();
+        entity.Musics = loadedMusics;
         this.Context.Add(entity);
         this.Context.SaveChanges();
     }
@@ -31,10 +31,11 @@ public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRep
     /// </remarks>
     public override void Update(PlaylistPersonal entity)
     {
-        var entityToUpdate = this.Context.Set<PlaylistPersonal>().ToList().First(p => p.Id.Equals(entity.Id));
-        var dsMusic = this.Context.Set<Music>().ToList();
-        entityToUpdate.Musics = entity.Musics.Select(music => dsMusic.First(m => m.Id == music.Id)).ToList();
-        entityToUpdate.Customer = this.Context.Set<Customer>().ToList().Where(c => c.User.Id.Equals(entity.CustomerId)).FirstOrDefault();
+        var entityToUpdate = this.Context.Set<PlaylistPersonal>().FirstOrDefault(p => p.Id.Equals(entity.Id));
+        entityToUpdate.Customer = this.Context.Set<Customer>().FirstOrDefault(c => c.User.Id.Equals(entity.CustomerId));
+        var loadedMusics = this.Context.Set<Music>().Where(m => entity.Musics.Select(em => em.Id).Contains(m.Id)).ToList();
+        entityToUpdate.Musics = loadedMusics;
+
         this.Context.Update(entityToUpdate);
         this.Context.SaveChanges();
     }

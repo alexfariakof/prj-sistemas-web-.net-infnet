@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.formbuilder.group({
       email: ['user@customer.com', [Validators.required, Validators.email]],
-      password: ['12345', Validators.required]
+      password: ['12345T!', Validators.required]
     }) as (FormGroup & Login) | any;
     document.body.style.overflowY = 'hidden';
   }

@@ -9,7 +9,6 @@ import { AlbumService, PlaylistManagerService } from 'src/app/services';
   styleUrls: ['./album.component.css']
 })
 export class AlbumComponent implements OnInit {
-
   album: Album = {
     id: '',
     name: '',
@@ -51,11 +50,11 @@ export class AlbumComponent implements OnInit {
   }
 
   addToFavorites = (album: Album): void => {
-    const playlist: Playlist =
-    {
+    const playlist: Playlist = {
       name: album.name,
       musics: album.musics ?? []
-    }
+    };
+
     this.playlistManagerService.createPlaylist(playlist).subscribe({
       next: (response: Playlist) => {
         if (response)
@@ -67,10 +66,10 @@ export class AlbumComponent implements OnInit {
     });
   }
 
-  onAddPlaylist = (playlistId?: string, musicId?: string) =>{
+  addMusicFromAlbumToPlaylist = (playlistId?: string, music?: Music ) =>{
     const playlist: Playlist = {
       id: playlistId,
-      musics: [{id: musicId }]
+      musics: [music ?? {}]
     };
     this.playlistManagerService.updatePlaylist(playlist).subscribe(() => {
       alert('Música adicionada ao favoritos!');

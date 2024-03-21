@@ -63,4 +63,22 @@ export class BandComponent implements OnInit {
     });
   }
 
+  addAlbumToFavorites = (album: Album): void => {
+    const playlist: Playlist = {
+      name: 'Album ' + album.name,
+      musics: album.musics as Music[]
+    };
+
+    this.playlistManagerService.createPlaylist(playlist).subscribe({
+      next: (response: Playlist) => {
+        if (response)
+          alert('Playlist Criada com sucesso!');
+      },
+      error: (response: any) => {
+        alert(response.error);
+      }
+    });
+  }
+
+
 }

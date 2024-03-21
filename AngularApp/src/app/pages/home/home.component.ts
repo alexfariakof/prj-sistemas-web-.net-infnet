@@ -41,6 +41,5 @@ export class HomeComponent implements OnInit {
         alert(response.error);
       }
     });
-
   }
 }
