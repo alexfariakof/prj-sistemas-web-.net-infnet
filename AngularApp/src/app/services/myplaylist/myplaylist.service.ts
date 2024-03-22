@@ -34,7 +34,11 @@ export class MyPlaylistService {
     return this.httpClient.put<Playlist>(`${this.routeUrl}`, playlist);
    }
 
-  public deletePlaylist(playlistId?: string): Observable<Playlist> {
+  public deletePlaylist(playlistId?: string): Observable<Playlist | any> {
     return this.httpClient.delete<Playlist>(`${this.routeUrl}/${ playlistId }`);
+  }
+
+  public removeMusicFromFavotites(playlistId?: string, musicId?: string): Observable<Playlist | any> {
+    return this.httpClient.delete<Playlist>(`${this.routeUrl}/${ playlistId }/music/${ musicId }`);
   }
 }

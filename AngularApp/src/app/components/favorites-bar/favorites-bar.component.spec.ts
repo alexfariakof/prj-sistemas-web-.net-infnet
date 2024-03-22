@@ -3,6 +3,7 @@ import { FavoritesBarComponent } from './favorites-bar.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PlaylistManagerService } from '../../services';
 import { Playlist } from 'src/app/model';
+import { of } from 'rxjs';
 
 describe('FavoritesBarComponent', () => {
   let component: FavoritesBarComponent;
@@ -42,13 +43,47 @@ describe('FavoritesBarComponent', () => {
     expect(component.myPlaylist).toEqual(cachedPlaylists);
   });
 
-  it('should removoPlaylist when is called', () => {
+  it('should toggleCreatePlaylist', () => {
     // Arrange
-    const playlistId = '1';
-    spyOn(playlistManagerService, 'deletePlaylist').and.callThrough();
+    component.isCreatingPlaylist = false;
 
     // Act
-    component.removoPlaylist(playlistId);
+    component.toggleCreatePlaylist();
+
+    // Assert
+    expect(component.isCreatingPlaylist).toBeTruthy();
+  });
+
+  it('should createPlaylist', () => {
+    // Arrange
+    const newPlaylistName = 'New Playlist';
+    const mockPlaylist: Playlist = {
+      name: newPlaylistName,
+      musics: []
+    } ;
+
+    spyOn(playlistManagerService, 'createPlaylist').and.returnValue(of(mockPlaylist));
+    component.newPlaylistName = newPlaylistName;
+
+    // Act
+    component.createPlaylist();
+
+    // Assert
+    expect(playlistManagerService.createPlaylist).toHaveBeenCalledWith({
+      name: newPlaylistName,
+      musics: []
+    });
+    expect(component.newPlaylistName).toEqual('');
+    expect(component.isCreatingPlaylist).toBeFalsy();
+  });
+
+  it('should removePlaylist when called', () => {
+    // Arrange
+    const playlistId = '1';
+    spyOn(playlistManagerService, 'deletePlaylist').and.returnValue(of(true));
+
+    // Act
+    component.removePlaylist(playlistId);
 
     // Assert
     expect(playlistManagerService.deletePlaylist).toHaveBeenCalledWith(playlistId);

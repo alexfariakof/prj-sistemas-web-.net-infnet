@@ -46,11 +46,10 @@ export class BandComponent implements OnInit {
   }
 
   addToFavorites = (band: Band): void => {
-    const playlist: Playlist =
-    {
+    const playlist: Playlist = {
       name: 'Banda ' + band.name,
       musics: band.albums.flatMap(album => album.musics) as Music[]
-    }
+    };
 
     this.playlistManagerService.createPlaylist(playlist).subscribe({
       next: (response: Playlist) => {

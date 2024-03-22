@@ -131,4 +131,20 @@ describe('MyPlaylistService', () => {
     }
   ));
 
+  it('removeMusicFromFavotites should send a delete request to the api/customer/myplaylist/music endpoint', inject(
+    [MyPlaylistService, HttpTestingController],
+    (service: MyPlaylistService, httpMock: HttpTestingController) => {
+        const mockResponse: boolean = true;
+;
+      service.removeMusicFromFavotites('1', '1').subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/customer/myplaylist/1/music/1';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('DELETE');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
 });

@@ -1,7 +1,8 @@
+import { PlaylistService } from './../../services/playlist/playlist.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Music, Playlist } from 'src/app/model';
-import { MyPlaylistService } from 'src/app/services';
+import { MyPlaylistService, PlaylistManagerService } from 'src/app/services';
 @Component({
   selector: 'app-myplaylist',
   templateUrl: './myplaylist.component.html',
@@ -14,6 +15,7 @@ export class MyplaylistComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    public playlistManagerService: PlaylistManagerService,
     public myPlaylistService: MyPlaylistService) { }
 
   ngOnInit(): void {
@@ -38,6 +40,22 @@ export class MyplaylistComponent implements OnInit {
         console.log(response.error);
       },
       complete() { }
+    });
+  }
+
+  addMusicToFavorites = (playlistId?: string, music?: Music ) => {
+    const playlist: Playlist = {
+      id: playlistId,
+      musics: [music ?? {}]
+    };
+    this.playlistManagerService.updatePlaylist(playlist).subscribe(() => {
+      alert('Música adicionada ao favoritos!');
+    });
+  }
+
+  removeMusicFromFavotites = (music: Music) => {
+    this.myPlaylistService.removeMusicFromFavotites(this.myPlaylist.id, music.id).subscribe(() => {
+      alert('Música removida com sucesso!');
     });
   }
 }

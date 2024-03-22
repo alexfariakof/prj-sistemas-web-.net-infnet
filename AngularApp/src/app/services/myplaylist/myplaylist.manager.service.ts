@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Playlist } from 'src/app/model';
 import { PlaylistCacheService } from './myplaylist.cache.service';
@@ -73,13 +73,17 @@ export class PlaylistManagerService {
 
   deletePlaylist(playlistId: string): Observable<any> {
     return this.myPlaylistService.deletePlaylist(playlistId).pipe(
-      tap(() => {
-        const updatedPlaylists = this.playlistCacheService.removeFromCache(playlistId);
-        this.playlistsSubject.next(updatedPlaylists);
+      tap((result: boolean) => {
+        if (result) {
+          const updatedPlaylists = this.playlistCacheService.removeFromCache(playlistId);
+          this.playlistsSubject.next(updatedPlaylists);
+        } else {
+          console.error('Erro ao deletar playlist.');
+        }
       }),
       catchError(error => {
         this.playlistsSubject.error(error);
-        return [];
+        return of(false);
       })
     );
   }

@@ -1,6 +1,7 @@
+import { BandService } from './../../services/band/band.service';
 import { Component, OnInit } from '@angular/core';
-import { Playlist } from 'src/app/model';
-import { PlaylistManagerService, PlaylistService } from 'src/app/services';
+import { Album, Band, Music, Playlist } from 'src/app/model';
+import { AlbumService, PlaylistManagerService, PlaylistService } from 'src/app/services';
 
 @Component({
   selector: 'app-home',
@@ -8,14 +9,21 @@ import { PlaylistManagerService, PlaylistService } from 'src/app/services';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  bands: [] = [];
   hasStyle: string = '';
   playlist: Playlist[] = [];
+  bands: Band[] = [];
+  albums: Album[] = [];
 
-  constructor(public playlistService: PlaylistService, private playlistManagerService: PlaylistManagerService) { }
+  constructor(
+    public playlistService: PlaylistService,
+    public bandService: BandService,
+    public albumService: AlbumService,
+    private playlistManagerService: PlaylistManagerService) { }
 
   ngOnInit() : void {
     this.getListOfPlaylist();
+    this.getListOfBands();
+    this.getListOfAlbums();
   }
 
   getListOfPlaylist = (): void => {
@@ -24,6 +32,32 @@ export class HomeComponent implements OnInit {
       next: (response: Playlist[]) => {
         if (response != null)
           this.playlist = response;
+      },
+      error: (response: any) => {
+        console.log(response.error);
+      }
+    });
+  }
+
+  getListOfBands = (): void => {
+    this.bandService.getAllBand()
+    .subscribe({
+      next: (response: Band[]) => {
+        if (response)
+          this.bands = response;
+      },
+      error: (response: any) => {
+        console.log(response.error);
+      }
+    });
+  }
+
+  getListOfAlbums = (): void => {
+    this.albumService.getAllAlbum()
+    .subscribe({
+      next: (response: Album[]) => {
+        if (response)
+          this.albums = response;
       },
       error: (response: any) => {
         console.log(response.error);
@@ -41,5 +75,21 @@ export class HomeComponent implements OnInit {
         alert(response.error);
       }
     });
+  }
+
+  addBandToFavorites = (band: Band): void => {
+    const playlist: Playlist = {
+      name: 'Banda ' + band.name,
+      musics: band.albums.flatMap(album => album.musics) as Music[]
+    };
+    this.addToFavorites(playlist);
+  }
+
+  addAlbumToFavorites = (album: Album): void => {
+    const playlist: Playlist = {
+      name: album.name,
+      musics: album.musics as Music[]
+    };
+    this.addToFavorites(playlist);
   }
 }
