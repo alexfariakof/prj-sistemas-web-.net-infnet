@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Album, Band, Playlist } from 'src/app/model';
-import { MyPlaylistService, BandService } from 'src/app/services';
+import { Album, Band, Music, Playlist } from 'src/app/model';
+import { BandService, PlaylistManagerService } from 'src/app/services';
 @Component({
   selector: 'app-band',
   templateUrl: './band.component.html',
@@ -16,7 +16,7 @@ export class BandComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public myPlaylistService: MyPlaylistService,
+    private playlistManagerService: PlaylistManagerService,
     public bandService: BandService,
     ) { }
 
@@ -44,4 +44,40 @@ export class BandComponent implements OnInit {
       complete() { }
     });
   }
+
+  addToFavorites = (band: Band): void => {
+    const playlist: Playlist = {
+      name: 'Banda ' + band.name,
+      musics: band.albums.flatMap(album => album.musics) as Music[]
+    };
+
+    this.playlistManagerService.createPlaylist(playlist).subscribe({
+      next: (response: Playlist) => {
+        if (response)
+          alert('Playlist Criada com sucesso!');
+      },
+      error: (response: any) => {
+        alert(response.error);
+      }
+    });
+  }
+
+  addAlbumToFavorites = (album: Album): void => {
+    const playlist: Playlist = {
+      name: 'Album ' + album.name,
+      musics: album.musics as Music[]
+    };
+
+    this.playlistManagerService.createPlaylist(playlist).subscribe({
+      next: (response: Playlist) => {
+        if (response)
+          alert('Playlist Criada com sucesso!');
+      },
+      error: (response: any) => {
+        alert(response.error);
+      }
+    });
+  }
+
+
 }

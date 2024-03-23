@@ -27,7 +27,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindById()
     {
-        if (UserType != UserTypeEnum.Customer)  return Unauthorized();
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
         try
         {
@@ -44,9 +44,9 @@ public class CustomerController : ControllerBase
         }
     }
 
-    [HttpPost]    
+    [HttpPost]
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
-    [ProducesResponseType((400), Type = typeof(string))]    
+    [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Create([FromBody] CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -173,7 +173,7 @@ public class CustomerController : ControllerBase
         if (!isValid)
             return BadRequest(validationResults.Select(error => error.ErrorMessage)); try
         {
-            dto.CustumerId = UserIdentity;
+            dto.CustomerId = UserIdentity;
             var result = this._playlistService.Create(dto);
             return Ok(result);
         }
@@ -202,7 +202,7 @@ public class CustomerController : ControllerBase
 
         try
         {
-            dto.CustumerId = UserIdentity;
+            dto.CustomerId = UserIdentity;
             var result = this._playlistService.Update(dto);
             return Ok(result);
         }
@@ -212,14 +212,15 @@ public class CustomerController : ControllerBase
         }
     }
 
-    [HttpDelete("MyPlaylist")]
+    [HttpDelete("MyPlaylist/{playlistId}")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [Authorize("Bearer")]
-    public IActionResult DeletePlaylist(PlaylistPersonalDto dto)
+    public IActionResult DeletePlaylist([FromRoute] Guid playlistId)
     {
         if (UserType != UserTypeEnum.Customer) return Unauthorized();
 
+        var dto = new PlaylistPersonalDto { Id = playlistId };
         var validationResults = new List<ValidationResult>();
         bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
         {
@@ -231,9 +232,44 @@ public class CustomerController : ControllerBase
 
         try
         {
-            dto.CustumerId = UserIdentity;
+            dto.CustomerId = UserIdentity;
             var result = this._playlistService.Delete(dto);
             return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpDelete("MyPlaylist/{playlistId}/Music/{musicId}")]
+    [ProducesResponseType((200), Type = typeof(bool))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [Authorize("Bearer")]
+    public IActionResult DeleteMusicFromPlaylist([FromRoute] Guid playlistId, [FromRoute] Guid musicId)
+    {
+        if (UserType != UserTypeEnum.Customer) return Unauthorized();
+
+        var dto = new PlaylistPersonalDto { Id = playlistId, Musics = { new MusicDto { Id = musicId } } };
+        var validationResults = new List<ValidationResult>();
+        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
+        {
+            { "HttpMethod", "DELETE" }
+        }), validationResults, validateAllProperties: true);
+
+        if (!isValid)
+            return BadRequest(validationResults.Select(error => error.ErrorMessage));
+
+        try
+        {
+            dto.CustomerId = UserIdentity;
+            var playlists = this._playlistService.FindById(playlistId);
+            playlists.Musics.Remove(playlists.Musics.First(m => m.Id.Equals(musicId)));
+            var result = this._playlistService.Update(playlists);
+            if (result != null)
+                return Ok(true);
+            else
+                throw new ArgumentException("Erro ao excluir música da playlist.");
         }
         catch (Exception ex)
         {

@@ -13,8 +13,9 @@ public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
+        builder.Property(x => x.CustomerId).IsRequired();
         builder.Property(x => x.IsPublic).IsRequired();
-        builder.Property(x => x.DtCreated).HasDefaultValue(DateTime.Now);
+        builder.Property(x => x.DtCreated).ValueGeneratedOnAdd();
 
         builder.HasMany(x => x.Musics)
         .WithMany(x => x.PersonalPlaylists)
@@ -31,7 +32,7 @@ public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
         j =>
         {
             j.HasKey("MusicId", "PlaylistPersonalId");
-            j.Property<DateTime>("DtAdded").HasDefaultValue(DateTime.Now);
+            j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();
         });
     }
 }

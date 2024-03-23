@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistService } from '../../services';
 import { of, throwError } from 'rxjs';
 import { Playlist  } from '../../model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PlaylistComponent } from './playlist.component';
+import { MockPlaylist } from 'src/app/__mocks__';
 
 describe('PlaylistComponent', () => {
   let component: PlaylistComponent;
@@ -37,29 +37,16 @@ describe('PlaylistComponent', () => {
 
   it('should retrieve playlist on initialization', fakeAsync(() => {
     // Arrange
-    const mockPlaylist: Playlist = {
-      id: '1',
-      name: 'Playlist 1',
-      musics: [
-        {
-          id: '1', name: 'Music 1', duration: 20,
-          url: 'http://teste_music1.mp3'
-        },
-        {
-          id: '2', name: 'Music 2', duration: 30,
-          url: 'http://teste_music2.mp3'
-        }
-      ],
-      backdrop: 'http://backdrop.jpg'
-    };
+    const mockPlaylist: Playlist = MockPlaylist.instance().getFaker();
     spyOn(playlistService, 'getPlaylistById').and.returnValue(of(mockPlaylist));
 
     // Act
+    component.getplaylist(mockPlaylist.id as string);
     fixture.detectChanges();
     tick();
 
     // Assert
-    expect(playlistService.getPlaylistById).toHaveBeenCalledWith('1');
+    expect(playlistService.getPlaylistById).toHaveBeenCalledWith(mockPlaylist.id as string);
     expect(component.musics).toEqual(mockPlaylist.musics);
   }));
 

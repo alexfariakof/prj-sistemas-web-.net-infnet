@@ -1,16 +1,20 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { BandComponent } from './band.component';
 import { ActivatedRoute } from '@angular/router';
-import { Band } from 'src/app/model';
-import { MyPlaylistService, BandService } from 'src/app/services';
+import { Album, Band, Music, Playlist } from 'src/app/model';
+import { MyPlaylistService, BandService, PlaylistManagerService } from 'src/app/services';
 import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockBand, MockPlaylist, MockAlbum } from 'src/app/__mocks__';
+
 
 describe('BandComponent', () => {
   let component: BandComponent;
   let fixture: ComponentFixture<BandComponent>;
   let bandService: BandService;
+  let activatedRoute: ActivatedRoute;
+  let playlistManagerService: PlaylistManagerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,6 +35,8 @@ describe('BandComponent', () => {
     fixture = TestBed.createComponent(BandComponent);
     component = fixture.componentInstance;
     bandService = TestBed.inject(BandService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    playlistManagerService = TestBed.inject(PlaylistManagerService);
   });
 
   it('should create', () => {
@@ -39,22 +45,7 @@ describe('BandComponent', () => {
 
   it('should retrieve band information on initialization', fakeAsync(() => {
     // Arrange
-    const mockBand: Band = {
-      id: '1',
-      name: 'Band 1',
-      description: 'Description',
-      backdrop: 'Backdrop',
-      albums: [{
-        id: '1',
-        name: 'Album 1',
-        bandId: '1',
-        musics: [{
-          id: '1', name: 'Song 1', duration: 300,
-          url: ''
-        }],
-        backdrop: ''
-      }]
-    };
+    const mockBand: Band = MockBand.instance().getFaker();
     spyOn(bandService, 'getBandById').and.returnValue(of(mockBand));
 
     // Act
@@ -81,5 +72,40 @@ describe('BandComponent', () => {
     expect(component.band).toEqual({});
     expect(component.albums).toEqual([]);
   }));
+
+
+  it('should add band to favorites', () => {
+    // Arrange
+    const mockBand: Band = MockBand.instance().getFaker();
+
+    const mockPLaylist: Playlist = {
+      name: mockBand.name,
+      musics: mockBand.albums.flatMap(album => album.musics) as Music[]
+    }
+
+    spyOn(playlistManagerService, 'createPlaylist').and.returnValue(of(mockPLaylist));
+
+    // Act
+    component.addToFavorites(mockBand);
+
+    // Assert
+    expect(playlistManagerService.createPlaylist).toHaveBeenCalled();
+  });
+
+  it('addAlbumToFavorites should add music favorites', () => {
+    // Arrange
+    const mockPlaylist: Playlist = MockPlaylist.instance().getFaker();
+    const mockAlbum: Album = MockAlbum.instance().getFaker();
+    mockPlaylist.musics = mockAlbum.musics as Music[];
+    const mockPlaylistId = mockPlaylist.id;
+
+    spyOn(playlistManagerService, 'createPlaylist').and.returnValue(of(mockPlaylist));
+
+    // Act
+    component.addAlbumToFavorites(mockAlbum);
+
+    // Assert
+    expect(playlistManagerService.createPlaylist).toHaveBeenCalled();
+  });
 
 });

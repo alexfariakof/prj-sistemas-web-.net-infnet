@@ -15,10 +15,10 @@ public class CustomerControllerMyPlaylistTests
     private void SetupBearerToken(Guid userId, UserTypeEnum userType = UserTypeEnum.Customer)
     {
         var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Role, userType.ToString())
-            };
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.Role, userType.ToString())
+        };
         var identity = new ClaimsIdentity(claims, "UserId");
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
@@ -291,7 +291,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Delete(playlistDto)).Returns(false);
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto) as UnauthorizedResult;
+        var result = controller.DeletePlaylist(playlistDto.Id.Value) as UnauthorizedResult;
 
         // Assert
         Assert.NotNull(result);
@@ -303,13 +303,14 @@ public class CustomerControllerMyPlaylistTests
     public void DeletePlaylist_Returns_Ok_Result_When_Playlist_Deleted_Successfully()
     {
         // Arrange
-        var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity);
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
-        mockPlaylistService.Setup(service => service.Delete(playlistDto)).Returns(true);
+        var userIdentity = playlistDto.CustomerId;
+        SetupBearerToken(userIdentity);
+
+        mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(true);
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto) as OkObjectResult;
+        var result = controller.DeletePlaylist(playlistDto.Id.Value) as OkObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -322,14 +323,14 @@ public class CustomerControllerMyPlaylistTests
     [Fact]
     public void DeletePlaylist_Returns_BadRequest_Result_When_Playlist_Deletion_Fails()
     {
-        // Arrange
-        var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity);
+        // Arrange        
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
-        mockPlaylistService.Setup(service => service.Delete(playlistDto)).Returns(() => throw new Exception("Failed to delete the playlist."));
+        var userIdentity = playlistDto.CustomerId;
+        SetupBearerToken(userIdentity);
+        mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(() => throw new Exception("Failed to delete the playlist."));
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto) as BadRequestObjectResult;
+        var result = controller.DeletePlaylist(playlistDto.Id.Value) as BadRequestObjectResult;
 
         // Assert
         Assert.NotNull(result);
