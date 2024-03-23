@@ -1,15 +1,20 @@
+import { routes } from './../../app.routing.module';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MyplaylistComponent } from './myplaylist.component';
 import { ActivatedRoute } from '@angular/router';
-import { MyPlaylistService } from 'src/app/services';
+import { MyPlaylistService, PlaylistManagerService } from 'src/app/services';
 import { of, throwError } from 'rxjs';
-import { Playlist } from 'src/app/model';
+import { Music, Playlist } from 'src/app/model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MockPlaylist } from 'src/app/__mocks__';
+
 
 describe('MyplaylistComponent', () => {
   let component: MyplaylistComponent;
   let fixture: ComponentFixture<MyplaylistComponent>;
   let myPlaylistService: MyPlaylistService;
+  let activatedRoute: ActivatedRoute;
+  let playlistManagerService: PlaylistManagerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,6 +33,8 @@ describe('MyplaylistComponent', () => {
     fixture = TestBed.createComponent(MyplaylistComponent);
     component = fixture.componentInstance;
     myPlaylistService = TestBed.inject(MyPlaylistService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    playlistManagerService = TestBed.inject(PlaylistManagerService);
   });
 
   it('should create', () => {
@@ -36,36 +43,25 @@ describe('MyplaylistComponent', () => {
 
   it('should retrieve playlist on initialization', fakeAsync(() => {
     // Arrange
-    const mockPlaylist: Playlist = {
-      id: '1',
-      name: 'Playlist 1',
-      backdrop: 'http://backdrop1.jpg',
-      musics: [
-        {
-          id: '1', name: 'Music 1', duration: 20,
-          url: 'http://music1.mp3'
-        },
-        {
-          id: '2', name: 'Music 2', duration: 30,
-          url: 'http://music2.mp3'
-        }
-      ]
-    };
+    const mockPlaylist: Playlist = MockPlaylist.instance().getFaker();
+    let mockPlaylistId: string  = mockPlaylist.id as string;
+    spyOn(component.route.params, 'pipe').and.returnValue(of({ playlistId: mockPlaylistId }));
     spyOn(myPlaylistService, 'getPlaylist').and.returnValue(of(mockPlaylist));
 
     // Act
+    component.getMyplaylist(mockPlaylistId);
     fixture.detectChanges();
     tick();
 
     // Assert
-    expect(myPlaylistService.getPlaylist).toHaveBeenCalledWith('1');
+    expect(myPlaylistService.getPlaylist).toHaveBeenCalledWith(mockPlaylistId);
     expect(component.musics).toEqual(mockPlaylist.musics);
   }));
 
   it('should handle error when retrieving playlist', fakeAsync(() => {
     // Arrange
     const errorMessage = 'Error retrieving playlist';
-    spyOn(myPlaylistService, 'getPlaylist').and.returnValue(throwError(errorMessage));
+    spyOn(myPlaylistService, 'getPlaylist').and.returnValue(throwError(() => errorMessage));
 
     // Act
     fixture.detectChanges();
@@ -89,5 +85,19 @@ describe('MyplaylistComponent', () => {
     expect(myPlaylistService.getPlaylist).toHaveBeenCalledWith('1');
     expect(component.musics).toEqual([]);
   }));
+
+  it('addMusicToFavorites should add music to favorites', () => {
+    // Arrange
+    const mockPlaylist: Playlist = MockPlaylist.instance().getFaker();
+
+    spyOn(playlistManagerService, 'updatePlaylist').and.returnValue(of(mockPlaylist));
+
+    // Act
+    component.addMusicToFavorites(mockPlaylist.id, mockPlaylist.musics[0] as Music);
+
+    // Assert
+    expect(playlistManagerService.updatePlaylist).toHaveBeenCalled();
+  });
+
 
 });

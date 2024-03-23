@@ -4,6 +4,7 @@ import { Band } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
 import { BandService } from './band.service';
+import { MockBand } from 'src/app/__mocks__';
 
 describe('BandService', () => {
   let httpMock: HttpTestingController;
@@ -29,26 +30,8 @@ describe('BandService', () => {
   it('getAllBand should send a get request to the api/band endpoint', inject(
     [BandService, HttpTestingController],
     (service: BandService, httpMock: HttpTestingController) => {
-        const mockResponse: Band[] = [
-        {
-          id: '1', name: 'Band 1',
-          albums: [{
-            id: '1', name: 'Album 1', bandId: '1',
-            backdrop: ''
-          }],
-          description: 'Band Description 1',
-          backdrop: ''
-        },
-        {
-          id: '2', name: 'Band 2',
-          albums:[{
-            id: '2', name: 'Album 2', bandId: '2',
-            backdrop: ''
-          }],
-          description: 'Band Description 2',
-          backdrop: ''
-        }
-        ];
+      const mockResponse: Band[] = MockBand.instance().generateBandList(3);
+
 
       service.getAllBand().subscribe((response: any) => {
         expect(response).toBeTruthy();
@@ -64,21 +47,13 @@ describe('BandService', () => {
   it('getBandById should send a get request to the api/band endpoint', inject(
     [BandService, HttpTestingController],
     (service: BandService, httpMock: HttpTestingController) => {
-        const mockResponse: Band =
-        {
-          id: '1', name: 'Band 1',
-          albums: [{
-            id: '1', name: 'Album 1', bandId: '1',
-            backdrop: ''
-          }],
-          description: 'Band Description 1',
-          backdrop: ''
-        };
+      const mockResponse: Band =MockBand.instance().getFaker();
+      const mockBandId = mockResponse.id;
 
-      service.getBandById('1').subscribe((response: any) => {
+      service.getBandById(mockBandId).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
-      const expectedUrl = 'api/band/1';
+      const expectedUrl = `api/band/${ mockBandId }`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
       req.flush(mockResponse);

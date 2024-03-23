@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
 import { MyPlaylistService } from '..';
 import { PlaylistCacheService } from './myplaylist.cache.service';
+import { MockPlaylist } from 'src/app/__mocks__';
 
 describe('MyPlaylistService', () => {
   let httpMock: HttpTestingController;
@@ -30,16 +31,7 @@ describe('MyPlaylistService', () => {
   it('getAllPlaylist should send a get request to the api/customer/myplaylist endpoint', inject(
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
-        const mockResponse: Playlist[] = [
-          {
-            id: '1', name: 'Playlist 1', musics: [],
-            backdrop: 'http://backdrop1.jpg'
-          },
-          {
-            id: '2', name: 'Playlist 2', musics: [],
-            backdrop: 'http://backdrop2.jpg'
-          }
-        ];
+        const mockResponse: Playlist[] = MockPlaylist.instance().generatePlaylistList(3);
       service.getAllPlaylist().subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
@@ -54,12 +46,12 @@ describe('MyPlaylistService', () => {
   it('getPlaylist should send a get request to the api/customer/myplaylist endpoint', inject(
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
-        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
-;
-      service.getPlaylist('1').subscribe((response: any) => {
+      const mockResponse: Playlist = MockPlaylist.instance().getFaker();
+
+      service.getPlaylist(mockResponse.id as string).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
-      const expectedUrl = 'api/customer/myplaylist/1';
+      const expectedUrl = `api/customer/myplaylist/${ mockResponse.id }`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
       req.flush(mockResponse);
@@ -70,12 +62,12 @@ describe('MyPlaylistService', () => {
   it('getPlaylist should send a get request to the api/customer/myplaylist endpoint', inject(
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
-        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
+      const mockResponse: Playlist = MockPlaylist.instance().getFaker();
 ;
-      service.getPlaylist('1').subscribe((response: any) => {
+      service.getPlaylist(mockResponse.id as string).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
-      const expectedUrl = 'api/customer/myplaylist/1';
+    const expectedUrl = `api/customer/myplaylist/${ mockResponse.id }`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
       req.flush(mockResponse);
@@ -86,7 +78,7 @@ describe('MyPlaylistService', () => {
   it('createPlaylist should send a post request to the api/customer/myplaylist endpoint', inject(
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
-        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
+      const mockResponse: Playlist = MockPlaylist.instance().getFaker();
 ;
       service.createPlaylist(mockResponse).subscribe((response: any) => {
         expect(response).toBeTruthy();
@@ -102,7 +94,7 @@ describe('MyPlaylistService', () => {
   it('updatePlaylist should send a put request to the api/customer/myplaylist endpoint', inject(
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
-        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
+      const mockResponse: Playlist = MockPlaylist.instance().getFaker();
 ;
       service.updatePlaylist(mockResponse).subscribe((response: any) => {
         expect(response).toBeTruthy();
@@ -118,12 +110,12 @@ describe('MyPlaylistService', () => {
   it('deletePlaylist should send a delete request to the api/customer/myplaylist endpoint', inject(
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
-        const mockResponse: Playlist = { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] };
+      const mockResponse: Playlist = MockPlaylist.instance().getFaker();
 ;
-      service.deletePlaylist('1').subscribe((response: any) => {
+      service.deletePlaylist(mockResponse.id as string).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
-      const expectedUrl = 'api/customer/myplaylist/1';
+      const expectedUrl = `api/customer/myplaylist/${ mockResponse.id }`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('DELETE');
       req.flush(mockResponse);
@@ -134,8 +126,7 @@ describe('MyPlaylistService', () => {
   it('removeMusicFromFavotites should send a delete request to the api/customer/myplaylist/music endpoint', inject(
     [MyPlaylistService, HttpTestingController],
     (service: MyPlaylistService, httpMock: HttpTestingController) => {
-        const mockResponse: boolean = true;
-;
+      const mockResponse: boolean = true;
       service.removeMusicFromFavotites('1', '1').subscribe((response: any) => {
         expect(response).toBeTruthy();
       });

@@ -14,7 +14,7 @@ export class MyplaylistComponent implements OnInit {
   musics: Music[] = [];
 
   constructor(
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     public playlistManagerService: PlaylistManagerService,
     public myPlaylistService: MyPlaylistService) { }
 
