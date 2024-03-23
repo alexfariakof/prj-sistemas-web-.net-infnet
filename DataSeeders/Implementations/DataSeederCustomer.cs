@@ -28,7 +28,7 @@ namespace DataSeeders.Implementations
                     Phone = new Phone { Number = "+5521993879312" },
                     User = new User()
                     {
-                        Login = new Login { Email = "free@user.com", Password = "12345" },
+                        Login = new Login { Email = "free@user.com", Password = "12345T!" },
                         UserType = _context.UserType.Where(u => u.Id.Equals(2)).First()
                     },
                     Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).FirstOrDefault()
@@ -67,7 +67,7 @@ namespace DataSeeders.Implementations
                     Phone = new Phone { Number = "+5521993879312" },
                     User = new User()
                     {
-                        Login = new Login { Email = "basic@user.com", Password = "12345" },
+                        Login = new Login { Email = "basic@user.com", Password = "12345T!" },
                         UserType = _context.UserType.Where(u => u.Id.Equals(2)).First()
                     },
                     Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")).FirstOrDefault()
@@ -104,7 +104,7 @@ namespace DataSeeders.Implementations
                     Phone = new Phone { Number = "+5521993879312" },
                     User = new User()
                     {
-                        Login = new Login { Email = "standard@user.com", Password = "12345" },
+                        Login = new Login { Email = "standard@user.com", Password = "12345T!" },
                         UserType = _context.UserType.Where(u => u.Id.Equals(2)).First()
                     },
                     Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa7")).FirstOrDefault()
@@ -142,7 +142,7 @@ namespace DataSeeders.Implementations
                     Phone = new Phone { Number = "+5521993879312" },
                     User = new User()
                     {
-                        Login = new Login { Email = "user@customer.com", Password = "12345" },
+                        Login = new Login { Email = "user@customer.com", Password = "12345T!" },
                     }
                 };
                 address = new Address()

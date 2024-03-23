@@ -8,11 +8,11 @@ public class PlaylistPersonalProfile : AutoMapper.Profile
     public PlaylistPersonalProfile() 
     {
         CreateMap<PlaylistPersonal, PlaylistPersonalDto>()
-            .ForMember(dest => dest.CustumerId, opt => opt.MapFrom(src => src.Customer.Id))
+            .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id))
+            .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.CustomerId))
             .ReverseMap();
-        CreateMap<PlaylistPersonalDto, PlaylistPersonal>()
-            .ReverseMap();
-        CreateMap<MusicDto, Music>()
-            .ReverseMap();
+        CreateMap<PlaylistPersonalDto, PlaylistPersonal>().ReverseMap();
+        CreateMap<MusicDto, Music>().ReverseMap();
+
     }
 }

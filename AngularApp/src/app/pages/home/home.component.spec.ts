@@ -5,6 +5,7 @@ import { of, throwError } from 'rxjs';
 import { Playlist } from 'src/app/model';
 import { PlaylistService } from 'src/app/services';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockPlaylist } from 'src/app/__mocks__';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -29,10 +30,7 @@ describe('HomeComponent', () => {
 
   it('should retrieve list of playlists on initialization', fakeAsync(() => {
     // Arrange
-    const mockPlaylists: Playlist[] = [
-      { id: '1', name: 'Playlist 1', backdrop: 'http://backdrop1.jpg', musics: [] },
-      { id: '2', name: 'Playlist 2', backdrop: 'http://backdrop1.jpg', musics: [] }
-    ];
+    const mockPlaylists: Playlist[] = MockPlaylist.instance().generatePlaylistList(3);
 
     spyOn(playlistService, 'getAllPlaylist').and.returnValue(of(mockPlaylists));
 
