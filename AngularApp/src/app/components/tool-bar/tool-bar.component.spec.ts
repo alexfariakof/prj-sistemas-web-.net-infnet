@@ -56,16 +56,16 @@ describe('ToolBarComponent', () => {
     expect(authProvider.isAuthenticated).toHaveBeenCalled();
   });
 
-  it('logout should call authService clearLocalStorage method and navigate to root route', () => {
+  it('logout should call authService clearSessionStorage method and navigate to root route', () => {
     // Arrange
-    spyOn(authProvider, 'clearLocalStorage');
+    spyOn(authProvider, 'clearSessionStorage');
     spyOn(router, 'navigate');
 
     // Act
     component.logout();
 
     // Assert
-    expect(authProvider.clearLocalStorage).toHaveBeenCalled();
+    expect(authProvider.clearSessionStorage).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 });
