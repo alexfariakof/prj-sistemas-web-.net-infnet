@@ -15,7 +15,7 @@ export class ToolBarComponent {
   }
 
   logout = (): void => {
-    this.authProvider.clearLocalStorage();
+    this.authProvider.clearSessionStorage();
     this.router.navigate(['/']);
   }
 }
