@@ -45,7 +45,10 @@ describe('MyplaylistComponent', () => {
     // Arrange
     const mockPlaylist: Playlist = MockPlaylist.instance().getFaker();
     let mockPlaylistId: string  = mockPlaylist.id as string;
-    spyOn(component.route.params, 'pipe').and.returnValue(of({ playlistId: mockPlaylistId }));
+    spyOn(component.activeRoute.params, 'subscribe').and.callFake(():any => {
+      component.playlistId = mockPlaylistId;
+      return mockPlaylistId;
+    });
     spyOn(myPlaylistService, 'getPlaylist').and.returnValue(of(mockPlaylist));
 
     // Act
@@ -89,7 +92,7 @@ describe('MyplaylistComponent', () => {
   it('addMusicToFavorites should add music to favorites', () => {
     // Arrange
     const mockPlaylist: Playlist = MockPlaylist.instance().getFaker();
-
+    spyOn(component.route, 'navigate').and.callFake(():any  => {});
     spyOn(playlistManagerService, 'updatePlaylist').and.returnValue(of(mockPlaylist));
 
     // Act

@@ -1,4 +1,4 @@
-<div class="h-100" fxLayout="row" fxLayoutAlign="stretch" fxFlex class="fxClass-all" [ngStyle.xs]="{'font-size.px': 10}"
+<div  class="d-flex fxClass-all h-100" fxFill fxLayout="row" fxLayoutAlign="stretch"  [ngStyle.xs]="{'font-size.px': 10}"
   [ngStyle.sm]="{'font-size.px': 20}" [ngStyle.md]="{'font-size.px': 30}">
   <div class="d-flex bg-dark rounded-2 mx-1 mt-1 text-light text-start" fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
     <button id="btnFavoritos" type="button" class="btn btn-link text-start text-light text-decoration-none" data-toggle="tooltip"
@@ -14,15 +14,15 @@
       </div>
     </button>
     <div class="input-group mx-2 w-auto" style="width: max-content;" *ngIf="isCreatingPlaylist">
-      <input  class="w-100" type="text" class="form-control" placeholder="Nova playlist" [(ngModel)]="newPlaylistName" autofocus   />
+      <input  class="w-100" type="text" class="form-control" placeholder="Nova Playlist" [(ngModel)]="newPlaylistName" autofocus   />
       <span class="input-group-text btn btn-success bi-plus-circle fs-4 m-0 p-1 px-2" aria-label="Add" (click)="createPlaylist()"></span>
     </div>
     <div class="d-flex w-100" *ngFor="let item of myPlaylist" >
       <a class="w-100 btn btn-link text-start text-light text-decoration-none" href="favorites/{{item.id}}">
-        <i class="bi bi-music-note-beamed"> {{item.name}}</i>
+        <p class="bi bi-music-note-beamed" style="width: max-content;" > {{item.name}}</p>
       </a>
-      <i class="btn btn-link text-decoration-none bi bi-trash " (click)="removePlaylist(item.id)"
+      <p class="w-auto btn btn-link text-decoration-none bi bi-trash  " (click)="removePlaylist(item.id)"
       data-toggle="tooltip"
-      data-placement="right" title="Remover esta playlist"></i>
+      data-placement="right" title="Remover esta playlist"></p>
     </div>
   </div>

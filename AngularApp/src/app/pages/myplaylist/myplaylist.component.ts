@@ -1,6 +1,6 @@
 import { PlaylistService } from './../../services/playlist/playlist.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Music, Playlist } from 'src/app/model';
 import { MyPlaylistService, PlaylistManagerService } from 'src/app/services';
 @Component({
@@ -9,24 +9,27 @@ import { MyPlaylistService, PlaylistManagerService } from 'src/app/services';
   styleUrls: ['./myplaylist.component.css']
 })
 export class MyplaylistComponent implements OnInit {
+  playlistId: string = '';
   hasStyle: string = '';
   myPlaylist: Playlist | any = {};
   musics: Music[] = [];
 
   constructor(
-    public route: ActivatedRoute,
+    public activeRoute: ActivatedRoute,
+    public route: Router,
     public playlistManagerService: PlaylistManagerService,
     public myPlaylistService: MyPlaylistService) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const playlistId = params['playlistId'];
-        this.getMyplaylist(playlistId);
-    });
+    this.getMyplaylist(this.playlistId);
   }
 
   getMyplaylist = (playlistId: string ): void => {
-    this.myPlaylistService.getPlaylist(playlistId).subscribe({
+    this.activeRoute.params.subscribe(params => {
+      this.playlistId = params['playlistId'];
+    });
+
+    this.myPlaylistService.getPlaylist(this.playlistId).subscribe({
       next: (response: Playlist) => {
         if (response != null) {
           this.myPlaylist = response;
@@ -50,12 +53,15 @@ export class MyplaylistComponent implements OnInit {
     };
     this.playlistManagerService.updatePlaylist(playlist).subscribe(() => {
       alert('Música adicionada ao favoritos!');
+      this.route.navigate([`favorites/${ playlistId }`])
+
     });
   }
 
   removeMusicFromFavotites = (music: Music) => {
     this.myPlaylistService.removeMusicFromFavotites(this.myPlaylist.id, music.id).subscribe(() => {
       alert('Música removida com sucesso!');
+      this.getMyplaylist(this.playlistId);
     });
   }
 }

@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 import { Album, Music, Playlist } from 'src/app/model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockAlbum } from 'src/app/__mocks__';
+import { MockAlbum, MockMusic, MockPlaylist } from 'src/app/__mocks__';
 
 describe('AlbumComponent', () => {
   let component: AlbumComponent;
@@ -48,11 +48,14 @@ describe('AlbumComponent', () => {
     // Arrange
     const mockAlbum: Album = MockAlbum.instance().getFaker();
     const mockAlbumId = mockAlbum.id;
-    spyOn(activatedRoute.params, 'pipe').and.returnValue(of({ albumId: mockAlbumId }));
+    spyOn(component.activeRoute.params, 'subscribe').and.callFake(():any => {
+      component.albumId = mockAlbumId;
+      return mockAlbumId;
+    });
     spyOn(albumService, 'getAlbumById').and.returnValue(of(mockAlbum));
 
     // Act
-    component.getAlbum(mockAlbumId);
+    component.getAlbum();
     fixture.detectChanges();
     tick();
 
@@ -114,16 +117,14 @@ describe('AlbumComponent', () => {
     });
   });
 
-  it('should add music from album to playlist', () => {
+  it('addMusicFromAlbumToPlaylist should add music from album to playlist', () => {
     // Arrange
-    const mockPlaylistId = '1';
-    const mockMusic: Music = { id: '1', name: 'Music 1', duration: 20, url: 'http://music1.mp3' };
-    const mockPLaylist: Playlist = {
-      id: mockPlaylistId,
-      musics: [ mockMusic ]
-    }
+    const mockPLaylist: Playlist = MockPlaylist.instance().getFaker();
+    const mockPlaylistId = mockPLaylist.id;
+    const mockMusic: Music = MockMusic.instance().getFaker();
 
     spyOn(playlistManagerService, 'updatePlaylist').and.returnValue(of(mockPLaylist));
+    spyOn(component.route, 'navigate').and.callFake((): any => {});
 
     // Act
     component.addMusicFromAlbumToPlaylist(mockPlaylistId, mockMusic);

@@ -47,8 +47,8 @@ export class FavoritesBarComponent implements OnInit {
 
   removePlaylist(playlistId?: string): void {
     this.playlistManagerService.deletePlaylist(playlistId ?? '').subscribe(playlists => {
-      this.initializePlaylist();
       alert('Playlist exluída com sucesso!')
+      this.initializePlaylist();
     });
   }
 }
