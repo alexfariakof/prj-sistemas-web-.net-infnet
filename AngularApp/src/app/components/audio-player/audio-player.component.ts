@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { AudioService } from 'src/app/services/audio/audio.service';
+import { AudioService } from '../../services';
 
 @Component({
   selector: 'app-audio-player',

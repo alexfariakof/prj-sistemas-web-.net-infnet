@@ -1,5 +1,6 @@
 export * from './address/address.service';
 export * from './album/album.service';
+export * from './audio/audio.service';
 export * from './auth/auth.service';
 export * from './band/band.service';
 export * from './customer/customer.service';
