@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AddressService } from './address.service';
-import { Address } from 'src/app/model';
+import { Address } from '../../model';
 
 describe('AddressService', () => {
   let service: AddressService;

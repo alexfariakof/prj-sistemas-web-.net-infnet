@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { BandComponent } from './band.component';
 import { ActivatedRoute } from '@angular/router';
-import { Album, Band, Music, Playlist } from 'src/app/model';
-import { MyPlaylistService, BandService, PlaylistManagerService } from 'src/app/services';
+import { Album, Band, Music, Playlist } from '../../model';
+import { MyPlaylistService, BandService, PlaylistManagerService } from '../../services';
 import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockBand, MockPlaylist, MockAlbum } from 'src/app/__mocks__';
+import { MockBand, MockPlaylist, MockAlbum } from '../../__mocks__';
 
 
 describe('BandComponent', () => {

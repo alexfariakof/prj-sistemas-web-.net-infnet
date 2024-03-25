@@ -1,8 +1,7 @@
-import { PlaylistService } from './../../services/playlist/playlist.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Music, Playlist } from 'src/app/model';
-import { MyPlaylistService, PlaylistManagerService } from 'src/app/services';
+import { Music, Playlist } from '../../model';
+import { MyPlaylistService, PlaylistManagerService } from '../../services';
 @Component({
   selector: 'app-myplaylist',
   templateUrl: './myplaylist.component.html',

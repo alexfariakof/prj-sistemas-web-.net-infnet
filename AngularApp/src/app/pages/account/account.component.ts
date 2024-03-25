@@ -8,8 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import * as dayjs from 'dayjs';
-import { Address, Customer, Merchant } from 'src/app/model';
-import { AddressService, CustomerService, MerchantService } from 'src/app/services';
+import { Address, Customer, Merchant } from '../../model';
+import { AddressService, CustomerService, MerchantService } from '../../services';
 
 @Component({
   selector: 'app-account-form',

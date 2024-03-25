@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Music } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
+import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 import { MusicService } from '..';
 
 describe('MusicService', () => {

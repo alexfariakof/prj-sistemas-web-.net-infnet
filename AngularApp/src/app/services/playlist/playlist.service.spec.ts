@@ -2,9 +2,9 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Playlist } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
+import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 import { PlaylistService } from '..';
-import { MockPlaylist } from 'src/app/__mocks__';
+import { MockPlaylist } from '../../__mocks__';
 
 describe('PlaylistService', () => {
   let httpMock: HttpTestingController;

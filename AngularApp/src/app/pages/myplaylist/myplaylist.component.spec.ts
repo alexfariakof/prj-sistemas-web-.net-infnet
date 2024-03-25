@@ -1,12 +1,11 @@
-import { routes } from './../../app.routing.module';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MyplaylistComponent } from './myplaylist.component';
 import { ActivatedRoute } from '@angular/router';
-import { MyPlaylistService, PlaylistManagerService } from 'src/app/services';
+import { MyPlaylistService, PlaylistManagerService } from '../..//services';
 import { of, throwError } from 'rxjs';
-import { Music, Playlist } from 'src/app/model';
+import { Music, Playlist } from '../../model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MockPlaylist } from 'src/app/__mocks__';
+import { MockPlaylist } from '../../__mocks__';
 
 
 describe('MyplaylistComponent', () => {

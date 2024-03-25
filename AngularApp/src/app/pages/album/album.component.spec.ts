@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AlbumComponent } from './album.component';
 import { ActivatedRoute } from '@angular/router';
-import { AlbumService, PlaylistManagerService } from 'src/app/services';
+import { AlbumService, PlaylistManagerService } from '../../services';
 import { of, throwError } from 'rxjs';
-import { Album, Music, Playlist } from 'src/app/model';
+import { Album, Music, Playlist } from '../../model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockAlbum, MockMusic, MockPlaylist } from 'src/app/__mocks__';
+import { MockAlbum, MockMusic, MockPlaylist } from '../../__mocks__';
 
 describe('AlbumComponent', () => {
   let component: AlbumComponent;

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AudioService } from 'src/app/services/audio/audio.service';
+import { AudioService } from '../../services/audio/audio.service';
 import { AudioPlayerComponent } from './audio-player.component';
 
 describe('AudioPlayerComponent', () => {

@@ -2,9 +2,9 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Band } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
+import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 import { BandService } from './band.service';
-import { MockBand } from 'src/app/__mocks__';
+import { MockBand } from '../../__mocks__';
 
 describe('BandService', () => {
   let httpMock: HttpTestingController;

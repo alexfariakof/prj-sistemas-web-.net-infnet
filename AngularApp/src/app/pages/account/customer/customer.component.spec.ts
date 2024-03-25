@@ -3,8 +3,8 @@ import { CustomerComponent } from './customer.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CustomerService, AddressService } from 'src/app/services';
-import { Address, Customer } from 'src/app/model';
+import { CustomerService, AddressService } from '../../services';
+import { Address, Customer } from '../../model';
 import { of } from 'rxjs';
 
 describe('CustomerComponent', () => {
