@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Merchant } from '../../model';
-import { MerchantService, AddressService } from '../../services';
+import { Merchant } from '../../../model';
+import { MerchantService, AddressService } from '../../../services';
 import AccountComponent from '../account.component';
 
 @Component({

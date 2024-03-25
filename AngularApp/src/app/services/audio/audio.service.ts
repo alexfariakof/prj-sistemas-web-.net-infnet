@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AudioService {
-  public currentAudio: HTMLAudioElement | null = null;
+  public currentAudio?: HTMLAudioElement;
 
   play(audio: HTMLAudioElement): void {
     if (this.currentAudio && this.currentAudio !== audio) {

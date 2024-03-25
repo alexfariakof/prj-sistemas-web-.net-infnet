@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { AudioService } from '../../services';
+import { HttpClientModule } from '@angular/common/http';
 
-describe('AudioService', () => {
+describe('Unit Test AudioService', () => {
   let service: AudioService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientModule]
+    });
     service = TestBed.inject(AudioService);
   });
 
@@ -17,7 +20,7 @@ describe('AudioService', () => {
   it('should play audio', () => {
     // Arrange
     const audioMock = document.createElement('audio');
-    spyOn(service, 'play').and.callThrough();
+    spyOn(service, 'play');
 
     // Act
     service.currentAudio = audioMock;

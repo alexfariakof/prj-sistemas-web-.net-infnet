@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AudioService } from '../../services/audio/audio.service';
 import { AudioPlayerComponent } from './audio-player.component';
 
-describe('AudioPlayerComponent', () => {
+describe('Unit Test AudioPlayerComponent', () => {
   let component: AudioPlayerComponent;
   let fixture: ComponentFixture<AudioPlayerComponent>;
   let audioService: AudioService;
@@ -23,11 +23,13 @@ describe('AudioPlayerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call play method of AudioService on onPlay()', () => {
+  it('should call play method of AudioService on onPlay', () => {
     // Arrange
-    spyOn(audioService, 'play');
+    const audioMock = document.createElement('audio');
+    spyOn(audioService, 'play').and.callFake(():any => {});
 
     // Act
+    component.audioElement = audioMock;
     component.onPlay();
 
     // Assert
