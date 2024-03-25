@@ -1,9 +1,9 @@
 ﻿using Moq;
 using System.Linq.Expressions;
 using AutoMapper;
-using Repository;
 using Domain.Account.Agreggates;
 using Application.Account.Dto;
+using Repository.Interfaces;
 
 namespace Application.Account;
 public class PlaylistPersonalServiceTest

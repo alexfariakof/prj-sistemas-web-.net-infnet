@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Domain.Transactions.ValueObject;
 using Domain.Core.Aggreggates;
-using Repository;
 using System.Linq.Expressions;
 using Application.Authentication;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Domain.Account.ValueObject;
+using Repository.Interfaces;
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -74,33 +74,50 @@ public static class Usings
         _mock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<T, bool>>>()));
         return _mock;
     }
-    public static Mock<DbSet<CreditCardBrand>> MockDataSetCreditCardBrand()
+    public static Mock<ICreditCardBrandRepository> MockDataSetCreditCardBrand()
     {
-        var creditCardBrandData = new List<CreditCardBrand>
-        {
-            new CreditCardBrand((int)CardBrand.Invalid, CardBrand.Invalid.ToString()),
-            new CreditCardBrand((int)CardBrand.Visa, CardBrand.Visa.ToString()),
-            new CreditCardBrand((int)CardBrand.Mastercard, CardBrand.Mastercard.ToString()),
-            new CreditCardBrand((int)CardBrand.Amex, CardBrand.Amex.ToString()),
-            new CreditCardBrand((int)CardBrand.Discover, CardBrand.Discover.ToString()),
-            new CreditCardBrand((int)CardBrand.DinersClub, CardBrand.DinersClub.ToString()),
-            new CreditCardBrand((int)CardBrand.JCB, CardBrand.JCB.ToString())
-        };
+        var _mock = new Mock<ICreditCardBrandRepository>();
 
-        return MockDbSet(creditCardBrandData);
+        _mock.Setup(repo => repo.GetById(It.IsAny<int>()))
+            .Returns(
+            (int id) =>
+            {
+                var creditCardBrandData = new List<CreditCardBrand>
+                {
+                    new CreditCardBrand((int)CardBrand.Invalid, CardBrand.Invalid.ToString()),
+                    new CreditCardBrand((int)CardBrand.Visa, CardBrand.Visa.ToString()),
+                    new CreditCardBrand((int)CardBrand.Mastercard, CardBrand.Mastercard.ToString()),
+                    new CreditCardBrand((int)CardBrand.Amex, CardBrand.Amex.ToString()),
+                    new CreditCardBrand((int)CardBrand.Discover, CardBrand.Discover.ToString()),
+                    new CreditCardBrand((int)CardBrand.DinersClub, CardBrand.DinersClub.ToString()),
+                    new CreditCardBrand((int)CardBrand.JCB, CardBrand.JCB.ToString())
+                };
+
+                return creditCardBrandData.SingleOrDefault(item => item.Id == id);
+            });
+        
+
+        return _mock;
     }
-    public static Mock<DbSet<UserType>> MockDataSetUserType()
+    public static Mock<IUserTypeRepository> MockDataSetUserType()
     {
-        var userTypeData = new List<UserType>
-        {
-            new UserType(UserTypeEnum.Admin),
-            new UserType(UserTypeEnum.Customer),
-            new UserType(UserTypeEnum.Merchant)
-        };
+        var _mock = new Mock<IUserTypeRepository>();
 
-        return MockDbSet(userTypeData);
+        _mock.Setup(repo => repo.GetById(It.IsAny<int>()))
+            .Returns(
+            (int id) =>
+            {
+                var userTypeData = new List<UserType>
+                {
+                    new UserType(UserTypeEnum.Admin),
+                    new UserType(UserTypeEnum.Customer),
+                    new UserType(UserTypeEnum.Merchant)
+                };
+
+                return userTypeData.SingleOrDefault(item => item.Id == id);
+            });
+        return _mock;
     }
-
     public static string GenerateJwtToken(Guid userId, string userType)
     {
         var configuration = new ConfigurationBuilder()

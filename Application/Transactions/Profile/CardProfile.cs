@@ -8,6 +8,7 @@ public class CardProfile : AutoMapper.Profile
     public CardProfile()
     {
         CreateMap<CardDto, Card>()
+            .ForMember(dest => dest.CardBrand, opt => opt.MapFrom(src => CreditCardBrand.IdentifyCard(src.Number)))
             .ForMember(dest => dest.Validate, opt => opt.MapFrom(src => new ExpiryDate(src.Validate.Value)))
             .ReverseMap();
 

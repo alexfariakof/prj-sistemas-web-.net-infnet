@@ -1,4 +1,5 @@
 ﻿using Domain.Streaming.Agreggates;
+using Repository.Interfaces;
 
 namespace Repository.Repositories;
 public class MusicRepository : RepositoryBase<Music>, IRepository<Music>

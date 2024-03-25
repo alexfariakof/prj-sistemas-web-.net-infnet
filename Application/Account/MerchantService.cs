@@ -3,20 +3,27 @@ using Application.Account.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
-using Domain.Core.Aggreggates;
-using Domain.Core.Interfaces;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
-using Repository;
+using Domain.Transactions.ValueObject;
+using Repository.Interfaces;
 
 namespace Application.Account;
 public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<MerchantDto>, IMerchantService
 {
-    private readonly ICrypto _crypto = Crypto.GetInstance;
     private readonly IRepository<Flat> _flatRepository;
-    public MerchantService(IMapper mapper, IRepository<Merchant> merchantRepository, IRepository<Flat> flatRepository) : base(mapper, merchantRepository)
+    private readonly ICreditCardBrandRepository _creditCardBrandRepository;
+    private readonly IUserTypeRepository _userTypeRepository;
+
+    public MerchantService(IMapper mapper, 
+        IRepository<Merchant> merchantRepository, 
+        IRepository<Flat> flatRepository,
+        ICreditCardBrandRepository creditCardBrandRepository,
+        IUserTypeRepository userTypeRepository) : base(mapper, merchantRepository)
     {
         _flatRepository = flatRepository;
+        _creditCardBrandRepository = creditCardBrandRepository;
+        _userTypeRepository = userTypeRepository;
     }
     public override MerchantDto Create(MerchantDto dto)
     {
@@ -30,6 +37,7 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
             throw new ArgumentException("Plano não existente ou não encontrado.");
 
         Card card = this.Mapper.Map<Card>(dto.Card);
+        card.CardBrand = this._creditCardBrandRepository.GetById(CreditCardBrand.IdentifyCard(card.Number).Id);
 
         User user = new()
         {
@@ -37,7 +45,8 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
             {
                 Email = dto.Email ?? "",
                 Password = dto.Password ?? ""
-            }
+            },
+            UserType = this._userTypeRepository.GetById((int)UserTypeEnum.Merchant)
         };
 
         Merchant merchant = new()

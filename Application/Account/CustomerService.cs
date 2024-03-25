@@ -3,21 +3,27 @@ using Application.Account.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
-using Domain.Core.Aggreggates;
-using Domain.Core.Interfaces;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
-using Repository;
+using Domain.Transactions.ValueObject;
+using Repository.Interfaces;
 
 namespace Application.Account;
 public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<CustomerDto>, ICustomerService
 {
-    private readonly ICrypto _crypto = Crypto.GetInstance;
     private readonly IRepository<Flat> _flatRepository;
+    private readonly ICreditCardBrandRepository _creditCardBrandRepository;
+    private readonly IUserTypeRepository _userTypeRepository;
 
-    public CustomerService(IMapper mapper, IRepository<Customer> customerRepository, IRepository<Flat> flatRepository) : base(mapper, customerRepository)
+    public CustomerService(IMapper mapper, 
+        IRepository<Customer> customerRepository, 
+        IRepository<Flat> flatRepository,
+        ICreditCardBrandRepository creditCardBrandRepository,
+        IUserTypeRepository userTypeRepository) : base(mapper, customerRepository)
     {
         _flatRepository = flatRepository;
+        _creditCardBrandRepository = creditCardBrandRepository;
+        _userTypeRepository = userTypeRepository;
     }
     public override CustomerDto Create(CustomerDto dto)
     {
@@ -31,10 +37,11 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
             throw new ArgumentException("Plano não existente ou não encontrado.");
 
         Card card = this.Mapper.Map<Card>(dto.Card);
+        card.CardBrand = this._creditCardBrandRepository.GetById(CreditCardBrand.IdentifyCard(card.Number).Id);
 
-        Customer customer = new() {  
+        Customer customer = new() {
             Id = Guid.NewGuid(),
-            Name = dto.Name, 
+            Name = dto.Name,
             CPF = dto.CPF,
             Birth = dto.Birth,
             Phone = dto.Phone,
@@ -44,7 +51,8 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
                 {
                     Email = dto.Email ?? "",
                     Password = dto.Password ?? ""
-                }
+                },
+                UserType = this._userTypeRepository.GetById((int)UserTypeEnum.Customer)
             }
         };
         
@@ -81,5 +89,5 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
         var customer = this.Mapper.Map<Customer>(dto);
         this.Repository.Delete(customer);
         return true; 
-    } 
+    }
 }

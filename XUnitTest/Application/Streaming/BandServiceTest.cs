@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using Application.Account.Dto;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
-using Repository;
+using Repository.Interfaces;
 
 namespace Application.Account;
 public class BandServiceTest

@@ -2,7 +2,7 @@
 using Application.Account.Dto.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
-using Repository;
+using Repository.Interfaces;
 
 namespace Application.Account;
 public class PlaylistPersonalService : ServiceBase<PlaylistPersonalDto, PlaylistPersonal>, IService<PlaylistPersonalDto>, IPlaylistPersonalService

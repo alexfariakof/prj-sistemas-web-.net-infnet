@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Repository;
+using Repository.Interfaces;
 
 namespace Application;
 public abstract class ServiceBase<Dto, Entity> where Dto : class, new() where Entity : class, new()

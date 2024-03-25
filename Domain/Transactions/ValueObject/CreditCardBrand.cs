@@ -21,7 +21,8 @@ public record CreditCardBrand
     public string Name { get; set; }        
     public bool IsValid { get; }
     public virtual IList<Card> Cards { get; set; } = new List<Card>();
-    
+
+    public CreditCardBrand() { }
     public CreditCardBrand(int id, string name)
     {
         Id = id;
@@ -31,6 +32,7 @@ public record CreditCardBrand
 
     private CreditCardBrand(CardBrand brand, string name, bool isValid)
     {
+        Id = (int)brand;
         Name = name;
         CardBrand = brand;            
         IsValid = isValid;

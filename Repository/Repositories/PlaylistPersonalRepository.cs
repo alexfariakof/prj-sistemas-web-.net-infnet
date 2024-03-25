@@ -1,5 +1,6 @@
 ﻿using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
+using Repository.Interfaces;
 
 namespace Repository.Repositories;
 public class PlaylistPersonalRepository : RepositoryBase<PlaylistPersonal>, IRepository<PlaylistPersonal>
