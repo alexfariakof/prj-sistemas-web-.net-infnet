@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ToolBarComponent } from './tool-bar.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
-import { AuthProvider } from 'src/app/provider/auth.provider';
+import { AuthProvider } from '../../provider/auth.provider';
 
 describe('ToolBarComponent', () => {
   let component: ToolBarComponent;

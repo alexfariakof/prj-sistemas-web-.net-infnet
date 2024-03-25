@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Album, Band, Music, Playlist } from 'src/app/model';
-import { BandService, PlaylistManagerService } from 'src/app/services';
+import { Album, Band, Music, Playlist } from '../../model';
+import { BandService, PlaylistManagerService } from '../../services';
 @Component({
   selector: 'app-band',
   templateUrl: './band.component.html',

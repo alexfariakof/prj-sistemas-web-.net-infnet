@@ -1,12 +1,11 @@
-import { routes } from './../../app.routing.module';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MyplaylistComponent } from './myplaylist.component';
 import { ActivatedRoute } from '@angular/router';
-import { MyPlaylistService, PlaylistManagerService } from 'src/app/services';
+import { MyPlaylistService, PlaylistManagerService } from '../..//services';
 import { of, throwError } from 'rxjs';
-import { Music, Playlist } from 'src/app/model';
+import { Music, Playlist } from '../../model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MockPlaylist } from 'src/app/__mocks__';
+import { MockPlaylist } from '../../__mocks__';
 
 
 describe('MyplaylistComponent', () => {
@@ -45,7 +44,10 @@ describe('MyplaylistComponent', () => {
     // Arrange
     const mockPlaylist: Playlist = MockPlaylist.instance().getFaker();
     let mockPlaylistId: string  = mockPlaylist.id as string;
-    spyOn(component.route.params, 'pipe').and.returnValue(of({ playlistId: mockPlaylistId }));
+    spyOn(component.activeRoute.params, 'subscribe').and.callFake(():any => {
+      component.playlistId = mockPlaylistId;
+      return mockPlaylistId;
+    });
     spyOn(myPlaylistService, 'getPlaylist').and.returnValue(of(mockPlaylist));
 
     // Act
@@ -89,7 +91,7 @@ describe('MyplaylistComponent', () => {
   it('addMusicToFavorites should add music to favorites', () => {
     // Arrange
     const mockPlaylist: Playlist = MockPlaylist.instance().getFaker();
-
+    spyOn(component.route, 'navigate').and.callFake(():any  => {});
     spyOn(playlistManagerService, 'updatePlaylist').and.returnValue(of(mockPlaylist));
 
     // Act

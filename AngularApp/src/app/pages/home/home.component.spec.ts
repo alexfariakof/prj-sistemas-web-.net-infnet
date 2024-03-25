@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { HomeComponent } from './home.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
-import { Playlist } from 'src/app/model';
-import { PlaylistService } from 'src/app/services';
+import { Playlist } from '../../model';
+import { PlaylistService } from '../../services';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockPlaylist } from 'src/app/__mocks__';
+import { MockPlaylist } from '../../__mocks__';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

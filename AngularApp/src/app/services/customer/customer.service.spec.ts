@@ -1,8 +1,8 @@
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { HttpTestingController, HttpClientTestingModule } from "@angular/common/http/testing";
 import { TestBed, inject } from "@angular/core/testing";
-import { CustomInterceptor } from "src/app/interceptors/http.interceptor.service";
-import { Customer } from "src/app/model";
+import { CustomInterceptor } from "../../interceptors/http.interceptor.service";
+import { Customer } from "../../model";
 import { CustomerService } from "./customer.service";
 
 describe('CustomerService', () => {

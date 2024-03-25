@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Playlist } from 'src/app/model';
+import { Playlist } from '../../model';
 import { PlaylistManagerService } from '../../services';
 
 @Component({
@@ -47,8 +47,8 @@ export class FavoritesBarComponent implements OnInit {
 
   removePlaylist(playlistId?: string): void {
     this.playlistManagerService.deletePlaylist(playlistId ?? '').subscribe(playlists => {
-      this.initializePlaylist();
       alert('Playlist exluída com sucesso!')
+      this.initializePlaylist();
     });
   }
 }

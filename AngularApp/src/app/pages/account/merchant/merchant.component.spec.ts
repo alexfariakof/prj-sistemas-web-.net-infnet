@@ -3,8 +3,8 @@ import { MerchantComponent } from './merchant.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AddressService, MerchantService } from 'src/app/services';
-import { Address, Merchant } from 'src/app/model';
+import { AddressService, MerchantService } from '../../../services';
+import { Address, Merchant } from '../../../model';
 import { of } from 'rxjs';
 
 describe('MerchantComponent', () => {

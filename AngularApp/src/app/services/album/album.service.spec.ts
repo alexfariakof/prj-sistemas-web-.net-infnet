@@ -3,8 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { AlbumService } from './album.service';
 import { Album } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
-import { MockAlbum } from 'src/app/__mocks__';
+import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
+import { MockAlbum } from '../../__mocks__';
 
 describe('AlbumService', () => {
   let httpMock: HttpTestingController;

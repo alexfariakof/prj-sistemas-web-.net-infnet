@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Playlist } from 'src/app/model';
+import { Playlist } from '../../model';
 import { PlaylistCacheService } from './myplaylist.cache.service';
 
 describe('PlaylistCacheService', () => {

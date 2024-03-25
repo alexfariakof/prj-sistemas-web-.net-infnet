@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Auth, Login } from 'src/app/model';
-import { AuthService } from 'src/app/services';
-import { AuthProvider } from 'src/app/provider/auth.provider';
+import { Auth, Login } from '../../model';
+import { AuthService } from '../../services';
+import { AuthProvider } from '../../provider/auth.provider';
 import { map, catchError } from 'rxjs';
 
 @Component({
