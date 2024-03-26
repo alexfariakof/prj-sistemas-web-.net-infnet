@@ -2,7 +2,7 @@
 using Application.Account.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
-using Repository;
+using Repository.Interfaces;
 
 namespace Application.Account;
 public class MusicService : ServiceBase<MusicDto, Music>, IService<MusicDto>, IMusicService

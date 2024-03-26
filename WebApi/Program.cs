@@ -4,8 +4,8 @@ using Repository;
 using Repository.CommonInjectDependence;
 using Application.CommonInjectDependence;
 using WebApi.CommonInjectDependence;
-using Application;
-using FluentValidation;
+using DataSeeders;
+using DataSeeders.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,12 +35,20 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-builder.Services.AddSingleton<IValidatorFactory, ServiceProviderValidatorFactory>();
-builder.Services.AddDbContext<RegisterContext>(c =>
+if (builder.Environment.IsStaging())
 {
-    c.UseLazyLoadingProxies()
-     .UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionString"));
-});
+    builder.Services.AddDbContext<RegisterContext>(c => c.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
+    builder.Services.AddTransient<IDataSeeder, DataSeeder>();
+}
+else
+{
+
+    builder.Services.AddDbContext<RegisterContext>(c =>
+    {
+        c.UseLazyLoadingProxies()
+        .UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString"));
+    });
+}
 
 // Autorization Configuratons
 builder.Services.AddAuthConfigurations(builder.Configuration);
@@ -57,29 +65,39 @@ builder.Services.AddServices();
 var app = builder.Build();
 
 if (app.Environment.IsStaging())
-{
-    app.Urls.Add("http://0.0.0.0:7204");
-    app.Urls.Add("https://0.0.0.0:5146");
+{    
+    app.Urls.Add("http://0.0.0.0:5146");
+    app.Urls.Add("https://0.0.0.0:7204");
 }
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
 }
 
-if (!app.Environment.IsStaging())
+if (app.Environment.IsStaging())    
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var dataSeeder = services.GetRequiredService<IDataSeeder>();
+        dataSeeder.SeedData();
+    }
+}
+else
+{
     app.UseHttpsRedirection();
-
+}
+    
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapFallbackToFile("/index.html");
-
+if (app.Environment.IsProduction() || app.Environment.IsStaging())
+    app.MapFallbackToFile("/index.html");
 
 app.Run();

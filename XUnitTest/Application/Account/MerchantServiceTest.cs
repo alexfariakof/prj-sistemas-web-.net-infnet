@@ -7,7 +7,7 @@ using Domain.Core.Interfaces;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Moq;
-using Repository;
+using Repository.Interfaces;
 using System.Linq.Expressions;
 
 namespace Application.Account;
@@ -23,14 +23,15 @@ public class MerchantServiceTest
     {        
 
         mapperMock = new Mock<IMapper>();
-        cryptoMock = new Mock<ICrypto>();
         merchantRepositoryMock = Usings.MockRepositorio(mockListMerchant);
         flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
         
         merchantService = new MerchantService(
             mapperMock.Object,
             merchantRepositoryMock.Object,
-            flatRepositoryMock.Object
+            flatRepositoryMock.Object,
+            Usings.MockDataSetCreditCardBrand().Object,
+            Usings.MockDataSetUserType().Object
         );
     }
 

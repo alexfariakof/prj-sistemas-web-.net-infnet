@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class AlbumController : ControllerBase
 {
@@ -20,7 +20,6 @@ public class AlbumController : ControllerBase
     [ProducesResponseType((200), Type = typeof(List<AlbumDto>))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
     public IActionResult FindAll()
     {
         if (UserType != UserTypeEnum.Customer) return Unauthorized();
@@ -43,7 +42,6 @@ public class AlbumController : ControllerBase
     [ProducesResponseType((200), Type = typeof(AlbumDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
     public IActionResult FindById([FromRoute] Guid albumId)
     {
         if (UserType != UserTypeEnum.Customer) return Unauthorized();

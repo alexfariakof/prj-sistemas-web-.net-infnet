@@ -10,6 +10,7 @@ public class AlbumDto
 
     [Required]
     public Guid FlatId { get; set; }
-
+    public Guid BandId { get; set; }
+    public string Backdrop { get; set; }
     public List<MusicDto> Musics { get; set; } = new List<MusicDto>();
 }

@@ -34,7 +34,7 @@ public class MockBand
             .RuleFor(b => b.Name, f => band.Name)
             .RuleFor(b => b.Description, f => band.Description)
             .RuleFor(b => b.Backdrop, f => band.Backdrop)
-            .RuleFor(b => b.Album, f => MockAlbum.Instance.GetDtoFromAlbum(band.Albums.FirstOrDefault()))
+            .RuleFor(b => b.Albums, f => MockAlbum.Instance.GetDtoListFromAlbumList(band.Albums))
             .Generate();
 
         return fakeBandDto;

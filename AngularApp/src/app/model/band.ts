@@ -5,5 +5,5 @@ export interface Band {
   name: string;
   description: string;
   backdrop: string;
-  album: Album;
+  albums: Album[];
 }

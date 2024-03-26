@@ -1,19 +1,95 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { BandService } from './../../services/band/band.service';
+import { Component, OnInit } from '@angular/core';
+import { Album, Band, Music, Playlist } from '../../model';
+import { AlbumService, PlaylistManagerService, PlaylistService } from '../../services';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [ MatCardModule, MatButtonModule, CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
-  bands:[] | any = null;
+export class HomeComponent implements OnInit {
+  hasStyle: string = '';
+  playlist: Playlist[] = [];
+  bands: Band[] = [];
+  albums: Album[] = [];
 
-  goToDetail = (item:any) =>{
+  constructor(
+    public playlistService: PlaylistService,
+    public bandService: BandService,
+    public albumService: AlbumService,
+    private playlistManagerService: PlaylistManagerService) { }
 
+  ngOnInit() : void {
+    this.getListOfPlaylist();
+    this.getListOfBands();
+    this.getListOfAlbums();
+  }
+
+  getListOfPlaylist = (): void => {
+    this.playlistService.getAllPlaylist()
+    .subscribe({
+      next: (response: Playlist[]) => {
+        if (response != null)
+          this.playlist = response;
+      },
+      error: (response: any) => {
+        console.log(response.error);
+      }
+    });
+  }
+
+  getListOfBands = (): void => {
+    this.bandService.getAllBand()
+    .subscribe({
+      next: (response: Band[]) => {
+        if (response)
+          this.bands = response;
+      },
+      error: (response: any) => {
+        console.log(response.error);
+      }
+    });
+  }
+
+  getListOfAlbums = (): void => {
+    this.albumService.getAllAlbum()
+    .subscribe({
+      next: (response: Album[]) => {
+        if (response)
+          this.albums = response;
+      },
+      error: (response: any) => {
+        console.log(response.error);
+      }
+    });
+  }
+
+  addToFavorites = (playlist: Playlist): void => {
+    this.playlistManagerService.createPlaylist(playlist).subscribe({
+      next: (response: Playlist) => {
+        if (response)
+          alert('Playlist Criada com sucesso!');
+      },
+      error: (response: any) => {
+        alert(response.error);
+      }
+    });
+  }
+
+  addBandToFavorites = (band: Band): void => {
+    const playlist: Playlist = {
+      name: 'Banda ' + band.name,
+      musics: band.albums.flatMap(album => album.musics) as Music[]
+    };
+    this.addToFavorites(playlist);
+  }
+
+  addAlbumToFavorites = (album: Album): void => {
+    const playlist: Playlist = {
+      name: album.name,
+      musics: album.musics as Music[]
+    };
+    this.addToFavorites(playlist);
   }
 }

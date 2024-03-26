@@ -1,18 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/login/login.component';
-import { CustomerComponent } from './pages/customer/customer.component';
-import { MerchantComponent } from './pages/merchant/merchant.component';
+import { BandComponent } from './pages/band/band.component';
+import { AlbumComponent } from './pages/album/album.component';
+import { MusicComponent } from './pages/musics/musics.component';
 import { MyplaylistComponent } from './pages/myplaylist/myplaylist.component';
+import { PlaylistComponent } from './pages/playlist/playlist.component';
 
 export const routes: Routes = [
     { path: '',  pathMatch: 'full', redirectTo: '' },
-    { path: '', component: HomeComponent },
-    { path: "login", component: LoginComponent},
-    { path: "cliente", component: CustomerComponent},
-    { path: "comerciante", component: MerchantComponent},
-    { path: "myplaylist", component: MyplaylistComponent},
+    { path: '', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) },
+    { path: "login", loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
+    { path: "playlist/:playlistId", component: PlaylistComponent },
+    { path: "account/customer", loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule)},
+    { path: "account/merchant", loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule)},
+    { path: "favorites/:playlistId", component: MyplaylistComponent},
+    { path: 'band', component: BandComponent},
+    { path: 'band/:bandId', component: BandComponent},
+    { path: 'album', component: AlbumComponent},
+    { path: 'album/:albumId', component: AlbumComponent},
+    { path: 'music', component: MusicComponent},
 ];
 
 @NgModule({

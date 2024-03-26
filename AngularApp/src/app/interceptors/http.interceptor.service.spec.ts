@@ -1,9 +1,9 @@
-import { TestBed, fakeAsync, flush, inject, tick } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomInterceptor } from './http.interceptor.service';
-import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpErrorResponse, HttpRequest, HttpHandler } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 describe('CustomInterceptor', () => {
   let interceptor: CustomInterceptor;
@@ -21,23 +21,39 @@ describe('CustomInterceptor', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
+  afterEach(() => {
+    httpMock.verify();
+  });
+
   it('should be created', inject([CustomInterceptor], (service: CustomInterceptor) => {
     expect(service).toBeTruthy();
   }));
 
-  it('should show loader on intercept', fakeAsync(() => {
-    const openSpy = spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve() } as any);
-    // Não estou conseguindo valida a execução do close
-    const dismissAllSpy = spyOn(modalService, 'dismissAll');
+  it('should catch and handle HTTP errors', () => {
+    // Arrange
+    const mockError = new HttpErrorResponse({ status: 500, statusText: 'Internal Server Error' });
 
+    const request = new HttpRequest('GET', 'test');
     const next: HttpHandler = {
-      handle: (request: HttpRequest<any>): Observable<HttpEvent<any>> => {
-        return of({} as HttpEvent<any>);
+      handle: () => {
+        return new Observable((observer) => {
+          observer.error(mockError);
+        });
       }
     };
 
-    interceptor.intercept({} as HttpRequest<any>, next).subscribe(() => {
-      expect(openSpy).toHaveBeenCalled();
+    let catchErrorCalled = false;
+
+    // Act
+    interceptor.intercept(request, next).subscribe({
+      next: () => {},
+      error: (error) => {
+        catchErrorCalled = true;
+        expect(error).toBe(mockError);
+      }
     });
-  }));
+    // Assert
+    expect(catchErrorCalled).toBeTrue();
+  });
+
 });

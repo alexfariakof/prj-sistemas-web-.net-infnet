@@ -46,7 +46,7 @@ public sealed class MockPlaylistPersonal
             Id = playlist.Id,
             Name = playlist.Name,
             Musics = MockMusic.Instance.GetDtoListFromMusicList(playlist.Musics),
-            CustumerId = playlist.Customer?.Id ?? Guid.Empty
+            CustomerId = playlist.Customer?.Id ?? Guid.Empty
         };
 
         return playlistDto;

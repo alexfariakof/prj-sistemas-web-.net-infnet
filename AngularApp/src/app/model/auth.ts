@@ -4,4 +4,5 @@ export interface Auth {
   expiration: string
   accessToken?: string,
   refreshToken: string;
+  usertype: string;
 }

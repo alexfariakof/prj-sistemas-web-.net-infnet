@@ -10,29 +10,42 @@ public abstract class ControllerBase : Controller
     {
         get
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = HttpContext.Request.Headers.Authorization.ToString();
-            var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
-            var userId = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            return new Guid(userId);
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = HttpContext.Request.Headers.Authorization.ToString();
+                var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
+                var userId = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserId")?.Value;
+                return new Guid(userId);
+            }
+            catch
+            {
+                return Guid.Empty;
+            }
         }
     }
     protected UserTypeEnum UserType
     {
         get
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = HttpContext.Request.Headers.Authorization.ToString();
-            var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
-            var userTypeClaim = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserType")?.Value;
-
-            if (Enum.TryParse<UserTypeEnum>(userTypeClaim, out var userType))
+            try
             {
-                return userType;
-            }
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = HttpContext.Request.Headers.Authorization.ToString();
+                var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
+                var userTypeClaim = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserType")?.Value;
 
-            return UserTypeEnum.Customer;
+                if (Enum.TryParse<UserTypeEnum>(userTypeClaim, out var userType))
+                {
+                    return userType;
+                }
+
+                return UserTypeEnum.Customer;                
+            }
+            catch
+            {
+                return UserTypeEnum.Customer;
+            }
         }
     }
-
 }

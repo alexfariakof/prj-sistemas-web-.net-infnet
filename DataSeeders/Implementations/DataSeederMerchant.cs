@@ -18,8 +18,8 @@ public class DataSeederMerchant : IDataSeeder
         {
             Login = new()
             {
-                Email = "company@test.com",
-                Password = "12345"
+                Email = "user@merchant.com",
+                Password = "12345T!"
             },
             UserType = _context.UserType.Where(u => u.Id.Equals(3)).First()
         };

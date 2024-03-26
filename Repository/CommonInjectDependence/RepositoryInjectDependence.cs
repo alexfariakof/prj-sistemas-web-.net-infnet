@@ -2,6 +2,7 @@
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
 using Repository.Repositories;
+using Repository.Interfaces;
 
 namespace Repository.CommonInjectDependence;
 public static class RepositoryInjectDependence
@@ -17,7 +18,10 @@ public static class RepositoryInjectDependence
         services.AddScoped(typeof(IRepository<Playlist>), typeof(PlaylistRepository));
         services.AddScoped(typeof(IRepository<Album>), typeof(AlbumRepository));
         services.AddScoped(typeof(IRepository<PlaylistPersonal>), typeof(PlaylistPersonalRepository));
-        
+        services.AddScoped(typeof(IRepository<Genre>), typeof(GenreRepository));
+        services.AddScoped(typeof(ICreditCardBrandRepository), typeof(CreditCardBrandRepository));
+        services.AddScoped(typeof(IUserTypeRepository), typeof(UserTypeRepository));
+
         return services;
     }
 }

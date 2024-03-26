@@ -1,20 +1,60 @@
-import { TestBed } from '@angular/core/testing';
-
-import { PlaylistService } from './playlist.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Playlist } from '../../model';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
+import { PlaylistService } from '..';
+import { MockPlaylist } from '../../__mocks__';
 
 describe('PlaylistService', () => {
-  let service: PlaylistService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers:[PlaylistService]
+      providers: [PlaylistService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
     });
-    service = TestBed.inject(PlaylistService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => {
+    httpMock.verify();
   });
+
+  it('should be created', inject([PlaylistService], (service: PlaylistService) => {
+    // Assert
+    expect(service).toBeTruthy();
+  }));
+
+  it('getAllPlaylist should send a get request to the api/playlist endpoint', inject(
+    [PlaylistService, HttpTestingController],
+    (service: PlaylistService, httpMock: HttpTestingController) => {
+        const mockResponse: Playlist[] = MockPlaylist.instance().generatePlaylistList(3);
+      service.getAllPlaylist().subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/playlist';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
+  it('getPlaylistById should send a get request to the api/playlist endpoint', inject(
+    [PlaylistService, HttpTestingController],
+    (service: PlaylistService, httpMock: HttpTestingController) => {
+        const mockResponse: Playlist = MockPlaylist.instance().getFaker();
+      service.getPlaylistById(mockResponse.id as string).subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = `api/playlist/${ mockResponse.id }`;
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
 });

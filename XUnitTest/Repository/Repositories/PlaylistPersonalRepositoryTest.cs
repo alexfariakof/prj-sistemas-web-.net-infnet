@@ -23,8 +23,10 @@ public class PlaylistPersonalRepositoryTest
         // Arrange
         var mockMusics = MockMusic.Instance.GetListFaker(1);
         var mockPlaylistPersonal = MockPlaylistPersonal.Instance.GetListFaker(1, mockMusics);
+        var mockCustomer = mockPlaylistPersonal.Select(p => p.Customer).ToList();
         contextMock.Object.Add(mockMusics);
         contextMock.Setup(dsMusics => dsMusics.Set<Music>()).Returns(Usings.MockDbSet<Music>(mockMusics).Object);
+        contextMock.Setup(dsCustomer => dsCustomer.Set<Customer>()).Returns(Usings.MockDbSet<Customer>(mockCustomer).Object);
         var repository = new PlaylistPersonalRepository(contextMock.Object);
         var playlistPersonal = MockPlaylistPersonal.Instance.GetFaker();
 
@@ -42,10 +44,12 @@ public class PlaylistPersonalRepositoryTest
         // Arrange
         var mockMusics = MockMusic.Instance.GetListFaker(1);
         var mockPlaylistPersonal = MockPlaylistPersonal.Instance.GetListFaker(2, mockMusics);
+        var mockCustomer = mockPlaylistPersonal.Select(p => p.Customer).ToList();
         contextMock.Object.Add(mockPlaylistPersonal);
         var repository = new PlaylistPersonalRepository(contextMock.Object);
         contextMock.Setup(dsPersonalPlaylist => dsPersonalPlaylist.Set<PlaylistPersonal>()).Returns(Usings.MockDbSet<PlaylistPersonal>(mockPlaylistPersonal).Object);
         contextMock.Setup(dsMusics => dsMusics.Set<Music>()).Returns(Usings.MockDbSet<Music>(mockMusics).Object);
+        contextMock.Setup(dsCustomer => dsCustomer.Set<Customer>()).Returns(Usings.MockDbSet<Customer>(mockCustomer).Object);
 
         var playlistPersonal = mockPlaylistPersonal.First();
         playlistPersonal.Musics.First().Name = "Teste Repository Update";
@@ -117,7 +121,7 @@ public class PlaylistPersonalRepositoryTest
         contextMock.Setup(c => c.Set<PlaylistPersonal>()).Returns(dbSetMock.Object);
 
         // Act
-        var result = repository.Find(f => f.Name == mockPlaylistPersonal.Name);
+        var result = repository.Find(f => f.Id == mockPlaylistPersonal.Id);
 
         // Assert
         Assert.Single(result);

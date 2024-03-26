@@ -106,7 +106,7 @@ public class FlatRepositoryTest
         contextMock.Setup(c => c.Set<Flat>()).Returns(dbSetMock.Object);
 
         // Act
-        var result = repository.Find(f => f.Name == mockFlat.Name);
+        var result = repository.Find(f => f.Id == mockFlat.Id);
 
         // Assert
         Assert.Single(result);

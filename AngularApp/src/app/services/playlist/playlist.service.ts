@@ -6,12 +6,20 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class PlaylistService {
-  public routeUrl:string = 'playlist';
+  public routeUrl:string = 'api/playlist';
 
   constructor(public httpClient: HttpClient) { }
 
-  public getAllPLaylist(): Observable<Playlist[]> {
+  public getAllPlaylist(): Observable<Playlist[]> {
     return this.httpClient.get<Playlist[]>(`${ this.routeUrl }`);
   }
+
+  public getPlaylistById(playlistId: string): Observable<Playlist> {
+    return this.httpClient.get<Playlist>(`${ this.routeUrl }/${ playlistId }`);
+  }
+
+
+
 }

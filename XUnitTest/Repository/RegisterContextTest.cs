@@ -37,6 +37,7 @@ public class RegisterContextTest
             Assert.NotNull(context.CardBrand);
             Assert.NotNull(context.Transaction);
             Assert.NotNull(context.Notification);
+            Assert.NotNull(context.Genre);
         }
     }
 
@@ -69,6 +70,7 @@ public class RegisterContextTest
             Assert.True(model.FindEntityType(typeof(CreditCardBrand)) != null);
             Assert.True(model.FindEntityType(typeof(Transaction)) != null);
             Assert.True(model.FindEntityType(typeof(Notification)) != null);
+            Assert.True(model.FindEntityType(typeof(Genre)) != null);
 
         }
     }

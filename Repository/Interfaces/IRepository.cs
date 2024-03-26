@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Repository;
+namespace Repository.Interfaces;
 public interface IRepository<T> where T : class, new()
 {
     public void Save(T entity);

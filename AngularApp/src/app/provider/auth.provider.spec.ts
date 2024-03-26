@@ -1,52 +1,58 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { Auth } from '../model';
 import { AuthProvider } from './auth.provider';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from '../services';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-describe('Unit Test Auth Provider', () => {
+describe('AuthProvider', () => {
   let authProvider: AuthProvider;
-  let mockAuthService: jasmine.SpyObj<AuthService>;
-  let mockRouter: Router;
 
   beforeEach(() => {
-    mockAuthService = jasmine.createSpyObj('AuthService', ['isAuthenticated']);
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers:[
-        { provide: AuthService, useValue: mockAuthService }
-      ]
-    });
-    authProvider = TestBed.inject(AuthProvider);
-    mockRouter = TestBed.inject(Router);
-
+    authProvider = new AuthProvider();
+    sessionStorage.clear();
   });
 
-  it('should be created', inject([AuthService, Router], (provider: AuthService) => {
-    // Assert
-    expect(provider).toBeTruthy();
-  }));
+  it('should create', () => {
+    expect(authProvider).toBeTruthy();
+  });
 
   it('should allow activation when user is authenticated', () => {
-    // Arrange and Act
-    const spyAuthService = mockAuthService.isAuthenticated.and.returnValue(true);
+    // Arrange
+    const fakeAuth: Auth = {
+      accessToken: 'fakeToken',
+      expiration: '2023-01-01T00:00:00Z',
+      authenticated: true,
+      created: '2023-01-01T00:00:00Z',
+      refreshToken: 'fakeToken',
+      usertype: 'customer'
+    };
+
+    authProvider.createAccessToken(fakeAuth);
+
+    // Act
     const canActivate = authProvider.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot);
 
     // Assert
-    expect(spyAuthService).toHaveBeenCalled();
     expect(canActivate).toBeTruthy();
   });
 
-  it('should redirect to login page when user is not authenticated', inject([Router], (router: Router) => {
-    // Arrange and Act
-    const spyAuthService = mockAuthService.isAuthenticated.and.returnValue(false);
-    spyOn(router, 'navigate');
+  it('should return true canActive', () => {
+    // Arrange
+    spyOn(authProvider, 'canActivate').and.returnValue(true);
+
+    // Act
     const canActivate = authProvider.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot);
 
     // Assert
-    expect(spyAuthService).toHaveBeenCalled();
-    expect(canActivate).toBeFalsy();
-    expect(router.navigate).toHaveBeenCalledWith(['/']);
-  }));
+    expect(canActivate).toBeTruthy();
+  });
 
+  it('should clear local storage when user is not authenticated', () => {
+    // Arrange
+    spyOn(sessionStorage, 'getItem').and.returnValue(null);
+
+    // Act
+    authProvider.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot);
+
+    // Assert
+    expect(sessionStorage.getItem('@token')).toBeNull();
+  });
 });

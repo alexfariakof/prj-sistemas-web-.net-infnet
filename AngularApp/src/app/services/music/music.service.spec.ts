@@ -1,19 +1,54 @@
-import { TestBed } from '@angular/core/testing';
-import { MusicService } from './music.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Music } from '../../model';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
+import { MusicService } from '..';
 
 describe('MusicService', () => {
-  let service: MusicService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers:[MusicService]
+      providers: [MusicService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
     });
-    service = TestBed.inject(MusicService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => {
+    httpMock.verify();
   });
+
+  it('should be created', inject([MusicService], (service: MusicService) => {
+    // Assert
+    expect(service).toBeTruthy();
+  }));
+
+  it('should send a get request to the api/music endpoint', inject(
+    [MusicService, HttpTestingController],
+    (service: MusicService, httpMock: HttpTestingController) => {
+        const mockResponse: Music[] = [
+          {
+            id: '1', name: 'Song 1', duration: 180,
+            url: 'http://music1.mp3'
+          },
+          {
+            id: '2', name: 'Song 2', duration: 200,
+            url: 'http://music2.mp3'
+          }
+        ];
+
+      service.getAllMusic().subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = 'api/music';
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
 });

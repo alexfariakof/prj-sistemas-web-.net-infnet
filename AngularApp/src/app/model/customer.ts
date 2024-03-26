@@ -9,7 +9,7 @@ export interface Customer {
   cpf: string;
   birth: Dayjs | string | null;
   phone: string;
-  address: Address
+  address: Address;
   flatId: string;
   card: Card;
 }
