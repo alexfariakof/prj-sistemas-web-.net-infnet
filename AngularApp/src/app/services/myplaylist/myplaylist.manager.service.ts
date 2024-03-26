@@ -39,7 +39,6 @@ export class PlaylistManagerService {
         this.playlistsSubject.next(playlists);
       }),
       catchError(error => {
-        this.playlistsSubject.error(error);
         return [];
       })
     );
@@ -52,7 +51,6 @@ export class PlaylistManagerService {
         this.playlistsSubject.next(updatedPlaylists);
       }),
       catchError(error => {
-        this.playlistsSubject.error(error);
         return [];
       })
     );
@@ -82,7 +80,6 @@ export class PlaylistManagerService {
         }
       }),
       catchError(error => {
-        this.playlistsSubject.error(error);
         return of(false);
       })
     );

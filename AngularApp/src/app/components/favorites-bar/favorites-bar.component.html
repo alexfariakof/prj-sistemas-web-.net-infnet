@@ -17,7 +17,7 @@
       <input  class="w-100" type="text" class="form-control" placeholder="Nova Playlist" [(ngModel)]="newPlaylistName" autofocus   />
       <span class="input-group-text btn btn-success bi-plus-circle fs-4 m-0 p-1 px-2" aria-label="Add" (click)="createPlaylist()"></span>
     </div>
-    <div class="d-flex w-100" *ngFor="let item of myPlaylist" >
+    <div class="d-flex w-100" *ngFor="let item of myPlaylist trackBy: trackMyPlaylist" >
       <a class="w-100 btn btn-link text-start text-light text-decoration-none" href="favorites/{{item.id}}">
         <p class="bi bi-music-note-beamed" style="width: max-content;" > {{item.name}}</p>
       </a>

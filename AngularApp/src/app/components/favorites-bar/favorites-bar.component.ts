@@ -51,4 +51,9 @@ export class FavoritesBarComponent implements OnInit {
       this.initializePlaylist();
     });
   }
+
+  trackMyPlaylist(index: number, myPlaylist: Playlist): string {
+    return myPlaylist.id as string;
+  }
+
 }

@@ -21,6 +21,10 @@ export class AddFavoritesComponent implements OnInit {
 
   }
 
+  trackMyPlaylist(index: number, myPlaylist: Playlist): string {
+    return myPlaylist.id as string;
+  }
+
   onAddToFavoritesClick(playlistId?: string): void {
     this.addToFavoritesEvent.emit(playlistId);
   }
