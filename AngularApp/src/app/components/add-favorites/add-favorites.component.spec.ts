@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddFavoritesComponent } from './add-favorites.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PlaylistManagerService } from '../../services';
-import { Playlist } from 'src/app/model';
+import { Playlist } from '../../model';
 
 describe('AddFavoritesComponent', () => {
   let component: AddFavoritesComponent;

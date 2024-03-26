@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ToolBarComponent } from './tool-bar.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
-import { AuthProvider } from 'src/app/provider/auth.provider';
+import { AuthProvider } from '../../provider/auth.provider';
 
 describe('ToolBarComponent', () => {
   let component: ToolBarComponent;
@@ -56,16 +56,16 @@ describe('ToolBarComponent', () => {
     expect(authProvider.isAuthenticated).toHaveBeenCalled();
   });
 
-  it('logout should call authService clearLocalStorage method and navigate to root route', () => {
+  it('logout should call authService clearSessionStorage method and navigate to root route', () => {
     // Arrange
-    spyOn(authProvider, 'clearLocalStorage');
+    spyOn(authProvider, 'clearSessionStorage');
     spyOn(router, 'navigate');
 
     // Act
     component.logout();
 
     // Assert
-    expect(authProvider.clearLocalStorage).toHaveBeenCalled();
+    expect(authProvider.clearSessionStorage).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 });

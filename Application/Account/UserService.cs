@@ -5,7 +5,7 @@ using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Core.Aggreggates;
 using Domain.Core.Interfaces;
-using Repository;
+using Repository.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;

@@ -1,9 +1,9 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthService } from './auth.service';
-import { Auth, Login } from 'src/app/model';
+import { Auth, Login } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CustomInterceptor } from 'src/app/interceptors/http.interceptor.service';
+import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 
 describe('Unit Test AuthService', () => {
   let httpMock: HttpTestingController;

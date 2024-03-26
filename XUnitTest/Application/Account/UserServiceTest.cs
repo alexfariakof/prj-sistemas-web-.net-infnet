@@ -5,7 +5,7 @@ using Domain.Account.Agreggates;
 using Domain.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Moq;
-using Repository;
+using Repository.Interfaces;
 using System.Linq.Expressions;
 
 namespace Application.Account;

@@ -13,6 +13,5 @@ public class PlaylistPersonalProfile : AutoMapper.Profile
             .ReverseMap();
         CreateMap<PlaylistPersonalDto, PlaylistPersonal>().ReverseMap();
         CreateMap<MusicDto, Music>().ReverseMap();
-
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
-using Domain.Transactions.ValueObject;
 using Moq;
-using Domain.Account.ValueObject;
 
 namespace Repository.Repositories;
 public class CustomerRepositoryTest
@@ -17,8 +15,6 @@ public class CustomerRepositoryTest
             .Options;
 
         contextMock = new Mock<RegisterContext>(options);
-        contextMock.Setup(c => c.Set<CreditCardBrand>()).Returns(Usings.MockDataSetCreditCardBrand().Object);
-        contextMock.Setup(c => c.Set<UserType>()).Returns(Usings.MockDataSetUserType().Object);
     }
 
     [Fact]

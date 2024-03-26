@@ -262,7 +262,6 @@ public class CustomerController : ControllerBase
 
         try
         {
-            dto.CustomerId = UserIdentity;
             var playlists = this._playlistService.FindById(playlistId);
             playlists.Musics.Remove(playlists.Musics.First(m => m.Id.Equals(musicId)));
             var result = this._playlistService.Update(playlists);

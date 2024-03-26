@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Album, Music, Playlist} from 'src/app/model';
-import { AlbumService, PlaylistManagerService } from 'src/app/services';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Album, Music, Playlist} from '../../model';
+import { AlbumService, PlaylistManagerService } from '../../services';
 
 @Component({
   selector: 'app-album',
@@ -9,6 +9,7 @@ import { AlbumService, PlaylistManagerService } from 'src/app/services';
   styleUrls: ['./album.component.css']
 })
 export class AlbumComponent implements OnInit {
+  albumId: string = '';
   album: Album = {
     id: '',
     name: '',
@@ -19,20 +20,22 @@ export class AlbumComponent implements OnInit {
   hasStyle: string = '';
 
   constructor(
-    private route: ActivatedRoute,
+    public activeRoute: ActivatedRoute,
+    public route: Router,
     public albumService: AlbumService,
     private playlistManagerService: PlaylistManagerService
     ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const albumId = params['albumId'];
-      this.getAlbum(albumId);
-    });
+    this.getAlbum();
   }
 
-  getAlbum = (albumId: string): void => {
-    this.albumService.getAlbumById(albumId).subscribe({
+  getAlbum = (): void => {
+    this.activeRoute.params.subscribe(params => {
+      this.albumId = params['albumId'];
+    });
+
+    this.albumService.getAlbumById(this.albumId).subscribe({
       next: (response: Album) => {
         if (response) {
           this.album = response;
@@ -73,6 +76,7 @@ export class AlbumComponent implements OnInit {
     };
     this.playlistManagerService.updatePlaylist(playlist).subscribe(() => {
       alert('Música adicionada ao favoritos!');
+      this.route.navigate([`favorites/${ playlistId }`]);
     });
   }
 }

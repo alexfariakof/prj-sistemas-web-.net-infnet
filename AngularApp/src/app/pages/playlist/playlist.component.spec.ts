@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { Playlist  } from '../../model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PlaylistComponent } from './playlist.component';
-import { MockPlaylist } from 'src/app/__mocks__';
+import { MockPlaylist } from '../../__mocks__';
 
 describe('PlaylistComponent', () => {
   let component: PlaylistComponent;

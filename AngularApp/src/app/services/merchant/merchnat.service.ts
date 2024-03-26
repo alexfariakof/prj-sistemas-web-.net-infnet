@@ -1,4 +1,4 @@
-import { Merchant } from 'src/app/model';
+import { Merchant } from '../../model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';

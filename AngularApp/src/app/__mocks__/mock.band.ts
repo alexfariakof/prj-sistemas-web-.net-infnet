@@ -1,4 +1,4 @@
-import { Band, Music } from '../model';
+import { Band } from '../model';
 import { faker } from '@faker-js/faker';
 import { MockMusic } from './mock.music';
 

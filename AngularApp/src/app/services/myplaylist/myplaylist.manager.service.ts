@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Playlist } from 'src/app/model';
+import { Playlist } from '../../model';
 import { PlaylistCacheService } from './myplaylist.cache.service';
 import { MyPlaylistService } from './myplaylist.service';
 
@@ -39,7 +39,6 @@ export class PlaylistManagerService {
         this.playlistsSubject.next(playlists);
       }),
       catchError(error => {
-        this.playlistsSubject.error(error);
         return [];
       })
     );
@@ -52,7 +51,6 @@ export class PlaylistManagerService {
         this.playlistsSubject.next(updatedPlaylists);
       }),
       catchError(error => {
-        this.playlistsSubject.error(error);
         return [];
       })
     );
@@ -82,7 +80,6 @@ export class PlaylistManagerService {
         }
       }),
       catchError(error => {
-        this.playlistsSubject.error(error);
         return of(false);
       })
     );

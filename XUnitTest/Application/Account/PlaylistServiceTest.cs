@@ -1,15 +1,19 @@
 ﻿using Moq;
 using System.Linq.Expressions;
 using AutoMapper;
-using Repository;
 using Domain.Account.Agreggates;
 using Application.Account.Dto;
+using Repository.Interfaces;
+using Domain.Streaming.Agreggates;
 
 namespace Application.Account;
 public class PlaylistPersonalServiceTest
 {
     private readonly Mock<IMapper> mapperMock;
     private readonly Mock<IRepository<PlaylistPersonal>> playlistPersonalRepositoryMock;
+    private readonly Mock<IRepository<Customer>> customerRepositoryMock;
+    private readonly Mock<IRepository<Music>> musicRepositoryMock;
+
     private readonly PlaylistPersonalService playlistPersonalService;
     private readonly List<PlaylistPersonal> mockPlaylistPersonalList = MockPlaylistPersonal.Instance.GetListFaker(3);
 
@@ -17,7 +21,13 @@ public class PlaylistPersonalServiceTest
     {
         mapperMock = new Mock<IMapper>();
         playlistPersonalRepositoryMock = new Mock<IRepository<PlaylistPersonal>>();
-        playlistPersonalService = new PlaylistPersonalService(mapperMock.Object, playlistPersonalRepositoryMock.Object);
+        customerRepositoryMock = new Mock<IRepository<Customer>>();
+        musicRepositoryMock = new Mock<IRepository<Music>>();
+        playlistPersonalService = new PlaylistPersonalService(
+            mapperMock.Object, 
+            playlistPersonalRepositoryMock.Object,
+            customerRepositoryMock.Object,
+            musicRepositoryMock.Object);
     }
 
     [Fact]
@@ -25,20 +35,23 @@ public class PlaylistPersonalServiceTest
     {
         // Arrange
         var mockPlaylistPersonalService = MockPlaylistPersonal.Instance.GetFaker();
-        var PlaylistPersonalDto = new PlaylistPersonalDto
+        var mockMusics = MockMusic.Instance.GetListFaker(3);
+        var playlistPersonalDto = new PlaylistPersonalDto
         {
             Id = mockPlaylistPersonalService.Id,
             Name = mockPlaylistPersonalService.Name,
-            Musics = MockMusic.Instance.GetDtoListFromMusicList(MockMusic.Instance.GetListFaker(3))
+            Musics = MockMusic.Instance.GetDtoListFromMusicList(mockMusics)
 
         };
 
+        customerRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Customer, bool>>>())).Returns(MockCustomer.Instance.GetListFaker(1));
+        musicRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Music, bool>>>())).Returns(mockMusics);
         playlistPersonalRepositoryMock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<PlaylistPersonal, bool>>>())).Returns(false);
         mapperMock.Setup(mapper => mapper.Map<PlaylistPersonal>(It.IsAny<PlaylistPersonalDto>())).Returns(mockPlaylistPersonalService);
-        mapperMock.Setup(mapper => mapper.Map<PlaylistPersonalDto>(It.IsAny<PlaylistPersonal>())).Returns(PlaylistPersonalDto);
+        mapperMock.Setup(mapper => mapper.Map<PlaylistPersonalDto>(It.IsAny<PlaylistPersonal>())).Returns(playlistPersonalDto);
 
         // Act
-        var result = playlistPersonalService.Create(PlaylistPersonalDto);
+        var result = playlistPersonalService.Create(playlistPersonalDto);
 
         // Assert
         playlistPersonalRepositoryMock.Verify(repo => repo.Exists(It.IsAny<Expression<Func<PlaylistPersonal, bool>>>()), Times.Once);
@@ -46,10 +59,10 @@ public class PlaylistPersonalServiceTest
         playlistPersonalRepositoryMock.Verify(repo => repo.Save(It.IsAny<PlaylistPersonal>()), Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(PlaylistPersonalDto.Id, result.Id);
-        Assert.Equal(PlaylistPersonalDto.Name, result.Name);
+        Assert.Equal(playlistPersonalDto.Id, result.Id);
+        Assert.Equal(playlistPersonalDto.Name, result.Name);
         Assert.NotNull(result.Musics);
-        Assert.Equal(PlaylistPersonalDto.Musics, result.Musics);        
+        Assert.Equal(playlistPersonalDto.Musics, result.Musics);        
     }
 
     [Fact]
@@ -97,23 +110,28 @@ public class PlaylistPersonalServiceTest
     public void Update_PlaylistPersonalService_Successfully()
     {
         // Arrange
-        var mockPlaylistPersonalService = MockPlaylistPersonal.Instance.GetFaker();
-        var PlaylistPersonalDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(mockPlaylistPersonalService);
-
-        mapperMock.Setup(mapper => mapper.Map<PlaylistPersonal>(It.IsAny<PlaylistPersonalDto>())).Returns(mockPlaylistPersonalService);
-        playlistPersonalRepositoryMock.Setup(repo => repo.Update(mockPlaylistPersonalService));
-        mapperMock.Setup(mapper => mapper.Map<PlaylistPersonalDto>(It.IsAny<PlaylistPersonal>())).Returns(PlaylistPersonalDto);
+        var mockMusics = MockMusic.Instance.GetListFaker(3);
+        var mockCustomer = MockCustomer.Instance.GetListFaker(1);
+        var mockPersonalPlaylist = MockPlaylistPersonal.Instance.GetFaker(mockMusics);                
+        var playlistPersonalDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(mockPersonalPlaylist);
+        mockPersonalPlaylist.Customer = mockCustomer.FirstOrDefault();
+        mockPersonalPlaylist.CustomerId = mockCustomer.FirstOrDefault().Id;
+                
+        playlistPersonalRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns(mockPersonalPlaylist);        
+        customerRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Customer, bool>>>())).Returns(mockCustomer);
+        musicRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Music, bool>>>())).Returns(mockMusics);
+        playlistPersonalRepositoryMock.Setup(repo => repo.Update(mockPersonalPlaylist));
+        mapperMock.Setup(mapper => mapper.Map<PlaylistPersonalDto>(It.IsAny<PlaylistPersonal>())).Returns(playlistPersonalDto);
 
         // Act
-        var result = playlistPersonalService.Update(PlaylistPersonalDto);
+        var result = playlistPersonalService.Update(playlistPersonalDto);
 
-        // Assert
-        mapperMock.Verify(mapper => mapper.Map<PlaylistPersonal>(It.IsAny<PlaylistPersonalDto>()), Times.Once);
-        playlistPersonalRepositoryMock.Verify(repo => repo.Update(mockPlaylistPersonalService), Times.Once);
+        // Assert        
+        playlistPersonalRepositoryMock.Verify(repo => repo.Update(mockPersonalPlaylist), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<PlaylistPersonalDto>(It.IsAny<PlaylistPersonal>()), Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(PlaylistPersonalDto.Name, result.Name);
+        Assert.Equal(playlistPersonalDto.Name, result.Name);
     }
 
     [Fact]

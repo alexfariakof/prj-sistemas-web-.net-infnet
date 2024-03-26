@@ -1,7 +1,7 @@
 import { BandService } from './../../services/band/band.service';
 import { Component, OnInit } from '@angular/core';
-import { Album, Band, Music, Playlist } from 'src/app/model';
-import { AlbumService, PlaylistManagerService, PlaylistService } from 'src/app/services';
+import { Album, Band, Music, Playlist } from '../../model';
+import { AlbumService, PlaylistManagerService, PlaylistService } from '../../services';
 
 @Component({
   selector: 'app-home',

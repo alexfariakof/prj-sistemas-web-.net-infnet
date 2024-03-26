@@ -7,7 +7,7 @@ describe('AuthProvider', () => {
 
   beforeEach(() => {
     authProvider = new AuthProvider();
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('should create', () => {
@@ -47,12 +47,12 @@ describe('AuthProvider', () => {
 
   it('should clear local storage when user is not authenticated', () => {
     // Arrange
-    spyOn(localStorage, 'getItem').and.returnValue(null);
+    spyOn(sessionStorage, 'getItem').and.returnValue(null);
 
     // Act
     authProvider.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot);
 
     // Assert
-    expect(localStorage.getItem('@token')).toBeNull();
+    expect(sessionStorage.getItem('@token')).toBeNull();
   });
 });

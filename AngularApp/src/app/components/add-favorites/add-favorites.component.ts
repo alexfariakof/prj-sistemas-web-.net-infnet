@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Playlist } from 'src/app/model';
+import { Playlist } from '../../model';
 import { PlaylistManagerService } from '../../services';
 @Component({
   selector: 'app-add-favorites',
@@ -19,6 +19,10 @@ export class AddFavoritesComponent implements OnInit {
             this.myPlaylist = playlists;
     });
 
+  }
+
+  trackMyPlaylist(index: number, myPlaylist: Playlist): string {
+    return myPlaylist.id as string;
   }
 
   onAddToFavoritesClick(playlistId?: string): void {

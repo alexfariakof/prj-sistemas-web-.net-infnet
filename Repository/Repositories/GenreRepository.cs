@@ -1,4 +1,5 @@
 ﻿using Domain.Streaming.Agreggates;
+using Repository.Interfaces;
 
 namespace Repository.Repositories;
 public class GenreRepository : RepositoryBase<Genre>, IRepository<Genre>

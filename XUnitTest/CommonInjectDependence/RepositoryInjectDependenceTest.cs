@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Repository.CommonInjectDependence;
-using Repository;
 using Repository.Repositories;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
+using Repository.Interfaces;
 
 namespace CommonInjectDependence;
 public class RepositoryInjectDependenceTest

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthProvider } from 'src/app/provider/auth.provider';
+import { AuthProvider } from '../../provider/auth.provider';
 
 @Component({
   selector: 'app-tool-bar',
@@ -15,7 +15,7 @@ export class ToolBarComponent {
   }
 
   logout = (): void => {
-    this.authProvider.clearLocalStorage();
+    this.authProvider.clearSessionStorage();
     this.router.navigate(['/']);
   }
 }
