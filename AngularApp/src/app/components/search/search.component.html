@@ -1,0 +1,19 @@
+<span class="input-group-text mx-0" id="basic-addon1">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+    viewBox="0 0 16 16">
+    <path
+      d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0">
+    </path>
+  </svg>
+</span>
+<input id="input-buscar" type="text" class="form-control b-0 mx-0" placeholder="Qual música deseja pesquisar ?"
+  [(ngModel)]="search" (keyup)="searchMusic($event)">
+  <div class="position-absolute mt-4 top-2 w-50 h-auto popover bg-black" *ngIf="musics.length > 0">
+    <ul class="list-unstyled search-container " *ngFor="let music of musics; trackBy: trackByMusic">
+      <li class="text-start m-0 ">
+        <a type="button" class="w-100 btn btn-light text-decoration-none m-0 px-2" href="music/{{music.id}}">{{music.name}}</a>
+      </li>
+    </ul>
+  </div>
+  <span class="input-group-text btn btn-light bi bi-x fs-4 m-0 p-0" id="btn-close" disabled aria-label="Close" (click)="clearPesquisar()"></span>
+

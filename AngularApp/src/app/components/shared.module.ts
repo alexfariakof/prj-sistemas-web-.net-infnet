@@ -6,10 +6,12 @@ import { AddFavoritesModule } from "./add-favorites/add-favorites.module";
 import { FavoritesBarModule } from "./favorites-bar/favorites-bar.module";
 import { AudioPlayerModule } from "./audio-player/audio-player.module";
 import { AudioPlayerComponent } from "./audio-player/audio-player.component";
+import { SearchModule } from "./search/search.module";
+import { SearchComponent } from "./search/search.component";
 
 @NgModule({
-  imports: [CommonModule, AddFavoritesModule, FavoritesBarModule, AudioPlayerModule ],
-  exports: [CommonModule, AddFavoritesComponent, FavoritesBarComponent, AudioPlayerComponent],
+  imports: [CommonModule, AddFavoritesModule, FavoritesBarModule, AudioPlayerModule, SearchModule ],
+  exports: [CommonModule, AddFavoritesComponent, FavoritesBarComponent, AudioPlayerComponent, SearchComponent]
 })
 
 export class SharedModule { }

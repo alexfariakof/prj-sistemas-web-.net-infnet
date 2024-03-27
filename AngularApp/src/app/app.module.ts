@@ -25,7 +25,7 @@ import { PlaylistModule } from './pages/playlist/playlist.module';
   declarations: [AppComponent ],
   imports: [ BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, CommonModule, ReactiveFormsModule, FlexLayoutModule,
     MatToolbarModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
-    MyplaylistModule, PlaylistModule, AlbumModule, BandModule, MusicModule,
+     MyplaylistModule, PlaylistModule, AlbumModule, BandModule, MusicModule,
     ToolBarModule, AddFavoritesModule, FavoritesBarModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, },

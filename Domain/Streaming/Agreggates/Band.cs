@@ -7,6 +7,6 @@ public class Band : BaseModel
     public string? Description { get; set; }
     public string? Backdrop { get; set; }
     public virtual IList<Genre> Genres { get; set; } = new List<Genre>();
-    public virtual List<Album> Albums { get; set; } = new List<Album>();
+    public virtual List<Album> Albums { get; set; } = new List<Album>();    
     public void AddAlbum(Album album) => this.Albums.Add(album);
 }

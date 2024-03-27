@@ -14,23 +14,23 @@ public class DataSeederGenre : IDataSeeder
         _context.Genre.AddRange(
             new Genre
             {
-                Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5"),
+                Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa1"),
                 Name = "Rock",
             },
 
             new Genre
             {
-                Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+                Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa2"),
                 Name = "Popular",
             },
             new Genre
             {
-                Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa7"),
+                Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa3"),
                 Name = "Pagode",
             },
             new Genre
             {
-                Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa8"),
+                Id = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa4"),
                 Name = "Funk",
             });
         try
@@ -39,7 +39,7 @@ public class DataSeederGenre : IDataSeeder
         }
         catch
         {
-            Console.WriteLine($"Dados já cadastrados na base de dados");
+            throw;
         }
     }
 }

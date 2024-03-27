@@ -15,4 +15,13 @@ export class MusicService {
   public getAllMusic(): Observable<Music[]> {
     return this.httpClient.get<Music[]>(`${ this.routeUrl }`);
   }
+
+  public getMusicById(musicId: string): Observable<Music> {
+    return this.httpClient.get<Music>(`${ this.routeUrl }/${ musicId }`);
+  }
+
+  public searchMusic(searchParam: string): Observable<Music[]> {
+    return this.httpClient.get<Music[]>(`${ this.routeUrl }/search/${ searchParam }`);
+  }
+
 }

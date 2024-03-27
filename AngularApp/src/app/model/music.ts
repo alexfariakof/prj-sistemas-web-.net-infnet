@@ -5,4 +5,10 @@ export interface Music {
   url?: string;
   flatId?: string;
   albumId?: string;
+  albumBackdrop?: string;
+  albumName?: string;
+  bandId?: string;
+  bandBackDrop?: string;
+  bandName?: string;
+  bandDescription?: string;
 }
