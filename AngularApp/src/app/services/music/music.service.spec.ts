@@ -4,6 +4,7 @@ import { Music } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 import { MusicService } from '..';
+import { MockMusic } from 'src/app/__mocks__';
 
 describe('MusicService', () => {
   let httpMock: HttpTestingController;
@@ -26,7 +27,7 @@ describe('MusicService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should send a get request to the api/music endpoint', inject(
+  it('getAllMusic should send a get request to the api/music endpoint', inject(
     [MusicService, HttpTestingController],
     (service: MusicService, httpMock: HttpTestingController) => {
         const mockResponse: Music[] = [
@@ -51,4 +52,36 @@ describe('MusicService', () => {
     }
   ));
 
+  it('getMusicById should send a get request to the api/music endpoint', inject(
+    [MusicService, HttpTestingController],
+    (service: MusicService, httpMock: HttpTestingController) => {
+        const mockResponse: Music = MockMusic.instance().getFaker();
+        const mockMusicId: string = mockResponse.id as string;
+
+      service.getMusicById(mockMusicId).subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = `api/music/${ mockMusicId }`;
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
+
+  it('searchMusic should send a get request to the api/music/search endpoint', inject(
+    [MusicService, HttpTestingController],
+    (service: MusicService, httpMock: HttpTestingController) => {
+        const mockResponse: Music[] = MockMusic.instance().generateMusicList(3);
+
+      service.searchMusic('teste').subscribe((response: any) => {
+        expect(response).toBeTruthy();
+      });
+      const expectedUrl = `api/music/search/teste`;
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+      httpMock.verify();
+    }
+  ));
 });

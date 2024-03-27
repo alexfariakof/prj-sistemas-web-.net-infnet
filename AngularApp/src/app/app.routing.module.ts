@@ -18,7 +18,7 @@ export const routes: Routes = [
     { path: 'band/:bandId', component: BandComponent},
     { path: 'album', component: AlbumComponent},
     { path: 'album/:albumId', component: AlbumComponent},
-    { path: 'music', component: MusicComponent},
+    { path: 'music/:musicId', component: MusicComponent},
 ];
 
 @NgModule({

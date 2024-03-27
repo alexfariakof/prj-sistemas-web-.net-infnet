@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthProvider } from '../../provider/auth.provider';
+import { MusicService } from '../../services';
 
 @Component({
   selector: 'app-tool-bar',
@@ -8,7 +9,10 @@ import { AuthProvider } from '../../provider/auth.provider';
   styleUrls: ['./tool-bar.component.css']
 })
 export class ToolBarComponent {
-  constructor(private authProvider: AuthProvider, private router: Router) {}
+
+  constructor(private authProvider: AuthProvider,
+    private router: Router,
+    public musicService: MusicService) {}
 
   isAuthenticated = (): boolean => {
     return !this.authProvider.isAuthenticated();
@@ -18,4 +22,6 @@ export class ToolBarComponent {
     this.authProvider.clearSessionStorage();
     this.router.navigate(['/']);
   }
+
+
 }

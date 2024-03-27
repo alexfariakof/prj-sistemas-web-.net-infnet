@@ -32,7 +32,9 @@ namespace Repository.Mapping.Streaming
                 j =>
                 {
                     j.HasKey("FlatId", "AlbumId");
-                    j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();
+                    // Funciona com Sqlserver não deixando o campo nulo 
+                    // j.Property<DateTime?>("DtAdded").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd(); 
+                    j.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd();
                 });
         }
     }

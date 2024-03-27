@@ -13,14 +13,21 @@ b => b.MigrationsAssembly("Migrations_MySqlServer")));
 
 builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 
-var app = builder.Build();
-app.MapGet("/", () => "Migrations Mysql Server!");
-
-using (var scope = app.Services.CreateScope())
+try
 {
-    var services = scope.ServiceProvider;
-    var dataSeeder = services.GetRequiredService<IDataSeeder>();
-    dataSeeder.SeedData();
-}
+    var app = builder.Build();
+    app.MapGet("/", () => "Migrations Mysql Server!");
 
-app.Run();
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var dataSeeder = services.GetRequiredService<IDataSeeder>();
+        dataSeeder.SeedData();
+    }
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}

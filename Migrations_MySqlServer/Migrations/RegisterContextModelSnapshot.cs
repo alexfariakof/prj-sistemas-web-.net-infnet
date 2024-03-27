@@ -127,11 +127,11 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid?>("AlbumId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtCreated")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsPublic")
@@ -189,8 +189,8 @@ namespace Migrations_MySqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DtCreated")
-                        .ValueGeneratedOnAddOrUpdate()
+                    b.Property<DateTime?>("DtCreated")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("UserTypeId")
@@ -430,6 +430,9 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid>("AlbumId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("BandId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -442,6 +445,8 @@ namespace Migrations_MySqlServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
+
+                    b.HasIndex("BandId");
 
                     b.ToTable("Music", (string)null);
                 });
@@ -597,8 +602,9 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid>("AlbumId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                    b.Property<DateTime?>("DtAdded")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatId", "AlbumId");
@@ -616,8 +622,9 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid>("MusicsId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                    b.Property<DateTime?>("DtAdded")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatsId", "MusicsId");
@@ -635,8 +642,9 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid>("PlaylistsId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                    b.Property<DateTime?>("DtAdded")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatsId", "PlaylistsId");
@@ -684,8 +692,9 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid>("PlaylistsId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                    b.Property<DateTime?>("DtAdded")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("MusicsId", "PlaylistsId");
@@ -704,7 +713,7 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
@@ -779,7 +788,8 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.Navigation("Flat");
 
-                    b.Navigation("Phone");
+                    b.Navigation("Phone")
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -810,7 +820,9 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.HasOne("Domain.Account.Agreggates.Customer", "Customer")
                         .WithMany("Playlists")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });
@@ -940,7 +952,13 @@ namespace Migrations_MySqlServer.Migrations
                     b.HasOne("Domain.Streaming.Agreggates.Album", "Album")
                         .WithMany("Musics")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Streaming.Agreggates.Band", "Band")
+                        .WithMany()
+                        .HasForeignKey("BandId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
@@ -962,6 +980,8 @@ namespace Migrations_MySqlServer.Migrations
                         });
 
                     b.Navigation("Album");
+
+                    b.Navigation("Band");
 
                     b.Navigation("Duration")
                         .IsRequired();

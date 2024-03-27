@@ -16,8 +16,16 @@ public class MusicController : ControllerBase
         _musicService = musicService;
     }
 
+    [HttpGet("search/{searchParam}")]
+    [ProducesResponseType((200), Type = typeof(MusicDto[]))]
+    public IActionResult Serach([FromRoute] string searchParam)
+    {
+        var result = this._musicService.FindAll(UserIdentity).Where(m => m.Name.ToLower().Contains(searchParam.ToLower()));
+        return Ok(result);
+    }
+
     [HttpGet]
-    [ProducesResponseType((200), Type = typeof(MusicDto))]
+    [ProducesResponseType((200), Type = typeof(MusicDto[]))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindAll()
