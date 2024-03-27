@@ -37,6 +37,29 @@ public class MusicControllerTest
     }
 
     [Fact]
+    public void Search_Returns_Ok_Result_With_Valid_Search_Param()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        string searchParam = "a";
+        var musicList = MockMusic.Instance.GetListFaker(10);
+        var expectedMusicDtoList = MockMusic.Instance.GetDtoListFromMusicList(musicList.Where(m => m.Name.ToLower().Contains(searchParam.ToLower())).ToList());
+
+        mockMusicService.Setup(service => service.FindAll(It.IsAny<Guid>())).Returns(expectedMusicDtoList);
+        SetupBearerToken(userId);
+
+        // Act
+        var result = controller.Serach(searchParam) as OkObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+        var musicDtoArray = Assert.IsAssignableFrom<IEnumerable<MusicDto>>(result.Value);
+        Assert.Equal(expectedMusicDtoList.Count, musicDtoArray.Count());
+        mockMusicService.Verify(x => x.FindAll(It.IsAny<Guid>()), Times.Once);
+    }
+
+    [Fact]
     public void FindAll_Returns_Ok_Result_When_List_Music_Found()
     {
         // Arrange        

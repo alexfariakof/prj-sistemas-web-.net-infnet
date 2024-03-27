@@ -9,7 +9,7 @@ public class MusicMapTest
     [Fact]
     public void EntityConfiguration_IsValid()
     {
-        const int PROPERTY_COUNT = 6;
+        const int PROPERTY_COUNT = 8;
         // Arrange
         var options = new DbContextOptionsBuilder<MockRegisterContext>()
             .UseInMemoryDatabase(databaseName: "InMemoryDatabase_MusicMapTest")

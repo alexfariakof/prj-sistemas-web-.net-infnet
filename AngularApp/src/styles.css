@@ -14,6 +14,10 @@ body { margin: 0; padding-bottom: 1vh; font-family: Roboto, "Helvetica Neue", sa
   z-index: 1999;
 }
 
+.search-container {
+  z-index: 9999;
+}
+
 .loading-modal .modal-content {
   background-color: transparent;
   text-align: center;

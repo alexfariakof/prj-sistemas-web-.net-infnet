@@ -29,7 +29,7 @@ namespace Repository.Mapping.Streaming
                         .WithMany(),
                     j =>
                     {
-                        j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();
+                        j.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd();
                     });
 
             builder.HasMany(x => x.Flats)
@@ -44,7 +44,7 @@ namespace Repository.Mapping.Streaming
                 .WithMany(),
                 j =>
                 {
-                    j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();
+                    j.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd();
                 });
         }
     }
