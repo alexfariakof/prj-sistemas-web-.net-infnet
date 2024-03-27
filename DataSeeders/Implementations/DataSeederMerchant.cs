@@ -72,8 +72,7 @@ public class DataSeederMerchant : IDataSeeder
         }
         catch
         {
-            _context.Add(merchant);
-            Console.WriteLine($"Dados já cadastrados na base de dados");
+            throw;
         }
     }
 }

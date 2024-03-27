@@ -174,7 +174,7 @@ namespace DataSeeders.Implementations
             }
             catch
             {
-                Console.WriteLine($"Dados já cadastrados na base de dados");
+                throw;
             }
         }
     }

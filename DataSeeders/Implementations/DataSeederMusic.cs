@@ -137,9 +137,9 @@ public class DataSeederMusic : IDataSeeder
                 Flats = _context.Flat.ToList()
             };
 
-            band.AddAlbum(album);
             _context.Update(band);
-            _context.Add(album);
+            _context.Add(album);            
+            band.AddAlbum(album);            
             _context.SaveChanges();
 
             musicList = new List<Music>
@@ -408,7 +408,7 @@ public class DataSeederMusic : IDataSeeder
         }
         catch
         {
-            Console.WriteLine($"Dados já cadastrados na base de dados");
+            throw;
         }
     }
 }

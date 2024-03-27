@@ -164,12 +164,14 @@ namespace Migrations_MySqlServer.Migrations
                         name: "FK_FlatPlayList_Flat_FlatsId",
                         column: x => x.FlatsId,
                         principalTable: "Flat",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FlatPlayList_Playlist_PlaylistsId",
                         column: x => x.PlaylistsId,
                         principalTable: "Playlist",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -205,8 +207,8 @@ namespace Migrations_MySqlServer.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Email = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
                     Password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    DtCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
+                    DtCreated = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     UserTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -291,14 +293,12 @@ namespace Migrations_MySqlServer.Migrations
                         name: "FK_Music_Album_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Album",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Music_Band_BandId",
                         column: x => x.BandId,
                         principalTable: "Band",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -399,12 +399,14 @@ namespace Migrations_MySqlServer.Migrations
                         name: "FK_MusicPlayList_Music_MusicsId",
                         column: x => x.MusicsId,
                         principalTable: "Music",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MusicPlayList_Playlist_PlaylistsId",
                         column: x => x.PlaylistsId,
                         principalTable: "Playlist",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -778,8 +780,7 @@ namespace Migrations_MySqlServer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Music_BandId",
                 table: "Music",
-                column: "BandId",
-                unique: true);
+                column: "BandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MusicPlayList_PlaylistsId",

@@ -193,8 +193,8 @@ namespace Migrations_MsSqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DtCreated")
-                        .ValueGeneratedOnAddOrUpdate()
+                    b.Property<DateTime?>("DtCreated")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserTypeId")
@@ -452,8 +452,7 @@ namespace Migrations_MsSqlServer.Migrations
 
                     b.HasIndex("AlbumId");
 
-                    b.HasIndex("BandId")
-                        .IsUnique();
+                    b.HasIndex("BandId");
 
                     b.ToTable("Music", (string)null);
                 });
@@ -611,7 +610,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<Guid>("AlbumId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DtAdded")
+                    b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
@@ -630,7 +629,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<Guid>("MusicsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DtAdded")
+                    b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
@@ -649,7 +648,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<Guid>("PlaylistsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DtAdded")
+                    b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
@@ -698,7 +697,7 @@ namespace Migrations_MsSqlServer.Migrations
                     b.Property<Guid>("PlaylistsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DtAdded")
+                    b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
@@ -957,13 +956,13 @@ namespace Migrations_MsSqlServer.Migrations
                     b.HasOne("Domain.Streaming.Agreggates.Album", "Album")
                         .WithMany("Musics")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Streaming.Agreggates.Band", "Band")
-                        .WithOne()
-                        .HasForeignKey("Domain.Streaming.Agreggates.Music", "BandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany()
+                        .HasForeignKey("BandId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>

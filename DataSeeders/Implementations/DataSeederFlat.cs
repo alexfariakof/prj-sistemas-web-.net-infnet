@@ -47,8 +47,7 @@ public class DataSeederFlat : IDataSeeder
         }
         catch
         {
-            _context.Flat.RemoveRange();
-            Console.WriteLine($"Dados já cadastrados na base de dados");
+            throw;
         }
     }
 }
