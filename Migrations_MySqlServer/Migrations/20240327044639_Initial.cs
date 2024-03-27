@@ -23,8 +23,8 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Backdrop = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    Backdrop = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,11 +62,25 @@ namespace Migrations_MySqlServer.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Playlist",
+                name: "Genre",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genre", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Playlist",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Backdrop = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,7 +108,8 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    BandId = table.Column<Guid>(type: "char(36)", nullable: true)
+                    Backdrop = table.Column<string>(type: "longtext", nullable: false),
+                    BandId = table.Column<Guid>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,12 +124,38 @@ namespace Migrations_MySqlServer.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "BandGenre",
+                columns: table => new
+                {
+                    BandsId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    GenresId = table.Column<Guid>(type: "char(36)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BandGenre", x => new { x.BandsId, x.GenresId });
+                    table.ForeignKey(
+                        name: "FK_BandGenre_Band_BandsId",
+                        column: x => x.BandsId,
+                        principalTable: "Band",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BandGenre_Genre_GenresId",
+                        column: x => x.GenresId,
+                        principalTable: "Genre",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "FlatPlayList",
                 columns: table => new
                 {
                     FlatsId = table.Column<Guid>(type: "char(36)", nullable: false),
                     PlaylistsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 3, 8, 22, 57, 24, 46, DateTimeKind.Local).AddTicks(8138))
+                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
@@ -123,10 +164,33 @@ namespace Migrations_MySqlServer.Migrations
                         name: "FK_FlatPlayList_Flat_FlatsId",
                         column: x => x.FlatsId,
                         principalTable: "Flat",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FlatPlayList_Playlist_PlaylistsId",
+                        column: x => x.PlaylistsId,
+                        principalTable: "Playlist",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "GenrePlaylist",
+                columns: table => new
+                {
+                    GenresId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    PlaylistsId = table.Column<Guid>(type: "char(36)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenrePlaylist", x => new { x.GenresId, x.PlaylistsId });
+                    table.ForeignKey(
+                        name: "FK_GenrePlaylist_Genre_GenresId",
+                        column: x => x.GenresId,
+                        principalTable: "Genre",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FlatPlayList_Playlist_PlaylistsId",
+                        name: "FK_GenrePlaylist_Playlist_PlaylistsId",
                         column: x => x.PlaylistsId,
                         principalTable: "Playlist",
                         principalColumn: "Id",
@@ -141,7 +205,8 @@ namespace Migrations_MySqlServer.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Email = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
                     Password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    DtCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 3, 8, 22, 57, 24, 0, DateTimeKind.Local).AddTicks(3502)),
+                    DtCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
                     UserTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -157,12 +222,38 @@ namespace Migrations_MySqlServer.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "AlbumGenre",
+                columns: table => new
+                {
+                    AlbumsId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    GenresId = table.Column<Guid>(type: "char(36)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AlbumGenre", x => new { x.AlbumsId, x.GenresId });
+                    table.ForeignKey(
+                        name: "FK_AlbumGenre_Album_AlbumsId",
+                        column: x => x.AlbumsId,
+                        principalTable: "Album",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AlbumGenre_Genre_GenresId",
+                        column: x => x.GenresId,
+                        principalTable: "Genre",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "FlatAlbum",
                 columns: table => new
                 {
                     FlatId = table.Column<Guid>(type: "char(36)", nullable: false),
                     AlbumId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 3, 8, 22, 57, 24, 14, DateTimeKind.Local).AddTicks(8631))
+                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
@@ -189,7 +280,9 @@ namespace Migrations_MySqlServer.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     Duration = table.Column<int>(type: "int", maxLength: 50, nullable: false),
-                    AlbumId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    Url = table.Column<string>(type: "longtext", nullable: false),
+                    AlbumId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    BandId = table.Column<Guid>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,6 +291,12 @@ namespace Migrations_MySqlServer.Migrations
                         name: "FK_Music_Album_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Album",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Music_Band_BandId",
+                        column: x => x.BandId,
+                        principalTable: "Band",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -210,7 +309,7 @@ namespace Migrations_MySqlServer.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Birth = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CPF = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false),
-                    Phone = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    Phone = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     FlatId = table.Column<Guid>(type: "char(36)", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false)
@@ -238,7 +337,8 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     FlatsId = table.Column<Guid>(type: "char(36)", nullable: false),
                     MusicsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 3, 8, 22, 57, 24, 33, DateTimeKind.Local).AddTicks(932))
+                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
@@ -259,12 +359,38 @@ namespace Migrations_MySqlServer.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "GenreMusic",
+                columns: table => new
+                {
+                    GenresId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    MusicsId = table.Column<Guid>(type: "char(36)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenreMusic", x => new { x.GenresId, x.MusicsId });
+                    table.ForeignKey(
+                        name: "FK_GenreMusic_Genre_GenresId",
+                        column: x => x.GenresId,
+                        principalTable: "Genre",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GenreMusic_Music_MusicsId",
+                        column: x => x.MusicsId,
+                        principalTable: "Music",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "MusicPlayList",
                 columns: table => new
                 {
                     MusicsId = table.Column<Guid>(type: "char(36)", nullable: false),
                     PlaylistsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 3, 8, 22, 57, 24, 41, DateTimeKind.Local).AddTicks(4891))
+                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
@@ -273,14 +399,12 @@ namespace Migrations_MySqlServer.Migrations
                         name: "FK_MusicPlayList_Music_MusicsId",
                         column: x => x.MusicsId,
                         principalTable: "Music",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_MusicPlayList_Playlist_PlaylistsId",
                         column: x => x.PlaylistsId,
                         principalTable: "Playlist",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -316,9 +440,10 @@ namespace Migrations_MySqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "char(36)", nullable: true),
+                    CustomerId = table.Column<Guid>(type: "char(36)", nullable: false),
                     IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DtCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 3, 8, 22, 57, 23, 990, DateTimeKind.Local).AddTicks(5589)),
+                    DtCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     AlbumId = table.Column<Guid>(type: "char(36)", nullable: true)
                 },
@@ -334,7 +459,8 @@ namespace Migrations_MySqlServer.Migrations
                         name: "FK_PlaylistPersonal_Customer_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customer",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -479,7 +605,8 @@ namespace Migrations_MySqlServer.Migrations
                 {
                     MusicId = table.Column<Guid>(type: "char(36)", nullable: false),
                     PlaylistPersonalId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2024, 3, 8, 22, 57, 23, 997, DateTimeKind.Local).AddTicks(3297))
+                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
@@ -573,6 +700,16 @@ namespace Migrations_MySqlServer.Migrations
                 column: "BandId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AlbumGenre_GenresId",
+                table: "AlbumGenre",
+                column: "GenresId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BandGenre_GenresId",
+                table: "BandGenre",
+                column: "GenresId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Card_CardBrandId",
                 table: "Card",
                 column: "CardBrandId");
@@ -613,6 +750,16 @@ namespace Migrations_MySqlServer.Migrations
                 column: "PlaylistsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GenreMusic_MusicsId",
+                table: "GenreMusic",
+                column: "MusicsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenrePlaylist_PlaylistsId",
+                table: "GenrePlaylist",
+                column: "PlaylistsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Merchant_CustomerId",
                 table: "Merchant",
                 column: "CustomerId",
@@ -627,6 +774,12 @@ namespace Migrations_MySqlServer.Migrations
                 name: "IX_Music_AlbumId",
                 table: "Music",
                 column: "AlbumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Music_BandId",
+                table: "Music",
+                column: "BandId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MusicPlayList_PlaylistsId",
@@ -701,6 +854,12 @@ namespace Migrations_MySqlServer.Migrations
                 name: "Address");
 
             migrationBuilder.DropTable(
+                name: "AlbumGenre");
+
+            migrationBuilder.DropTable(
+                name: "BandGenre");
+
+            migrationBuilder.DropTable(
                 name: "FlatAlbum");
 
             migrationBuilder.DropTable(
@@ -708,6 +867,12 @@ namespace Migrations_MySqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "FlatPlayList");
+
+            migrationBuilder.DropTable(
+                name: "GenreMusic");
+
+            migrationBuilder.DropTable(
+                name: "GenrePlaylist");
 
             migrationBuilder.DropTable(
                 name: "MusicPlayList");
@@ -723,6 +888,9 @@ namespace Migrations_MySqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Transaction");
+
+            migrationBuilder.DropTable(
+                name: "Genre");
 
             migrationBuilder.DropTable(
                 name: "Playlist");

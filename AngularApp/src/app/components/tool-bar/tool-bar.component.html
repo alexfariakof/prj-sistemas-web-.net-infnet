@@ -1,14 +1,6 @@
 <mat-toolbar color="primary" class="d-flex header-full-height">
-  <a class="justify-content-start text-light text-decoration-none" href="#">Lite Streaming</a>
-  <div class="input-group w-50 ms-2">
-    <span class="input-group-text" id="basic-addon1">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
-      </svg>
-    </span>
-    <input id="input-buscar" type="text" class="form-control" placeholder="O que deseja buscar ?" aria-label="Input group example" aria-describedby="basic-addon1">
-    <span class="input-group-text btn btn-light bi bi-x fs-4 m-0 p-0" id="btn-close" disabled aria-label="Close"></span>
-  </div>
+  <a class="justify-content-start text-start text-light text-decoration-none w-25" href="#">Lite Streaming</a>
+  <app-search class="input-group w-50 ms-2"></app-search>
   <div class="d-flex justify-content-end ms-auto" *ngIf="isAuthenticated()" >
       <ul class="list-unstyled mb-0 mx-2 ms-auto ">
           <li class="nav-item dropdown">

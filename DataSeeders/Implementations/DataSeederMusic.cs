@@ -15,13 +15,7 @@ public class DataSeederMusic : IDataSeeder
         try
         {
 
-            var band = new Band
-            {
-                Name = "Os Paralamas do Sucesso",
-                Description = "Os Paralamas do Sucesso, também conhecida somente por Paralamas, é uma banda de rock brasileira formada em 1982 no município fluminense de Seropédica.",
-                Backdrop = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/paralamas.jpg"
-            };
-            band.Genres = _context.Genre.Where(g => g.Name == "Rock").ToList();
+            var band = this._context.Band.Where(b => b.Name.Equals("Os Paralamas do Sucesso")).FirstOrDefault();
 
             var playlist = new Playlist
             {
@@ -40,7 +34,8 @@ public class DataSeederMusic : IDataSeeder
                     Duration = new Duration(30),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/01+-+Vital+E+Sua+Moto.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -49,7 +44,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/02+-+Foi+O+Mordomo.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -58,7 +54,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/03+-+Cinema+Mudo.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -67,7 +64,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/04+-+Patrulha+Noturna.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -76,7 +74,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/05+-+Shopstake+(Instrumental).mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -85,7 +84,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/06+-+Vov%C3%B3+Ondina+%C3%A9+Gente+Fina.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -94,7 +94,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/07+-+O+Que+Eu+N%C3%A3o+Disse.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -103,7 +104,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/08+-+Qu%C3%ADmica.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -112,7 +114,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/09+-+Encruzilhada.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 },
                 new Music
                 {
@@ -121,7 +124,8 @@ public class DataSeederMusic : IDataSeeder
                     Genres = _context.Genre.Where(g => g.Name == "Rock").ToList(),
                     Url = "https://playlist-music.s3.sa-east-1.amazonaws.com/Os+Paralamas+do+Sucesso/Cinema+Mudo/10+-+Vol%C3%BApia.mp3",
                     Playlists = { playlist },
-                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList()
+                    Flats = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).ToList(),
+                    Band = band
                 }
             };
 
@@ -134,11 +138,8 @@ public class DataSeederMusic : IDataSeeder
             };
 
             band.AddAlbum(album);
-            musicList.ForEach(m => m.Album = album);
-
-            _context.Music.AddRange(musicList);
+            _context.Update(band);
             _context.Add(album);
-            _context.Add(band);
             _context.SaveChanges();
 
             musicList = new List<Music>
@@ -255,17 +256,12 @@ public class DataSeederMusic : IDataSeeder
 
             band.AddAlbum(album);
             musicList.ForEach(m => m.Album = album);
+            musicList.ForEach(m => m.Band = band);
+            _context.Update(band);
             _context.Music.AddRange(musicList);
             _context.SaveChanges();
 
-
-            band = new Band
-            {
-                Name = "Legião Urbana",
-                Genres = _context.Genre.Where(g => g.Name == "Rock" || g.Name == "Popular").ToList(),
-                Description = "Legião Urbana foi uma banda brasileira de rock formada em 1982, em Brasília, por Renato Russo e Marcelo Bonfá, que contou com Dado Villa-Lobos e Renato Rocha em sua formação mais conhecida.",
-                Backdrop = "https://playlist-music.s3.sa-east-1.amazonaws.com/Legi%C3%A3o+Urbana/Legi%C3%A3o_Urbana.jpg"
-            };
+            band = this._context.Band.Where(b => b.Name.Equals("Legião Urbana")).FirstOrDefault();
 
             playlist = new Playlist
             {
@@ -403,12 +399,11 @@ public class DataSeederMusic : IDataSeeder
                 Flats = _context.Flat.ToList()
             };
 
-
             band.AddAlbum(album);
             musicList.ForEach(m => m.Album = album);
+            musicList.ForEach(m => m.Band = band);
+            _context.Update(band);
             _context.Music.AddRange(musicList);
-            _context.Add(album);
-            _context.Add(band);
             _context.SaveChanges();
         }
         catch

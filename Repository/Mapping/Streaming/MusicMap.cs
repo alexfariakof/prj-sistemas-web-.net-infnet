@@ -20,6 +20,7 @@ public class MusicMap : IEntityTypeConfiguration<Music>
             c.Property(x => x.Value).HasColumnName("Duration").IsRequired().HasMaxLength(50);
         });
 
+        builder.HasOne(x => x.Band).WithMany();
         builder.HasOne(x => x.Album).WithMany(m => m.Musics);
         builder.HasMany(x => x.Playlists).WithMany(m => m.Musics);
         builder.HasMany(x => x.Genres).WithMany(m => m.Musics);
@@ -33,7 +34,7 @@ public class MusicMap : IEntityTypeConfiguration<Music>
             .WithMany(),
             j => j
             .HasOne<Music>()
-            .WithMany(),
+            .WithMany() ,
             j =>
             {
                 j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();

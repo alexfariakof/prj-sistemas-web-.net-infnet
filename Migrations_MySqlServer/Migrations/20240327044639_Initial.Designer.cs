@@ -11,8 +11,8 @@ using Repository;
 namespace Migrations_MySqlServer.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20240319092857_Fix-Default-Value-To-DateCreated-Properties-on-Insert-Update")]
-    partial class FixDefaultValueToDateCreatedPropertiesonInsertUpdate
+    [Migration("20240327044639_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,11 +130,11 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid?>("AlbumId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtCreated")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsPublic")
@@ -433,6 +433,9 @@ namespace Migrations_MySqlServer.Migrations
                     b.Property<Guid>("AlbumId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("BandId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -445,6 +448,9 @@ namespace Migrations_MySqlServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
+
+                    b.HasIndex("BandId")
+                        .IsUnique();
 
                     b.ToTable("Music", (string)null);
                 });
@@ -601,7 +607,7 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatId", "AlbumId");
@@ -620,7 +626,7 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatsId", "MusicsId");
@@ -639,7 +645,7 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("FlatsId", "PlaylistsId");
@@ -688,7 +694,7 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("MusicsId", "PlaylistsId");
@@ -707,7 +713,7 @@ namespace Migrations_MySqlServer.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("DtAdded")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
@@ -782,7 +788,8 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.Navigation("Flat");
 
-                    b.Navigation("Phone");
+                    b.Navigation("Phone")
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -813,7 +820,9 @@ namespace Migrations_MySqlServer.Migrations
 
                     b.HasOne("Domain.Account.Agreggates.Customer", "Customer")
                         .WithMany("Playlists")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });
@@ -946,6 +955,12 @@ namespace Migrations_MySqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Streaming.Agreggates.Band", "Band")
+                        .WithOne()
+                        .HasForeignKey("Domain.Streaming.Agreggates.Music", "BandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Domain.Streaming.ValueObject.Duration", "Duration", b1 =>
                         {
                             b1.Property<Guid>("MusicId")
@@ -965,6 +980,8 @@ namespace Migrations_MySqlServer.Migrations
                         });
 
                     b.Navigation("Album");
+
+                    b.Navigation("Band");
 
                     b.Navigation("Duration")
                         .IsRequired();
@@ -1102,13 +1119,13 @@ namespace Migrations_MySqlServer.Migrations
                     b.HasOne("Domain.Streaming.Agreggates.Flat", null)
                         .WithMany()
                         .HasForeignKey("FlatsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
                         .WithMany()
                         .HasForeignKey("PlaylistsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -1147,13 +1164,13 @@ namespace Migrations_MySqlServer.Migrations
                     b.HasOne("Domain.Streaming.Agreggates.Music", null)
                         .WithMany()
                         .HasForeignKey("MusicsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Streaming.Agreggates.Playlist", null)
                         .WithMany()
                         .HasForeignKey("PlaylistsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
