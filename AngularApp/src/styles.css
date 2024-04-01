@@ -4,11 +4,12 @@ html, body { height: 100%; overflow-x: hidden; }
 body { margin: 0; padding-bottom: 1vh; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .header-full-height {
-  height: 4vh;
+  height: 4%;
 }
 .content-full-height {
-  height: 94vh;
+  height: 94%;
 }
+
 
 .cdk-overlay-container {
   z-index: 1999;
