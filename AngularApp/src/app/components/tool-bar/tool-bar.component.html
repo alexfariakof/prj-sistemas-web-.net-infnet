@@ -1,8 +1,21 @@
-<mat-toolbar color="primary" class="d-flex header-full-height">
-  <a class="justify-content-start text-start text-light text-decoration-none w-25" href="#">Lite Streaming</a>
-  <app-search class="input-group w-50 ms-2"></app-search>
+<mat-toolbar color="primary" class=" d-flex header-full-height " >
+  <div class="offcanvas-start d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+    <nav class="navbar m-0 p-0 ">
+      <button
+        class="btn btn-light m-0"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasFavorites"
+        aria-controls="offcanvasFavorites"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+  </div>
+  <a class="offcanvas-start offcanvas-md offcanvas-lg justify-content-start text-start text-light text-decoration-none w-25" href="#">Lite Streaming</a>
+  <app-search class="input-group w-50 mx-2"></app-search>
   <div class="d-flex justify-content-end ms-auto" *ngIf="isAuthenticated()" >
-      <ul class="list-unstyled mb-0 mx-2 ms-auto ">
+      <ul class="list-unstyled mb-0 mx-2 ms-auto fs-6 ">
           <li class="nav-item dropdown">
               <button class="nav-link button"  data-bs-toggle="dropdown" aria-expanded="true">Inscreva-se</button>
               <ul class="dropdown-menu dropdown-menu-light text-small text-center shadow" style="left: -150%" aria-labelledby="dropdown">
