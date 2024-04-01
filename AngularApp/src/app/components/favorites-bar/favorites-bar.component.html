@@ -1,28 +1,38 @@
-<div  class="d-flex fxClass-all h-100" fxFill fxLayout="row" fxLayoutAlign="stretch"  [ngStyle.xs]="{'font-size.px': 10}"
-  [ngStyle.sm]="{'font-size.px': 20}" [ngStyle.md]="{'font-size.px': 30}">
-  <div class="d-flex bg-dark rounded-2 mx-1 mt-1 text-light text-start" fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
-    <button id="btnFavoritos" type="button" class="btn btn-link text-start text-light text-decoration-none" data-toggle="tooltip"
-    (click)="toggleCreatePlaylist()" data-placement="right" title="Adicionar uma nova playlist">
-      <div class="w-100" fxFlex="100" fxLayout="row" fxFill fxLayoutAlign="start start" >
-        <span class="fs-5" style="width: max-content;" >Meus Favoritos</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus "
-          viewBox="0 0 16 16">
-          <path
-            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4">
-          </path>
-        </svg>
-      </div>
-    </button>
-    <div class="input-group mx-2 w-auto" style="width: max-content;" *ngIf="isCreatingPlaylist">
-      <input  class="w-100" type="text" class="form-control" placeholder="Nova Playlist" [(ngModel)]="newPlaylistName" autofocus   />
-      <span class="input-group-text btn btn-success bi-plus-circle fs-4 m-0 p-1 px-2" aria-label="Add" (click)="createPlaylist()"></span>
+<div id="offcanvasFavorites" class="d-flex  fxClass-all offcanvas-xs offcanvas-sm offcanvas-md offcanvas-lg" fxFill fxLayout="row" fxLayoutAlign="stretch"
+  [ngStyle.xs]="{'font-size.px': 10}" [ngStyle.sm]="{'font-size.px': 20}" [ngStyle.md]="{'font-size.px': 30}" >
+  <div class="d-flex bg-dark rounded-2 mx-1 mt-1 text-light text-start " fxLayout="column" fxLayoutAlign="start start">
+    <div class="d-flex w-100 p-2 border border-light border-bottom-2 d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
+      <a class="justify-content-end text-start btn-link text-light w-100 mx-2 p-2" href="\">Lite Streaming</a>
+      <span class="fs-2" ><i type="button" data-bs-target="#offcanvasFavorites" class="bi bi-x" data-bs-dismiss="offcanvas" aria-label="Close"></i></span>
     </div>
-    <div class="d-flex w-100" *ngFor="let item of myPlaylist trackBy: trackMyPlaylist" >
+    <div class="d-flex">
+      <button id="btnFavoritos" type="button" class="btn btn-link text-start text-light text-decoration-none"
+      data-bs-dismiss="offcanvas"
+      data-toggle="tooltip" (click)="toggleCreatePlaylist()" data-placement="right" title="Adicionar uma nova playlist">
+        <div class="w-100" fxFlex="100" fxLayout="row" fxFill fxLayoutAlign="start start">
+          <span class="fs-5" style="width: max-content;">Meus Favoritos</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus "
+            viewBox="0 0 16 16">
+            <path
+              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4">
+            </path>
+          </svg>
+        </div>
+      </button>
+
+    </div>
+    <div class="input-group mx-2 w-auto" style="width: max-content;" *ngIf="isCreatingPlaylist">
+      <input class="w-100" type="text" class="form-control" placeholder="Nova Playlist" [(ngModel)]="newPlaylistName"
+        autofocus />
+      <span class="input-group-text btn btn-success bi-plus-circle fs-4 m-0 p-1 px-2" aria-label="Add"
+        (click)="createPlaylist()"></span>
+    </div>
+    <div class="d-flex w-100" *ngFor="let item of myPlaylist trackBy: trackMyPlaylist">
       <a class="w-100 btn btn-link text-start text-light text-decoration-none" href="favorites/{{item.id}}">
-        <p class="bi bi-music-note-beamed" style="width: max-content;" > {{item.name}}</p>
+        <p class="bi bi-music-note-beamed" style="width: max-content;"> {{item.name}}</p>
       </a>
       <p class="w-auto btn btn-link text-decoration-none bi bi-trash  " (click)="removePlaylist(item.id)"
-      data-toggle="tooltip"
-      data-placement="right" title="Remover esta playlist"></p>
+        data-toggle="tooltip" data-placement="right" title="Remover esta playlist"></p>
     </div>
   </div>
+</div>

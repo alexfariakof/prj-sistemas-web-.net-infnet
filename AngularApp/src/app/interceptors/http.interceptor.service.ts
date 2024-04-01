@@ -26,7 +26,6 @@ export class CustomInterceptor implements HttpInterceptor {
       }),
       finalize(() => this.hideLoader())
     );
-
   }
 
   private showLoader(): void {
