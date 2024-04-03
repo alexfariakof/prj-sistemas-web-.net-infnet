@@ -1,6 +1,6 @@
-<div class="d-flex align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3 bg-dark  ">
+<div class="d-flex h-auto align-items-center justify-content-between  ">
   <form
-    class="d-flex flex-column m-2  b-0 p-2 align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3 w-75 rounded-2 bg-dark-subtle text-black"
+    class="d-flex flex-column h-auto w-100 m-2  b-0 p-2 align-items-stretch justify-content-center  rounded-2 bg-dark-subtle text-black"
     (submit)="onSaveClick()" [formGroup]="createAccountForm">
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Email</mat-label>
@@ -54,56 +54,56 @@
         </span>
       </div>
     </mat-form-field>
-    <div class="d-flex" class="justify-content-start w-100">
-      <mat-form-field appearance="outline" class="logradouro">
+    <div class="d-flex justify-content-start align-items-stretch w-100">
+      <mat-form-field appearance="outline" class="logradouro w-100">
         <mat-label>Endereço</mat-label>
         <input matInput id="logradouro" name="logradouro" formControlName="street" type="text" class="form-control"
           placeholder="Entre com o logradouro"
           [ngClass]="{'is-invalid': !createAccountForm.get('street').valid && createAccountForm.get('street')?.touched }" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="number">
+      <mat-form-field appearance="outline" class="number w-auto ms-1">
         <mat-label>Número</mat-label>
         <input matInput id="number" name="number" formControlName="number" type="text" class="form-control"
           placeholder="Número" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="complement">
+      <mat-form-field appearance="outline" class="complement w-auto ms-1">
         <mat-label>Complemento</mat-label>
         <input matInput id="complement" name="complement" formControlName="complement" type="text" class="form-control"
           placeholder="Complemento" />
       </mat-form-field>
     </div>
-    <div class="d-flex" class="justify-content-start w-100">
-      <mat-form-field appearance="outline" class="neighborhood">
+    <div class="d-flex justify-content-start align-items-stretch w-100">
+      <mat-form-field appearance="outline" class="neighborhood w-100">
         <mat-label>Bairro</mat-label>
         <input matInput id="neighborhood" name="neighborhood" formControlName="neighborhood" type="text"
           class="form-control" placeholder="Entre com o bairro"
           [ngClass]="{'is-invalid': !createAccountForm.get('neighborhood').valid && createAccountForm.get('neighborhood')?.touched }" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="city">
+      <mat-form-field appearance="outline" class="city w-25 ms-1">
         <mat-label>Cidade</mat-label>
         <input matInput id="city" name="city" formControlName="city" type="text" class="form-control"
           placeholder="Cidade" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="state">
+      <mat-form-field appearance="outline" class="state w-auto ms-1">
         <mat-label>Estado</mat-label>
         <input matInput id="state" name="state" formControlName="state" type="text" class="form-control"
           placeholder="Estado" />
       </mat-form-field>
     </div>
-    <div class="d-flex" class="justify-content-start w-100">
-      <mat-form-field appearance="outline" class="cardNumber">
+    <div class="d-flex justify-content-start align-items-stretch w-100">
+      <mat-form-field appearance="outline" class="cardNumber w-100">
         <mat-label>Cartão de Crédito</mat-label>
         <input matInput id="cardNumber" name="cardNumber" formControlName="cardNumber" type="text" class="form-control"
           placeholder="Entre com o Número do cartão de crédito"
           [ngClass]="{'is-invalid': !createAccountForm.get('cardNumber').valid && createAccountForm.get('cardNumber')?.touched }" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="cardValidate">
+      <mat-form-field appearance="outline" class="cardValidate w-25 ms-1">
         <mat-label>Validade</mat-label>
         <input matInput id="cardValidate" name="cardValidate" formControlName="cardValidate" type="text"
           class="form-control" placeholder="Validade"
           [ngClass]="{'is-invalid': createAccountForm.get('cardValidate')?.errors?.['required'] && createAccountForm.get('cardValidate')?.touched }" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="w-100" class="cardCVV">
+      <mat-form-field appearance="outline" class="cardCVV w-auto ms-1">
         <mat-label>CVV</mat-label>
         <input matInput required id="cardCVV" name="cardCVV" formControlName="cardCVV" type="password"
           placeholder="Entre com o CVV" class="form-control"
@@ -113,8 +113,9 @@
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Senha</mat-label>
       <div class="input-group">
-        <input matInput required id="password" name="password" formControlName="password" type="text" autocomplete="new-password"
-          placeholder="Entre com uma senha" [type]="showPassword ? 'text' : 'password'" class="form-control"
+        <input matInput required id="password" name="password" formControlName="password" type="text"
+          autocomplete="new-password" placeholder="Entre com uma senha" [type]="showPassword ? 'text' : 'password'"
+          class="form-control"
           [ngClass]="{'is-invalid': createAccountForm.get('password')?.errors?.['required'] && createAccountForm.get('password')?.touched }" />
         <span id="basic-addon1" class="input-group-text border-0 bg-transparent" (click)="onTooglePassword()"
           [class.text-danger]="createAccountForm.get('password')?.hasError('required') &&  createAccountForm.get('password')?.touched">
@@ -126,8 +127,8 @@
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Confrima Senha</mat-label>
       <div class="input-group">
-        <input matInput required id="confirmPassword" name="confirmPassword" formControlName="confirmPassword" autocomplete="new-password"
-          type="password" class="form-control me-1" placeholder="Confirme a senha"
+        <input matInput required id="confirmPassword" name="confirmPassword" formControlName="confirmPassword"
+          autocomplete="new-password" type="password" class="form-control me-1" placeholder="Confirme a senha"
           [type]="showConfirmPassword ? 'text' : 'password'"
           [ngClass]="{ 'is-invalid': createAccountForm.get('confirmPassword')?.errors?.['required'] && createAccountForm.get('confirmPassword')?.touched}" />
         <span id="basic-addon1" class="input-group-text border-0 bg-transparent" (click)="onToogleConfirmPassword()"

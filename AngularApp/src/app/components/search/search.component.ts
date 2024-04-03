@@ -15,6 +15,7 @@ export class SearchComponent {
   constructor(public musicService: MusicService) {}
 
   searchMusic = (event: any): void => {
+    if (this.search.length == 0 ) this.musics = [];
     this.musicService.searchMusic(this.search).subscribe({
       next: (response: Music[]) => {
         if (response) {

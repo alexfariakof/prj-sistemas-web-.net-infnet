@@ -1,5 +1,5 @@
 .searchPopup {
-  min-width: 50vw;
   width: auto;
+  height: max-content;
   background-color: black;
 }
