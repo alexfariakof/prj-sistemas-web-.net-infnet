@@ -1,4 +1,4 @@
-<ul class="list-unstyled m-2 w-100" fxFill>
+<ul class="list-unstyled m-2 w-100 h-auto"  fxFill>
   <li class="input-group-text mx-0 w-100" id="basic-addon1">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2"
         viewBox="0 0 16 16">
@@ -11,10 +11,10 @@
     <span class="input-group-text btn btn-light bi bi-x fs-4 ms-2 p-0" id="btn-close" disabled aria-label="Close"
       (click)="clearPesquisar()"></span>
   </li>
-  <li fxFill>
-    <div class="position-absolute p-2 top-2 w-auto h-auto popover bg-transparent" *ngIf="musics.length > 0">
+  <li class="w-100 position-absolute top-2" >
+    <div class="h-100  p-2  popover bg-black" fxFlex="100" fxFill *ngIf="musics.length > 0">
       <ul class="list-unstyled searchPopup" *ngFor="let music of musics; trackBy: trackByMusic">
-        <li class="text-start m-0 fxFill">
+        <li class="text-start m-0">
           <mat-card class="mat-elevation-z4 mb-1" fxFill>
             <mat-card-header class="d-flex fs-2 "  fxFill>
               <mat-card-title >

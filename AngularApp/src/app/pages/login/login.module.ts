@@ -6,10 +6,12 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { LoginComponent } from "./login.component";
+import { FavoritesBarModule } from "src/app/components/favorites-bar/favorites-bar.module";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [LoginRoutingModule, CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule ],
+  imports: [LoginRoutingModule, CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule, FavoritesBarModule, FlexLayoutModule ],
   exports: [LoginComponent]
 })
 
