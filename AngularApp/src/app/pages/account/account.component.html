@@ -1,7 +1,34 @@
-<div class="d-flex h-auto align-items-center justify-content-between  ">
+<mat-toolbar color="primary" class=" d-flex ">
+  <a class="justify-content-start text-start text-light text-decoration-none w-25" href="\">Lite Streaming</a>
+  <div class="d-flex justify-content-end ms-auto" >
+    <ul class="list-unstyled mb-0 mx-2 ms-auto fs-6 ">
+      <li class="nav-item dropdown">
+        <button class="nav-link button" data-bs-toggle="dropdown" aria-expanded="true">Inscreva-se</button>
+        <ul class="dropdown-menu dropdown-menu-light text-small text-center shadow p-0" style="left: -150%"
+          aria-labelledby="dropdown">
+          <li>
+            <span class="nav-link dropdown-item">
+              <a type="button" class="btn btn-light w-100" href="account/customer">Cliente</a>
+            </span>
+          </li>
+          <li>
+            <span class="nav-link dropdown-item">
+              <a type="button" class="btn btn-light w-100" href="account/merchant">Comerciante</a>
+            </span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <a class="btn btn-light rounded-4 ms-auto mx-2" href="login" aria-expanded="true">Entrar</a>
+  </div>
+</mat-toolbar>
+<div class="d-flex flex-column w-100 h-auto align-items-stretch align-items-md-center align-items-lg-center   justify-content-center  ">
   <form
-    class="d-flex flex-column h-auto w-100 m-2  b-0 p-2 align-items-stretch justify-content-center  rounded-2 bg-dark-subtle text-black"
+    class="d-flex flex-column h-auto  m-2  b-0 p-2 align-items-sm-stretch align-items-center justify-content-center  rounded-2 bg-dark-subtle text-black"
     (submit)="onSaveClick()" [formGroup]="createAccountForm">
+    <h1 *ngIf="accountType === 'customer'" class="fs-1 border border-2 border-primary text-light rounded-2 bg-info w-100 p-2 shadow">Crie sua conta como Cliente</h1>
+    <h1 *ngIf="accountType === 'merchant'" class="fs-1 border border-2 border-primary text-light rounded-2 bg-info w-100 p-2 shadow">Crie sua conta como Comerciante</h1>
+
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Email</mat-label>
       <input matInput id="email" name="email" formControlName="email" type="text" class="form-control"

@@ -1,8 +1,8 @@
 export interface Auth {
-  authenticated : boolean,
+  authenticated: boolean,
   created: string,
   expiration: string
-  accessToken?: string,
+  accessToken: string,
   refreshToken: string;
   usertype: string;
 }

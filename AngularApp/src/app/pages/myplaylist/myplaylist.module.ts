@@ -6,7 +6,7 @@ import { SharedModule } from "../../components/shared.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
 @NgModule({
   declarations: [MyplaylistComponent],
-  imports: [ FlexLayoutModule, MatCardModule, MatButtonModule, SharedModule],
+  imports: [FlexLayoutModule, MatCardModule, MatButtonModule, SharedModule],
   exports: [MyplaylistComponent]
 })
 
