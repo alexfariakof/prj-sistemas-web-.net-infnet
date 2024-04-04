@@ -4,8 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CustomInterceptor } from './interceptors/http.interceptor.service';
 import { AlbumModule } from './pages/album/album.module';
 import { BandModule } from './pages/band/band.module';

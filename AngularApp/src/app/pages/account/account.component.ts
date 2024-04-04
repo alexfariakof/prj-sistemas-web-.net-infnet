@@ -11,11 +11,12 @@ import * as dayjs from 'dayjs';
 import { Address, Customer, Merchant } from '../../model';
 import { AddressService, CustomerService, MerchantService } from '../../services';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import ToolBarSecondaryModule from 'src/app/components/tool-bar-secondary/tool-bar-secondary.module';
 
 @Component({
   selector: 'app-account-form',
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],
+  imports: [CommonModule, MatToolbarModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule, ToolBarSecondaryModule],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })

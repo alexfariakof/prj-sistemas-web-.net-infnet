@@ -14,10 +14,10 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
+        <h2 class="text-center">{{music.albumName}}</h2>
         <a href="album/{{music.albumId}}" data-toggle="tooltip" data-placement="bottom" title="Ver detalhes do album">
           <img mat-card-image [src]="music.albumBackdrop" height="200px" />
         </a>
-        <h2 class="text-center">{{music.albumName}}</h2>
         <h2>{{music.name}}</h2>
         <app-audio-player [audioUrl]="music.url"></app-audio-player>
       </mat-card-content>

@@ -9,10 +9,11 @@ import { LoginComponent } from "./login.component";
 import { FavoritesBarModule } from "src/app/components/favorites-bar/favorites-bar.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import ToolBarSecondaryModule from "src/app/components/tool-bar-secondary/tool-bar-secondary.module";
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [LoginRoutingModule, CommonModule, MatToolbarModule,  MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule, FavoritesBarModule, FlexLayoutModule ],
+  imports: [LoginRoutingModule, CommonModule, MatToolbarModule,  MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule, FavoritesBarModule, FlexLayoutModule, ToolBarSecondaryModule ],
   exports: [LoginComponent]
 })
 export class LoginModule { }

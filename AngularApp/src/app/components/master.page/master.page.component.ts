@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-master-page',
-  templateUrl: './master.page.component.html',
-  styleUrls: ['./master.page.component.css']
+  templateUrl: './master.page.component.html'
 })
 
-export class MasterPageComponent {
-
-}
+export class MasterPageComponent {}
