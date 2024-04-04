@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import ToolBarSecondaryComponent from "./tool-bar-secondary.component";
+import { ToolBarSecondaryComponent } from "..";
 
 @NgModule({
   declarations: [ToolBarSecondaryComponent],

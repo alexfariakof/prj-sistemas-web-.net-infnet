@@ -1,5 +1,6 @@
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import ToolBarSecondaryComponent from './tool-bar-secondary.module';
+import { ToolBarSecondaryComponent } from '..';
 
 describe('ToolBarSecondaryComponent', () => {
   let component: ToolBarSecondaryComponent;
@@ -7,7 +8,7 @@ describe('ToolBarSecondaryComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ToolBarSecondaryComponent]
+      declarations: [ToolBarSecondaryComponent],
     });
     fixture = TestBed.createComponent(ToolBarSecondaryComponent);
     component = fixture.componentInstance;

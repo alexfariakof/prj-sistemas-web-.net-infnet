@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './tool-bar-secondary.component.html',
   styleUrls: ['./tool-bar-secondary.component.css']
 })
-export default class ToolBarSecondaryComponent {}
+export class ToolBarSecondaryComponent {}
