@@ -10,11 +10,13 @@ import { Router } from '@angular/router';
 import * as dayjs from 'dayjs';
 import { Address, Customer, Merchant } from '../../model';
 import { AddressService, CustomerService, MerchantService } from '../../services';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import ToolBarSecondaryModule from 'src/app/components/tool-bar-secondary/tool-bar-secondary.module';
 
 @Component({
   selector: 'app-account-form',
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],
+  imports: [CommonModule, MatToolbarModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule, ToolBarSecondaryModule],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
@@ -27,6 +29,7 @@ export default abstract class AccountComponent implements OnInit {
   showConfirmPassword = false;
   showCnpjField = true;
   showBirthField = true;
+  accountType: string = '';
 
   constructor(
     @Inject(CustomerService) @Inject(MerchantService) protected service: CustomerService | MerchantService,
@@ -58,13 +61,13 @@ export default abstract class AccountComponent implements OnInit {
       address: [address],
     }) as (FormGroup & (Customer | Merchant)) | any;;
 
-    const accountType = this.router.url.includes('customer') ? 'customer' : 'merchant';
+    this.accountType = this.router.url.includes('customer') ? 'customer' : 'merchant';
 
-    if (accountType === 'customer') {
+    if (this.accountType === 'customer') {
       this.createAccountForm.get('cnpj').disable();
       this.showCnpjField = false;
     }
-    else if (accountType === 'merchant') {
+    else if (this.accountType === 'merchant') {
       this.createAccountForm.get('birth').disable();
       this.showBirthField = false;
     }

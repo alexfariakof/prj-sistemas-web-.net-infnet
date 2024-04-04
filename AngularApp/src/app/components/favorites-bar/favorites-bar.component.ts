@@ -12,13 +12,14 @@ export class FavoritesBarComponent implements OnInit {
   isCreatingPlaylist: boolean = false;
   newPlaylistName: string = '';
 
-  constructor(private playlistManagerService: PlaylistManagerService) { }
+  constructor(private  playlistManagerService: PlaylistManagerService) { }
 
   ngOnInit(): void {
     this.initializePlaylist();
   }
 
-  initializePlaylist = (): void =>{
+
+  public initializePlaylist = (): void =>{
     this.playlistManagerService.playlists$.subscribe(playlists => {
       this.myPlaylist = playlists;
     });

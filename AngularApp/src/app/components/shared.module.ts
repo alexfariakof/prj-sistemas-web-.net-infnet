@@ -8,10 +8,12 @@ import { AudioPlayerModule } from "./audio-player/audio-player.module";
 import { AudioPlayerComponent } from "./audio-player/audio-player.component";
 import { SearchModule } from "./search/search.module";
 import { SearchComponent } from "./search/search.component";
+import { MasterPageComponent } from './master.page/master.page.component';
+import { MasterPageModule } from "./master.page/master.page.module";
 
 @NgModule({
-  imports: [CommonModule, AddFavoritesModule, FavoritesBarModule, AudioPlayerModule, SearchModule ],
-  exports: [CommonModule, AddFavoritesComponent, FavoritesBarComponent, AudioPlayerComponent, SearchComponent]
+  imports: [CommonModule, MasterPageModule,  AddFavoritesModule, FavoritesBarModule, AudioPlayerModule, SearchModule ],
+  exports: [CommonModule, MasterPageComponent, AddFavoritesComponent, FavoritesBarComponent, AudioPlayerComponent, SearchComponent]
 })
 
 export class SharedModule { }
