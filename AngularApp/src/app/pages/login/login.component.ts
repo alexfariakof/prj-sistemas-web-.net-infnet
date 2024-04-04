@@ -5,7 +5,6 @@ import { Auth, Login } from '../../model';
 import { AuthService } from '../../services';
 import { AuthProvider } from '../../provider/auth.provider';
 import { map, catchError } from 'rxjs';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

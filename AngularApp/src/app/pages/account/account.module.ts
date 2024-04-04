@@ -9,10 +9,11 @@ import { MatInputModule } from "@angular/material/input";
 import { AccountRoutingModule } from "./account.routing.module";
 import { CustomerComponent } from './customer/customer.component'
 import { MerchantComponent } from './merchant/merchant.component'
+import { MatToolbarModule } from "@angular/material/toolbar";
 
 @NgModule({
   declarations: [CustomerComponent, MerchantComponent ],
-  imports: [AccountRoutingModule, CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],
+  imports: [AccountRoutingModule, CommonModule, MatToolbarModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],
   exports: [CustomerComponent, MerchantComponent]
 })
 

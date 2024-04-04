@@ -1,9 +1,8 @@
-<div id="offcanvasFavorites" class="d-flex h-auto offcanvas-xs offcanvas-sm offcanvas-md offcanvas-lg" fxFill fxLayout="row"
-  [ngStyle.xs]="{'font-size.px': 10}" [ngStyle.sm]="{'font-size.px': 20}" [ngStyle.md]="{'font-size.px': 30}" >
-  <div class="d-flex bg-dark rounded-2 mx-1 mt-1 text-light text-start " fxLayout="column" fxLayoutAlign="start start">
-    <div class="d-flex w-100 p-2 border border-light border-bottom-2  d-xs-block d-sm-block d-md-block d-lg-none d-xl-none">
-      <a class="justify-content-end text-start btn-link text-light w-100 mx-2 p-2" href="\">Lite Streaming</a>
-      <span class="fs-2" ><i type="button" data-bs-target="#offcanvasFavorites" class="bi bi-x" data-bs-dismiss="offcanvas" aria-label="Close"></i></span>
+<div id="offcanvasFavorites" class="d-flex h-auto offcanvas-xs offcanvas-sm offcanvas-md offcanvas-lg" fxFill fxLayout="row" >
+  <div class="d-flex bg-dark rounded-2 mx-1 mt-1 text-light text-start " fxLayout="column" fxLayoutAlign="start start" style="width: max-content;" >
+    <div class="d-flex w-100 justify-content-between align-items-stretch border border-light border-bottom-2 p-2  d-xs-block d-sm-block d-md-block d-lg-none d-xl-none" >
+      <a class="w-75 fs-4 btn-link text-light text-decoration-none m-0 px-2" href="\" fxFill>Lite Streaming</a>
+      <span class="position-relative start-0 fs-1"><i type="button" data-bs-target="#offcanvasFavorites" class="bi bi-x m-0 p-0" data-bs-dismiss="offcanvas" aria-label="Close"></i></span>
     </div>
     <div class="d-flex">
       <button id="btnFavoritos" type="button" class="btn btn-link text-start text-light text-decoration-none"
@@ -19,7 +18,6 @@
           </svg>
         </div>
       </button>
-
     </div>
     <div class="input-group mx-2 w-auto" style="width: max-content;" *ngIf="isCreatingPlaylist">
       <input class="w-100" type="text" class="form-control" placeholder="Nova Playlist" [(ngModel)]="newPlaylistName"

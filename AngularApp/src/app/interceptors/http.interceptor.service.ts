@@ -16,7 +16,7 @@ export class CustomInterceptor implements HttpInterceptor {
     const modifiedRequest = request.clone({
       url: `${request.url}`,
       setHeaders: {
-        Authorization: `Bearer ${sessionStorage.getItem('@token') ?? ''}`
+        Authorization: `Bearer ${sessionStorage.getItem('@token')}`
       }
     });
     return next.handle(modifiedRequest).pipe(

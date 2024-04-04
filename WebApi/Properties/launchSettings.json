@@ -35,8 +35,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Staging",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_ENVIRONMENT": "Staging"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5146;https://localhost:7204;",
