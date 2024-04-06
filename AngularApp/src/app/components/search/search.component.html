@@ -1,6 +1,6 @@
 <ul class="list-unstyled m-2 w-100 h-auto"  fxFill>
-  <li class="input-group-text mx-0 w-100" id="basic-addon1">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2"
+  <li class="input-group-text mx-0 p-0 w-100" id="basic-addon1">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search mx-2 fs-1"
         viewBox="0 0 16 16">
         <path
           d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0">
@@ -8,7 +8,7 @@
       </svg>
     <input id="input-buscar" type="text" class="form-control b-0 mx-0 " placeholder="Qual música deseja pesquisar ?"
       [(ngModel)]="search" (keyup)="searchMusic($event)">
-    <span class="input-group-text btn btn-light bi bi-x fs-4 ms-2 p-0" id="btn-close" disabled aria-label="Close"
+    <span class="input-group-text btn btn-light bi bi-x fs-4 m-0 px-1" id="btn-close" disabled aria-label="Close"
       (click)="clearPesquisar()"></span>
   </li>
   <li class="w-100 position-absolute top-2" >

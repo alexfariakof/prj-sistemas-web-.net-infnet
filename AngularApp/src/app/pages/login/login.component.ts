@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth, Login } from '../../model';
@@ -8,7 +8,8 @@ import { map, catchError } from 'rxjs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 
 export class LoginComponent implements OnInit {
@@ -27,7 +28,6 @@ export class LoginComponent implements OnInit {
       email: ['user@customer.com', [Validators.required, Validators.email]],
       password: ['12345T!', Validators.required]
     }) as (FormGroup & Login) | any;
-    document.body.style.overflowY = 'hidden';
   }
 
   onLoginClick() {

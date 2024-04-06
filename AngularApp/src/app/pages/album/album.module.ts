@@ -1,13 +1,10 @@
 import { NgModule } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
 import { AlbumComponent } from "./album.component";
 import { SharedModule } from "../../components/shared.module";
-import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [AlbumComponent],
-  imports: [MatCardModule, MatButtonModule, FlexLayoutModule, SharedModule],
+  imports: [ SharedModule],
   exports: [AlbumComponent]
 })
 

@@ -1,5 +1,5 @@
 import { PlaylistManagerService } from './../../services/myplaylist/myplaylist.manager.service';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Music, Playlist } from 'src/app/model';
 import { AlbumService, BandService, MusicService } from 'src/app/services';
@@ -7,9 +7,10 @@ import { AlbumService, BandService, MusicService } from 'src/app/services';
 @Component({
   selector: 'app-musics',
   templateUrl: './musics.component.html',
-  styleUrls: ['./musics.component.css']
+  styleUrls: ['./musics.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
-export class MusicComponent {
+export class MusicComponent implements OnInit {
   musicId: string = '';
   music: Music = {};
   hasStyle: string = '';
@@ -25,11 +26,6 @@ export class MusicComponent {
   ) { }
 
   ngOnInit(): void {
-    this.getMusic();
-    document.body.style.overflow = 'hidden';
-  }
-
-  getMusic = (): void => {
     this.activeRoute.params.subscribe(params => {
       this.musicId = params['musicId'];
     });
@@ -48,6 +44,7 @@ export class MusicComponent {
       },
       complete() { }
     });
+
   }
 
   addMusicToPlaylist = (playlistId?: string, music?: Music ) =>{

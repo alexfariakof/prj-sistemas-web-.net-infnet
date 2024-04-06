@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Music, Playlist } from '../../model';
 import { MyPlaylistService, PlaylistManagerService } from '../../services';
 @Component({
   selector: 'app-myplaylist',
   templateUrl: './myplaylist.component.html',
-  styleUrls: ['./myplaylist.component.css']
+  styleUrls: ['./myplaylist.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class MyplaylistComponent implements OnInit {
   playlistId: string = '';
@@ -52,8 +53,7 @@ export class MyplaylistComponent implements OnInit {
     };
     this.playlistManagerService.updatePlaylist(playlist).subscribe(() => {
       alert('Música adicionada ao favoritos!');
-      this.route.navigate([`favorites/${ playlistId }`])
-
+      this.route.navigate([`favorites/${ playlistId }`]);
     });
   }
 
@@ -62,5 +62,9 @@ export class MyplaylistComponent implements OnInit {
       alert('Música removida com sucesso!');
       this.getMyplaylist(this.playlistId);
     });
+  }
+
+  trackMusics(index: number, music: Music): string {
+    return music.id as string;
   }
 }

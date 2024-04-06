@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Album, Music, Playlist} from '../../model';
 import { AlbumService, PlaylistManagerService } from '../../services';
@@ -6,7 +6,8 @@ import { AlbumService, PlaylistManagerService } from '../../services';
 @Component({
   selector: 'app-album',
   templateUrl: './album.component.html',
-  styleUrls: ['./album.component.css']
+  styleUrls: ['./album.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class AlbumComponent implements OnInit {
   albumId: string = '';
@@ -76,7 +77,7 @@ export class AlbumComponent implements OnInit {
     };
     this.playlistManagerService.updatePlaylist(playlist).subscribe(() => {
       alert('Música adicionada ao favoritos!');
-      this.route.navigate([`favorites/${ playlistId }`]);
+      this.route.navigate([`favorites/${ playlistId }`])
     });
   }
 }
