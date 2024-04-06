@@ -10,10 +10,12 @@ import { SearchModule } from "./search/search.module";
 import { SearchComponent } from "./search/search.component";
 import { MasterPageComponent } from './master.page/master.page.component';
 import { MasterPageModule } from "./master.page/master.page.module";
+import { MatCardModule } from "@angular/material/card";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
-  imports: [CommonModule, MasterPageModule,  AddFavoritesModule, FavoritesBarModule, AudioPlayerModule, SearchModule ],
-  exports: [CommonModule, MasterPageComponent, AddFavoritesComponent, FavoritesBarComponent, AudioPlayerComponent, SearchComponent]
+  imports: [FlexLayoutModule, CommonModule, MatCardModule, MasterPageModule,  AddFavoritesModule, FavoritesBarModule, AudioPlayerModule, SearchModule ],
+  exports: [CommonModule, FlexLayoutModule, MatCardModule, MasterPageComponent, AddFavoritesComponent, FavoritesBarComponent, AudioPlayerComponent, SearchComponent]
 })
 
 export class SharedModule { }

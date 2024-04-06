@@ -1,12 +1,13 @@
 import { BandService } from './../../services/band/band.service';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Album, Band, Music, Playlist } from '../../model';
 import { AlbumService, PlaylistManagerService, PlaylistService } from '../../services';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class HomeComponent implements OnInit {
   hasStyle: string = '';

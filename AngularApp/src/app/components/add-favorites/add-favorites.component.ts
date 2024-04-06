@@ -18,7 +18,6 @@ export class AddFavoritesComponent implements OnInit {
         this.playlistManagerService.playlists$.subscribe(playlists => {
             this.myPlaylist = playlists;
     });
-
   }
 
   trackMyPlaylist(index: number, myPlaylist: Playlist): string {
