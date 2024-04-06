@@ -4,7 +4,6 @@ import { AuthService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { of, throwError } from 'rxjs';
 
@@ -15,7 +14,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, BrowserAnimationsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule,  ReactiveFormsModule, MatInputModule],
       providers:[AuthService]
     })
     .compileComponents();

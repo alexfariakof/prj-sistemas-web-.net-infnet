@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Playlist } from '../../model';
 import { PlaylistManagerService } from '../../services';
 
 @Component({
   selector: 'app-favorites-bar',
   templateUrl: './favorites-bar.component.html',
-  styleUrls: ['./favorites-bar.component.css']
+  styleUrls: ['./favorites-bar.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class FavoritesBarComponent implements OnInit {
   myPlaylist: Playlist[] = [];
@@ -20,8 +21,10 @@ export class FavoritesBarComponent implements OnInit {
 
 
   public initializePlaylist = (): void =>{
-    this.playlistManagerService.playlists$.subscribe(playlists => {
-      this.myPlaylist = playlists;
+    this.myPlaylist = this.playlistManagerService.getCachedPlaylist();
+    if (this.myPlaylist.length === 0)
+        this.playlistManagerService.playlists$.subscribe(playlists => {
+            this.myPlaylist = playlists;
     });
   }
 

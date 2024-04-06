@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Music, Playlist } from '../../model';
 import { PlaylistManagerService, PlaylistService } from '../../services';
 @Component({
   selector: 'app-playlist',
   templateUrl: './playlist.component.html',
-  styleUrls: ['./playlist.component.css']
+  styleUrls: ['./playlist.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class PlaylistComponent implements OnInit {
   hasStyle: string = '';
@@ -13,12 +14,13 @@ export class PlaylistComponent implements OnInit {
   musics: Music[] = [];
 
   constructor(
-    private route: ActivatedRoute,
+    private route: Router,
+    private activeRoute: ActivatedRoute,
     public playlistService: PlaylistService,
     public playlistManagerService: PlaylistManagerService) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.activeRoute.params.subscribe(params => {
       const playlistId = params['playlistId'];
         this.getplaylist(playlistId);
     });
@@ -49,6 +51,7 @@ export class PlaylistComponent implements OnInit {
     };
     this.playlistManagerService.updatePlaylist(playlist).subscribe(() => {
       alert('Música adicionada ao favoritos!');
+      this.route.navigate([`favorites/${ playlistId }`]);
     });
   }
 }

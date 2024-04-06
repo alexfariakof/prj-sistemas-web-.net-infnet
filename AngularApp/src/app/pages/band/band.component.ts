@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Album, Band, Music, Playlist } from '../../model';
 import { BandService, PlaylistManagerService } from '../../services';
 @Component({
   selector: 'app-band',
   templateUrl: './band.component.html',
-  styleUrls: ['./band.component.css']
+  styleUrls: ['./band.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class BandComponent implements OnInit {
   band: Band | any = {};
