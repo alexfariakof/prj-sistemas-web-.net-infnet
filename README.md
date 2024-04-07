@@ -1,4 +1,3 @@
 # Sistemas Web com ASP .NET 
 
-![Class_Diagram_Streaming_Context](https://github.com/alexfariakof/Infnet_Tecnologia_.NET_23E4_2/assets/42475620/3903a8f1-d3f7-4db7-ad58-27397e0f32ff)
-![Class_Diagram_Account_Context](https://github.com/alexfariakof/Infnet_Tecnologia_.NET_23E4_2/assets/42475620/2c13ba19-292c-4f55-8eba-b1a223f5f371)
+![Class_Diagram_Account](https://github.com/alexfariakof/Infnet_Sistemas-Web-com-ASP.NET_24E1_3/assets/42475620/ec078c31-5e97-4719-8f5d-1488a1d982c4)
