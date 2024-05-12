@@ -7,7 +7,7 @@ public class AddressMap : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> builder)
     {
-        builder.ToTable("Address"); 
+        builder.ToTable("Address");
 
         builder.HasKey(a => a.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();

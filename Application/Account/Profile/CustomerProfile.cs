@@ -2,6 +2,7 @@
 using Application.Transactions.Dto;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
+using Domain.Core.ValueObject;
 using Domain.Transactions.Agreggates;
 
 namespace Application.Account.Profile;
@@ -12,7 +13,7 @@ public class CustomerProfile : AutoMapper.Profile
         CreateMap<CustomerDto, Customer>()
             .ForMember(dest => dest.User, opt => opt.MapFrom(src 
             =>  new User() {  
-                UserType = new UserType(UserTypeEnum.Customer),
+                PerfilType = Perfil.PerfilType.Customer,
                 Login = new Login() { Email = src.Email, Password = src.Password }}  ))
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => new Phone(src.Phone)))
             .ReverseMap();

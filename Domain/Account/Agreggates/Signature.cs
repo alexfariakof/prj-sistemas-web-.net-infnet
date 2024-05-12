@@ -2,7 +2,7 @@
 using Domain.Streaming.Agreggates;
 
 namespace Domain.Account.Agreggates;
-public class Signature : BaseModel
+public class Signature : Base
 {
     public virtual Flat? Flat { get; set; }
     public Boolean Active { get; set; }

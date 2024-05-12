@@ -1,4 +1,4 @@
-﻿using Domain.Account.ValueObject;
+﻿using Domain.Core.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -24,7 +24,7 @@ public abstract class ControllerBase : Controller
             }
         }
     }
-    protected UserTypeEnum UserType
+    protected Perfil UserType
     {
         get
         {
@@ -35,16 +35,16 @@ public abstract class ControllerBase : Controller
                 var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
                 var userTypeClaim = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserType")?.Value;
 
-                if (Enum.TryParse<UserTypeEnum>(userTypeClaim, out var userType))
+                if (Enum.TryParse<Perfil.PerfilType>(userTypeClaim, out var userType))
                 {
                     return userType;
                 }
 
-                return UserTypeEnum.Customer;                
+                return Perfil.PerfilType.Customer;                
             }
             catch
             {
-                return UserTypeEnum.Customer;
+                return Perfil.PerfilType.Customer;
             }
         }
     }

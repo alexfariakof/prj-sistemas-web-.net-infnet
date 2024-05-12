@@ -13,7 +13,7 @@ public class MonetaryTest
         var monetary = new Monetary(value);
 
         // Act
-        var formattedValue = monetary.Formatted_ptBr();
+        var formattedValue = monetary.FormattedPtBr();
 
         // Assert
         Assert.Equal(expectedFormattedValue, formattedValue);

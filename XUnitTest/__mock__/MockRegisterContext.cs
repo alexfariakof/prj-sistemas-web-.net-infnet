@@ -24,7 +24,7 @@ public class MockRegisterContext : DbContext
         modelBuilder.ApplyConfiguration(new FlatMap());
         modelBuilder.ApplyConfiguration(new MusicMap());
         modelBuilder.ApplyConfiguration(new PlaylistMap());
-        modelBuilder.ApplyConfiguration(new CardMap());
+        modelBuilder.ApplyConfiguration(new CreditCardMap());
         modelBuilder.ApplyConfiguration(new CreditCardBrandMap());
         modelBuilder.ApplyConfiguration(new TransactionMap());
         modelBuilder.ApplyConfiguration(new NotificationMap());

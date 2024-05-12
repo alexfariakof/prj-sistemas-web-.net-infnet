@@ -1,7 +1,7 @@
 ﻿using Domain.Core.Aggreggates;
 
 namespace Domain.Streaming.Agreggates;
-public class Playlist : BaseModel
+public class Playlist : Base
 {
     public string? Name { get; set; }
     public string? Backdrop { get; set; }

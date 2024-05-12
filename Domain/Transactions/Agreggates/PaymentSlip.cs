@@ -3,7 +3,7 @@ using Domain.Core.ValueObject;
 using Domain.Transactions.ValuesObject;
 
 namespace Domain.Payments.Agreggates;
-public class PaymentSlip : BaseModel
+public class PaymentSlip : Base
 {
     public DateTime Date { get; set; }
     public Status Status { get; set; }

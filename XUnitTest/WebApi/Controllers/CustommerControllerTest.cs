@@ -1,6 +1,6 @@
 ﻿using Application;
 using Application.Account.Dto;
-using Domain.Account.ValueObject;
+using Domain.Core.ValueObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -13,7 +13,7 @@ public class CustomerControllerTest
     private Mock<IService<PlaylistPersonalDto>> mockPlaylistPersonalService;
 
     private CustomerController controller;
-    private void SetupBearerToken(Guid userId, UserTypeEnum userType = UserTypeEnum.Customer)
+    private void SetupBearerToken(Guid userId, Perfil.PerfilType userType = Perfil.PerfilType.Customer)
     {
         var claims = new List<Claim>
             {
@@ -44,7 +44,7 @@ public class CustomerControllerTest
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity, UserTypeEnum.Merchant);
+        SetupBearerToken(userIdentity, Perfil.PerfilType.Merchant);
 
         // Act
         var result = controller.FindById() as UnauthorizedResult;
@@ -125,7 +125,7 @@ public class CustomerControllerTest
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity, UserTypeEnum.Merchant);
+        SetupBearerToken(userIdentity, Perfil.PerfilType.Merchant);
 
         // Act
         var result = controller.Update((CustomerDto)null) as UnauthorizedResult;

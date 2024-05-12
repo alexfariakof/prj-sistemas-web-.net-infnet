@@ -1,6 +1,6 @@
 using Application;
 using Application.Account.Dto;
-using Domain.Account.ValueObject;
+using Domain.Core.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +23,7 @@ public class MerchantController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindById()
     {
-        if (UserType != UserTypeEnum.Merchant) return Unauthorized();
+        if (UserType != Perfil.PerfilType.Merchant) return Unauthorized();
 
         try
         {
@@ -65,7 +65,7 @@ public class MerchantController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(MerchantDto dto)
     {
-        if (UserType != UserTypeEnum.Merchant) return Unauthorized();
+        if (UserType != Perfil.PerfilType.Merchant) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -89,7 +89,7 @@ public class MerchantController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(MerchantDto dto)
     {
-        if (UserType != UserTypeEnum.Merchant) return Unauthorized();
+        if (UserType != Perfil.PerfilType.Merchant) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();

@@ -7,7 +7,7 @@ using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
 
 namespace Domain.Account.Agreggates;
-public abstract class AbstractAccount<T> : BaseModel
+public abstract class AbstractAccount<T> : Base
 {
     public string? Name { get; set; }
     public virtual User User { get; set; } = new User();

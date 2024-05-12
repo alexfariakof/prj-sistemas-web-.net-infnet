@@ -2,7 +2,7 @@
 using Domain.Core.Aggreggates;
 
 namespace Domain.Streaming.Agreggates;
-public class Album : BaseModel
+public class Album : Base
 {
     public string? Name { get; set; }
     public string? Backdrop { get; set; }     

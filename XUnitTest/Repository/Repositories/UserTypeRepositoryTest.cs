@@ -1,4 +1,4 @@
-﻿using Domain.Account.ValueObject;
+﻿using Domain.Core.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -23,8 +23,8 @@ public class UserTypeRepositoryTest
         // Arrange
         contextMock.Object.Add(Usings.MockDataSetUserType().Object);
         var repository = new UserTypeRepository(contextMock.Object);
-        var mockUserType = new UserType(UserTypeEnum.Customer);
-        contextMock.Setup(c => c.Set<UserType>().Find(It.IsAny<int>())).Returns(mockUserType);        
+        var mockUserType = new Perfil(Perfil.PerfilType.Customer);
+        contextMock.Setup<Perfil>(c => c.Set<Perfil>().Find(It.IsAny<int>())).Returns((Perfil)mockUserType);        
 
         // Act
         var result = repository.GetById(mockUserType.Id);

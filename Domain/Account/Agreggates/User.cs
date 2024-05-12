@@ -1,10 +1,10 @@
-﻿using Domain.Account.ValueObject;
-using Domain.Core.Aggreggates;
+﻿using Domain.Core.Aggreggates;
+using Domain.Core.ValueObject;
 
 namespace Domain.Account.Agreggates;
-public class User : BaseModel
+public class User : BaseAccount
 {
-    public Login Login { get; set; }
-    public DateTime? DtCreated { get; set; }
-    public virtual UserType UserType { get; set; }    
+    public override Login Login { get; set; }
+    public override DateTime DtCreated { get; set; } = DateTime.Now;
+    public override Perfil PerfilType{ get; set; }    
 }

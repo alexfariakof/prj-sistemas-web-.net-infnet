@@ -1,7 +1,7 @@
-﻿using Domain.Account.ValueObject;
+﻿using Domain.Core.ValueObject;
 
 namespace Repository.Interfaces;
 public interface IUserTypeRepository
 {
-     public UserType GetById(int id);
+     public Perfil GetById(int id);
 }

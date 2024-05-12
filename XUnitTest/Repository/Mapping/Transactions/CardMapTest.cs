@@ -20,7 +20,7 @@ public class CardMapTest
         using (var context = new MockRegisterContext(options))
         {
             var builder = new ModelBuilder(new ConventionSet());
-            var configuration = new CardMap();
+            var configuration = new CreditCardMap();
 
             configuration.Configure(builder.Entity<Card>());
 

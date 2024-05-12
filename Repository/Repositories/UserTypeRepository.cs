@@ -1,4 +1,4 @@
-﻿using Domain.Account.ValueObject;
+﻿using Domain.Core.ValueObject;
 using Repository.Interfaces;
 
 namespace Repository.Repositories;
@@ -9,8 +9,8 @@ public class UserTypeRepository : IUserTypeRepository
     {
         Context = context;
     }
-    public UserType GetById(int id)
+    public Perfil GetById(int id)
     {
-        return this.Context.Set<UserType>().Find(id) ?? new();
+        return this.Context.Set<Perfil>().Find(id) ?? new();
     }
 }

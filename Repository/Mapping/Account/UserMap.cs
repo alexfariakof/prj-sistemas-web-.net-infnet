@@ -1,5 +1,6 @@
 ﻿using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
+using Domain.Core.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,7 +14,7 @@ public class UserMap : IEntityTypeConfiguration<User>
         builder.Property(u => u.Id).ValueGeneratedOnAdd();
         builder.Property(u => u.DtCreated).ValueGeneratedOnAdd();
                 
-        builder.HasOne(x => x.UserType)
+        builder.HasOne(x => x.PerfilType)
                   .WithMany(cb => cb.Users)
                   .IsRequired();
 

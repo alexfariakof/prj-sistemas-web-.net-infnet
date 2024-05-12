@@ -37,18 +37,20 @@ builder.Services.AddSwaggerGen(c => {
 
 if (builder.Environment.IsStaging())
 {
-    builder.Services.AddDbContext<RegisterContext>(c => c.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
+    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
     builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 }
-else
+else if (builder.Environment.IsDevelopment())
 {
-
-    builder.Services.AddDbContext<RegisterContext>(c =>
-    {
-        c.UseLazyLoadingProxies()
-        .UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString"));
-    });
+    builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
+    builder.Services.AddDbContext<RegisterContextMySqlServer>(options => options.UseLazyLoadingProxies().UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 }
+else if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
+}
+
 
 // Autorization Configuratons
 builder.Services.AddAuthConfigurations(builder.Configuration);

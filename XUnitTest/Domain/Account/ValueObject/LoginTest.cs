@@ -1,4 +1,5 @@
 ﻿using Domain.Account.ValueObject;
+using Domain.Core.ValueObject;
 
 namespace Domain.Account;
 public class LoginTest

@@ -11,8 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Domain.Account.ValueObject;
 using Repository.Interfaces;
+using Domain.Core.ValueObject;
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -45,7 +45,7 @@ public static class Usings
         return dbSetMock;
     }
 
-    public static Mock<IRepository<T>> MockRepositorio<T>(List<T> _dataSet) where T : BaseModel, new()
+    public static Mock<IRepository<T>> MockRepositorio<T>(List<T> _dataSet) where T : Base, new()
     {
         var _mock = new Mock<IRepository<T>>();
 
@@ -107,11 +107,11 @@ public static class Usings
             .Returns(
             (int id) =>
             {
-                var userTypeData = new List<UserType>
+                var userTypeData = new List<Perfil>
                 {
-                    new UserType(UserTypeEnum.Admin),
-                    new UserType(UserTypeEnum.Customer),
-                    new UserType(UserTypeEnum.Merchant)
+                    new Perfil(Perfil.PerfilType.Admin),
+                    new Perfil(Perfil.PerfilType.Customer),
+                    new Perfil(Perfil.PerfilType.Merchant)
                 };
 
                 return userTypeData.SingleOrDefault(item => item.Id == id);

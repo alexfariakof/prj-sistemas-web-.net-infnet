@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
-using Domain.Account.ValueObject;
 using Repository.Mapping.Account;
+using Domain.Core.ValueObject;
 
 namespace Repository.Mapping;
 public class UserMapTest

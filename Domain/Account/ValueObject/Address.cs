@@ -1,7 +1,7 @@
 ﻿using Domain.Core.Aggreggates;
 
 namespace Domain.Account.ValueObject;
-public class Address : BaseModel
+public class Address : Base
 {
     public Address() { }
     public string? Zipcode { get; set; }
