@@ -3,12 +3,14 @@ using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
 using Repository.Repositories;
 using Repository.Interfaces;
+using Domain.Admin.Agreggates;
 
 namespace Repository.CommonInjectDependence;
 public static class RepositoryInjectDependence
 {
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
+        services.AddScoped(typeof(IRepository<AdministrativeAccount>), typeof(AdminAccountRepository));
         services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));
         services.AddScoped(typeof(IRepository<Customer>), typeof(CustomerRepository));
         services.AddScoped(typeof(IRepository<Merchant>), typeof(MerchantRepository));

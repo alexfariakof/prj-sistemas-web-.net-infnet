@@ -48,6 +48,8 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\DataSeeders\DataSeeders.csproj" />
+    <ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
+    <ProjectReference Include="..\Migrations.MySqlServer\Migrations.MySqlServer.csproj" />
   </ItemGroup>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">

@@ -4,7 +4,6 @@ using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Core;
-using Domain.Core.ValueObject;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
@@ -54,7 +53,7 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
                     Email = dto.Email ?? "",
                     Password = dto.Password ?? ""
                 },
-                PerfilType = this._userTypeRepository.GetById(Perfil.PerfilType.Customer.ToInteger())
+                PerfilType = this._userTypeRepository.GetById(PerfilUser.UserlType.Customer.ToInteger())
             }
         };
         

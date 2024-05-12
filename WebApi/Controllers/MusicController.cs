@@ -1,6 +1,6 @@
 using Application;
 using Application.Account.Dto;
-using Domain.Core.ValueObject;
+using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +30,7 @@ public class MusicController : ControllerBase
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindAll()
     {
-        if (UserType != Perfil.PerfilType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
 
         try
         {
@@ -53,7 +53,7 @@ public class MusicController : ControllerBase
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindById([FromRoute] Guid musicId)
     {
-        if (UserType != Perfil.PerfilType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
 
         try
         {
@@ -96,7 +96,7 @@ public class MusicController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(MusicDto dto)
     {
-        if (UserType != Perfil.PerfilType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -119,7 +119,7 @@ public class MusicController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(MusicDto dto)
     {
-        if (UserType != Perfil.PerfilType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();

@@ -21,7 +21,7 @@ public class DataSeederMerchant : IDataSeeder
                 Email = "user@merchant.com",
                 Password = "12345T!"
             },
-            PerfilType = _context.Perfil.Where(u => u.Id.Equals(3)).First()
+            PerfilType = _context.PerfilUser.Where(u => u.Id.Equals(3)).First()
         };
 
         var merchant = new Merchant()

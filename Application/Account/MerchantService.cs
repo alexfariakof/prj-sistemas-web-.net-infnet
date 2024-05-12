@@ -4,7 +4,6 @@ using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Core;
-using Domain.Core.ValueObject;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
@@ -48,7 +47,7 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
                 Email = dto.Email ?? "",
                 Password = dto.Password ?? ""
             },
-            PerfilType = this._userTypeRepository.GetById(Perfil.PerfilType.Merchant.ToInteger())
+            PerfilType = this._userTypeRepository.GetById(PerfilUser.UserlType.Merchant.ToInteger())
         };
 
         Merchant merchant = new()

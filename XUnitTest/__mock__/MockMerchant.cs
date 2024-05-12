@@ -4,7 +4,7 @@ using Bogus.Extensions.Brazil;
 using Domain.Notifications;
 using Application.Account.Dto;
 using Domain.Transactions.Agreggates;
-using Domain.Core.ValueObject;
+using Domain.Account.ValueObject;
 
 namespace __mock__;
 public class MockMerchant
@@ -50,7 +50,7 @@ public class MockMerchant
                 .RuleFor(m => m.Signatures, f => new List<Signature>())
                 .RuleFor(m => m.Notifications, f => new List<Notification>())
                 .Generate();
-            fakeMerchant.User.PerfilType = new Perfil(Perfil.PerfilType.Merchant);
+            fakeMerchant.User.PerfilType = new PerfilUser(PerfilUser.UserlType.Merchant);
             return fakeMerchant;
 
         }

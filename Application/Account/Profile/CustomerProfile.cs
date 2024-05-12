@@ -13,7 +13,7 @@ public class CustomerProfile : AutoMapper.Profile
         CreateMap<CustomerDto, Customer>()
             .ForMember(dest => dest.User, opt => opt.MapFrom(src 
             =>  new User() {  
-                PerfilType = Perfil.PerfilType.Customer,
+                PerfilType = PerfilUser.UserlType.Customer,
                 Login = new Login() { Email = src.Email, Password = src.Password }}  ))
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => new Phone(src.Phone)))
             .ReverseMap();

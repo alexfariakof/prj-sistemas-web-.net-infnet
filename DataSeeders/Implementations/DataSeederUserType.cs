@@ -1,4 +1,4 @@
-﻿using Domain.Core.ValueObject;
+﻿using Domain.Account.ValueObject;
 using Repository;
 
 namespace DataSeeders.Implementations;
@@ -13,12 +13,12 @@ public class DataSeederUserType : IDataSeeder
     {
         try
         {
-            if (_context.Perfil.Count().Equals(0))
+            if (_context.PerfilUser.Count().Equals(0))
             {
-                _context.Perfil.AddRange(
-                    new Perfil(Perfil.PerfilType.Admin),
-                    new Perfil(Perfil.PerfilType.Customer),
-                    new Perfil(Perfil.PerfilType.Merchant)
+                _context.PerfilUser.AddRange(
+                    new PerfilUser(PerfilUser.UserlType.Admin),
+                    new PerfilUser(PerfilUser.UserlType.Customer),
+                    new PerfilUser(PerfilUser.UserlType.Merchant)
                     );
             }
             _context.SaveChanges();

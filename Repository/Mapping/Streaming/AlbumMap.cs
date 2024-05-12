@@ -10,15 +10,15 @@ namespace Repository.Mapping.Streaming
         {
             builder.ToTable(nameof(Album));
 
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-            builder.Property(x => x.Backdrop).IsRequired();
-            builder.HasMany(x => x.Musics).WithOne().OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(x => x.Genres).WithMany(m => m.Albums);
+            builder.HasKey(album => album.Id);
+            builder.Property(album => album.Id).ValueGeneratedOnAdd();
+            builder.Property(album => album.Name).IsRequired().HasMaxLength(50);
+            builder.Property(album => album.Backdrop).IsRequired();
+            builder.HasMany(album => album.Musics).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(album => album.Genres).WithMany(m => m.Albums);
 
-            builder.HasMany(x => x.Flats)
-                .WithMany(x => x.Albums)
+            builder.HasMany(album => album.Flats)
+                .WithMany(album => album.Albums)
                 .UsingEntity<Dictionary<string, object>>(
                 "FlatAlbum",
                 j => j

@@ -6,6 +6,8 @@ using Application.CommonInjectDependence;
 using WebApi.CommonInjectDependence;
 using DataSeeders;
 using DataSeeders.Implementations;
+using Migrations.MySqlServer.CommonInjectDependence;
+using Migrations.MsSqlServer.CommonInjectDependence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,15 +44,15 @@ if (builder.Environment.IsStaging())
 }
 else if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
-    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
-    builder.Services.AddDbContext<RegisterContextMySqlServer>(options => options.UseLazyLoadingProxies().UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+    builder.Services.AddDbContext<RegisterContext>();
+    builder.Services.AddDbContext<RegisterContextAdministravtive>();
+    builder.Services.AddMsSqlServerRegisterContext(builder.Configuration);
+    builder.Services.AddMySqlServerRegisterContext(builder.Configuration);
 }
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
-
 
 // Autorization Configuratons
 builder.Services.AddAuthConfigurations(builder.Configuration);

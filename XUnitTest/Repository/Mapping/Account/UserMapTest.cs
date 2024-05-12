@@ -48,7 +48,7 @@ public class UserMapTest
             Assert.Equal(150, emailProperty.GetMaxLength());
             Assert.False(passwordProperty.IsNullable);
             Assert.Equal(255, passwordProperty.GetMaxLength());
-            Assert.True(dtCreatedProperty.IsNullable);
+            Assert.False(dtCreatedProperty.IsNullable);
             Assert.Equal(PROPERTY_COUNT, propsCount);
         }
     }

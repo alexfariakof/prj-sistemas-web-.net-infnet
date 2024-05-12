@@ -10,15 +10,15 @@ public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
     {
         builder.ToTable(nameof(PlaylistPersonal));
 
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-        builder.Property(x => x.CustomerId).IsRequired();
-        builder.Property(x => x.IsPublic).IsRequired();
-        builder.Property(x => x.DtCreated).ValueGeneratedOnAdd();
+        builder.HasKey(playlist => playlist.Id);
+        builder.Property(playlist => playlist.Id).ValueGeneratedOnAdd();
+        builder.Property(playlist => playlist.Name).IsRequired().HasMaxLength(50);
+        builder.Property(playlist => playlist.CustomerId).IsRequired();
+        builder.Property(playlist => playlist.IsPublic).IsRequired();
+        builder.Property(playlist => playlist.DtCreated).ValueGeneratedOnAdd();
 
-        builder.HasMany(x => x.Musics)
-        .WithMany(x => x.PersonalPlaylists)
+        builder.HasMany(playlist => playlist.Musics)
+        .WithMany(music => music.PersonalPlaylists)
         .UsingEntity<Dictionary<string, object>>(
             "MusicPlayListPersonal",
             j => j

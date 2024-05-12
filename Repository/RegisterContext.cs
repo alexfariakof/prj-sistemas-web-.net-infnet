@@ -6,18 +6,13 @@ using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
 using Domain.Account.ValueObject;
-using Domain.Core.ValueObject;
-using Repository.Mapping.Account;
-using Repository.Mapping.Notifications;
-using Repository.Mapping.Streaming;
-using Repository.Mapping.Transactions;
 
 namespace Repository;
 public class RegisterContext: DbContext
 {
     public RegisterContext(DbContextOptions<RegisterContext> options) : base(options) { }
     public DbSet<User> User { get; set; }    
-    public DbSet<Perfil> Perfil { get; set; }
+    public DbSet<PerfilUser> PerfilUser { get; set; }
     public DbSet<Customer> Customer { get; set; }        
     public DbSet<Merchant> Merchant { get; set; }
     public DbSet<Address> Address { get; set; }
@@ -35,34 +30,7 @@ public class RegisterContext: DbContext
     public DbSet<Notification> Notification { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.ApplyConfigurationsFromAssembly(typeof(RegisterContext).Assembly);
-
-        // Account
-        modelBuilder.ApplyConfiguration( new AddressMap());
-        modelBuilder.ApplyConfiguration(new CustomerMap());
-        modelBuilder.ApplyConfiguration(new MerchantMap());
-        modelBuilder.ApplyConfiguration(new PerfilMap());
-        modelBuilder.ApplyConfiguration(new PlaylistPersonalMap());
-        modelBuilder.ApplyConfiguration(new SignitureMap());
-        modelBuilder.ApplyConfiguration(new UserMap());
-
-        // Notifications
-        modelBuilder.ApplyConfiguration(new NotificationMap());
-
-        // Streaming
-        modelBuilder.ApplyConfiguration(new AlbumMap());
-        modelBuilder.ApplyConfiguration(new BandMap());
-        modelBuilder.ApplyConfiguration(new FlatMap());
-        modelBuilder.ApplyConfiguration(new GenreMap());
-        modelBuilder.ApplyConfiguration(new MusicMap());
-        modelBuilder.ApplyConfiguration(new PlaylistMap());
-
-        // Transactions        
-        modelBuilder.ApplyConfiguration(new CreditCardBrandMap());
-        modelBuilder.ApplyConfiguration(new CreditCardMap());
-        modelBuilder.ApplyConfiguration(new TransactionMap());
-        
-
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RegisterContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

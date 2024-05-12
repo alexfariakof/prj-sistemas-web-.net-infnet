@@ -35,7 +35,7 @@ dotnet ef migrations add Initial -c RegisterContext -p ./Repository/Repository.c
 
 
 // MySqlSever Add Migrations 
-dotnet ef migrations add Initial -c RegisterContextMySqlServer -p ./Repository/Repository.csproj -s ./WebApi -o Migrations.MySqlServer
+dotnet ef migrations add Initial -c MySqlServerContext -p ./Repository -s ./WebApi -o ../Migrations.MySqlServer
 
 
 // Administrative Migrations 

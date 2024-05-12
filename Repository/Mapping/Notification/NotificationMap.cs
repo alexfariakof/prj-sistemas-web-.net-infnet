@@ -10,15 +10,15 @@ namespace Repository.Mapping.Notifications
         {
             builder.ToTable(nameof(Notification));
 
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Title).IsRequired().HasMaxLength(150);
-            builder.Property(x => x.Message).IsRequired().HasMaxLength(250);
-            builder.Property(x => x.DtNotification).IsRequired();
-            builder.Property(x => x.NotificationType).IsRequired();
+            builder.HasKey(notification => notification.Id);
+            builder.Property(notification => notification.Id).ValueGeneratedOnAdd();
+            builder.Property(notification => notification.Title).IsRequired().HasMaxLength(150);
+            builder.Property(notification => notification.Message).IsRequired().HasMaxLength(250);
+            builder.Property(notification => notification.DtNotification).IsRequired();
+            builder.Property(notification => notification.NotificationType).IsRequired();
 
-            builder.HasOne(x => x.Destination).WithMany(x => x.Notifications).IsRequired().OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(x => x.Sender).WithMany().IsRequired(false);
+            builder.HasOne(notification => notification.Destination).WithMany(notification => notification.Notifications).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(notification => notification.Sender).WithMany().IsRequired(false);
         }
     }
 }

@@ -10,13 +10,13 @@ namespace Repository.Mapping.Streaming
         {
             builder.ToTable(nameof(Band));
 
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-            builder.Property(x => x.Description).IsRequired();
-            builder.Property(x => x.Backdrop).IsRequired();
-            builder.HasMany<Album>(x => x.Albums).WithOne().OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(x => x.Genres).WithMany(m => m.Bands);
+            builder.HasKey(band => band.Id);
+            builder.Property(band => band.Id).ValueGeneratedOnAdd();
+            builder.Property(band => band.Name).IsRequired().HasMaxLength(50);
+            builder.Property(band => band.Description).IsRequired();
+            builder.Property(band => band.Backdrop).IsRequired();
+            builder.HasMany<Album>(band => band.Albums).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(band => band.Genres).WithMany(m => m.Bands);
         }
     }
 }

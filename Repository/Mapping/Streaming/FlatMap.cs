@@ -11,14 +11,14 @@ namespace Repository.Mapping.Streaming
         {
             builder.ToTable(nameof(Flat));
 
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(1024);
+            builder.HasKey(flat => flat.Id);
+            builder.Property(flat => flat.Id).ValueGeneratedOnAdd();
+            builder.Property(flat => flat.Name).IsRequired().HasMaxLength(50);
+            builder.Property(flat => flat.Description).IsRequired().HasMaxLength(1024);
 
             builder.OwnsOne<Monetary>(d => d.Value, c =>
             {
-                c.Property(x => x.Value)
+                c.Property(flat => flat.Value)
                 .HasColumnName("Monetary")
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");

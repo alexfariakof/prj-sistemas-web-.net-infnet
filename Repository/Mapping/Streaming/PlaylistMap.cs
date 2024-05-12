@@ -10,15 +10,15 @@ namespace Repository.Mapping.Streaming
         {
             builder.ToTable(nameof(Playlist));
 
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-            builder.Property(x => x.Backdrop).IsRequired();
+            builder.HasKey(playlist => playlist.Id);
+            builder.Property(playlist => playlist.Id).ValueGeneratedOnAdd();
+            builder.Property(playlist => playlist.Name).IsRequired().HasMaxLength(50);
+            builder.Property(playlist => playlist.Backdrop).IsRequired();
             
-            builder.HasMany(x => x.Genres).WithMany(x => x.Playlists);
+            builder.HasMany(playlist => playlist.Genres).WithMany(playlist => playlist.Playlists);
 
-            builder.HasMany(x => x.Musics)
-                    .WithMany(x => x.Playlists)
+            builder.HasMany(playlist => playlist.Musics)
+                    .WithMany(playlist => playlist.Playlists)
                     .UsingEntity<Dictionary<string, object>>(
                     "MusicPlayList",
                     j => j
@@ -32,8 +32,8 @@ namespace Repository.Mapping.Streaming
                         j.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd();
                     });
 
-            builder.HasMany(x => x.Flats)
-                .WithMany(x => x.Playlists)
+            builder.HasMany(playlist => playlist.Flats)
+                .WithMany(playlist => playlist.Playlists)
                 .UsingEntity<Dictionary<string, object>>(
                 "FlatPlayList",
                 j => j

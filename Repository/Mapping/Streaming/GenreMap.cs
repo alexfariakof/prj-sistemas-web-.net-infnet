@@ -9,8 +9,8 @@ public class GenreMap : IEntityTypeConfiguration<Genre>
     {
         builder.ToTable("Genre");
 
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
+        builder.HasKey(genre => genre.Id);
+        builder.Property(genre => genre.Id).ValueGeneratedOnAdd();
+        builder.Property(genre => genre.Name).IsRequired().HasMaxLength(50);
     }
 }

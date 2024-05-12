@@ -11,19 +11,19 @@ namespace Repository.Mapping.Transactions
         {
             builder.ToTable(nameof(Transaction));
 
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.DtTransaction).IsRequired();
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(50);
+            builder.HasKey(transaction => transaction.Id);
+            builder.Property(transaction => transaction.Id).ValueGeneratedOnAdd();
+            builder.Property(transaction => transaction.DtTransaction).IsRequired();
+            builder.Property(transaction => transaction.Description).IsRequired().HasMaxLength(50);
 
-            builder.HasOne(x => x.Customer)
+            builder.HasOne(transaction => transaction.Customer)
                    .WithMany(cb => cb.Transactions)
-                   .HasForeignKey(x => x.Id)
+                   .HasForeignKey(transaction => transaction.Id)
                    .IsRequired();
 
-            builder.OwnsOne<Monetary>(d => d.Value, c =>
+            builder.OwnsOne<Monetary>(transaction => transaction.Value, prop =>
             {
-                c.Property(x => x.Value)
+                prop.Property(transaction => transaction.Value)
                 .HasColumnName("Monetary")
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");

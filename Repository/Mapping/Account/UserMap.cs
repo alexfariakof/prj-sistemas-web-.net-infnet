@@ -1,5 +1,4 @@
 ﻿using Domain.Account.Agreggates;
-using Domain.Account.ValueObject;
 using Domain.Core.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,19 +9,15 @@ public class UserMap : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("User"); 
-        builder.HasKey(u => u.Id);
-        builder.Property(u => u.Id).ValueGeneratedOnAdd();
-        builder.Property(u => u.DtCreated).ValueGeneratedOnAdd();
-                
-        builder.HasOne(x => x.PerfilType)
-                  .WithMany(cb => cb.Users)
-                  .IsRequired();
-
-        builder.OwnsOne<Login>(u => u.Login, l =>
+        builder.HasKey(user => user.Id);
+        builder.Property(user => user.Id).ValueGeneratedOnAdd();
+        builder.Property(user => user.DtCreated).ValueGeneratedOnAdd();                
+        builder.HasOne(user => user.PerfilType).WithMany(perfilType => perfilType.Users).IsRequired();
+        builder.OwnsOne<Login>(user => user.Login, login =>
         {
-            l.Property(p => p.Email).HasColumnName("Email").HasMaxLength(150).IsRequired();
-            l.Property(p => p.Password).HasColumnName("Password").HasMaxLength(255).IsRequired();
-            l.WithOwner();
+            login.Property(prop => prop.Email).HasColumnName("Email").HasMaxLength(150).IsRequired();
+            login.Property(prop => prop.Password).HasColumnName("Password").HasMaxLength(255).IsRequired();
+            login.WithOwner();
         });
     }
 }

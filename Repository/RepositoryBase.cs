@@ -1,11 +1,12 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Repository;
 public abstract class RepositoryBase<T> where T : class, new()
 {
-    protected RegisterContext Context { get; set; }
+    protected DbContext Context { get; set; }
 
-    public RepositoryBase(RegisterContext context)
+    public RepositoryBase(DbContext context)
     {
         Context = context;
     }

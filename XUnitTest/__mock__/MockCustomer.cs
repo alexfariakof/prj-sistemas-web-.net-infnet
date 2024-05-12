@@ -4,7 +4,6 @@ using Bogus.Extensions.Brazil;
 using Domain.Account.ValueObject;
 using Domain.Transactions.Agreggates;
 using Application.Account.Dto;
-using Domain.Core.ValueObject;
 
 namespace __mock__;
 public class MockCustomer
@@ -40,7 +39,7 @@ public class MockCustomer
                 .RuleFor(m => m.Signatures, f => new List<Signature>())
                 .Generate();
 
-            fakeCustomer.User.PerfilType = new Perfil(Perfil.PerfilType.Customer);
+            fakeCustomer.User.PerfilType = new PerfilUser(PerfilUser.UserlType.Customer);
             return fakeCustomer;
         }
     }

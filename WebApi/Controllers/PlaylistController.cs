@@ -1,6 +1,6 @@
 using Application;
 using Application.Account.Dto;
-using Domain.Core.ValueObject;
+using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,7 +62,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Create([FromBody] PlaylistDto dto)
     {
-        if (UserType != Perfil.PerfilType.Admin) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -84,7 +84,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(PlaylistDto dto)
     {
-        if (UserType != Perfil.PerfilType.Admin) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -107,7 +107,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(PlaylistDto dto)
     {
-        if (UserType != Perfil.PerfilType.Admin) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();

@@ -12,7 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Repository.Interfaces;
-using Domain.Core.ValueObject;
+using Domain.Account.ValueObject;
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -107,11 +107,11 @@ public static class Usings
             .Returns(
             (int id) =>
             {
-                var userTypeData = new List<Perfil>
+                var userTypeData = new List<PerfilUser>
                 {
-                    new Perfil(Perfil.PerfilType.Admin),
-                    new Perfil(Perfil.PerfilType.Customer),
-                    new Perfil(Perfil.PerfilType.Merchant)
+                    new PerfilUser(PerfilUser.UserlType.Admin),
+                    new PerfilUser(PerfilUser.UserlType.Customer),
+                    new PerfilUser(PerfilUser.UserlType.Merchant)
                 };
 
                 return userTypeData.SingleOrDefault(item => item.Id == id);

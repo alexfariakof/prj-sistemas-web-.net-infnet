@@ -8,11 +8,11 @@ public abstract class BaseAccountMap<T> : IEntityTypeConfiguration<T> where T : 
     public void Configure(EntityTypeBuilder<T> builder)
     {
         builder.ToTable(typeof(T).Name);        
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
+        builder.HasKey(account => account.Id);
+        builder.Property(account => account.Id).ValueGeneratedOnAdd();
+        builder.Property(account => account.Name).IsRequired().HasMaxLength(100);
 
-        builder.HasOne(x => x.User)            
+        builder.HasOne(account => account.User)            
             .WithMany().OnDelete(DeleteBehavior.NoAction);
 
         ConfigureCustom(builder);

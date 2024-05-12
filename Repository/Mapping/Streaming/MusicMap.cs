@@ -10,23 +10,23 @@ public class MusicMap : IEntityTypeConfiguration<Music>
     {
         builder.ToTable("Music");
 
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-        builder.Property(x => x.Url).IsRequired();
+        builder.HasKey(music => music.Id);
+        builder.Property(music => music.Id).ValueGeneratedOnAdd();
+        builder.Property(music => music.Name).IsRequired().HasMaxLength(50);
+        builder.Property(music => music.Url).IsRequired();
 
         builder.OwnsOne<Duration>(d => d.Duration, c =>
         {
-            c.Property(x => x.Value).HasColumnName("Duration").IsRequired().HasMaxLength(50);
+            c.Property(music => music.Value).HasColumnName("Duration").IsRequired().HasMaxLength(50);
         });
 
-        builder.HasOne(x => x.Band).WithMany().OnDelete(DeleteBehavior.NoAction);
-        builder.HasOne(x => x.Album).WithMany(m => m.Musics).OnDelete(DeleteBehavior.NoAction);
-        builder.HasMany(x => x.Playlists).WithMany(m => m.Musics);
-        builder.HasMany(x => x.Genres).WithMany(m => m.Musics);
+        builder.HasOne(music => music.Band).WithMany().OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(music => music.Album).WithMany(m => m.Musics).OnDelete(DeleteBehavior.NoAction);
+        builder.HasMany(music => music.Playlists).WithMany(m => m.Musics);
+        builder.HasMany(music => music.Genres).WithMany(m => m.Musics);
 
-        builder.HasMany(x => x.Flats)
-            .WithMany(x => x.Musics)
+        builder.HasMany(music => music.Flats)
+            .WithMany(music => music.Musics)
             .UsingEntity<Dictionary<string, object>>(
             "FlatMusic",
             j => j

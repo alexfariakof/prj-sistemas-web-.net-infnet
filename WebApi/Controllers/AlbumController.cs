@@ -1,6 +1,6 @@
 using Application;
 using Application.Account.Dto;
-using Domain.Core.ValueObject;
+using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +22,7 @@ public class AlbumController : ControllerBase
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindAll()
     {
-        if (UserType != Perfil.PerfilType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
 
         try
         {
@@ -44,7 +44,7 @@ public class AlbumController : ControllerBase
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindById([FromRoute] Guid albumId)
     {
-        if (UserType != Perfil.PerfilType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
 
         try
         {
@@ -87,7 +87,7 @@ public class AlbumController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(AlbumDto dto)
     {
-        if (UserType != Perfil.PerfilType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -110,7 +110,7 @@ public class AlbumController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(AlbumDto dto)
     {
-        if (UserType != Perfil.PerfilType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
