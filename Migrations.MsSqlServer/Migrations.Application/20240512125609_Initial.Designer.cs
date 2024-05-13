@@ -12,7 +12,7 @@ using Migrations.MsSqlServer;
 namespace Migrations.MsSqlServer.Migrations.Application
 {
     [DbContext(typeof(MsSqlServerContext))]
-    [Migration("20240512113321_Initial")]
+    [Migration("20240512125609_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

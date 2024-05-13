@@ -11,7 +11,7 @@ using Migrations.MySqlServer;
 namespace Migrations.MySqlServer.Migrations.Application
 {
     [DbContext(typeof(MySqlServerContext))]
-    [Migration("20240512121220_Initial")]
+    [Migration("20240512125644_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
