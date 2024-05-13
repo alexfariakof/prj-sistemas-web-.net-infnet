@@ -1,10 +1,8 @@
 ﻿using Application;
 using Application.Account.Dto;
 using Domain.Account.ValueObject;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Security.Claims;
 
 namespace WebApi.Controllers;
 public class CustomerControllerTest
@@ -13,25 +11,6 @@ public class CustomerControllerTest
     private Mock<IService<PlaylistPersonalDto>> mockPlaylistPersonalService;
 
     private CustomerController controller;
-    private void SetupBearerToken(Guid userId, PerfilUser.UserlType userType = PerfilUser.UserlType.Customer)
-    {
-        var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Role, userType.ToString())
-            };
-        var identity = new ClaimsIdentity(claims, "UserId");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers.Authorization = "Bearer " + Usings.GenerateJwtToken(userId, userType.ToString());
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
-
     public CustomerControllerTest()
     {
         mockCustomerService = new Mock<IService<CustomerDto>>();
@@ -44,7 +23,7 @@ public class CustomerControllerTest
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserlType.Merchant);
 
         // Act
         var result = controller.FindById() as UnauthorizedResult;
@@ -61,7 +40,7 @@ public class CustomerControllerTest
         var customerId = Guid.NewGuid();
         var expectedCustomerDto = new CustomerDto { Id = customerId, Name = "John Doe", Email = "john@example.com" };
         mockCustomerService.Setup(service => service.FindById(customerId)).Returns(expectedCustomerDto);
-        SetupBearerToken(customerId);
+        Usings.SetupBearerToken(customerId, controller);
 
         // Act
         var result = controller.FindById() as OkObjectResult;
@@ -79,7 +58,7 @@ public class CustomerControllerTest
         // Arrange        
         var customerId = Guid.NewGuid();
         mockCustomerService.Setup(service => service.FindById(customerId)).Returns((CustomerDto)null);
-        SetupBearerToken(customerId);
+        Usings.SetupBearerToken(customerId, controller);
 
         // Act
         var result = controller.FindById() as NotFoundResult;
@@ -125,7 +104,7 @@ public class CustomerControllerTest
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserlType.Merchant);
 
         // Act
         var result = controller.Update((CustomerDto)null) as UnauthorizedResult;
@@ -141,7 +120,7 @@ public class CustomerControllerTest
         // Arrange        
         var validCustomerDto = MockCustomer.Instance.GetDtoFromCustomer(MockCustomer.Instance.GetFaker());
         mockCustomerService.Setup(service => service.Update(validCustomerDto)).Returns(validCustomerDto);
-        SetupBearerToken(validCustomerDto.Id);
+        Usings.SetupBearerToken(validCustomerDto.Id, controller);
         // Act
         var result = controller.Update(validCustomerDto) as OkObjectResult;
 
@@ -156,7 +135,7 @@ public class CustomerControllerTest
     public void Update_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -174,7 +153,7 @@ public class CustomerControllerTest
         var mockCustomerDto = MockCustomer.Instance.GetDtoFromCustomer(MockCustomer.Instance.GetFaker());
         mockCustomerService.Setup(service => service.Delete(It.IsAny<CustomerDto>())).Returns(true);
         mockCustomerService.Setup(service => service.FindById(mockCustomerDto.Id)).Returns(mockCustomerDto);
-        SetupBearerToken(mockCustomerDto.Id);
+        Usings.SetupBearerToken(mockCustomerDto.Id, controller);
 
         // Act
         var result = controller.Delete(mockCustomerDto) as ObjectResult;
@@ -190,7 +169,7 @@ public class CustomerControllerTest
     public void Delete_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -208,7 +187,7 @@ public class CustomerControllerTest
         // Arrange        
         var customerId = Guid.NewGuid();
         mockCustomerService.Setup(service => service.FindById(customerId)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(customerId);
+        Usings.SetupBearerToken(customerId, controller);
 
         // Act
         var result = controller.FindById() as BadRequestObjectResult;
@@ -241,7 +220,7 @@ public class CustomerControllerTest
         // Arrange        
         var validCustomerDto = MockCustomer.Instance.GetDtoFromCustomer(MockCustomer.Instance.GetFaker());
         mockCustomerService.Setup(service => service.Update(validCustomerDto)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(validCustomerDto.Id);
+        Usings.SetupBearerToken(validCustomerDto.Id, controller);
 
         // Act
         var result = controller.Update(validCustomerDto) as BadRequestObjectResult;
@@ -259,7 +238,7 @@ public class CustomerControllerTest
         var mockCustomerDto = MockCustomer.Instance.GetDtoFromCustomer(MockCustomer.Instance.GetFaker());
         mockCustomerService.Setup(service => service.Delete(It.IsAny<CustomerDto>())).Throws(new Exception("BadRequest_Erro_Message"));
         mockCustomerService.Setup(service => service.FindById(mockCustomerDto.Id)).Returns(mockCustomerDto);
-        SetupBearerToken(mockCustomerDto.Id);
+        Usings.SetupBearerToken(mockCustomerDto.Id, controller);
 
         // Act
         var result = controller.Delete(mockCustomerDto) as BadRequestObjectResult;

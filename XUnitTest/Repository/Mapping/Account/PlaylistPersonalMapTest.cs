@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
-using Repository.Mapping.Account;
 
-namespace Repository.Mapping;
+namespace Repository.Mapping.Account;
 public class PlaylistPersonalMapTest
 {
     [Fact]

@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Domain.Notifications;
-using Repository.Mapping.Notifications;
 
-namespace Repository.Mapping;
+namespace Repository.Mapping.Notifications;
 public class NotificationMapTest
 {
     [Fact]

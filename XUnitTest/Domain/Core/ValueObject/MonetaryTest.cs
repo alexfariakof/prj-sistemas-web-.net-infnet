@@ -55,4 +55,18 @@ public class MonetaryTest
         // Assert
         Assert.Equal(originalValue, convertedValue);
     }
+
+    [Fact]
+    public void Operator_Equal_and_NotEqual_Should_Work_Correctly()
+    {
+        // Arrange
+        Monetary monetary1 = new Monetary(50.0m);
+        Monetary monetary2 = new Monetary(100.0m);
+        Monetary monetary3 = new Monetary(50.0m);
+
+        // Act & Assert
+        Assert.True(monetary1 != monetary2);
+        Assert.True(monetary2 != monetary3);
+        Assert.True(monetary1 == monetary3);
+    }
 }

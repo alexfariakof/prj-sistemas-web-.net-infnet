@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Domain.Streaming.Agreggates;
-using Repository.Mapping.Streaming;
 
-namespace Repository.Mapping;
+namespace Repository.Mapping.Streaming;
 public class BandMapTest
 {
     [Fact]

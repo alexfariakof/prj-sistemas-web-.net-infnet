@@ -1,10 +1,8 @@
 using Application;
 using Application.Account.Dto;
 using Domain.Account.ValueObject;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Security.Claims;
 
 namespace WebApi.Controllers;
 public class CustomerControllerMyPlaylistTests
@@ -12,25 +10,6 @@ public class CustomerControllerMyPlaylistTests
     private readonly Mock<IService<CustomerDto>> mockCustomerService;
     private readonly Mock<IService<PlaylistPersonalDto>> mockPlaylistService;
     private readonly CustomerController controller;
-    private void SetupBearerToken(Guid userId, PerfilUser.UserlType userType = PerfilUser.UserlType.Customer)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-            new Claim(ClaimTypes.Role, userType.ToString())
-        };
-        var identity = new ClaimsIdentity(claims, "UserId");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers.Authorization = "Bearer " + Usings.GenerateJwtToken(userId, userType.ToString());
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
-
     public CustomerControllerMyPlaylistTests()
     {
         // Arrange
@@ -44,7 +23,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
 
         var playlists = MockPlaylistPersonal.Instance.GetListFaker(3);
         var playlistsDto = MockPlaylistPersonal.Instance.GetDtoListFromPlaylistPersonalList(playlists);
@@ -65,7 +44,7 @@ public class CustomerControllerMyPlaylistTests
     public void FindAllPlaylist_Returns_Unauthorized_Result_When_User_Not_Customer()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Merchant);
         // Act
         var result = controller.FindAllPlaylist() as UnauthorizedResult;
 
@@ -82,7 +61,7 @@ public class CustomerControllerMyPlaylistTests
         var playlistId = playlist.Id;
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(playlist);
         var userIdentity = playlist.Customer.Id;
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
 
         mockPlaylistService.Setup(service => service.FindById(playlistId)).Returns(playlistDto);
 
@@ -101,7 +80,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
 
         var playlistId = Guid.NewGuid();
 
@@ -120,7 +99,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserlType.Merchant);
 
         // Act
         var result = controller.FindByIdPlaylist(Guid.NewGuid()) as UnauthorizedResult;
@@ -136,7 +115,7 @@ public class CustomerControllerMyPlaylistTests
         // Arrange
         var playlist = MockPlaylistPersonal.Instance.GetFaker();
         var userIdentity = playlist.Customer.Id;
-        SetupBearerToken(userIdentity, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserlType.Merchant);
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(playlist);
         mockPlaylistService.Setup(service => service.Create(playlistDto)).Returns(playlistDto);
 
@@ -154,7 +133,7 @@ public class CustomerControllerMyPlaylistTests
         // Arrange
         var playlist = MockPlaylistPersonal.Instance.GetFaker();
         var userIdentity = playlist.Customer.Id;
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(playlist);        
         mockPlaylistService.Setup(service => service.Create(playlistDto)).Returns(playlistDto);
 
@@ -173,7 +152,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
         var playlistDto = new PlaylistPersonalDto();
 
         // Act
@@ -190,7 +169,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
         mockPlaylistService.Setup(service => service.Create(playlistDto)).Returns(() => throw new Exception("Failed to create the playlist."));
 
@@ -210,7 +189,7 @@ public class CustomerControllerMyPlaylistTests
         // Arrange
         var playlist = MockPlaylistPersonal.Instance.GetFaker();
         var userIdentity = playlist.Customer.Id;
-        SetupBearerToken(userIdentity, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserlType.Merchant);
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(playlist);
         mockPlaylistService.Setup(service => service.Update(playlistDto)).Returns(playlistDto);
 
@@ -230,7 +209,7 @@ public class CustomerControllerMyPlaylistTests
         var playlist = MockPlaylistPersonal.Instance.GetFaker();
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(playlist);
         var userIdentity = playlist.Customer.Id;
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
         mockPlaylistService.Setup(service => service.Update(playlistDto)).Returns(playlistDto);
 
         // Act
@@ -249,7 +228,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
         var playlistDto = new PlaylistPersonalDto();
 
         // Act
@@ -266,7 +245,7 @@ public class CustomerControllerMyPlaylistTests
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
         mockPlaylistService.Setup(service => service.Update(playlistDto)).Returns(() => throw new Exception("Failed to create the playlist."));
 
@@ -286,7 +265,7 @@ public class CustomerControllerMyPlaylistTests
         // Arrange
         var playlist = MockPlaylistPersonal.Instance.GetFaker();
         var userIdentity = playlist.Customer.Id;
-        SetupBearerToken(userIdentity, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserlType.Merchant);
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(playlist);
         mockPlaylistService.Setup(service => service.Delete(playlistDto)).Returns(false);
 
@@ -305,7 +284,7 @@ public class CustomerControllerMyPlaylistTests
         // Arrange
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
         var userIdentity = playlistDto.CustomerId;
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
 
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(true);
 
@@ -326,7 +305,7 @@ public class CustomerControllerMyPlaylistTests
         // Arrange        
         var playlistDto = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
         var userIdentity = playlistDto.CustomerId;
-        SetupBearerToken(userIdentity);
+        Usings.SetupBearerToken(userIdentity, controller);
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(() => throw new Exception("Failed to delete the playlist."));
 
         // Act

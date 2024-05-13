@@ -8,7 +8,7 @@ public record Perfil
     public static implicit operator Perfil(PerfilType perfil) => new Perfil(perfil);
     public static implicit operator Perfil(int perfil) => new Perfil(perfil);
     public static bool operator ==(Perfil perfilUsuario, PerfilType perfil) => perfilUsuario?.Id == (int)perfil;
-    public static bool operator !=(Perfil perfilUsuario, PerfilType perfil) => !(perfilUsuario == perfil);
+    public static bool operator !=(Perfil perfilUsuario, PerfilType perfil) => !(perfilUsuario?.Id == (int)perfil);
 
     public enum PerfilType
     {

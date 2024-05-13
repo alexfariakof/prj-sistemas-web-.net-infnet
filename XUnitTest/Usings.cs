@@ -13,6 +13,8 @@ using System.Security.Claims;
 using System.Text;
 using Repository.Interfaces;
 using Domain.Account.ValueObject;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -118,6 +120,27 @@ public static class Usings
             });
         return _mock;
     }
+
+
+    public static void SetupBearerToken(Guid userId, ControllerBase controller, PerfilUser.UserlType userType = PerfilUser.UserlType.Customer)
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim("UserType", new PerfilUser(userType).Description),
+        };
+        var identity = new ClaimsIdentity(claims, "UserId");
+        var claimsPrincipal = new ClaimsPrincipal(identity);
+
+        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+        httpContext.Request.Headers.Authorization = "Bearer " + Usings.GenerateJwtToken(userId, userType.ToString());
+
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+    }
+
     public static string GenerateJwtToken(Guid userId, string userType)
     {
         var configuration = new ConfigurationBuilder()

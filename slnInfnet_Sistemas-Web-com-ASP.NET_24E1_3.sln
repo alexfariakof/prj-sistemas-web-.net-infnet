@@ -47,11 +47,11 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSeeders", "DataSeeders\DataSeeders.csproj", "{7A1DBEDF-E7E0-4E4C-898B-66CC39F3EB1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations.MySqlServer", "Migrations.MySqlServer\Migrations.MySqlServer.csproj", "{400F7D6F-17B0-44A8-BC2E-0470AFA606A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations.MySqlServer", "Migrations.MySqlServer\Migrations.MySqlServer.csproj", "{400F7D6F-17B0-44A8-BC2E-0470AFA606A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations.MsSqlServer", "Migrations.MsSqlServer\Migrations.MsSqlServer.csproj", "{C5979965-7D8E-43D5-9E71-2085DD02F7E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations.MsSqlServer", "Migrations.MsSqlServer\Migrations.MsSqlServer.csproj", "{C5979965-7D8E-43D5-9E71-2085DD02F7E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdministrativeApp", "AdministrativeApp\AdministrativeApp.csproj", "{9C15E9B5-BDDF-4F7A-AC95-3B4EFCADC431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdministrativeApp", "AdministrativeApp\AdministrativeApp.csproj", "{9C15E9B5-BDDF-4F7A-AC95-3B4EFCADC431}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

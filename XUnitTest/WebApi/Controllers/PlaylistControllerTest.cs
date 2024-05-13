@@ -11,24 +11,6 @@ public class PlaylistControllerTest
 {
     private Mock<IService<PlaylistDto>> mockPlaylistService;
     private PlaylistController controller;
-    private void SetupBearerToken(Guid userId, PerfilUser.UserlType userType = PerfilUser.UserlType.Customer)
-    {
-        var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Role, userType.ToString())
-            };
-        var identity = new ClaimsIdentity(claims, "UserId");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers.Authorization = "Bearer " + Usings.GenerateJwtToken(userId, userType.ToString());
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
     public PlaylistControllerTest()
     {
         mockPlaylistService = new Mock<IService<PlaylistDto>>();
@@ -43,7 +25,7 @@ public class PlaylistControllerTest
         var playlistList = MockPlaylist.Instance.GetListFaker(2);
         var expectedPlaylistDtoList = MockPlaylist.Instance.GetDtoListFromPlaylistList(playlistList);
         mockPlaylistService.Setup(service => service.FindAll(userId)).Returns(expectedPlaylistDtoList);
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as OkObjectResult;
@@ -61,7 +43,7 @@ public class PlaylistControllerTest
         // Arrange        
         var userId = Guid.NewGuid();
         mockPlaylistService.Setup(service => service.FindAll(userId)).Returns((List<PlaylistDto>)null);
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as NotFoundResult;
@@ -77,7 +59,7 @@ public class PlaylistControllerTest
         // Arrange        
         var userId = Guid.NewGuid();
         mockPlaylistService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as BadRequestObjectResult;
@@ -95,7 +77,7 @@ public class PlaylistControllerTest
         var playlist = MockPlaylist.Instance.GetFaker();
         var expectedPlaylistDto = MockPlaylist.Instance.GetDtoFromPlaylist(playlist) ;
         mockPlaylistService.Setup(service => service.FindById(playlist.Id)).Returns(expectedPlaylistDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(playlist.Id) as OkObjectResult;
@@ -113,7 +95,7 @@ public class PlaylistControllerTest
         // Arrange        
         var playlistId = Guid.NewGuid();
         mockPlaylistService.Setup(service => service.FindById(playlistId)).Returns((PlaylistDto)null);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(playlistId) as NotFoundResult;
@@ -129,7 +111,7 @@ public class PlaylistControllerTest
         // Arrange        
         var playlistId = Guid.NewGuid();
         mockPlaylistService.Setup(service => service.FindById(playlistId)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(playlistId) as BadRequestObjectResult;
@@ -147,7 +129,7 @@ public class PlaylistControllerTest
         var playlist = MockPlaylist.Instance.GetFaker();
         var validPlaylistDto = MockPlaylist.Instance.GetDtoFromPlaylist(playlist);
         mockPlaylistService.Setup(service => service.Create(validPlaylistDto)).Returns(validPlaylistDto);
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
 
         // Act
         var result = controller.Create(validPlaylistDto) as OkObjectResult;
@@ -163,7 +145,7 @@ public class PlaylistControllerTest
     public void Create_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange       
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -180,7 +162,7 @@ public class PlaylistControllerTest
         // Arrange        
         var invalidPlaylistDto = new PlaylistDto(); // Invalid DTO to trigger exception in the service
         mockPlaylistService.Setup(service => service.Create(invalidPlaylistDto)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
 
         // Act
         var result = controller.Create(invalidPlaylistDto) as BadRequestObjectResult;
@@ -197,7 +179,7 @@ public class PlaylistControllerTest
         // Arrange        
         var validPlaylistDto = MockPlaylist.Instance.GetDtoFromPlaylist(MockPlaylist.Instance.GetFaker());
         mockPlaylistService.Setup(service => service.Update(validPlaylistDto)).Returns(validPlaylistDto);
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
         // Act
         var result = controller.Update(validPlaylistDto) as OkObjectResult;
 
@@ -212,7 +194,7 @@ public class PlaylistControllerTest
     public void Update_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -229,7 +211,7 @@ public class PlaylistControllerTest
         // Arrange        
         var validPlaylistDto = MockPlaylist.Instance.GetDtoFromPlaylist(MockPlaylist.Instance.GetFaker());
         mockPlaylistService.Setup(service => service.Update(validPlaylistDto)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
 
         // Act
         var result = controller.Update(validPlaylistDto) as BadRequestObjectResult;
@@ -247,7 +229,7 @@ public class PlaylistControllerTest
         var mockPlaylistDto = MockPlaylist.Instance.GetDtoFromPlaylist(MockPlaylist.Instance.GetFaker());
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistDto>())).Returns(true);
         mockPlaylistService.Setup(service => service.FindById(mockPlaylistDto.Id.Value)).Returns(mockPlaylistDto);
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
 
         // Act
         var result = controller.Delete(mockPlaylistDto) as ObjectResult;
@@ -263,7 +245,7 @@ public class PlaylistControllerTest
     public void Delete_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -282,7 +264,7 @@ public class PlaylistControllerTest
         var mockPlaylistDto = MockPlaylist.Instance.GetDtoFromPlaylist(MockPlaylist.Instance.GetFaker());
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistDto>())).Throws(new Exception("BadRequest_Erro_Message"));
         mockPlaylistService.Setup(service => service.FindById(mockPlaylistDto.Id.Value)).Returns(mockPlaylistDto);
-        SetupBearerToken(Guid.NewGuid(), PerfilUser.UserlType.Admin);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Admin);
 
         // Act
         var result = controller.Delete(mockPlaylistDto) as BadRequestObjectResult;
