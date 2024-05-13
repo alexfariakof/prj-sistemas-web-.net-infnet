@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
-using Repository.Repositories;
+using Repository.Persistency;
 using Repository.Interfaces;
 using Domain.Admin.Agreggates;
 
@@ -10,7 +10,10 @@ public static class RepositoryInjectDependence
 {
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
+        // Administrative 
         services.AddScoped(typeof(IRepository<AdministrativeAccount>), typeof(AdminAccountRepository));
+
+        // Application 
         services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));
         services.AddScoped(typeof(IRepository<Customer>), typeof(CustomerRepository));
         services.AddScoped(typeof(IRepository<Merchant>), typeof(MerchantRepository));

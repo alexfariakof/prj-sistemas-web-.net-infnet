@@ -1,7 +1,16 @@
+using Migrations.MsSqlServer.CommonInjectDependence;
+using Migrations.MySqlServer.CommonInjectDependence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
+    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
+}
 
 var app = builder.Build();
 

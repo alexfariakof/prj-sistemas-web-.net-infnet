@@ -44,10 +44,12 @@ if (builder.Environment.IsStaging())
 }
 else if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddDbContext<RegisterContext>();
+    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
     builder.Services.AddDbContext<RegisterContextAdministravtive>();
-    builder.Services.AddMsSqlServerRegisterContext(builder.Configuration);
-    builder.Services.AddMySqlServerRegisterContext(builder.Configuration);
+    builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
+    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);  
+    builder.Services.AddTransient<IDataSeeder, DataSeeder>();
+
 }
 else if (builder.Environment.IsProduction())
 {
@@ -83,7 +85,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
 }
 
-if (app.Environment.IsStaging())    
+if (app.Environment.IsStaging() || app.Environment.IsDevelopment())    
 {
     using (var scope = app.Services.CreateScope())
     {

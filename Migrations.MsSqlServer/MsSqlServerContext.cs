@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Repository;
+using Repository.Abastractions;
 
 namespace Migrations.MsSqlServer;
 public class MsSqlServerContext : BaseContext<MsSqlServerContext>

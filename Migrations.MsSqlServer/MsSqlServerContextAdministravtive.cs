@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Domain.Admin.Agreggates;
 using Repository.Mapping.Admin;
-using Domain.Core.ValueObject;
 
 namespace Migrations.MsSqlServer;
 public class MsSqlServerContextAdministravtive: DbContext

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Repository;
+using Repository.Abastractions;
 
 namespace Migrations.MySqlServer;
 

@@ -6,7 +6,8 @@ dotnet ef database update -c MsSqlServerContext -p ./Migrations.MsSqlServer/Migr
 
 ## Migrations.Administrative
 dotnet ef migrations add Initial -c MsSqlServerContextAdministravtive -p ./Migrations.MsSqlServer/Migrations.MsSqlServer.csproj -s ./WebApi -o Migrations.Administrative
-dotnet ef database update -c MsSqlServerContextAdministravtive -p ./Migrations.MsSqlServer/Migrations.MsSqlServer.csproj -s ./WebApi
+dotnet ef migrations add Initial -c MsSqlServerContextAdministravtive -p ./Migrations.MsSqlServer/Migrations.MsSqlServer.csproj -s ./AdministrativeApp -o Migrations.Administrative
+dotnet ef database update -c MsSqlServerContextAdministravtive -p ./Migrations.MsSqlServer/Migrations.MsSqlServer.csproj -s ./AdministrativeApp
 
 
 # Return to a state creatred by Mingrations

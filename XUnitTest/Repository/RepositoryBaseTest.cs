@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
+using Repository.Abastractions;
 
 namespace Repository;
 public class TestEntity
@@ -7,7 +8,7 @@ public class TestEntity
     public Guid Id { get; set; }
     public string Name { get; set; }
 }
-public class TestRepository : RepositoryBase<TestEntity>
+public class TestRepository : BaseRepository<TestEntity>
 {
     public TestRepository(RegisterContext context) : base(context) { }
 }
