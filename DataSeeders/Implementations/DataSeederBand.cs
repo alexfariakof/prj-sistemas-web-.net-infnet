@@ -1,8 +1,7 @@
 ﻿using Domain.Streaming.Agreggates;
-using Domain.Streaming.ValueObject;
 using Repository;
 
-namespace DataSeeders.Implementations;
+namespace DataSeeders;
 public class DataSeederBand : IDataSeeder
 {
     private readonly RegisterContext _context;

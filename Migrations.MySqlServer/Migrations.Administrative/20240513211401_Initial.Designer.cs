@@ -10,7 +10,7 @@ using Migrations.MySqlServer;
 
 namespace Migrations.MySqlServer.Migrations.Administrative
 {
-    [DbContext(typeof(MySqlServerContextAdministravtive))]
+    [DbContext(typeof(MySqlServerContextAdministrative))]
     [Migration("20240513211401_Initial")]
     partial class Initial
     {

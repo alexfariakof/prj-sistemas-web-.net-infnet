@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using __mock__.Admin;
-using Domain.Admin.Agreggates;
+using Domain.Administrative.Agreggates;
 
-namespace Repository.Persistency;
+namespace Repository.Persistency.Administrative;
 public class AdminAccountRepositoryTest
 {
     private Mock<RegisterContextAdministravtive> contextMock;

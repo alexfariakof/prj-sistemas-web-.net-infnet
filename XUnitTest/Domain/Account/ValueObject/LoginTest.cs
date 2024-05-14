@@ -1,7 +1,6 @@
-﻿using Domain.Account.ValueObject;
-using Domain.Core.ValueObject;
+﻿using Domain.Core.ValueObject;
 
-namespace Domain.Account;
+namespace Domain.Core;
 public class LoginTest
 {
     [Fact]

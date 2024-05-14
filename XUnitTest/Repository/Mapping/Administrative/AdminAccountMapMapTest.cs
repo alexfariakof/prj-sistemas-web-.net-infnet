@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Domain.Admin.Agreggates;
-using Repository.Mapping.Admin;
+using Domain.Administrative.Agreggates;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
-namespace Repository.Mapping.Tests;
+namespace Repository.Mapping.Administrative;
 public class AdminAccountMapTest
 {
     [Fact]

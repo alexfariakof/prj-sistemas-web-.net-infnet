@@ -1,6 +1,6 @@
 ﻿using __mock__.Admin;
 
-namespace Domain.Admin;
+namespace Domain.Administrative;
 
 public class AdministrativeAccountTest
 {

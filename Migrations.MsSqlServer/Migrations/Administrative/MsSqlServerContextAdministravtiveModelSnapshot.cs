@@ -10,7 +10,7 @@ using Migrations.MsSqlServer;
 
 namespace Migrations.MsSqlServer.Migrations.Administrative
 {
-    [DbContext(typeof(MsSqlServerContextAdministravtive))]
+    [DbContext(typeof(MsSqlServerContextAdministrative))]
     partial class MsSqlServerContextAdministravtiveModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Migrations.MsSqlServer.Migrations.Administrative
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Admin.Agreggates.AdministrativeAccount", b =>
+            modelBuilder.Entity("Domain.Administrative.Agreggates.AdministrativeAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace Migrations.MsSqlServer.Migrations.Administrative
                     b.ToTable("Account", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Admin.ValueObject.Perfil", b =>
+            modelBuilder.Entity("Domain.Administrative.ValueObject.Perfil", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,12 +63,24 @@ namespace Migrations.MsSqlServer.Migrations.Administrative
 
                     b.HasKey("Id");
 
-                    b.ToTable("Perfil");
+                    b.ToTable("Perfil", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Administrador"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Normal"
+                        });
                 });
 
-            modelBuilder.Entity("Domain.Admin.Agreggates.AdministrativeAccount", b =>
+            modelBuilder.Entity("Domain.Administrative.Agreggates.AdministrativeAccount", b =>
                 {
-                    b.HasOne("Domain.Admin.ValueObject.Perfil", "PerfilType")
+                    b.HasOne("Domain.Administrative.ValueObject.Perfil", "PerfilType")
                         .WithMany("Users")
                         .HasForeignKey("PerfilTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -105,7 +117,7 @@ namespace Migrations.MsSqlServer.Migrations.Administrative
                     b.Navigation("PerfilType");
                 });
 
-            modelBuilder.Entity("Domain.Admin.ValueObject.Perfil", b =>
+            modelBuilder.Entity("Domain.Administrative.ValueObject.Perfil", b =>
                 {
                     b.Navigation("Users");
                 });

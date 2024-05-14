@@ -1,4 +1,4 @@
-﻿using Domain.Admin.Agreggates;
+﻿using Domain.Administrative.Agreggates;
 using Repository.Abastractions;
 using Repository.Interfaces;
 

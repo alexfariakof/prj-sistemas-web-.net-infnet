@@ -11,8 +11,8 @@ public static class MigrationsMsSqlServerInjectDependence
         services.AddDbContext<MsSqlServerContext>(options => options.UseLazyLoadingProxies().UseSqlServer(
             configuration.GetConnectionString("MsSqlConnectionString"),
             builder => builder.MigrationsAssembly(name)));
-        name = typeof(MsSqlServerContextAdministravtive).Assembly.FullName;
-        services.AddDbContext<MsSqlServerContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(
+        name = typeof(MsSqlServerContextAdministrative).Assembly.FullName;
+        services.AddDbContext<MsSqlServerContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(
             configuration.GetConnectionString("MsSqlAdministrativeConnectionString"),
             builder => builder.MigrationsAssembly(name)));
         return services;

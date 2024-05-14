@@ -1,4 +1,5 @@
 ﻿using Domain.Account.Agreggates;
+using Domain.Core;
 using Domain.Core.Aggreggates;
 using Domain.Core.ValueObject;
 using Domain.Transactions.ValueObject;

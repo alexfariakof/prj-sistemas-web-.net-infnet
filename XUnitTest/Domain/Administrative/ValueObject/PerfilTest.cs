@@ -1,6 +1,6 @@
-﻿using Domain.Admin.ValueObject;
+﻿using Domain.Administrative.ValueObject;
 
-namespace Domain.Admin;
+namespace Domain.Administrative;
 public class PerfilTest
 {
     [Fact]

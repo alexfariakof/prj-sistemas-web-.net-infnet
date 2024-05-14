@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Domain.Admin.ValueObject;
+using Domain.Administrative.ValueObject;
 
-namespace Repository.Mapping.Admin;
+namespace Repository.Mapping.Administrative;
 public class PerfilMap : IEntityTypeConfiguration<Perfil>
 {
     public void Configure(EntityTypeBuilder<Perfil> builder)

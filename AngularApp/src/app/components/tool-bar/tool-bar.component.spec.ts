@@ -3,6 +3,7 @@ import { ToolBarComponent } from './tool-bar.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { AuthProvider } from '../../provider/auth.provider';
+import { ToolBarModule } from './tool-bar.module';
 
 describe('ToolBarComponent', () => {
   let component: ToolBarComponent;
@@ -14,7 +15,7 @@ describe('ToolBarComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ToolBarComponent],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule, ToolBarModule]
     });
     fixture = TestBed.createComponent(ToolBarComponent);
     component = fixture.componentInstance;

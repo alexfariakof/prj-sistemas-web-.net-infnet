@@ -5,8 +5,9 @@ dotnet ef migrations add Initial -c MySqlServerContext -p ./Migrations.MySqlServ
 dotnet ef database update -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./WebApi
 
 ## Migrations.Administrative
-dotnet ef migrations add Initial -c MySqlServerContextAdministravtive -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./AdministrativeApp -o Migrations.Administrative
-dotnet ef database update -c MySqlServerContextAdministravtive -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./WebApi
+dotnet ef migrations add Initial -c MySqlServerContextAdministrative -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./AdministrativeApp -o Migrations.Administrative
+dotnet ef migrations add Create-PefilMapping -c MySqlServerContextAdministrative -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./AdministrativeApp -o Migrations.Administrative
+dotnet ef database update -c MySqlServerContextAdministrative -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./AdministrativeApp
 
 
 ### Return to a state creatred by Mingrations

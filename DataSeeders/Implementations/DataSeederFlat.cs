@@ -1,7 +1,7 @@
 ﻿using Domain.Streaming.Agreggates;
 using Repository;
 
-namespace DataSeeders.Implementations;
+namespace DataSeeders;
 public class DataSeederFlat : IDataSeeder
 {
     private readonly RegisterContext _context;

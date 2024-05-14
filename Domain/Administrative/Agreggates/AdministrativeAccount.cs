@@ -1,7 +1,7 @@
-﻿using Domain.Admin.ValueObject;
+﻿using Domain.Administrative.ValueObject;
 using Domain.Core.Aggreggates;
 
-namespace Domain.Admin.Agreggates;
+namespace Domain.Administrative.Agreggates;
 public class AdministrativeAccount : BaseAccount
 {
     public string? Name { get; set; }

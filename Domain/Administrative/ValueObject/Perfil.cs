@@ -1,6 +1,6 @@
-﻿using Domain.Admin.Agreggates;
+﻿using Domain.Administrative.Agreggates;
 
-namespace Domain.Admin.ValueObject;
+namespace Domain.Administrative.ValueObject;
 
 public record Perfil
 {

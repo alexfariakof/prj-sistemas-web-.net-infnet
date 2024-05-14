@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Domain.Core.ExtensionMethods;
+namespace Domain.Core;
 
 public class ExtensionTest
 {

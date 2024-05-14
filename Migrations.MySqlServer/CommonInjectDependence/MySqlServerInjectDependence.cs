@@ -11,8 +11,8 @@ public static class MySqlServerInjectDependence
         services.AddDbContext<MySqlServerContext>(options => options.UseLazyLoadingProxies().UseMySQL(
             configuration.GetConnectionString("MySqlConnectionString"),
             builder => builder.MigrationsAssembly(name)));
-        name = typeof(MySqlServerContextAdministravtive).Assembly.FullName;
-        services.AddDbContext<MySqlServerContextAdministravtive>(options => options.UseLazyLoadingProxies().UseMySQL(
+        name = typeof(MySqlServerContextAdministrative).Assembly.FullName;
+        services.AddDbContext<MySqlServerContextAdministrative>(options => options.UseLazyLoadingProxies().UseMySQL(
             configuration.GetConnectionString("MySqlAdministrativeConnectionString"),
             builder => builder.MigrationsAssembly(name)));
         return services;

@@ -1,8 +1,8 @@
-﻿using Domain.Admin.ValueObject;
+﻿using Domain.Administrative.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
-namespace Repository.Mapping.Admin;
+namespace Repository.Mapping.Administrative;
 public class PerfilMapTest
 {
     [Fact]

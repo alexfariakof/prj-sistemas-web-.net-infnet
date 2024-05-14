@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CustomerService, AddressService } from '../../../services';
 import { Address, Customer } from '../../../model';
 import { of } from 'rxjs';
+import { CustomerModule } from './customer.module';
 
 describe('CustomerComponent', () => {
   let component: CustomerComponent;
@@ -15,7 +16,7 @@ describe('CustomerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule, CustomerModule],
       providers:[AddressService]
     })
     .compileComponents();

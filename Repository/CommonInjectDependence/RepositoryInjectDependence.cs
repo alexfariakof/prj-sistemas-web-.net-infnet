@@ -3,7 +3,9 @@ using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
 using Repository.Persistency;
 using Repository.Interfaces;
-using Domain.Admin.Agreggates;
+using Domain.Administrative.Agreggates;
+using Repository.Interfaces.Administrative;
+using Repository.Persistency.Administrative;
 
 namespace Repository.CommonInjectDependence;
 public static class RepositoryInjectDependence
@@ -12,6 +14,7 @@ public static class RepositoryInjectDependence
     {
         // Administrative 
         services.AddScoped(typeof(IRepository<AdministrativeAccount>), typeof(AdminAccountRepository));
+        services.AddScoped(typeof(IPerfilRepository), typeof(PerfilRepository));
 
         // Application 
         services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));

@@ -1,6 +1,6 @@
-﻿using Domain.Admin.Agreggates;
+﻿using Domain.Administrative.Agreggates;
 using Bogus;
-using Domain.Admin.ValueObject;
+using Domain.Administrative.ValueObject;
 
 namespace __mock__.Admin;
 public class MockAdministrativeAccount

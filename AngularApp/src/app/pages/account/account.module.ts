@@ -1,3 +1,4 @@
+import { CustomerModule } from './customer/customer.module';
 import { NgModule } from "@angular/core";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { CommonModule } from "@angular/common";
@@ -7,15 +8,12 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { AccountRoutingModule } from "./account.routing.module";
-import { CustomerComponent } from './customer/customer.component'
-import { MerchantComponent } from './merchant/merchant.component'
 import { MatToolbarModule } from "@angular/material/toolbar";
 import ToolBarSecondaryModule from "src/app/components/tool-bar-secondary/tool-bar-secondary.module";
+import { MerchantModule } from './merchant/merchant.module';
 
 @NgModule({
-  declarations: [CustomerComponent, MerchantComponent ],
-  imports: [AccountRoutingModule, CommonModule, MatToolbarModule, ToolBarSecondaryModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],
-  exports: [CustomerComponent, MerchantComponent]
+  imports: [AccountRoutingModule, CustomerModule, MerchantModule, CommonModule, MatToolbarModule, ToolBarSecondaryModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],
 })
 
 export class AccountModule { }

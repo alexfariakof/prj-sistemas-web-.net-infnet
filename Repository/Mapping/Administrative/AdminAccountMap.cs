@@ -1,9 +1,9 @@
-﻿using Domain.Admin.Agreggates;
+﻿using Domain.Administrative.Agreggates;
 using Domain.Core.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Repository.Mapping.Admin;
+namespace Repository.Mapping.Administrative;
 public class AdminAccountMap : IEntityTypeConfiguration<AdministrativeAccount>
 {
     public void Configure(EntityTypeBuilder<AdministrativeAccount> builder)

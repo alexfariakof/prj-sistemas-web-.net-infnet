@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Repository;
-using Repository.CommonInjectDependence;
-using Application.CommonInjectDependence;
-using WebApi.CommonInjectDependence;
-using DataSeeders;
-using DataSeeders.Implementations;
 using Migrations.MySqlServer.CommonInjectDependence;
 using Migrations.MsSqlServer.CommonInjectDependence;
+using Application.CommonInjectDependence;
+using Repository.CommonInjectDependence;
+using WebApi.CommonInjectDependence;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,18 +36,18 @@ builder.Services.AddSwaggerGen(c => {
 });
 
 if (builder.Environment.IsStaging())
-{
+{    
     builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
-    builder.Services.AddTransient<IDataSeeder, DataSeeder>();
+    builder.Services.AddDataSeeders();
 }
 else if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
+    
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
     builder.Services.AddDbContext<RegisterContextAdministravtive>();
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
-    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);  
-    builder.Services.AddTransient<IDataSeeder, DataSeeder>();
-
+    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
+    builder.Services.AddDataSeeders();
 }
 else if (builder.Environment.IsProduction())
 {
@@ -83,16 +81,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
-}
-
-if (app.Environment.IsStaging() || app.Environment.IsDevelopment())    
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var dataSeeder = services.GetRequiredService<IDataSeeder>();
-        dataSeeder.SeedData();
-    }
+    app.RunDataSeeders();
 }
 else
 {
@@ -100,7 +89,6 @@ else
 }
     
 app.UseAuthorization();
-
 app.MapControllers();
 
 if (app.Environment.IsProduction() || app.Environment.IsStaging())

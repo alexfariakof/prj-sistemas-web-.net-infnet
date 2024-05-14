@@ -3,7 +3,7 @@ using Application.Account.Interfaces;
 using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;
-using Domain.Core.Aggreggates;
+using Domain.Core;
 using Domain.Core.Interfaces;
 using Repository.Interfaces;
 using System.IdentityModel.Tokens.Jwt;

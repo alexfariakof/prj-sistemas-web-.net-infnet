@@ -11,7 +11,7 @@ using Migrations.MsSqlServer;
 
 namespace Migrations.MsSqlServer.Migrations.Administrative
 {
-    [DbContext(typeof(MsSqlServerContextAdministravtive))]
+    [DbContext(typeof(MsSqlServerContextAdministrative))]
     [Migration("20240513211447_Initial")]
     partial class Initial
     {

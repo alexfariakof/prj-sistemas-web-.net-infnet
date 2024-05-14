@@ -1,5 +1,4 @@
-﻿using Domain.Core.Aggreggates;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Domain.Core.ValueObject;
 public record Login

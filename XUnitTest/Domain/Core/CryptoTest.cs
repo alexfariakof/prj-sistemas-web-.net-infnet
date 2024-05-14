@@ -1,5 +1,4 @@
-﻿using Domain.Core.Aggreggates;
-using Domain.Core.Interfaces;
+﻿using Domain.Core.Interfaces;
 
 namespace Domain.Core;
 public class CryptoTest

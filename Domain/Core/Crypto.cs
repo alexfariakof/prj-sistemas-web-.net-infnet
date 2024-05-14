@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Domain.Core.Aggreggates;
+namespace Domain.Core;
 
 #pragma warning disable CS8603 // Possible null reference return.
 #pragma warning disable SYSLIB0023 // Type or member is obsolete
@@ -41,7 +41,7 @@ public class Crypto : ICrypto
         if (File.Exists(jsonFilePath))
         {
             var jsonContent = File.ReadAllText(jsonFilePath);
-            var config = JObject.Parse(jsonContent);                
+            var config = JObject.Parse(jsonContent);
             var cryptoKey = config["Crypto"]?["Key"]?.ToString();
 
             return cryptoKey;
@@ -50,7 +50,7 @@ public class Crypto : ICrypto
         {
             throw new ArgumentException("Arquivo com chave de criptografia não encontrado");
         }
-    }        
+    }
     public string Encrypt(string password)
     {
         byte[] iv = GenerateIV();

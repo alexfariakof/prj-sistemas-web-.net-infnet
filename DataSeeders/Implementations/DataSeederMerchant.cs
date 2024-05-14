@@ -4,7 +4,7 @@ using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
 using Repository;
 
-namespace DataSeeders.Implementations;
+namespace DataSeeders;
 public class DataSeederMerchant : IDataSeeder
 {
     private readonly RegisterContext _context;

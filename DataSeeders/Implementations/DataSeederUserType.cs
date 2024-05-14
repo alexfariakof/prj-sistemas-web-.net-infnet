@@ -1,7 +1,7 @@
 ﻿using Domain.Account.ValueObject;
 using Repository;
 
-namespace DataSeeders.Implementations;
+namespace DataSeeders;
 public class DataSeederUserType : IDataSeeder
 {
     private readonly RegisterContext _context;

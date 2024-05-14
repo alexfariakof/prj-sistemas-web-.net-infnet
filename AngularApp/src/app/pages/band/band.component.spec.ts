@@ -7,6 +7,7 @@ import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockBand, MockPlaylist, MockAlbum } from '../../__mocks__';
+import { SharedModule } from 'src/app/components/shared.module';
 
 
 describe('BandComponent', () => {
@@ -19,7 +20,7 @@ describe('BandComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [BandComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
       providers: [
         {
           provide: ActivatedRoute,
