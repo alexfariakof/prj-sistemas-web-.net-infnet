@@ -34,6 +34,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\AngularApp\AngularApp.esproj" >
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		</ProjectReference>
 		<ProjectReference Include="..\Application\Application.csproj" />
 	</ItemGroup>
 
@@ -44,9 +47,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AngularApp\AngularApp.esproj">
-			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-		</ProjectReference>
 		<ProjectReference Include="..\DataSeeders\DataSeeders.csproj" />
 		<ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
 		<ProjectReference Include="..\Migrations.MySqlServer\Migrations.MySqlServer.csproj" />
