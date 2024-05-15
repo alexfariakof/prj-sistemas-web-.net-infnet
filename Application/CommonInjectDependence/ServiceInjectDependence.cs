@@ -8,7 +8,6 @@ using Application.Administrative.Interfaces;
 namespace Application.CommonInjectDependence;
 public static class ServiceInjectDependence
 {
-
     public static IServiceCollection AddServicesAdministrativeApp(this IServiceCollection services)
     {
         services.AddScoped<IAdministrativeAccountService, AdministrativeAccountService>();

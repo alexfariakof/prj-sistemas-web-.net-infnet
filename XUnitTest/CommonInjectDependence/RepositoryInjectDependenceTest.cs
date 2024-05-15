@@ -4,7 +4,9 @@ using Repository.Persistency;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
 using Repository.Interfaces;
-using Repository;
+using Domain.Administrative.Agreggates;
+using Repository.Interfaces.Administrative;
+using Repository.Persistency.Administrative;
 
 namespace CommonInjectDependence;
 public class RepositoryInjectDependenceTest
@@ -31,5 +33,19 @@ public class RepositoryInjectDependenceTest
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Genre>) && descriptor.ImplementationType == typeof(GenreRepository)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(ICreditCardBrandRepository) && descriptor.ImplementationType == typeof(CreditCardBrandRepository)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IUserTypeRepository) && descriptor.ImplementationType == typeof(UserTypeRepository)));
+    }
+
+    [Fact]
+    public void AddRepositories_Should_Register_Administrative_Repositories()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+
+        // Act
+        services.AddRepositoriesAdministrativeApp();
+
+        // Assert
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<AdministrativeAccount>) && descriptor.ImplementationType == typeof(AdminAccountRepository)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IPerfilRepository) && descriptor.ImplementationType == typeof(PerfilRepository)));
     }
 }
