@@ -47,7 +47,7 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
                 Email = dto.Email ?? "",
                 Password = dto.Password ?? ""
             },
-            PerfilType = this._userTypeRepository.GetById(PerfilUser.UserlType.Merchant.ToInteger())
+            PerfilType = this._userTypeRepository.GetById(PerfilUser.UserType.Merchant.ToInteger())
         };
 
         Merchant merchant = new()

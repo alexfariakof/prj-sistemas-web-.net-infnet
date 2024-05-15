@@ -12,8 +12,8 @@ public class DataSeederAdministrative : IDataSeeder
     {
         try
         {
-            //_context.Database.EnsureDeleted();
-            //_context.Database.EnsureCreated();
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
 
             new DataSeederAdministrativeAccount(_context).SeedData();
         }

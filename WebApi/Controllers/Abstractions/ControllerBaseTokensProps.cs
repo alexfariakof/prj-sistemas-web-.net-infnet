@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace WebApi.Controllers;
-public abstract class ControllerBase : Controller
+namespace WebApi.Controllers.Abstractions;
+public abstract class ControllerBaseTokensProps : ControllerBase
 {
-    protected ControllerBase() { }
+    protected ControllerBaseTokensProps() { }
     protected Guid UserIdentity
     {
         get
@@ -35,16 +35,16 @@ public abstract class ControllerBase : Controller
                 var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
                 var userTypeClaim = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserType")?.Value;
 
-                if (Enum.TryParse<PerfilUser.UserlType>(userTypeClaim, out var userType))
+                if (Enum.TryParse<PerfilUser.UserType>(userTypeClaim, out var userType))
                 {
                     return userType;
                 }
 
-                return PerfilUser.UserlType.Customer;                
+                return PerfilUser.UserType.Customer;
             }
             catch
             {
-                return PerfilUser.UserlType.Customer;
+                return PerfilUser.UserType.Customer;
             }
         }
     }

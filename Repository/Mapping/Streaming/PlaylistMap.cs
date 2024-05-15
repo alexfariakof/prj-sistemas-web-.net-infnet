@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Domain.Streaming.Agreggates;
+using Domain.Core.Constants;
 
 namespace Repository.Mapping.Streaming
 {
@@ -17,34 +18,20 @@ namespace Repository.Mapping.Streaming
             
             builder.HasMany(playlist => playlist.Genres).WithMany(playlist => playlist.Playlists);
 
-            builder.HasMany(playlist => playlist.Musics)
-                    .WithMany(playlist => playlist.Playlists)
-                    .UsingEntity<Dictionary<string, object>>(
-                    "MusicPlayList",
-                    j => j
-                        .HasOne<Music>()
-                        .WithMany(),
-                    j => j
-                        .HasOne<Playlist>()
-                        .WithMany(),
-                    j =>
-                    {
-                        j.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd();
-                    });
-
-            builder.HasMany(playlist => playlist.Flats)
-                .WithMany(playlist => playlist.Playlists)
-                .UsingEntity<Dictionary<string, object>>(
-                "FlatPlayList",
-                j => j
-                .HasOne<Flat>()
-                .WithMany(),
-                j => j
-                .HasOne<Playlist>()
-                .WithMany(),
-                j =>
+            builder.HasMany(playlist => playlist.Musics).WithMany(playlist => playlist.Playlists).UsingEntity<Dictionary<string, object>>("MusicPlayList",
+                dictonary => dictonary.HasOne<Music>().WithMany(),
+                dictonary => dictonary.HasOne<Playlist>().WithMany(),
+                dictonary =>
                 {
-                    j.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd();
+                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
+                });
+
+            builder.HasMany(playlist => playlist.Flats).WithMany(playlist => playlist.Playlists).UsingEntity<Dictionary<string, object>>("FlatPlayList",
+                dictonary => dictonary.HasOne<Flat>().WithMany(),
+                dictonary => dictonary.HasOne<Playlist>().WithMany(),
+                dictonary =>
+                {
+                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
                 });
         }
     }

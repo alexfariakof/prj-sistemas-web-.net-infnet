@@ -23,7 +23,7 @@ public class CustomerControllerTest
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserType.Merchant);
 
         // Act
         var result = controller.FindById() as UnauthorizedResult;
@@ -104,7 +104,7 @@ public class CustomerControllerTest
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
-        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserType.Merchant);
 
         // Act
         var result = controller.Update((CustomerDto)null) as UnauthorizedResult;

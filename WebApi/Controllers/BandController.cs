@@ -3,12 +3,13 @@ using Application.Account.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Controllers.Abstractions;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BandController : ControllerBase
+public class BandController : ControllerBaseTokensProps
 {
     private readonly IService<BandDto> _bandService;
     public BandController(IService<BandDto> bandService)
@@ -22,7 +23,7 @@ public class BandController : ControllerBase
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindAll()
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         try
         {
@@ -44,7 +45,7 @@ public class BandController : ControllerBase
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindById([FromRoute] Guid bandId)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         try
         {
@@ -87,7 +88,7 @@ public class BandController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(BandDto dto)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -110,7 +111,7 @@ public class BandController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(BandDto dto)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();

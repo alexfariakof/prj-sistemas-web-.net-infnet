@@ -3,12 +3,13 @@ using Application.Account.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Controllers.Abstractions;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MerchantController : ControllerBase
+public class MerchantController : ControllerBaseTokensProps
 {
     private readonly IService<MerchantDto> _merchantService;
     public MerchantController(IService<MerchantDto> merchantService)
@@ -23,7 +24,7 @@ public class MerchantController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindById()
     {
-        if (UserType != PerfilUser.UserlType.Merchant) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Merchant) return Unauthorized();
 
         try
         {
@@ -65,7 +66,7 @@ public class MerchantController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(MerchantDto dto)
     {
-        if (UserType != PerfilUser.UserlType.Merchant) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Merchant) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -89,7 +90,7 @@ public class MerchantController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(MerchantDto dto)
     {
-        if (UserType != PerfilUser.UserlType.Merchant) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Merchant) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();

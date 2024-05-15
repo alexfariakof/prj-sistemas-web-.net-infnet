@@ -4,12 +4,13 @@ using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using WebApi.Controllers.Abstractions;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CustomerController : ControllerBase
+public class CustomerController : ControllerBaseTokensProps
 {
     private readonly IService<CustomerDto> _customerService;
     private readonly IService<PlaylistPersonalDto> _playlistService;
@@ -27,7 +28,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindById()
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         try
         {
@@ -69,7 +70,7 @@ public class CustomerController : ControllerBase
     [ProducesResponseType((400), Type = typeof(string))]
     public IActionResult Update(CustomerDto dto)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -93,7 +94,7 @@ public class CustomerController : ControllerBase
 
     public IActionResult Delete(CustomerDto dto)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -117,7 +118,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindAllPlaylist()
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         try
         {
@@ -140,7 +141,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult FindByIdPlaylist([FromRoute] Guid playlistId)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         try
         {
@@ -162,7 +163,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult CreatePlaylist([FromBody] PlaylistPersonalDto dto)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         var validationResults = new List<ValidationResult>();
         bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
@@ -189,7 +190,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult UpdatePlaylist(PlaylistPersonalDto dto)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         var validationResults = new List<ValidationResult>();
         bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
@@ -218,7 +219,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult DeletePlaylist([FromRoute] Guid playlistId)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         var dto = new PlaylistPersonalDto { Id = playlistId };
         var validationResults = new List<ValidationResult>();
@@ -248,7 +249,7 @@ public class CustomerController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult DeleteMusicFromPlaylist([FromRoute] Guid playlistId, [FromRoute] Guid musicId)
     {
-        if (UserType != PerfilUser.UserlType.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         var dto = new PlaylistPersonalDto { Id = playlistId, Musics = { new MusicDto { Id = musicId } } };
         var validationResults = new List<ValidationResult>();

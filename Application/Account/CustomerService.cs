@@ -53,7 +53,7 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
                     Email = dto.Email ?? "",
                     Password = dto.Password ?? ""
                 },
-                PerfilType = this._userTypeRepository.GetById(PerfilUser.UserlType.Customer.ToInteger())
+                PerfilType = this._userTypeRepository.GetById(PerfilUser.UserType.Customer.ToInteger())
             }
         };
         

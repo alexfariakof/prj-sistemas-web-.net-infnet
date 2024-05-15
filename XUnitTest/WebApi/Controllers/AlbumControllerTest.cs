@@ -276,7 +276,7 @@ public class AlbumControllerTest
     {
         // Arrange
         var mockAlbumDto = MockAlbum.Instance.GetDtoFromAlbum(MockAlbum.Instance.GetFaker());
-        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserType.Merchant);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act

@@ -35,19 +35,18 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
+builder.Services.AddDataSeeders();
+
 if (builder.Environment.IsStaging())
 {    
-    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
-    builder.Services.AddDataSeeders();
+    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));    
 }
 else if (builder.Environment.IsDevelopment())
-{
-    
+{    
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
     builder.Services.AddDbContext<RegisterContextAdministravtive>();
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
-    builder.Services.AddDataSeeders();
 }
 else if (builder.Environment.IsProduction())
 {
@@ -58,7 +57,7 @@ else if (builder.Environment.IsProduction())
 builder.Services.AddAuthConfigurations(builder.Configuration);
 
 // AutoMapper
-builder.Services.AddAutoMapper();
+builder.Services.AddAutoMapperWebApiApp();
 
 //Repositories
 builder.Services.AddRepositories();

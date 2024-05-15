@@ -16,9 +16,9 @@ public class DataSeederUserType : IDataSeeder
             if (_context.PerfilUser.Count().Equals(0))
             {
                 _context.PerfilUser.AddRange(
-                    new PerfilUser(PerfilUser.UserlType.Admin),
-                    new PerfilUser(PerfilUser.UserlType.Customer),
-                    new PerfilUser(PerfilUser.UserlType.Merchant)
+                    new PerfilUser(PerfilUser.UserType.Admin),
+                    new PerfilUser(PerfilUser.UserType.Customer),
+                    new PerfilUser(PerfilUser.UserType.Merchant)
                     );
             }
             _context.SaveChanges();

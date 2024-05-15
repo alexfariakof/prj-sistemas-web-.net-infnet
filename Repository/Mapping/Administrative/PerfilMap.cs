@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Domain.Core.ValueObject;
 using Domain.Administrative.ValueObject;
 
 namespace Repository.Mapping.Administrative;
@@ -15,8 +16,8 @@ public class PerfilMap : IEntityTypeConfiguration<Perfil>
         
         builder.HasData
         (
-            new Perfil(Perfil.PerfilType.Admin),
-            new Perfil(Perfil.PerfilType.Normal)
+            new Perfil(BasePerfil.UserType.Admin),
+            new Perfil(BasePerfil.UserType.Normal)
         );
     }
 }

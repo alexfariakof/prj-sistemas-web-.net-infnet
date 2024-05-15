@@ -21,7 +21,7 @@ public class MerchantControllerTest
     {
         // Arrange        
         var expectedMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
-        Usings.SetupBearerToken(expectedMerchantDto.Id, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(expectedMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
         mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns(expectedMerchantDto);
         
         // Act
@@ -39,7 +39,7 @@ public class MerchantControllerTest
     {
         // Arrange        
         var expectedMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
-        Usings.SetupBearerToken(expectedMerchantDto.Id, controller,  PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(expectedMerchantDto.Id, controller,  PerfilUser.UserType.Merchant);
         mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns((MerchantDto)null);
 
         // Act
@@ -55,7 +55,7 @@ public class MerchantControllerTest
     {
         // Arrange        
         var validMerchantDto  = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
-        Usings.SetupBearerToken(validMerchantDto.Id, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(validMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
         mockMerchantService.Setup(service => service.Create(validMerchantDto)).Returns(validMerchantDto);
 
         // Act
@@ -72,7 +72,7 @@ public class MerchantControllerTest
     public void Create_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserType.Merchant);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
         // Act
         var result = controller.Create(It.IsAny<MerchantDto>()) as BadRequestResult;
@@ -87,7 +87,7 @@ public class MerchantControllerTest
     {
         // Arrange        
         var validMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
-        Usings.SetupBearerToken(validMerchantDto.Id, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(validMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
         mockMerchantService.Setup(service => service.Update(validMerchantDto)).Returns(validMerchantDto);
         
         // Act
@@ -104,7 +104,7 @@ public class MerchantControllerTest
     public void Update_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange      
-        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserType.Merchant);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -120,7 +120,7 @@ public class MerchantControllerTest
     {
         // Arrange        
         var mockMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
-        Usings.SetupBearerToken(mockMerchantDto.Id, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(mockMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
         mockMerchantService.Setup(service => service.Delete(It.IsAny<MerchantDto>())).Returns(true);
         mockMerchantService.Setup(service => service.FindById(mockMerchantDto.Id)).Returns(mockMerchantDto);
         
@@ -138,7 +138,7 @@ public class MerchantControllerTest
     public void Delete_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserType.Merchant);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -156,7 +156,7 @@ public class MerchantControllerTest
         // Arrange        
         var merchantId = Guid.NewGuid();
         mockMerchantService.Setup(service => service.FindById(merchantId)).Throws(new Exception("BadRequest_Erro_Message"));
-        Usings.SetupBearerToken(merchantId, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(merchantId, controller, PerfilUser.UserType.Merchant);
 
         // Act
         var result = controller.FindById() as BadRequestObjectResult;
@@ -189,7 +189,7 @@ public class MerchantControllerTest
         // Arrange        
         var validMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         mockMerchantService.Setup(service => service.Update(validMerchantDto)).Throws(new Exception("BadRequest_Erro_Message"));
-        Usings.SetupBearerToken(validMerchantDto.Id, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(validMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
 
         // Act
         var result = controller.Update(validMerchantDto) as BadRequestObjectResult;
@@ -207,7 +207,7 @@ public class MerchantControllerTest
         var mockMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         mockMerchantService.Setup(service => service.Delete(It.IsAny<MerchantDto>())).Throws(new Exception("BadRequest_Erro_Message"));
         mockMerchantService.Setup(service => service.FindById(mockMerchantDto.Id)).Returns(mockMerchantDto);
-        Usings.SetupBearerToken(mockMerchantDto.Id, controller, PerfilUser.UserlType.Merchant);
+        Usings.SetupBearerToken(mockMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
 
         // Act
         var result = controller.Delete(mockMerchantDto) as BadRequestObjectResult;

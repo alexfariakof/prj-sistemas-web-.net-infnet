@@ -16,7 +16,7 @@ namespace Repository.Mapping.Streaming
             builder.Property(band => band.Description).IsRequired();
             builder.Property(band => band.Backdrop).IsRequired();
             builder.HasMany<Album>(band => band.Albums).WithOne().OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(band => band.Genres).WithMany(m => m.Bands);
+            builder.HasMany(band => band.Genres).WithMany(genre => genre.Bands);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
+using Domain.Core.Constants;
 
 namespace Repository.Mapping.Account;
 public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
@@ -18,21 +19,13 @@ public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
         builder.Property(playlist => playlist.DtCreated).ValueGeneratedOnAdd();
 
         builder.HasMany(playlist => playlist.Musics)
-        .WithMany(music => music.PersonalPlaylists)
-        .UsingEntity<Dictionary<string, object>>(
-            "MusicPlayListPersonal",
-            j => j
-            .HasOne<Music>()
-            .WithMany()
-            .HasForeignKey("MusicId"),
-        j => j
-            .HasOne<PlaylistPersonal>()
-            .WithMany()
-            .HasForeignKey("PlaylistPersonalId"),
-        j =>
-        {
-            j.HasKey("MusicId", "PlaylistPersonalId");
-            j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();
-        });
+        .WithMany(music => music.PersonalPlaylists).UsingEntity<Dictionary<string, object>>("MusicPlayListPersonal",
+            dictonary => dictonary.HasOne<Music>().WithMany().HasForeignKey("MusicId"),
+            dictonary => dictonary.HasOne<PlaylistPersonal>().WithMany().HasForeignKey("PlaylistPersonalId"),
+            dictonary =>
+            {
+                dictonary.HasKey("MusicId", "PlaylistPersonalId");
+                dictonary.Property<DateTime>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
+            });
     }
 }

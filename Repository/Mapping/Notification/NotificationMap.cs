@@ -17,7 +17,7 @@ namespace Repository.Mapping.Notifications
             builder.Property(notification => notification.DtNotification).IsRequired();
             builder.Property(notification => notification.NotificationType).IsRequired();
 
-            builder.HasOne(notification => notification.Destination).WithMany(notification => notification.Notifications).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(notification => notification.Destination).WithMany(customer => customer.Notifications).IsRequired().OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(notification => notification.Sender).WithMany().IsRequired(false);
         }
     }

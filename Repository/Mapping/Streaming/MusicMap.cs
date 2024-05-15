@@ -1,4 +1,5 @@
-﻿using Domain.Streaming.Agreggates;
+﻿using Domain.Core.Constants;
+using Domain.Streaming.Agreggates;
 using Domain.Streaming.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,19 +26,12 @@ public class MusicMap : IEntityTypeConfiguration<Music>
         builder.HasMany(music => music.Playlists).WithMany(m => m.Musics);
         builder.HasMany(music => music.Genres).WithMany(m => m.Musics);
 
-        builder.HasMany(music => music.Flats)
-            .WithMany(music => music.Musics)
-            .UsingEntity<Dictionary<string, object>>(
-            "FlatMusic",
-            j => j
-            .HasOne<Flat>()
-            .WithMany(),
-            j => j
-            .HasOne<Music>()
-            .WithMany(),
-            j =>
+        builder.HasMany(music => music.Flats).WithMany(music => music.Musics).UsingEntity<Dictionary<string, object>>("FlatMusic",
+            dictonary => dictonary.HasOne<Flat>().WithMany(),
+            dictonary => dictonary.HasOne<Music>().WithMany(),
+            dictonary =>
             {
-                j.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd();
+                dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
             });
 
     }

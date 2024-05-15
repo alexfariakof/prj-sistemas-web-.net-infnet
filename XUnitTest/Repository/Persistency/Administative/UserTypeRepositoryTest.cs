@@ -23,7 +23,7 @@ public class PerfilRepositoryTest
         // Arrange
         contextMock.Object.Add(Usings.MockDataSetUserType().Object);
         var repository = new PerfilRepository(contextMock.Object);
-        var mockPerfil = new Perfil(Perfil.PerfilType.Normal);
+        var mockPerfil = new Perfil(Perfil.UserType.Normal);
         contextMock.Setup<Perfil>(c => c.Set<Perfil>().Find(It.IsAny<int>())).Returns((Perfil)mockPerfil);        
 
         // Act

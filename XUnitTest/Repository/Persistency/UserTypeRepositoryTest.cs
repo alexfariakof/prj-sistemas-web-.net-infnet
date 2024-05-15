@@ -23,7 +23,7 @@ public class UserTypeRepositoryTest
         // Arrange
         contextMock.Object.Add(Usings.MockDataSetUserType().Object);
         var repository = new UserTypeRepository(contextMock.Object);
-        var mockUserType = new PerfilUser(PerfilUser.UserlType.Customer);
+        var mockUserType = new PerfilUser(PerfilUser.UserType.Customer);
         contextMock.Setup<PerfilUser>(c => c.Set<PerfilUser>().Find(It.IsAny<int>())).Returns((PerfilUser)mockUserType);        
 
         // Act

@@ -11,21 +11,21 @@ public class PerfilTest
 
         // Assert
         Assert.Equal(0, perfil.Id);
-        Assert.Null(perfil.Description);
+        Assert.NotNull(perfil.Description);
     }
 
     [Fact]
     public void Perfil_Constructor_With_PerfilType_Should_Set_Correct_Values()
     {
         // Arrange & Act
-        var adminPerfil = new Perfil(Perfil.PerfilType.Admin);
-        var normalPerfil = new Perfil(Perfil.PerfilType.Normal);
+        var adminPerfil = new Perfil(Perfil.UserType.Admin);
+        var normalPerfil = new Perfil(Perfil.UserType.Normal);
 
         // Assert
-        Assert.Equal((int)Perfil.PerfilType.Admin, adminPerfil.Id);
+        Assert.Equal((int)Perfil.UserType.Admin, adminPerfil.Id);
         Assert.Equal("Administrador", adminPerfil.Description);
 
-        Assert.Equal((int)Perfil.PerfilType.Normal, normalPerfil.Id);
+        Assert.Equal((int)Perfil.UserType.Normal, normalPerfil.Id);
         Assert.Equal("Normal", normalPerfil.Description);
     }
 
@@ -33,7 +33,7 @@ public class PerfilTest
     public void Implicit_Conversion_From_PerfilType_Should_Work_Correctly()
     {
         // Arrange
-        Perfil.PerfilType perfilType = Perfil.PerfilType.Admin;
+        Perfil.UserType perfilType = Perfil.UserType.Admin;
 
         // Act
         Perfil perfil = perfilType;
@@ -47,10 +47,10 @@ public class PerfilTest
     public void Implicit_Conversion_To_PerfilType_Should_Work_Correctly()
     {
         // Arrange
-        var perfil = new Perfil(Perfil.PerfilType.Normal);
+        var perfil = new Perfil(Perfil.UserType.Normal);
 
         // Act
-        Perfil.PerfilType perfilType = perfil;
+        Perfil.UserType perfilType = perfil;
 
         // Assert
         Assert.Equal(perfil.Id, (int)perfilType);
@@ -63,7 +63,7 @@ public class PerfilTest
         int value = 1;
 
         // Act
-        Perfil perfil = (Perfil.PerfilType)value;
+        Perfil perfil = (Perfil.UserType)value;
 
         // Assert
         Assert.Equal(value, perfil.Id);
@@ -73,14 +73,14 @@ public class PerfilTest
     public void Operator_Equal_And_NotEqual_Should_Work_Correctly()
     {
         // Arrange
-        var perfil1 = new Perfil(Perfil.PerfilType.Admin);
-        var perfil2 = new Perfil(Perfil.PerfilType.Normal);
-        var perfil3 = new Perfil(Perfil.PerfilType.Admin);
+        var perfil1 = new Perfil(Perfil.UserType.Admin);
+        var perfil2 = new Perfil(Perfil.UserType.Normal);
+        var perfil3 = new Perfil(Perfil.UserType.Admin);
 
         // Act & Assert
-        Assert.True(perfil1 != Perfil.PerfilType.Normal);
-        Assert.True(perfil2 != Perfil.PerfilType.Admin);
-        Assert.True(perfil1 == Perfil.PerfilType.Admin);
+        Assert.True(perfil1 != Perfil.UserType.Normal);
+        Assert.True(perfil2 != Perfil.UserType.Admin);
+        Assert.True(perfil1 == Perfil.UserType.Admin);
         Assert.True(perfil1 == perfil3);
         Assert.False(perfil1 != perfil3);
     }

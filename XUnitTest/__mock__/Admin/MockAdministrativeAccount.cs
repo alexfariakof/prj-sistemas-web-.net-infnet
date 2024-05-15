@@ -27,7 +27,7 @@ public class MockAdministrativeAccount
             .RuleFor(a => a.Login, MockLogin.Instance.GetFaker())
             .RuleFor(a => a.DtCreated, f => f.Date.Past())
             .RuleFor(a => a.Name, f => f.Name.FirstName())
-            .RuleFor(a => a.PerfilType, f => new Perfil(Perfil.PerfilType.Admin));
+            .RuleFor(a => a.PerfilType, f => new Perfil(Perfil.UserType.Admin));
 
         return fakeAdministrativeAccount;
     }

@@ -111,9 +111,9 @@ public static class Usings
             {
                 var userTypeData = new List<PerfilUser>
                 {
-                    new PerfilUser(PerfilUser.UserlType.Admin),
-                    new PerfilUser(PerfilUser.UserlType.Customer),
-                    new PerfilUser(PerfilUser.UserlType.Merchant)
+                    new PerfilUser(PerfilUser.UserType.Admin),
+                    new PerfilUser(PerfilUser.UserType.Customer),
+                    new PerfilUser(PerfilUser.UserType.Merchant)
                 };
 
                 return userTypeData.SingleOrDefault(item => item.Id == id);
@@ -122,7 +122,7 @@ public static class Usings
     }
 
 
-    public static void SetupBearerToken(Guid userId, ControllerBase controller, PerfilUser.UserlType userType = PerfilUser.UserlType.Customer)
+    public static void SetupBearerToken(Guid userId, ControllerBase controller, PerfilUser.UserType userType = PerfilUser.UserType.Customer)
     {
         var claims = new List<Claim>
         {

@@ -10,6 +10,13 @@ using Repository.Persistency.Administrative;
 namespace Repository.CommonInjectDependence;
 public static class RepositoryInjectDependence
 {
+    public static IServiceCollection AddRepositoriesAdministrativeApp(this IServiceCollection services)
+    {
+        services.AddScoped(typeof(IRepository<AdministrativeAccount>), typeof(AdminAccountRepository));
+        services.AddScoped(typeof(IPerfilRepository), typeof(PerfilRepository));
+        return services;
+    }
+
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         // Administrative 

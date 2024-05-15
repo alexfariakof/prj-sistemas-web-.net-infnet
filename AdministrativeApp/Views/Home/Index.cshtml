@@ -2,7 +2,24 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex text-center justify-content-center">
+    <form class="align-items-center ">
+        <div class="mb-3">
+            <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
+            <div class="input-group">
+                <div class="input-group-text">@@</div>
+                <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Username">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="visually-hidden" for="inputPassword">Password</label>
+            <div class="input-group">
+                <div class="input-group-text "></div>
+                <input type="text" class="form-control" id="inputPassword" placeholder="Senha">
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
 </div>

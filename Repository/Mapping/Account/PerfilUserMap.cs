@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Account.ValueObject;
 
+using static Domain.Core.ValueObject.BasePerfil;
+
 namespace Repository.Mapping.Account;
 public class PerfilUserMap : IEntityTypeConfiguration<PerfilUser>
 {
@@ -15,9 +17,9 @@ public class PerfilUserMap : IEntityTypeConfiguration<PerfilUser>
 
         builder.HasData
         (
-            new PerfilUser(PerfilUser.UserlType.Admin),
-            new PerfilUser(PerfilUser.UserlType.Customer),
-            new PerfilUser(PerfilUser.UserlType.Merchant)
+            new PerfilUser(UserType.Admin),
+            new PerfilUser(UserType.Customer),
+            new PerfilUser(UserType.Merchant)
         );
     }
 }

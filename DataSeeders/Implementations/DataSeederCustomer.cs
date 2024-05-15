@@ -29,7 +29,7 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "free@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals(2)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
                 },
                 Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).FirstOrDefault()
             };
@@ -68,7 +68,7 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "basic@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals(2)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
                 },
                 Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")).FirstOrDefault()
             };
@@ -105,7 +105,7 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "standard@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals(2)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
                 },
                 Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa7")).FirstOrDefault()
             };
@@ -168,7 +168,7 @@ public class DataSeederCustomer : IDataSeeder
             };
 
             customer.CreateAccount(customer, address, _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa7")).FirstOrDefault(), card);
-            customer.User.PerfilType = _context.PerfilUser.Where(u => u.Id.Equals(2)).First();
+            customer.User.PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First();
             _context.Add(customer);
             _context.SaveChanges();
         }

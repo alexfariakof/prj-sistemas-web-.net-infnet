@@ -13,11 +13,11 @@ public class UserMap : IEntityTypeConfiguration<User>
         builder.Property(user => user.Id).ValueGeneratedOnAdd();
         builder.Property(user => user.DtCreated).ValueGeneratedOnAdd();                
         builder.HasOne(user => user.PerfilType).WithMany(perfilType => perfilType.Users).IsRequired();
-        builder.OwnsOne<Login>(user => user.Login, login =>
+        builder.OwnsOne<Login>(user => user.Login, dictonary =>
         {
-            login.Property(prop => prop.Email).HasColumnName("Email").HasMaxLength(150).IsRequired();
-            login.Property(prop => prop.Password).HasColumnName("Password").HasMaxLength(255).IsRequired();
-            login.WithOwner();
+            dictonary.Property(login => login.Email).HasColumnName("Email").HasMaxLength(150).IsRequired();
+            dictonary.Property(login => login.Password).HasColumnName("Password").HasMaxLength(255).IsRequired();
+            dictonary.WithOwner();
         });
     }
 }

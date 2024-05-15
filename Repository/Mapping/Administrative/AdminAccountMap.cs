@@ -14,11 +14,11 @@ public class AdminAccountMap : IEntityTypeConfiguration<AdministrativeAccount>
         builder.Property(account => account.Name).IsRequired().HasMaxLength(100);        
         builder.Property(account => account.DtCreated).IsRequired();
         builder.HasOne(account => account.PerfilType).WithMany(perfil => perfil.Users).IsRequired();
-        builder.OwnsOne<Login>(account => account.Login, login =>
+        builder.OwnsOne<Login>(account => account.Login, dictonary =>
         {
-            login.Property(prop => prop.Email).HasColumnName("Email").HasMaxLength(150).IsRequired();
-            login.Property(prop => prop.Password).HasColumnName("Password").HasMaxLength(255).IsRequired();
-            login.WithOwner();
+            dictonary.Property(login => login.Email).HasColumnName("Email").HasMaxLength(150).IsRequired();
+            dictonary.Property(login => login.Password).HasColumnName("Password").HasMaxLength(255).IsRequired();
+            dictonary.WithOwner();
         });
     }
 }
