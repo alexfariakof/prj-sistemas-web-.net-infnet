@@ -3,12 +3,13 @@ using Application.Account.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Controllers.Abstractions;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MusicController : ControllerBase
+public class MusicController : ControllerBaseTokensProps
 {
     private readonly IService<MusicDto> _musicService;
     public MusicController(IService<MusicDto> musicService)
@@ -30,7 +31,7 @@ public class MusicController : ControllerBase
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindAll()
     {
-        if (UserType != UserTypeEnum.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         try
         {
@@ -53,7 +54,7 @@ public class MusicController : ControllerBase
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindById([FromRoute] Guid musicId)
     {
-        if (UserType != UserTypeEnum.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         try
         {
@@ -96,7 +97,7 @@ public class MusicController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(MusicDto dto)
     {
-        if (UserType != UserTypeEnum.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -119,7 +120,7 @@ public class MusicController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(MusicDto dto)
     {
-        if (UserType != UserTypeEnum.Customer) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();

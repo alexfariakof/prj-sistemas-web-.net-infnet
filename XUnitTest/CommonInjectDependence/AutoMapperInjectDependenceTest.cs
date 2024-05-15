@@ -13,7 +13,7 @@ public class AutoMapperInjectDependenceTest
         var services = new ServiceCollection();
 
         // Act
-        services.AddAutoMapper();
+        services.AddAutoMapperWebApiApp();
 
         // Assert
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(CustomerProfile)));

@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Domain.Transactions.Agreggates;
-using Repository.Mapping.Transactions;
 
-namespace Repository.Mapping;
+namespace Repository.Mapping.Transactions;
 public class TransactionMapTest
 {
     [Fact]

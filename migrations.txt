@@ -1,3 +1,11 @@
+#Install & Update with Package Manegaer
+
+Install-Package Microsoft.EntityFrameworkCore.Tools
+Update-Package Microsoft.EntityFrameworkCore.Tools
+
+
+
+
 # Inicializa Migratiuons 
 Add-Migration InitialCreate
 
@@ -20,3 +28,17 @@ dotnet ef database update 20231222054303_Changes-relationship-between-Card-and-C
 
 
 dotnet ef migrations add NomeDaNovaMigracao Changes-relationship-between-Card-and-CardBrand
+
+
+// MsSqlServer Add Migrations
+dotnet ef migrations add Initial -c RegisterContext -p ./Repository/Repository.csproj -s ./WebApi -o Migrations.MsSqlServer
+
+
+// MySqlSever Add Migrations 
+dotnet ef migrations add Initial -c MySqlServerContext -p ./Repository -s ./WebApi -o ../Migrations.MySqlServer
+
+
+// Administrative Migrations 
+dotnet ef migrations add Initial -c RegisterContextAdministravtive  -o Migrations.Administrative
+
+Add-Migration Initial -c RegisterContextAdministravtive -p ./Repository/Repository.csproj -s ./WebApi -o Migrations.Administrative

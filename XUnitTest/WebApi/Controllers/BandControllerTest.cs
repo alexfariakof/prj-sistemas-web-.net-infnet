@@ -1,34 +1,13 @@
 ﻿using Application;
 using Application.Account.Dto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Security.Claims;
 
 namespace WebApi.Controllers;
 public class BandControllerTest
 {
     private Mock<IService<BandDto>> mockBandService;
     private BandController controller;
-    private void SetupBearerToken(Guid userId)
-    {
-        var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim("UserType", "Band")
-            };
-        var identity = new ClaimsIdentity(claims, "UserId");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers.Authorization =
-            "Bearer " + Usings.GenerateJwtToken(userId, "Customer");
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
 
     public BandControllerTest()
     {
@@ -44,7 +23,7 @@ public class BandControllerTest
         var bandList = MockBand.Instance.GetListFaker(2);
         var expectedBandDtoList = MockBand.Instance.GetDtoListFromBandList(bandList);
         mockBandService.Setup(service => service.FindAll(userId)).Returns(expectedBandDtoList);
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as OkObjectResult;
@@ -62,7 +41,7 @@ public class BandControllerTest
         // Arrange        
         var userId = Guid.NewGuid();
         mockBandService.Setup(service => service.FindAll(userId)).Returns((List<BandDto>)null);
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as NotFoundResult;
@@ -78,7 +57,7 @@ public class BandControllerTest
         // Arrange        
         var userId = Guid.NewGuid();
         mockBandService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as BadRequestObjectResult;
@@ -96,7 +75,7 @@ public class BandControllerTest
         var band = MockBand.Instance.GetFaker();
         var expectedBandDto = MockBand.Instance.GetDtoFromBand(band);
         mockBandService.Setup(service => service.FindById(band.Id)).Returns(expectedBandDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(band.Id) as OkObjectResult;
@@ -114,7 +93,7 @@ public class BandControllerTest
         // Arrange        
         var bandId = Guid.NewGuid();
         mockBandService.Setup(service => service.FindById(bandId)).Returns((BandDto)null);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(bandId) as NotFoundResult;
@@ -162,7 +141,7 @@ public class BandControllerTest
         // Arrange        
         var validBandDto = MockBand.Instance.GetDtoFromBand(MockBand.Instance.GetFaker());
         mockBandService.Setup(service => service.Update(validBandDto)).Returns(validBandDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
         // Act
         var result = controller.Update(validBandDto) as OkObjectResult;
 
@@ -177,7 +156,7 @@ public class BandControllerTest
     public void Update_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -195,7 +174,7 @@ public class BandControllerTest
         var mockBandDto = MockBand.Instance.GetDtoFromBand(MockBand.Instance.GetFaker());
         mockBandService.Setup(service => service.Delete(It.IsAny<BandDto>())).Returns(true);
         mockBandService.Setup(service => service.FindById(mockBandDto.Id)).Returns(mockBandDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.Delete(mockBandDto) as ObjectResult;
@@ -211,7 +190,7 @@ public class BandControllerTest
     public void Delete_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -229,7 +208,7 @@ public class BandControllerTest
         // Arrange        
         var bandId = Guid.NewGuid();
         mockBandService.Setup(service => service.FindById(bandId)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(bandId) as BadRequestObjectResult;
@@ -262,7 +241,7 @@ public class BandControllerTest
         // Arrange        
         var validBandDto = MockBand.Instance.GetDtoFromBand(MockBand.Instance.GetFaker());
         mockBandService.Setup(service => service.Update(validBandDto)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.Update(validBandDto) as BadRequestObjectResult;
@@ -280,7 +259,7 @@ public class BandControllerTest
         var mockBandDto = MockBand.Instance.GetDtoFromBand(MockBand.Instance.GetFaker());
         mockBandService.Setup(service => service.Delete(It.IsAny<BandDto>())).Throws(new Exception("BadRequest_Erro_Message"));
         mockBandService.Setup(service => service.FindById(mockBandDto.Id)).Returns(mockBandDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.Delete(mockBandDto) as BadRequestObjectResult;

@@ -4,7 +4,7 @@ using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
 using Repository;
 
-namespace DataSeeders.Implementations;
+namespace DataSeeders;
 public class DataSeederMerchant : IDataSeeder
 {
     private readonly RegisterContext _context;
@@ -21,7 +21,7 @@ public class DataSeederMerchant : IDataSeeder
                 Email = "user@merchant.com",
                 Password = "12345T!"
             },
-            UserType = _context.UserType.Where(u => u.Id.Equals(3)).First()
+            PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Merchant)).First()
         };
 
         var merchant = new Merchant()

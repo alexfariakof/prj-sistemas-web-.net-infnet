@@ -9,11 +9,11 @@ public class SignitureMap : IEntityTypeConfiguration<Signature>
     {
         builder.ToTable(nameof(Signature));
 
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Active).IsRequired();
-        builder.Property(x => x.DtActivation).IsRequired();
+        builder.HasKey(signature => signature.Id);
+        builder.Property(signature => signature.Id).ValueGeneratedOnAdd();
+        builder.Property(signature => signature.Active).IsRequired();
+        builder.Property(signature => signature.DtActivation).IsRequired();
 
-        builder.HasOne(x => x.Flat).WithMany();
+        builder.HasOne(signature => signature.Flat).WithMany();
     }
 }

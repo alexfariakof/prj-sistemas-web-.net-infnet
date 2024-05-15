@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.128-alpha">
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.74-alpha">
   <PropertyGroup>
     <StartupCommand>npm start</StartupCommand>
     <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
@@ -6,5 +6,7 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist\AngularApp\</PublishAssetsDirectory>
+    <JavaScriptTestRunnerCommand>npm run test</JavaScriptTestRunnerCommand>
+    <JavaScriptTestFilePattern>**\*.spec.ts</JavaScriptTestFilePattern>
   </PropertyGroup>
 </Project>

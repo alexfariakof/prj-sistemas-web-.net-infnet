@@ -39,7 +39,7 @@ public class MockCustomer
                 .RuleFor(m => m.Signatures, f => new List<Signature>())
                 .Generate();
 
-            fakeCustomer.User.UserType = new UserType(UserTypeEnum.Customer);
+            fakeCustomer.User.PerfilType = new PerfilUser(PerfilUser.UserType.Customer);
             return fakeCustomer;
         }
     }

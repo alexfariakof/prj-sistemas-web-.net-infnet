@@ -1,7 +1,7 @@
 ﻿using Domain.Core.Aggreggates;
 
 namespace Domain.Streaming.Agreggates;
-public class Band : BaseModel
+public class Band : Base
 {
     public string? Name { get; set; }
     public string? Description { get; set; }

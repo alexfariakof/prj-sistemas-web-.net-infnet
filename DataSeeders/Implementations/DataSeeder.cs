@@ -1,6 +1,6 @@
 ﻿using Repository;
 
-namespace DataSeeders.Implementations;
+namespace DataSeeders;
 public class DataSeeder : IDataSeeder
 {
     private readonly RegisterContext _context;

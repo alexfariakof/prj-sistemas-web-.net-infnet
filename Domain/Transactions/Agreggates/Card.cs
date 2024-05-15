@@ -1,10 +1,11 @@
 ﻿using Domain.Account.Agreggates;
+using Domain.Core;
 using Domain.Core.Aggreggates;
 using Domain.Core.ValueObject;
 using Domain.Transactions.ValueObject;
 
 namespace Domain.Transactions.Agreggates;
-public class Card : BaseModel
+public class Card : Base
 {
     private const int INTERVAL_TRANSACTON = -2;
     private const int REPEAT_TRANSACTON_MERCHANT = 1;

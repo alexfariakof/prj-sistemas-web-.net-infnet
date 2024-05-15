@@ -16,6 +16,8 @@ module.exports = function (config) {
     ],
     client: {
       jasmine: {
+        random: false,
+        singleRun: true,
         // you can add configuration options for Jasmine here
         // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
         // for example, you can disable the random execution with `random: false`
@@ -32,8 +34,7 @@ module.exports = function (config) {
       reporters: [
         { type: 'lcov' },
         { type: 'clover' },
-        { type: 'json' },
-        { type: 'text-summary' }
+        { type: 'json' }
       ]
     },
     reporters: ['progress', 'kjhtml', 'coverage'],
@@ -50,7 +51,7 @@ module.exports = function (config) {
         port: 9876
       }
     },
-    singleRun: false,
-    restartOnFileChange: true
+    singleRun: true,
+    random: false,
   });
 };

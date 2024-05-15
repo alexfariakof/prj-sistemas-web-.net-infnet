@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Repository;
-using Repository.CommonInjectDependence;
+using Migrations.MySqlServer.CommonInjectDependence;
+using Migrations.MsSqlServer.CommonInjectDependence;
 using Application.CommonInjectDependence;
+using Repository.CommonInjectDependence;
 using WebApi.CommonInjectDependence;
-using DataSeeders;
-using DataSeeders.Implementations;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,26 +35,29 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-if (builder.Environment.IsStaging())
-{
-    builder.Services.AddDbContext<RegisterContext>(c => c.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
-    builder.Services.AddTransient<IDataSeeder, DataSeeder>();
-}
-else
-{
+builder.Services.AddDataSeeders();
 
-    builder.Services.AddDbContext<RegisterContext>(c =>
-    {
-        c.UseLazyLoadingProxies()
-        .UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString"));
-    });
+if (builder.Environment.IsStaging())
+{    
+    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));    
+}
+else if (builder.Environment.IsDevelopment())
+{    
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
+    builder.Services.AddDbContext<RegisterContextAdministravtive>();
+    builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
+    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
+}
+else if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
 
 // Autorization Configuratons
 builder.Services.AddAuthConfigurations(builder.Configuration);
 
 // AutoMapper
-builder.Services.AddAutoMapper();
+builder.Services.AddAutoMapperWebApiApp();
 
 //Repositories
 builder.Services.AddRepositories();
@@ -77,16 +80,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
-}
-
-if (app.Environment.IsStaging())    
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var dataSeeder = services.GetRequiredService<IDataSeeder>();
-        dataSeeder.SeedData();
-    }
+    app.RunDataSeeders();
 }
 else
 {
@@ -94,7 +88,6 @@ else
 }
     
 app.UseAuthorization();
-
 app.MapControllers();
 
 if (app.Environment.IsProduction() || app.Environment.IsStaging())

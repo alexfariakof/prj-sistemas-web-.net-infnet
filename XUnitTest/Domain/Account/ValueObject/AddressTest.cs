@@ -1,6 +1,6 @@
 ﻿using Domain.Account.ValueObject;
 
-namespace Domain.Account.Tests;
+namespace Domain.Account;
 public class AddressTest
 {
     [Fact]

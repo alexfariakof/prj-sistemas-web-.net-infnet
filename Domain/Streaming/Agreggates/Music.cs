@@ -3,7 +3,7 @@ using Domain.Core.Aggreggates;
 using Domain.Streaming.ValueObject;
 
 namespace Domain.Streaming.Agreggates;
-public class Music : BaseModel
+public class Music : Base
 {
     public string? Name { get; set; }
     public Duration Duration { get; set; } = 0;    

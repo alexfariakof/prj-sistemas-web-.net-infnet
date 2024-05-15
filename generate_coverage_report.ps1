@@ -3,7 +3,7 @@ cls
 # Pasta onde o relatário será gerado
 $baseDirectory = Join-Path -Path (Get-Location) -ChildPath ""
 $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTest"
-$sourceDirs = "$baseDirectory\Application;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\WebApi;"
+$sourceDirs = "$baseDirectory\Application;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\WebApi;$baseDirectory\AdministrativeApp;"
 $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTest\TestResults"
 $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
 

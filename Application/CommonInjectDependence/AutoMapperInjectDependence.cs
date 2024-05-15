@@ -1,11 +1,18 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Application.Account.Profile;
 using Application.Transactions.Profile;
+using Application.Administrative.Profile;
 
 namespace Application.CommonInjectDependence;
 public static class AutoMapperInjectDependence
 {
-    public static IServiceCollection AddAutoMapper(this IServiceCollection services)
+    public static IServiceCollection AddAutoMapperAdministrativeApp(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(AdministrativeAccountProfile).Assembly);
+        return services;
+    }
+
+    public static IServiceCollection AddAutoMapperWebApiApp(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(CustomerProfile).Assembly);
         services.AddAutoMapper(typeof(MerchantProfile).Assembly);

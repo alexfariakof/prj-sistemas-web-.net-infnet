@@ -22,7 +22,7 @@ public class RegisterContextTest
         {
             // Assert
             Assert.NotNull(context.User);
-            Assert.NotNull(context.UserType);
+            Assert.NotNull(context.PerfilUser);
             Assert.NotNull(context.Customer);
             Assert.NotNull(context.Merchant);
             Assert.NotNull(context.Address);
@@ -55,7 +55,7 @@ public class RegisterContextTest
             // Assert
             var model = context.Model;
             Assert.True(model.FindEntityType(typeof(User)) != null);
-            Assert.True(model.FindEntityType(typeof(UserType)) != null);
+            Assert.True(model.FindEntityType(typeof(PerfilUser)) != null);
             Assert.True(model.FindEntityType(typeof(Customer)) != null);
             Assert.True(model.FindEntityType(typeof(Merchant)) != null);
             Assert.True(model.FindEntityType(typeof(Address)) != null);

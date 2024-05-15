@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using Domain.Account.ValueObject;
+using Domain.Core.ValueObject;
 
 namespace __mock__;
 public class MockLogin

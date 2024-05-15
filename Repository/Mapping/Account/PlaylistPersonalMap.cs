@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
+using Domain.Core.Constants;
 
 namespace Repository.Mapping.Account;
 public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
@@ -10,29 +11,21 @@ public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
     {
         builder.ToTable(nameof(PlaylistPersonal));
 
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-        builder.Property(x => x.CustomerId).IsRequired();
-        builder.Property(x => x.IsPublic).IsRequired();
-        builder.Property(x => x.DtCreated).ValueGeneratedOnAdd();
+        builder.HasKey(playlist => playlist.Id);
+        builder.Property(playlist => playlist.Id).ValueGeneratedOnAdd();
+        builder.Property(playlist => playlist.Name).IsRequired().HasMaxLength(50);
+        builder.Property(playlist => playlist.CustomerId).IsRequired();
+        builder.Property(playlist => playlist.IsPublic).IsRequired();
+        builder.Property(playlist => playlist.DtCreated).ValueGeneratedOnAdd();
 
-        builder.HasMany(x => x.Musics)
-        .WithMany(x => x.PersonalPlaylists)
-        .UsingEntity<Dictionary<string, object>>(
-            "MusicPlayListPersonal",
-            j => j
-            .HasOne<Music>()
-            .WithMany()
-            .HasForeignKey("MusicId"),
-        j => j
-            .HasOne<PlaylistPersonal>()
-            .WithMany()
-            .HasForeignKey("PlaylistPersonalId"),
-        j =>
-        {
-            j.HasKey("MusicId", "PlaylistPersonalId");
-            j.Property<DateTime>("DtAdded").ValueGeneratedOnAdd();
-        });
+        builder.HasMany(playlist => playlist.Musics)
+        .WithMany(music => music.PersonalPlaylists).UsingEntity<Dictionary<string, object>>("MusicPlayListPersonal",
+            dictonary => dictonary.HasOne<Music>().WithMany().HasForeignKey("MusicId"),
+            dictonary => dictonary.HasOne<PlaylistPersonal>().WithMany().HasForeignKey("PlaylistPersonalId"),
+            dictonary =>
+            {
+                dictonary.HasKey("MusicId", "PlaylistPersonalId");
+                dictonary.Property<DateTime>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
+            });
     }
 }

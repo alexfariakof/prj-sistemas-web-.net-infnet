@@ -3,12 +3,13 @@ using Application.Account.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Controllers.Abstractions;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PlaylistController : ControllerBase
+public class PlaylistController : ControllerBaseTokensProps
 {
     private readonly IService<PlaylistDto> _playlistService;
     public PlaylistController(IService<PlaylistDto> playlistService)
@@ -62,7 +63,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Create([FromBody] PlaylistDto dto)
     {
-        if (UserType != UserTypeEnum.Admin) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -84,7 +85,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Update(PlaylistDto dto)
     {
-        if (UserType != UserTypeEnum.Admin) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();
@@ -107,7 +108,7 @@ public class PlaylistController : ControllerBase
     [Authorize("Bearer")]
     public IActionResult Delete(PlaylistDto dto)
     {
-        if (UserType != UserTypeEnum.Admin) return Unauthorized();
+        if (UserType != PerfilUser.UserType.Admin) return Unauthorized();
 
         if (ModelState is { IsValid: false })
             return BadRequest();

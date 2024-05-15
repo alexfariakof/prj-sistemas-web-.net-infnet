@@ -11,8 +11,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Domain.Account.ValueObject;
 using Repository.Interfaces;
+using Domain.Account.ValueObject;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -45,7 +47,7 @@ public static class Usings
         return dbSetMock;
     }
 
-    public static Mock<IRepository<T>> MockRepositorio<T>(List<T> _dataSet) where T : BaseModel, new()
+    public static Mock<IRepository<T>> MockRepositorio<T>(List<T> _dataSet) where T : Base, new()
     {
         var _mock = new Mock<IRepository<T>>();
 
@@ -107,17 +109,38 @@ public static class Usings
             .Returns(
             (int id) =>
             {
-                var userTypeData = new List<UserType>
+                var userTypeData = new List<PerfilUser>
                 {
-                    new UserType(UserTypeEnum.Admin),
-                    new UserType(UserTypeEnum.Customer),
-                    new UserType(UserTypeEnum.Merchant)
+                    new PerfilUser(PerfilUser.UserType.Admin),
+                    new PerfilUser(PerfilUser.UserType.Customer),
+                    new PerfilUser(PerfilUser.UserType.Merchant)
                 };
 
                 return userTypeData.SingleOrDefault(item => item.Id == id);
             });
         return _mock;
     }
+
+
+    public static void SetupBearerToken(Guid userId, ControllerBase controller, PerfilUser.UserType userType = PerfilUser.UserType.Customer)
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim("UserType", new PerfilUser(userType).Description),
+        };
+        var identity = new ClaimsIdentity(claims, "UserId");
+        var claimsPrincipal = new ClaimsPrincipal(identity);
+
+        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+        httpContext.Request.Headers.Authorization = "Bearer " + Usings.GenerateJwtToken(userId, userType.ToString());
+
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+    }
+
     public static string GenerateJwtToken(Guid userId, string userType)
     {
         var configuration = new ConfigurationBuilder()

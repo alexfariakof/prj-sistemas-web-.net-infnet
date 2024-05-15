@@ -7,6 +7,12 @@ import { Address, Customer } from '../../model';
 import { of } from 'rxjs';
 import AccountComponent from './account.component';
 import { CustomerComponent } from './customer/customer.component';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import ToolBarSecondaryModule from 'src/app/components/tool-bar-secondary/tool-bar-secondary.module';
+import { SharedModule } from 'src/app/components/shared.module';
 
 describe('AccountComponent', () => {
   let component: AccountComponent;
@@ -16,7 +22,7 @@ describe('AccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule, CommonModule, MatToolbarModule, ToolBarSecondaryModule, MatFormFieldModule, MatInputModule, SharedModule],
       providers:[AddressService]
     })
     .compileComponents();

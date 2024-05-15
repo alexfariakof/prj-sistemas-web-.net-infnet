@@ -1,7 +1,7 @@
 ﻿using Domain.Core.Aggreggates;
 
 namespace Domain.Streaming.Agreggates;
-public class Genre : BaseModel
+public class Genre : Base
 {
     public string? Name { get; set; }
     public virtual IList<Album> Albums { get; set; } = new List<Album>();

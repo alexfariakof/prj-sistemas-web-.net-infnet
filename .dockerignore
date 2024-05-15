@@ -22,7 +22,6 @@
 **/values.dev.yaml
 LICENSE
 README.md
-./HomeBrokerXUnit
-**/.angular
+./Migrations
 ./.documents
 ./.github

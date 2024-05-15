@@ -2,10 +2,17 @@
 using Application.Account;
 using Application.Account.Dto;
 using Application.Account.Interfaces;
+using Application.Administrative;
+using Application.Administrative.Interfaces;
 
 namespace Application.CommonInjectDependence;
 public static class ServiceInjectDependence
 {
+    public static IServiceCollection AddServicesAdministrativeApp(this IServiceCollection services)
+    {
+        services.AddScoped<IAdministrativeAccountService, AdministrativeAccountService>();
+        return services;
+    }
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();

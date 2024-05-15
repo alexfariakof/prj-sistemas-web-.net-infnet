@@ -6,6 +6,7 @@ import { Playlist  } from '../../model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PlaylistComponent } from './playlist.component';
 import { MockPlaylist } from '../../__mocks__';
+import { SharedModule } from 'src/app/components/shared.module';
 
 describe('PlaylistComponent', () => {
   let component: PlaylistComponent;
@@ -15,7 +16,7 @@ describe('PlaylistComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PlaylistComponent],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, SharedModule],
       providers: [
         {
           provide: ActivatedRoute,

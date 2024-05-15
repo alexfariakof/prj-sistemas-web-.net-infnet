@@ -3,7 +3,7 @@ using Application.Account.Interfaces;
 using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;
-using Domain.Core.Aggreggates;
+using Domain.Core;
 using Domain.Core.Interfaces;
 using Repository.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
@@ -43,7 +43,7 @@ public class UserService : IUserService
                 {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
                         new Claim(JwtRegisteredClaimNames.UniqueName, user.Login.Email),
-                        new Claim("UserType", user.UserType.Description),
+                        new Claim("UserType", user.PerfilType.Description),
                 });
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
@@ -53,7 +53,7 @@ public class UserService : IUserService
             {
                 AccessToken = token,
                 Authenticated = true,                
-                UserType = user.UserType.Description
+                UserType = user.PerfilType.Description
             };
         }
         throw new ArgumentException("Usuário Inválido!");

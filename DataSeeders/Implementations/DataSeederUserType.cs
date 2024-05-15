@@ -1,7 +1,7 @@
 ﻿using Domain.Account.ValueObject;
 using Repository;
 
-namespace DataSeeders.Implementations;
+namespace DataSeeders;
 public class DataSeederUserType : IDataSeeder
 {
     private readonly RegisterContext _context;
@@ -13,12 +13,12 @@ public class DataSeederUserType : IDataSeeder
     {
         try
         {
-            if (_context.UserType.Count().Equals(0))
+            if (_context.PerfilUser.Count().Equals(0))
             {
-                _context.UserType.AddRange(
-                    new UserType(UserTypeEnum.Admin) { Description = "Admin" },
-                    new UserType(UserTypeEnum.Customer) { Description = "Customer" },
-                    new UserType(UserTypeEnum.Merchant) { Description = "Merchant" }
+                _context.PerfilUser.AddRange(
+                    new PerfilUser(PerfilUser.UserType.Admin),
+                    new PerfilUser(PerfilUser.UserType.Customer),
+                    new PerfilUser(PerfilUser.UserType.Merchant)
                     );
             }
             _context.SaveChanges();

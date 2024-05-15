@@ -1,35 +1,14 @@
 ﻿using Application;
 using Application.Account.Dto;
-using Microsoft.AspNetCore.Http;
+using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Security.Claims;
 
 namespace WebApi.Controllers;
 public class AlbumControllerTest
 {
     private Mock<IService<AlbumDto>> mockAlbumService;
     private AlbumController controller;
-    private void SetupBearerToken(Guid userId)
-    {
-        var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim("UserType", "Album")
-            };
-        var identity = new ClaimsIdentity(claims, "UserId");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers.Authorization =
-            "Bearer " + Usings.GenerateJwtToken(userId, "Customer");
-
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
-
     public AlbumControllerTest()
     {
         mockAlbumService = new Mock<IService<AlbumDto>>();
@@ -44,7 +23,7 @@ public class AlbumControllerTest
         var albumList = MockAlbum.Instance.GetListFaker(2);
         var expectedAlbumDtoList = MockAlbum.Instance.GetDtoListFromAlbumList(albumList);
         mockAlbumService.Setup(service => service.FindAll(userId)).Returns(expectedAlbumDtoList);
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as OkObjectResult;
@@ -62,7 +41,7 @@ public class AlbumControllerTest
         // Arrange        
         var userId = Guid.NewGuid();
         mockAlbumService.Setup(service => service.FindAll(userId)).Returns((List<AlbumDto>)null);
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as NotFoundResult;
@@ -78,7 +57,7 @@ public class AlbumControllerTest
         // Arrange        
         var userId = Guid.NewGuid();
         mockAlbumService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(userId);
+        Usings.SetupBearerToken(userId, controller);
 
         // Act
         var result = controller.FindAll() as BadRequestObjectResult;
@@ -96,7 +75,7 @@ public class AlbumControllerTest
         var album = MockAlbum.Instance.GetFaker();
         var expectedAlbumDto = MockAlbum.Instance.GetDtoFromAlbum(album) ;
         mockAlbumService.Setup(service => service.FindById(album.Id)).Returns(expectedAlbumDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(album.Id) as OkObjectResult;
@@ -114,7 +93,7 @@ public class AlbumControllerTest
         // Arrange        
         var albumId = Guid.NewGuid();
         mockAlbumService.Setup(service => service.FindById(albumId)).Returns((AlbumDto)null);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(albumId) as NotFoundResult;
@@ -130,7 +109,7 @@ public class AlbumControllerTest
         // Arrange        
         var albumId = Guid.NewGuid();
         mockAlbumService.Setup(service => service.FindById(albumId)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.FindById(albumId) as BadRequestObjectResult;
@@ -195,7 +174,8 @@ public class AlbumControllerTest
         // Arrange        
         var validAlbumDto = MockAlbum.Instance.GetDtoFromAlbum(MockAlbum.Instance.GetFaker());
         mockAlbumService.Setup(service => service.Update(validAlbumDto)).Returns(validAlbumDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
+
         // Act
         var result = controller.Update(validAlbumDto) as OkObjectResult;
 
@@ -210,7 +190,7 @@ public class AlbumControllerTest
     public void Update_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -227,7 +207,7 @@ public class AlbumControllerTest
         // Arrange        
         var validAlbumDto = MockAlbum.Instance.GetDtoFromAlbum(MockAlbum.Instance.GetFaker());
         mockAlbumService.Setup(service => service.Update(validAlbumDto)).Throws(new Exception("BadRequest_Erro_Message"));
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.Update(validAlbumDto) as BadRequestObjectResult;
@@ -245,7 +225,7 @@ public class AlbumControllerTest
         var mockAlbumDto = MockAlbum.Instance.GetDtoFromAlbum(MockAlbum.Instance.GetFaker());
         mockAlbumService.Setup(service => service.Delete(It.IsAny<AlbumDto>())).Returns(true);
         mockAlbumService.Setup(service => service.FindById(mockAlbumDto.Id)).Returns(mockAlbumDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.Delete(mockAlbumDto) as ObjectResult;
@@ -261,7 +241,7 @@ public class AlbumControllerTest
     public void Delete_Returns_BadRequest_Result_When_ModelState_Is_Invalid()
     {
         // Arrange
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
@@ -280,7 +260,7 @@ public class AlbumControllerTest
         var mockAlbumDto = MockAlbum.Instance.GetDtoFromAlbum(MockAlbum.Instance.GetFaker());
         mockAlbumService.Setup(service => service.Delete(It.IsAny<AlbumDto>())).Throws(new Exception("BadRequest_Erro_Message"));
         mockAlbumService.Setup(service => service.FindById(mockAlbumDto.Id)).Returns(mockAlbumDto);
-        SetupBearerToken(Guid.NewGuid());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
         var result = controller.Delete(mockAlbumDto) as BadRequestObjectResult;
@@ -289,5 +269,22 @@ public class AlbumControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
+    [Fact]
+    public void Delete_Returns_Unauthorized_When_UserType_Is_Not_Customer()
+    {
+        // Arrange
+        var mockAlbumDto = MockAlbum.Instance.GetDtoFromAlbum(MockAlbum.Instance.GetFaker());
+        Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserType.Merchant);
+        controller.ModelState.AddModelError("errorKey", "ErrorMessage");
+
+        // Act
+        var result = controller.Delete(mockAlbumDto);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<UnauthorizedResult>(result);
+        mockAlbumService.Verify(b => b.Delete(It.IsAny<AlbumDto>()), Times.Never);
     }
 }

@@ -50,7 +50,7 @@ public class MockMerchant
                 .RuleFor(m => m.Signatures, f => new List<Signature>())
                 .RuleFor(m => m.Notifications, f => new List<Notification>())
                 .Generate();
-            fakeMerchant.User.UserType = new UserType(UserTypeEnum.Merchant);
+            fakeMerchant.User.PerfilType = new PerfilUser(PerfilUser.UserType.Merchant);
             return fakeMerchant;
 
         }

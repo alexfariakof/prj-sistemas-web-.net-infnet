@@ -2,7 +2,7 @@
 using Domain.Streaming.ValueObject;
 using Repository;
 
-namespace DataSeeders.Implementations;
+namespace DataSeeders;
 public class DataSeederMusic : IDataSeeder
 {
     private readonly RegisterContext _context;

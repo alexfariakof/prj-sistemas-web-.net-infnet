@@ -2,7 +2,7 @@
 using Domain.Core.Aggreggates;
 
 namespace Domain.Notifications;
-public class Notification : BaseModel
+public class Notification : Base
 {
     public DateTime DtNotification { get; set; }
     public String? Message { get; set; }

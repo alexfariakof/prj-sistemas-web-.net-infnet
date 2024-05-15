@@ -8,19 +8,19 @@ public class CustomerMap : BaseAccountMap<Customer>
 {
     protected override void ConfigureCustom(EntityTypeBuilder<Customer> builder)
     {
-        builder.Property(x => x.Birth).IsRequired();
-        builder.Property(x => x.CPF).IsRequired().HasMaxLength(14);
-        builder.OwnsOne<Phone>(e => e.Phone, c =>
+        builder.Property(customer => customer.Birth).IsRequired();
+        builder.Property(customer => customer.CPF).IsRequired().HasMaxLength(14);
+        builder.OwnsOne<Phone>(Customer => Customer.Phone, prop =>
         {
-            c.Property(x => x.Number).HasColumnName("Phone").HasMaxLength(50).IsRequired();
-            c.WithOwner();
+            prop.Property(customer => customer.Number).HasColumnName("Phone").HasMaxLength(50).IsRequired();
+            prop.WithOwner();
         });
        
-        builder.HasOne(x => x.Flat).WithMany();
-        builder.HasMany(x => x.Addresses).WithOne();
-        builder.HasMany(x => x.Cards).WithOne();
-        builder.HasMany(x => x.Signatures).WithOne();
-        builder.HasMany(x => x.Playlists).WithOne(x => x.Customer);
+        builder.HasOne(customer => customer.Flat).WithMany();
+        builder.HasMany(customer => customer.Addresses).WithOne();
+        builder.HasMany(customer => customer.Cards).WithOne();
+        builder.HasMany(customer => customer.Signatures).WithOne();
+        builder.HasMany(customer => customer.Playlists).WithOne(x => x.Customer);
 
     }
 }

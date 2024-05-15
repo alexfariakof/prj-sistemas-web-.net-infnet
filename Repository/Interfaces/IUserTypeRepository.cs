@@ -3,5 +3,5 @@
 namespace Repository.Interfaces;
 public interface IUserTypeRepository
 {
-     public UserType GetById(int id);
+     public PerfilUser GetById(int id);
 }

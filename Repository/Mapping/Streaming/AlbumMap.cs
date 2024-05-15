@@ -1,6 +1,7 @@
 ﻿using Domain.Streaming.Agreggates;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Domain.Core.Constants;
 
 namespace Repository.Mapping.Streaming
 {
@@ -10,31 +11,20 @@ namespace Repository.Mapping.Streaming
         {
             builder.ToTable(nameof(Album));
 
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
-            builder.Property(x => x.Backdrop).IsRequired();
-            builder.HasMany(x => x.Musics).WithOne().OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(x => x.Genres).WithMany(m => m.Albums);
+            builder.HasKey(album => album.Id);
+            builder.Property(album => album.Id).ValueGeneratedOnAdd();
+            builder.Property(album => album.Name).IsRequired().HasMaxLength(50);
+            builder.Property(album => album.Backdrop).IsRequired();
+            builder.HasMany(album => album.Musics).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(album => album.Genres).WithMany(genre => genre.Albums);
 
-            builder.HasMany(x => x.Flats)
-                .WithMany(x => x.Albums)
-                .UsingEntity<Dictionary<string, object>>(
-                "FlatAlbum",
-                j => j
-                .HasOne<Flat>()
-                .WithMany()
-                .HasForeignKey("FlatId"),
-                j => j
-                .HasOne<Album>()
-                .WithMany()
-                .HasForeignKey("AlbumId"),
-                j =>
+            builder.HasMany(album => album.Flats).WithMany(album => album.Albums).UsingEntity<Dictionary<string, object>>("FlatAlbum",
+                dictonary => dictonary.HasOne<Flat>().WithMany().HasForeignKey("FlatId"),
+                dictonary => dictonary.HasOne<Album>().WithMany().HasForeignKey("AlbumId"),
+                dictonary =>
                 {
-                    j.HasKey("FlatId", "AlbumId");
-                    // Funciona com Sqlserver não deixando o campo nulo 
-                    // j.Property<DateTime?>("DtAdded").HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd(); 
-                    j.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd();
+                    dictonary.HasKey("FlatId", "AlbumId");
+                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
                 });
         }
     }
