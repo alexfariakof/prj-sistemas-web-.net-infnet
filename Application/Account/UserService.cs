@@ -1,6 +1,7 @@
 ﻿using Application.Account.Dto;
 using Application.Account.Interfaces;
 using Application.Authentication;
+using Application.Core;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Core;

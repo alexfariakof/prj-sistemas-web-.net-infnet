@@ -1,6 +1,4 @@
-﻿using Application.Transactions.Dto;
-using Domain.Administrative.ValueObject;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -10,18 +8,18 @@ public class AdministrativeAccountDto
     [JsonIgnore]
     public Guid Id { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "O campo Nome é obrigatório!")]
     public string? Name { get; set; }
 
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage = "O campo Email é obrigatório!")]
+    [EmailAddress(ErrorMessage = "O campo email é inválido!")]
     public string? Email { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "O campo Senha é obrigatório!")]
     [PasswordPropertyText]
     public string? Password { get; set; }
 
     [Required]
-    public PerfilDto? PerfilType { get; set; }
+    public PerfilDto PerfilType { get; set; }
 
 }

@@ -1,25 +1,47 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Login Access";
 }
 
-<div class="d-flex text-center justify-content-center">
-    <form class="align-items-center ">
-        <div class="mb-3">
-            <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
-            <div class="input-group">
-                <div class="input-group-text">@@</div>
-                <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Username">
+@using Application.Core;
+@model LoginDto
+@{
+    ViewData["Title"] = "Login Access";
+}
+
+<div class="d-flex justify-content-center align-items-center " style="height: 60vh;">
+    <div class="d-flex flex-column align-items-stretch m-2 border border-2 border-dark bg-dark rounded-4 align-items-center justify-content-center ">
+        <form method="post" asp-controller="Home" asp-action="SingIn" class="d-flex flex-column align-items-stretch m-3 b-0 align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3">
+            <div class="mb-3">
+                <label class="visually-hidden" for="email">Entre com o seu email</label>
+                <div class="input-group">
+                    <div class="input-group-text">@@</div>
+                    @Html.TextBoxFor(login => login.Email, new { @class = "form-control ", @id = "email", @placeholder = "Entre com o seu email", @required = "", @type = "text" })                    
+                </div>
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Email"></span>
             </div>
-        </div>
-        <div class="mb-3">
-            <label class="visually-hidden" for="inputPassword">Password</label>
-            <div class="input-group">
-                <div class="input-group-text "></div>
-                <input type="text" class="form-control" id="inputPassword" placeholder="Senha">
+            <div class="mb-2">
+                <label class="visually-hidden bi bi-lock" for="password"></label>
+                <div class="input-group">
+                    <div class="input-group-text text-black">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1" />
+                        </svg>
+                    </div>
+                    @Html.TextBoxFor(login => login.Password, new { @class = "form-control", @id = "password", @type = "password", @autocomplete = "new-password", @required = "" })                    
+                </div>
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Password"></span>
             </div>
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+            @{
+                if (ViewBag.ErrorMessage != null)
+                {
+                    <span class="badge bg-secondary bg-opacity-50 text-danger mb-2">@Html.Raw(ViewBag.ErrorMessage)</span>
+                }
+            }
+            <div class="mb-1 text-center">
+                <button type="submit" class="btn btn-primary w-75">
+                    Entrar
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

@@ -10,4 +10,18 @@ public class UserRepository : BaseRepository<User>, IRepository<User>
     {
         Context = context;
     }
+
+    public override void Save(User entity)
+    {
+        entity.PerfilType = this.Context.PerfilUser.Find(entity.PerfilType.Id);
+        Context.Add(entity);
+        Context.SaveChanges();
+    }
+
+    public override void Update(User entity)
+    {
+        entity.PerfilType = this.Context.PerfilUser.Find(entity.PerfilType.Id);
+        Context.Update(entity);
+        Context.SaveChanges();
+    }
 }

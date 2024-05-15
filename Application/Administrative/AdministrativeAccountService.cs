@@ -1,12 +1,13 @@
 ﻿using Application.Administrative.Dto;
 using Application.Administrative.Interfaces;
+using Application.Core;
 using AutoMapper;
-using Domain.Account.Agreggates;
 using Domain.Administrative.Agreggates;
+using Domain.Core;
 using Repository.Interfaces;
 
 namespace Application.Administrative;
-public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService
+public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService, IAuthenticationService
 {
     public AdministrativeAccountService(IMapper mapper, IRepository<AdministrativeAccount> customerRepository) : base(mapper, customerRepository)
     {
@@ -54,5 +55,23 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         var result = this.Mapper.Map<List<AdministrativeAccountDto>>(accounts);
         return result;
 
+    }
+
+    public bool Authentication(LoginDto dto)
+    {
+        bool credentialsValid = false;
+
+        var user = this.Repository.Find(u => u.Login.Email.Equals(dto.Email)).FirstOrDefault();
+        if (user == null)
+            throw new ArgumentException("Usuário inexistente!");
+        else
+        {
+            credentialsValid = user != null && !String.IsNullOrEmpty(user.Login.Password) && !String.IsNullOrEmpty(user.Login.Email) && (Crypto.GetInstance.Decrypt(user.Login.Password).Equals(dto.Password));
+        }
+
+        if (credentialsValid)
+            return true;
+
+        throw new ArgumentException("Usuário Inválido!");
     }
 }
