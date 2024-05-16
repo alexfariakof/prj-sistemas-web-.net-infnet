@@ -15,18 +15,10 @@ namespace Repository.Mapping.Transactions
             builder.Property(transaction => transaction.Id).ValueGeneratedOnAdd();
             builder.Property(transaction => transaction.DtTransaction).IsRequired();
             builder.Property(transaction => transaction.Description).IsRequired().HasMaxLength(50);
-
-            builder.HasOne(transaction => transaction.Customer)
-                   .WithMany(cb => cb.Transactions)
-                   .HasForeignKey(transaction => transaction.Id)
-                   .IsRequired();
-
-            builder.OwnsOne<Monetary>(transaction => transaction.Value, prop =>
+            builder.HasOne(transaction => transaction.Customer).WithMany(cb => cb.Transactions).HasForeignKey(transaction => transaction.Id).IsRequired();
+            builder.OwnsOne<Monetary>(transaction => transaction.Value, monetary =>
             {
-                prop.Property(transaction => transaction.Value)
-                .HasColumnName("Monetary")
-                .IsRequired()
-                .HasColumnType("decimal(18,2)");
+                monetary.Property(transaction => transaction.Value).HasColumnName("Monetary").IsRequired().HasColumnType("decimal(18,2)");
             });
         }
     }

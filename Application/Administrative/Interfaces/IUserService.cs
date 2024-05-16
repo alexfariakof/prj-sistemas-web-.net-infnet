@@ -1,4 +1,4 @@
-﻿using Application.Core;
+﻿using Application.Shared.Dto;
 
 namespace Application.Administrative.Interfaces;
 public interface IAuthenticationService

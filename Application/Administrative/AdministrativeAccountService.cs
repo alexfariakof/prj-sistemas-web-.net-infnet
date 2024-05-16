@@ -1,6 +1,6 @@
 ﻿using Application.Administrative.Dto;
 using Application.Administrative.Interfaces;
-using Application.Core;
+using Application.Shared.Dto;
 using AutoMapper;
 using Domain.Administrative.Agreggates;
 using Domain.Core;

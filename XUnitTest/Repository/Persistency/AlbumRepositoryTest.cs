@@ -2,7 +2,7 @@
 using Domain.Streaming.Agreggates;
 using Moq;
 
-namespace Repository.Persistency;
+namespace Repository.Persistency.Streaming;
 public class AlbumRepositoryTest
 {
     private Mock<RegisterContext> contextMock;

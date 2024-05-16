@@ -2,11 +2,11 @@
 using Repository.Abastractions;
 using Repository.Interfaces;
 
-namespace Repository.Persistency;
-public class MusicRepository : BaseRepository<Music>, IRepository<Music>
+namespace Repository.Persistency.Streaming;
+public class BandRepository : BaseRepository<Band>, IRepository<Band>
 {
     public RegisterContext Context { get; set; }
-    public MusicRepository(RegisterContext context) : base(context)
+    public BandRepository(RegisterContext context) : base(context)
     {
         Context = context;
     }

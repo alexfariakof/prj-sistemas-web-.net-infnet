@@ -1,8 +1,9 @@
 ﻿using Domain.Account.Agreggates;
+using Domain.Account.ValueObject;
 using Repository.Abastractions;
 using Repository.Interfaces;
 
-namespace Repository.Persistency;
+namespace Repository.Persistency.Account;
 public class CustomerRepository : BaseRepository<Customer>, IRepository<Customer>
 {
     public RegisterContext Context { get; set; }
@@ -13,14 +14,14 @@ public class CustomerRepository : BaseRepository<Customer>, IRepository<Customer
 
     public override void Save(Customer entity)
     {
-        entity.User.PerfilType = this.Context.PerfilUser.Find(entity.User.PerfilType.Id);
+        entity.User.PerfilType = Context.Set<PerfilUser>().Find(entity.User.PerfilType.Id);
         Context.Add(entity);
         Context.SaveChanges();
     }
 
     public override void Update(Customer entity)
     {
-        entity.User.PerfilType = this.Context.PerfilUser.Find(entity.User.PerfilType.Id);
+        entity.User.PerfilType = Context.Set<PerfilUser>().Find(entity.User.PerfilType.Id);
         Context.Update(entity);
         Context.SaveChanges();
     }

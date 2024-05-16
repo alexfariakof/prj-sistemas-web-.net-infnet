@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace Repository.Persistency;
-public class UserTypeRepositoryTest
+namespace Repository.Persistency.Account;
+public class UserTypeRepositoryTest 
 {
     private Mock<RegisterContext> contextMock;
 

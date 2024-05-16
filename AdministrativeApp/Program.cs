@@ -10,9 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddAutoMapperAdministrativeApp();
-builder.Services.AddServicesAdministrativeApp();
 builder.Services.AddRepositoriesAdministrativeApp();
+builder.Services.AddServicesAdministrativeApp();
+builder.Services.AddAutoMapperAdministrativeApp();
 
 if (builder.Environment.IsDevelopment())
 {

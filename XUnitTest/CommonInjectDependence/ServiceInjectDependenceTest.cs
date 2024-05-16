@@ -13,7 +13,7 @@ public class ServiceInjectDependenceTest
         var services = new ServiceCollection();
 
         // Act
-        services.AddServices();
+        services.AddServicesWebApiApp();
         
         // Assert
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(UserService)));

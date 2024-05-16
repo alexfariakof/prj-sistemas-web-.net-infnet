@@ -1,6 +1,6 @@
 ﻿using Application.Account.Dto;
 using Application.Account.Interfaces;
-using Application.Core;
+using Application.Shared.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 

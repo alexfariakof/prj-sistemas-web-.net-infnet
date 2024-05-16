@@ -1,12 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Domain.Streaming.Agreggates;
-using Domain.Core.Constants;
+using Repository.Abastractions;
 
 namespace Repository.Mapping.Streaming
 {
     public class PlaylistMap : IEntityTypeConfiguration<Playlist>
     {
+        private readonly BaseConstants baseConstants;
+        public PlaylistMap(BaseConstants baseConstants) : base()
+        {
+            this.baseConstants = baseConstants;
+        }
+
         public void Configure(EntityTypeBuilder<Playlist> builder)
         {
             builder.ToTable(nameof(Playlist));
@@ -23,7 +29,7 @@ namespace Repository.Mapping.Streaming
                 dictonary => dictonary.HasOne<Playlist>().WithMany(),
                 dictonary =>
                 {
-                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
+                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(baseConstants.CURRENT_DATE);
                 });
 
             builder.HasMany(playlist => playlist.Flats).WithMany(playlist => playlist.Playlists).UsingEntity<Dictionary<string, object>>("FlatPlayList",
@@ -31,7 +37,7 @@ namespace Repository.Mapping.Streaming
                 dictonary => dictonary.HasOne<Playlist>().WithMany(),
                 dictonary =>
                 {
-                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
+                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(baseConstants.CURRENT_DATE);
                 });
         }
     }

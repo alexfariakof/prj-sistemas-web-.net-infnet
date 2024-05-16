@@ -2,12 +2,12 @@
 using Repository.Abastractions;
 using Repository.Interfaces;
 
-namespace Repository.Persistency;
+namespace Repository.Persistency.Streaming;
 public class AlbumRepository : BaseRepository<Album>, IRepository<Album>
 {
     public RegisterContext Context { get; set; }
     public AlbumRepository(RegisterContext context) : base(context)
     {
         Context = context;
-    }   
+    }
 }

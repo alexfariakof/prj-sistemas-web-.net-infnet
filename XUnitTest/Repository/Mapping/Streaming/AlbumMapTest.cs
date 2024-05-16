@@ -18,7 +18,7 @@ public class AlbumMapTest
         using (var context = new MockRegisterContext(options))
         {
             var builder = new ModelBuilder(new ConventionSet());
-            var configuration = new AlbumMap();
+            var configuration = new AlbumMap(new Abastractions.BaseConstants());
 
             configuration.Configure(builder.Entity<Album>());
 

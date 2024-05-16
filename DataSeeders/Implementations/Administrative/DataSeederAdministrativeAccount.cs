@@ -1,4 +1,5 @@
 ﻿using Domain.Administrative.Agreggates;
+using Domain.Administrative.ValueObject;
 using Domain.Core.ValueObject;
 using Repository;
 
@@ -21,7 +22,7 @@ public class DataSeederAdministrativeAccount : IDataSeeder
             {
                 Name = "Admnistrador User Test ",
                 Login = new Login { Email = "admin@user.com", Password = "12345T!" },
-                PerfilType = _context.Perfil.Where(u => u.Id.Equals(1)).First()
+                PerfilType = _context.Perfil.Where(u => u.Id.Equals((int)Perfil.UserType.Admin)).First()
             };
 
             _context.Add(account);
@@ -30,7 +31,7 @@ public class DataSeederAdministrativeAccount : IDataSeeder
             {
                 Name = "Normal User Test",
                 Login = new Login { Email = "normal@user.com", Password = "12345T!" },
-                PerfilType = _context.Perfil.Where(u => u.Id.Equals(2)).First()
+                PerfilType = _context.Perfil.Where(u => u.Id.Equals((int)Perfil.UserType.Normal)).First()
             };
             _context.Add(account);
             _context.SaveChanges();

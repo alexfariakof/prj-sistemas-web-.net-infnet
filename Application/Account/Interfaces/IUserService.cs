@@ -1,5 +1,5 @@
 ﻿using Application.Account.Dto;
-using Application.Core;
+using Application.Shared.Dto;
 
 namespace Application.Account.Interfaces;
 public interface IUserService

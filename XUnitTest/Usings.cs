@@ -15,6 +15,7 @@ using Repository.Interfaces;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Administrative.ValueObject;
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -76,9 +77,9 @@ public static class Usings
         _mock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<T, bool>>>()));
         return _mock;
     }
-    public static Mock<ICreditCardBrandRepository> MockDataSetCreditCardBrand()
+    public static Mock<IRepository<CreditCardBrand>> MockDataSetCreditCardBrand()
     {
-        var _mock = new Mock<ICreditCardBrandRepository>();
+        var _mock = new Mock<IRepository<CreditCardBrand>>();
 
         _mock.Setup(repo => repo.GetById(It.IsAny<int>()))
             .Returns(
@@ -101,9 +102,9 @@ public static class Usings
 
         return _mock;
     }
-    public static Mock<IUserTypeRepository> MockDataSetUserType()
+    public static Mock<IRepository<PerfilUser>> MockDataSetUserType()
     {
-        var _mock = new Mock<IUserTypeRepository>();
+        var _mock = new Mock<IRepository<PerfilUser>>();
 
         _mock.Setup(repo => repo.GetById(It.IsAny<int>()))
             .Returns(
@@ -120,7 +121,6 @@ public static class Usings
             });
         return _mock;
     }
-
 
     public static void SetupBearerToken(Guid userId, ControllerBase controller, PerfilUser.UserType userType = PerfilUser.UserType.Customer)
     {

@@ -16,25 +16,19 @@ namespace Repository.Mapping.Transactions
             builder.Property(card => card.Active).IsRequired();
             builder.Property(card => card.Number).IsRequired().HasMaxLength(19);            
             builder.Property(card => card.CVV).IsRequired().HasMaxLength(255);
-
-            builder.HasOne(card => card.CardBrand)
-                    .WithMany(card => card.Cards)
-                    .IsRequired();
+            builder.HasOne(card => card.CardBrand).WithMany(card => card.Cards).IsRequired();
 
 
-            builder.OwnsOne<ExpiryDate>(e => e.Validate, (Action<OwnedNavigationBuilder<Card, ExpiryDate>>)(prop =>
+            builder.OwnsOne<ExpiryDate>(e => e.Validate, (Action<OwnedNavigationBuilder<Card, ExpiryDate>>)(expiryDate =>
             {
-                prop.Ignore(e => e.Month);
-                prop.Ignore(e => e.Year);
-                prop.Property(card => card.Value).HasColumnName("Validate").IsRequired();
+                expiryDate.Ignore(e => e.Month);
+                expiryDate.Ignore(e => e.Year);
+                expiryDate.Property(card => card.Value).HasColumnName("Validate").IsRequired();
             }));
 
-            builder.OwnsOne<Monetary>(card => card.Limit, prop =>
+            builder.OwnsOne<Monetary>(card => card.Limit, monetary =>
             {
-                prop.Property(card => card.Value)
-                .HasColumnName("Limit")
-                .IsRequired()
-                .HasColumnType("decimal(18,2)");
+                monetary.Property(card => card.Value).HasColumnName("Limit").IsRequired().HasColumnType("decimal(18,2)");
             });
 
             builder.HasMany(card => card.Transactions).WithOne();

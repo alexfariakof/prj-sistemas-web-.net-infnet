@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
 using Moq;
+using __mock__;
+using Domain.Account.ValueObject;
+using System.Linq.Expressions;
 
-namespace Repository.Persistency;
+namespace Repository.Persistency.Account;
 public class MerchantRepositoryTest
 {
     private Mock<RegisterContext> contextMock;
@@ -10,10 +13,7 @@ public class MerchantRepositoryTest
     public MerchantRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase Merchant")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase Merchant").Options;
         contextMock = new Mock<RegisterContext>(options);    }
 
     [Fact]
@@ -23,7 +23,8 @@ public class MerchantRepositoryTest
         var repository = new MerchantRepository(contextMock.Object);
         var mockMerchant = MockMerchant.Instance.GetFaker();
         mockMerchant.Cards = MockCard.Instance.GetListFaker(1);
-        
+        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<Expression<Func<PerfilUser, bool>>>())).Returns(mockMerchant.User.PerfilType);
+
         // Act
         repository.Save(mockMerchant);
 
@@ -39,6 +40,7 @@ public class MerchantRepositoryTest
         var repository = new MerchantRepository(contextMock.Object);
         var mockMerchant = MockMerchant.Instance.GetFaker();
         mockMerchant.Cards = MockCard.Instance.GetListFaker(1);
+        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<Expression<Func<PerfilUser, bool>>>())).Returns(mockMerchant.User.PerfilType);
 
         // Act
         repository.Update(mockMerchant);

@@ -1,12 +1,18 @@
-﻿using Domain.Core.Constants;
-using Domain.Streaming.Agreggates;
+﻿using Domain.Streaming.Agreggates;
 using Domain.Streaming.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Repository.Abastractions;
 
 namespace Repository.Mapping.Streaming;
 public class MusicMap : IEntityTypeConfiguration<Music>
 {
+    private readonly BaseConstants baseConstants;
+    public MusicMap(BaseConstants baseConstants) : base()
+    {
+        this.baseConstants = baseConstants;
+    }
+
     public void Configure(EntityTypeBuilder<Music> builder)
     {
         builder.ToTable("Music");
@@ -31,7 +37,7 @@ public class MusicMap : IEntityTypeConfiguration<Music>
             dictonary => dictonary.HasOne<Music>().WithMany(),
             dictonary =>
             {
-                dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
+                dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(baseConstants.CURRENT_DATE);
             });
 
     }

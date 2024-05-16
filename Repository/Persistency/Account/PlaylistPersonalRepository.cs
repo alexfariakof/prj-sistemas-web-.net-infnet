@@ -2,7 +2,7 @@
 using Repository.Abastractions;
 using Repository.Interfaces;
 
-namespace Repository.Persistency;
+namespace Repository.Persistency.Account;
 public class PlaylistPersonalRepository : BaseRepository<PlaylistPersonal>, IRepository<PlaylistPersonal>
 {
     public RegisterContext Context { get; set; }

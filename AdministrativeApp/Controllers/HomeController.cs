@@ -1,8 +1,8 @@
 using AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Application.Core;
 using Application.Administrative.Interfaces;
+using Application.Shared.Dto;
 
 namespace AdministrativeApp.Controllers;
 public class HomeController : Controller

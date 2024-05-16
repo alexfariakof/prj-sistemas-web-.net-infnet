@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.Core;
+namespace Application.Shared.Dto;
 public class LoginDto
 {
     [Required(ErrorMessage = "O campo email é obrigatório!")]

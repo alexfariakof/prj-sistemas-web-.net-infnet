@@ -1,14 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Login Access";
-}
-
-@using Application.Core;
+﻿@using Application.Shared.Dto;
 @model LoginDto
 @{
     ViewData["Title"] = "Login Access";
 }
 
-<div class="d-flex justify-content-center align-items-center " style="height: 60vh;">
+<div class="d-flex justify-content-center align-items-center " style="height: 100vh;">
     <div class="d-flex flex-column align-items-stretch m-2 border border-2 border-dark bg-dark rounded-4 align-items-center justify-content-center ">
         <form method="post" asp-controller="Home" asp-action="SingIn" class="d-flex flex-column align-items-stretch m-3 b-0 align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3">
             <div class="mb-3">

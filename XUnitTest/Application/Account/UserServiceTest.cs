@@ -1,4 +1,4 @@
-﻿using Application.Core;
+﻿using Application.Shared.Dto;
 using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;

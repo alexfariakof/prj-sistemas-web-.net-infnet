@@ -72,7 +72,7 @@ jobs:
           
           dotnet tool install -g dotnet-reportgenerator-globaltool
           # Executa Build/Restore das  configura��es do projeto executando automaticamente a gera��o do report Genetator do Backend e Frontend
-          dotnet test ./XunitTest/XunitTest.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+          dotnet test ./XunitTest/XunitTest.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
           
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
   
