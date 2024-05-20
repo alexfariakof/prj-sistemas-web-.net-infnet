@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Application.Administrative.Interfaces;
 using Application.Shared.Dto;
+using AdministrativeApp.Controllers.Abastractions;
 
 namespace AdministrativeApp.Controllers;
-public class HomeController : Controller
+public class HomeController : BaseController
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IAuthenticationService authenticationService;
 
-    public HomeController(ILogger<HomeController> logger, IAuthenticationService authenticationService)
+    public HomeController(ILogger<HomeController> logger, IAuthenticationService authenticationService) : base()
     {
         _logger = logger;
         this.authenticationService = authenticationService;
@@ -40,16 +41,25 @@ public class HomeController : Controller
 
         try
         {
-            var result = authenticationService.Authentication(dto);
+            var accountDto = authenticationService.Authentication(dto);
+            HttpContext.Session.SetString("UserId", accountDto.Id.ToString());
+            HttpContext.Session.SetString("UserName", accountDto.Name);
             return RedirectToAction("Index");
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.ErrorMessage = argEx.Message;
+                ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
             else
-                ViewBag.ErrorMessage = "Ocorreu um erro ao realizar login.";
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao realizar login." };
             return View("Index");
         }
     }
+
+    public IActionResult LogOut()
+    {
+        ClaerSession();
+        return RedirectToAction("Index");
+    }
+
 }

@@ -1,12 +1,13 @@
-﻿using System.ComponentModel;
+﻿using Domain.Core.Aggreggates;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Application.Administrative.Dto;
-public class AdministrativeAccountDto
+public class AdministrativeAccountDto : BaseDto
 {
     [JsonIgnore]
-    public Guid Id { get; set; }
+    public override Guid Id { get; set; }
 
     [Required(ErrorMessage = "O campo Nome é obrigatório!")]
     public string? Name { get; set; }

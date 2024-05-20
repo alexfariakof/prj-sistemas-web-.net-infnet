@@ -1,6 +1,8 @@
-﻿using Application.Shared.Dto;
+﻿using Application.Administrative.Dto;
+using Application.Shared.Dto;
 
 namespace Application.Administrative.Interfaces;
 public interface IAuthenticationService
-{    bool Authentication(LoginDto dto);
+{
+    AdministrativeAccountDto Authentication(LoginDto dto);
 }

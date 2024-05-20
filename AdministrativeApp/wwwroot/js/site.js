@@ -4,6 +4,6 @@
 // Write your JavaScript code.
 
 
-function backHistory() {
+var backHistory = () => {
     window.history.back();
 }

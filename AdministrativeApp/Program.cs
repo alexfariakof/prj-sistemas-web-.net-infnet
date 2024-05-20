@@ -13,7 +13,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRepositoriesAdministrativeApp();
 builder.Services.AddServicesAdministrativeApp();
 builder.Services.AddAutoMapperAdministrativeApp();
-
+builder.Services.AddServices();
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDataSeeders();
@@ -41,4 +41,5 @@ app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Inde
 if (app.Environment.IsDevelopment())
     app.RunDataSeeders();
 
+app.UseSession();
 app.Run();

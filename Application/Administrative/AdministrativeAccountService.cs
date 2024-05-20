@@ -3,6 +3,7 @@ using Application.Administrative.Interfaces;
 using Application.Shared.Dto;
 using AutoMapper;
 using Domain.Administrative.Agreggates;
+using Domain.Administrative.ValueObject;
 using Domain.Core;
 using Repository.Interfaces;
 
@@ -15,6 +16,8 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
     }
     public override AdministrativeAccountDto Create(AdministrativeAccountDto dto)
     {
+        IsValidPerfilUsuario(dto);
+
         if (this.Repository.Exists(x => x.Login != null && x.Login.Email == dto.Email))
             throw new ArgumentException("Usuário já cadastrado.");        
 
@@ -38,12 +41,14 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
     }
     public override AdministrativeAccountDto Update(AdministrativeAccountDto dto)
     {
+        IsValidPerfilUsuario(dto);
         var account = this.Mapper.Map<AdministrativeAccount>(dto);
         this.Repository.Update(account);
         return this.Mapper.Map<AdministrativeAccountDto>(account);
     }
     public override bool Delete(AdministrativeAccountDto dto)
     {
+        IsValidPerfilUsuario(dto);
         var account = this.Mapper.Map<AdministrativeAccount>(dto);
         this.Repository.Delete(account);
         return true; 
@@ -57,21 +62,29 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
 
     }
 
-    public bool Authentication(LoginDto dto)
+    public AdministrativeAccountDto Authentication(LoginDto dto)
     {
         bool credentialsValid = false;
-
-        var user = this.Repository.Find(u => u.Login.Email.Equals(dto.Email)).FirstOrDefault();
-        if (user == null)
+        var account = this.Repository.Find(u => u.Login.Email.Equals(dto.Email)).FirstOrDefault();
+        if (account == null)
             throw new ArgumentException("Usuário inexistente!");
         else
         {
-            credentialsValid = user != null && !String.IsNullOrEmpty(user.Login.Password) && !String.IsNullOrEmpty(user.Login.Email) && (Crypto.GetInstance.Decrypt(user.Login.Password).Equals(dto.Password));
+            credentialsValid = account != null && !String.IsNullOrEmpty(account.Login.Password) && !String.IsNullOrEmpty(account.Login.Email) && (Crypto.GetInstance.Decrypt(account.Login.Password).Equals(dto.Password));
         }
 
         if (credentialsValid)
-            return true;
+            return this.Mapper.Map<AdministrativeAccountDto>(account);
 
         throw new ArgumentException("Usuário Inválido!");
+    }
+
+    private void IsValidPerfilUsuario(AdministrativeAccountDto dto)
+    {
+        var administrador = this.Repository.Find(account => account.Id == dto.UsuarioId && account.PerfilType.Id == (int)Perfil.UserType.Admin).FirstOrDefault();
+
+        if (administrador == null)
+            throw new ArgumentException("Usuário não permitido a realizar operação.");
+
     }
 }
