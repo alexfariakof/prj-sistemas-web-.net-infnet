@@ -10,10 +10,8 @@ using Repository.Interfaces;
 namespace Application.Administrative;
 public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService, IAuthenticationService
 {
-    public AdministrativeAccountService(IMapper mapper, IRepository<AdministrativeAccount> customerRepository) : base(mapper, customerRepository)
-    {
+    public AdministrativeAccountService(IMapper mapper, IRepository<AdministrativeAccount> customerRepository) : base(mapper, customerRepository)  {  }
 
-    }
     public override AdministrativeAccountDto Create(AdministrativeAccountDto dto)
     {
         IsValidPerfilUsuario(dto);
@@ -26,6 +24,7 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         var result = this.Mapper.Map<AdministrativeAccountDto>(account);
         return result;
     }
+
     public override AdministrativeAccountDto FindById(Guid id)
     {
         var account = this.Repository.GetById(id);
@@ -39,6 +38,7 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         var result = this.Mapper.Map<List<AdministrativeAccountDto>>(accounts);
         return result;
     }
+
     public override AdministrativeAccountDto Update(AdministrativeAccountDto dto)
     {
         IsValidPerfilUsuario(dto);
@@ -46,6 +46,7 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         this.Repository.Update(account);
         return this.Mapper.Map<AdministrativeAccountDto>(account);
     }
+
     public override bool Delete(AdministrativeAccountDto dto)
     {
         IsValidPerfilUsuario(dto);

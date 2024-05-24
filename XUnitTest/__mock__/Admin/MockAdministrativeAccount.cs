@@ -1,6 +1,7 @@
 ﻿using Domain.Administrative.Agreggates;
 using Bogus;
 using Domain.Administrative.ValueObject;
+using Application.Administrative.Dto;
 
 namespace __mock__.Admin;
 public class MockAdministrativeAccount
@@ -42,5 +43,37 @@ public class MockAdministrativeAccount
         }
 
         return administrativeAccounts;
+    }
+    
+    public AdministrativeAccountDto GetNewDtoFromAdministrativeAccount(AdministrativeAccount account)
+    {
+        lock (LockObject)
+        {
+            var fakeAdministrativeAccountDto = new Faker<AdministrativeAccountDto>()
+                .RuleFor(a => a.Id, f => account.Id)
+                .RuleFor(a => a.Name, f => account.Name)
+                .RuleFor(a => a.Email, f => account.Login.Email)
+                .RuleFor(a => a.Password, f => f.Internet.Password())
+                .RuleFor(a => a.PerfilType, f => (PerfilDto)account.PerfilType.Id)
+                .Generate();
+
+            return fakeAdministrativeAccountDto;
+        }
+    }
+
+    public List<AdministrativeAccountDto> GetDtoListFromAdministrativeAccountList(IList<AdministrativeAccount> accounts)
+    {
+        lock (LockObject)
+        {
+            var administrativeAccountDtoList = new List<AdministrativeAccountDto>();
+
+            foreach (var account in accounts)
+            {
+                var accountDto = GetNewDtoFromAdministrativeAccount(account);
+                administrativeAccountDtoList.Add(accountDto);
+            }
+
+            return administrativeAccountDtoList;
+        }
     }
 }

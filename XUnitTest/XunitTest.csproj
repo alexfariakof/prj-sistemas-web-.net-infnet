@@ -61,10 +61,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AdministrativeApp\AdministrativeApp.csproj" />
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\WebApi\WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AdministrativeApp\" />
   </ItemGroup>
 
   <PropertyGroup>

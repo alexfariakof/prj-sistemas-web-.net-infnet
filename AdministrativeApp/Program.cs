@@ -14,19 +14,29 @@ builder.Services.AddRepositoriesAdministrativeApp();
 builder.Services.AddServicesAdministrativeApp();
 builder.Services.AddAutoMapperAdministrativeApp();
 builder.Services.AddServices();
+
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDataSeeders();
-    //builder.Services.AddDbContext<RegisterContextAdministravtive>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
     builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
+}
+else if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
+}
+else
+{
+    builder.Services.AddDataSeeders();
+    builder.Services.AddDbContext<RegisterContextAdministravtive>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
 }
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Home/Error");    
     app.UseHsts();    
@@ -38,7 +48,7 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
     app.RunDataSeeders();
 
 app.UseSession();
