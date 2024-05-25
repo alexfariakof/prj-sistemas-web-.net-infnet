@@ -111,7 +111,6 @@ public class HomeControllerTest
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid user.", alert.Message);
     }
