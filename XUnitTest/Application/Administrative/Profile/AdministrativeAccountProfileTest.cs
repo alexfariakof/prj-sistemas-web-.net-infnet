@@ -34,7 +34,7 @@ public class AdministrativeAccountProfileTest
         var mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<AdministrativeAccountProfile>(); }));
 
         var fakeAccount = MockAdministrativeAccount.Instance.GetFaker();
-        var accountDto = MockAdministrativeAccount.Instance.GetNewDtoFromAdministrativeAccount(fakeAccount);
+        var accountDto = MockAdministrativeAccount.Instance.GetFakerDto(fakeAccount);
 
         // Act
         var account = mapper.Map<AdministrativeAccount>(accountDto);

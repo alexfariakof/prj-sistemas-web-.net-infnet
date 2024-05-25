@@ -6,6 +6,7 @@ $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTest"
 $sourceDirs = "$baseDirectory\Application;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\WebApi;$baseDirectory\AdministrativeApp;"
 $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTest\TestResults"
 $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
+$filefilters = "$projectPath\DataSeeders\**;-$projectPath\Migrations.MsSqlServer\**;-$projectPath\Migrations.MySqlServer\**;-$projectPath\AngularApp\**;$projectPath\AdministrativeApp\Views\**;"
 
 # Função para matar processos com base no nome do processo que estajam em execução 
 function Stop-ProcessesByName {

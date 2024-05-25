@@ -15,7 +15,8 @@ using Repository.Interfaces;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Administrative.ValueObject;
+using System.Diagnostics.CodeAnalysis;
+
 public static class Usings
 {
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
@@ -77,6 +78,7 @@ public static class Usings
         _mock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<T, bool>>>()));
         return _mock;
     }
+
     public static Mock<IRepository<CreditCardBrand>> MockDataSetCreditCardBrand()
     {
         var _mock = new Mock<IRepository<CreditCardBrand>>();
@@ -102,6 +104,7 @@ public static class Usings
 
         return _mock;
     }
+
     public static Mock<IRepository<PerfilUser>> MockDataSetUserType()
     {
         var _mock = new Mock<IRepository<PerfilUser>>();
@@ -174,5 +177,29 @@ public static class Usings
 
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.WriteToken(token);
+    }
+
+    public static DefaultHttpContext MockHttpContext()
+    {
+        Mock<ISession> sessionMock;
+        Dictionary<string, object> sessionStorage;
+        sessionMock = new Mock<ISession>();
+        sessionStorage = new Dictionary<string, object>();
+        sessionMock.Setup(s => s.Set(It.IsAny<string>(), It.IsAny<byte[]>())).Callback<string, byte[]>((key, value) => sessionStorage[key] = value);
+        sessionMock.Setup(s => s.TryGetValue(It.IsAny<string>(), out It.Ref<byte[]>.IsAny))
+            .Returns((string key, out byte[] value) =>
+            {
+                if (sessionStorage.TryGetValue(key, out var storedValue))
+                {
+                    value = (byte[])storedValue;
+                    return true;
+                }
+                value = null;
+                return false;
+            });
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Session = sessionMock.Object;
+        return httpContext;
     }
 }

@@ -69,7 +69,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AdministrativeApp\" />
+    <Folder Include="AdministrativeApp\Models\" />
+    <Folder Include="AdministrativeApp\Views\" />
   </ItemGroup>
 
   <PropertyGroup>
