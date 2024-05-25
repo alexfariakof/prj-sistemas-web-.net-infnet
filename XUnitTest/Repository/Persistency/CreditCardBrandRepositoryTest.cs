@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace Repository.Persistency;
+namespace Repository.Persistency.Transactions;
 public class CreditCardBrandRepositoryTest
 {
     private Mock<RegisterContext> contextMock;

@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Domain.Account.Agreggates;
+using Domain.Account.ValueObject;
 
 namespace __mock__;
 public class MockUser
@@ -12,13 +13,13 @@ public class MockUser
 
     public User GetFaker()
     {
-        var fakeLogin = new Faker<User>()
+        var fakeUser = new Faker<User>()
             .RuleFor(l => l.Id, f => Guid.NewGuid())
             .RuleFor(l => l.Login, f => MockLogin.Instance.GetFaker())
             .RuleFor(t => t.DtCreated, f => f.Date.Recent())
             .Generate();
-
-        return fakeLogin;
+        fakeUser.PerfilType = new PerfilUser((new Random().Next(3) % 2 == 1) ? PerfilUser.UserType.Merchant : PerfilUser.UserType.Customer);
+        return fakeUser;
     }
     public List<User> GetListFaker(int count)
     {

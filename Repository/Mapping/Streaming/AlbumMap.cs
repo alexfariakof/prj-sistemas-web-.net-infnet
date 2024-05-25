@@ -1,12 +1,18 @@
 ﻿using Domain.Streaming.Agreggates;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Domain.Core.Constants;
+using Repository.Abastractions;
 
 namespace Repository.Mapping.Streaming
 {
     public class AlbumMap : IEntityTypeConfiguration<Album>
     {
+        private readonly BaseConstants baseConstants;
+        public AlbumMap(BaseConstants baseConstants) : base()
+        {
+            this.baseConstants = baseConstants;
+        }
+
         public void Configure(EntityTypeBuilder<Album> builder)
         {
             builder.ToTable(nameof(Album));
@@ -24,7 +30,7 @@ namespace Repository.Mapping.Streaming
                 dictonary =>
                 {
                     dictonary.HasKey("FlatId", "AlbumId");
-                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
+                    dictonary.Property<DateTime?>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(baseConstants.CURRENT_DATE);
                 });
         }
     }

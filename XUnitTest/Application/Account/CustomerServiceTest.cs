@@ -23,14 +23,8 @@ public class CustomerServiceTest
         mapperMock = new Mock<IMapper>();
         customerRepositoryMock = Usings.MockRepositorio(mockCustomerList);
         flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-                        
-        customerService = new CustomerService(
-            mapperMock.Object,
-            customerRepositoryMock.Object,
-            flatRepositoryMock.Object,
-            Usings.MockDataSetCreditCardBrand().Object,
-            Usings.MockDataSetUserType().Object
-        );
+
+        customerService = new CustomerService(mapperMock.Object, customerRepositoryMock.Object, flatRepositoryMock.Object);
     }
 
     [Fact]

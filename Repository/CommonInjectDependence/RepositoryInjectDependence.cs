@@ -4,8 +4,8 @@ using Domain.Streaming.Agreggates;
 using Repository.Persistency;
 using Repository.Interfaces;
 using Domain.Administrative.Agreggates;
-using Repository.Interfaces.Administrative;
-using Repository.Persistency.Administrative;
+using Repository.Persistency.Account;
+using Repository.Persistency.Streaming;
 
 namespace Repository.CommonInjectDependence;
 public static class RepositoryInjectDependence
@@ -13,17 +13,11 @@ public static class RepositoryInjectDependence
     public static IServiceCollection AddRepositoriesAdministrativeApp(this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepository<AdministrativeAccount>), typeof(AdminAccountRepository));
-        services.AddScoped(typeof(IPerfilRepository), typeof(PerfilRepository));
         return services;
     }
 
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    public static IServiceCollection AddRepositoriesWebApiApp(this IServiceCollection services)
     {
-        // Administrative 
-        services.AddScoped(typeof(IRepository<AdministrativeAccount>), typeof(AdminAccountRepository));
-        services.AddScoped(typeof(IPerfilRepository), typeof(PerfilRepository));
-
-        // Application 
         services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));
         services.AddScoped(typeof(IRepository<Customer>), typeof(CustomerRepository));
         services.AddScoped(typeof(IRepository<Merchant>), typeof(MerchantRepository));
@@ -34,9 +28,6 @@ public static class RepositoryInjectDependence
         services.AddScoped(typeof(IRepository<Album>), typeof(AlbumRepository));
         services.AddScoped(typeof(IRepository<PlaylistPersonal>), typeof(PlaylistPersonalRepository));
         services.AddScoped(typeof(IRepository<Genre>), typeof(GenreRepository));
-        services.AddScoped(typeof(ICreditCardBrandRepository), typeof(CreditCardBrandRepository));
-        services.AddScoped(typeof(IUserTypeRepository), typeof(UserTypeRepository));
-
         return services;
     }
 }

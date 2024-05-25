@@ -61,10 +61,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AdministrativeApp\AdministrativeApp.csproj" />
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\WebApi\WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AdministrativeApp\Models\" />
+    <Folder Include="AdministrativeApp\Views\" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -76,9 +82,8 @@
   <Target Name="Test" BeforeTargets="Build;Rebuild" DependsOnTargets="$(TestDependsOn)" />
   <Target Name="AfterTest">
     <!-- Check if OS is Windows -->
-    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="powershell -File ./coverage_report.ps1" />
-	
-    <!-- Check if OS is Linux Base 
+	  <Exec Condition=" '$(Configuration)' != 'Debug' And '$(OS)' == 'Windows_NT'" Command="powershell -File ./coverage_report.ps1" />
+	  <!-- Check if OS is Linux Base 
     <Exec Condition="'$(OS)' != 'Windows_NT'" Command="bash ./coverage_report.sh" /> 
     -->
   </Target>

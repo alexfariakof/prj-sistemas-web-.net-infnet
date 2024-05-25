@@ -16,7 +16,8 @@ public class AdminAccountMap : IEntityTypeConfiguration<AdministrativeAccount>
         builder.HasOne(account => account.PerfilType).WithMany(perfil => perfil.Users).IsRequired();
         builder.OwnsOne<Login>(account => account.Login, dictonary =>
         {
-            dictonary.Property(login => login.Email).HasColumnName("Email").HasMaxLength(150).IsRequired();
+            dictonary.HasIndex(login => login.Email).IsUnique();
+            dictonary.Property(login => login.Email).HasColumnName("Email").HasMaxLength(150).IsRequired() ;            
             dictonary.Property(login => login.Password).HasColumnName("Password").HasMaxLength(255).IsRequired();
             dictonary.WithOwner();
         });

@@ -2,11 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
-using Domain.Core.Constants;
+using Repository.Abastractions;
 
 namespace Repository.Mapping.Account;
 public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
 {
+    private readonly BaseConstants baseConstants;
+    public PlaylistPersonalMap(BaseConstants baseConstants): base() 
+    {
+        this.baseConstants = baseConstants;
+    }
+    
     public void Configure(EntityTypeBuilder<PlaylistPersonal> builder)
     {
         builder.ToTable(nameof(PlaylistPersonal));
@@ -25,7 +31,7 @@ public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>
             dictonary =>
             {
                 dictonary.HasKey("MusicId", "PlaylistPersonalId");
-                dictonary.Property<DateTime>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(DefaultValueSql.CURRENT_DATE);
+                dictonary.Property<DateTime>("DtAdded").ValueGeneratedOnAdd().HasDefaultValueSql(baseConstants.CURRENT_DATE);
             });
     }
 }

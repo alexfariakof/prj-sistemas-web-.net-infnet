@@ -3,7 +3,7 @@ using Domain.Streaming.Agreggates;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace Repository.Persistency;
+namespace Repository.Persistency.Account;
 public class PlaylistPersonalRepositoryTest
 {
     private Mock<RegisterContext> contextMock;

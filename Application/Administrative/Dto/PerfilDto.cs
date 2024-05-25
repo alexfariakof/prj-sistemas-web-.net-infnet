@@ -1,8 +1,10 @@
-﻿namespace Application.Administrative.Dto;
+﻿using Domain.Administrative.ValueObject;
+
+namespace Application.Administrative.Dto;
 
 public enum PerfilDto
 {
-    Todos = 0,
-    Admin = 1,
-    Normal = 2,    
+    Todos = (int)Perfil.UserType.Invalid,
+    Admin = (int)Perfil.UserType.Admin,
+    Normal = (int)Perfil.UserType.Normal,    
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Administrative.Dto;
 using Domain.Administrative.Agreggates;
+using Domain.Administrative.ValueObject;
 using Domain.Core.ValueObject;
 
 namespace Application.Administrative.Profile;
@@ -8,7 +9,7 @@ public class AdministrativeAccountProfile : AutoMapper.Profile
     public AdministrativeAccountProfile() 
     {
         CreateMap<AdministrativeAccountDto, AdministrativeAccount>()
-            .ForMember(dest => dest.PerfilType, opt =>  opt.MapFrom(src => (int)src.PerfilType))
+            .ForMember(dest => dest.PerfilType, opt =>  opt.MapFrom(src => new Perfil((Perfil.UserType)src.PerfilType)))
             .ForMember(dest => dest.Login, opt => opt.MapFrom(src => new Login() { Email = src.Email, Password = src.Password }))
             .ReverseMap();
 
@@ -20,7 +21,7 @@ public class AdministrativeAccountProfile : AutoMapper.Profile
                 d.Password = "********";
             });
 
-        CreateMap<BasePerfil, PerfilDto>().ReverseMap();
-        CreateMap<PerfilDto, BasePerfil>().ReverseMap();
+        CreateMap<Perfil, PerfilDto>().ReverseMap();
+        CreateMap<PerfilDto, Perfil>().ReverseMap();
     }
 }

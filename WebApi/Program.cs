@@ -60,10 +60,10 @@ builder.Services.AddAuthConfigurations(builder.Configuration);
 builder.Services.AddAutoMapperWebApiApp();
 
 //Repositories
-builder.Services.AddRepositories();
+builder.Services.AddRepositoriesWebApiApp();
 
 //Services
-builder.Services.AddServices();
+builder.Services.AddServicesWebApiApp();
 
 var app = builder.Build();
 

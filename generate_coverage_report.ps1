@@ -6,6 +6,7 @@ $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTest"
 $sourceDirs = "$baseDirectory\Application;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\WebApi;$baseDirectory\AdministrativeApp;"
 $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTest\TestResults"
 $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
+$filefilters = "$projectPath\DataSeeders\**;-$projectPath\Migrations.MsSqlServer\**;-$projectPath\Migrations.MySqlServer\**;-$projectPath\AngularApp\**;$projectPath\AdministrativeApp\Views\**;"
 
 # Função para matar processos com base no nome do processo que estajam em execução 
 function Stop-ProcessesByName {
@@ -49,14 +50,14 @@ Remove-TestResults
 dotnet clean slnPixCharge.sln > $null 2>&1
 if ($args -contains "-w") {
 
-    $watchProcess = Start-Process "dotnet" -ArgumentList "watch", "test", "--project ./XunitTest/XunitTest.csproj", "--collect:""XPlat Code Coverage;Format=opencover""", "/p:CollectCoverage=true", "/p:CoverletOutputFormat=cobertura" -PassThru
+    $watchProcess = Start-Process "dotnet" -ArgumentList "watch", "test", "--configuration Release", "--project ./XunitTest/XunitTest.csproj", "--collect:""XPlat Code Coverage;Format=opencover""", "/p:CollectCoverage=true", "/p:CoverletOutputFormat=cobertura" -PassThru
     Wait-TestResults
     Invoke-Item $coverageXmlPath\index.html
 
     $watchProcess.WaitForExit()
 }
 else {
-    dotnet test ./XunitTest/XunitTest.csproj --results-directory $reportPath  /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+    dotnet test ./XunitTest/XunitTest.csproj --configuration Release --results-directory $reportPath  /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
     Wait-TestResults
     Invoke-Item $coverageXmlPath\index.html
 }  

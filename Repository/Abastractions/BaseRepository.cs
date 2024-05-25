@@ -37,6 +37,11 @@ public abstract class BaseRepository<T> where T : class, new()
         return Context.Set<T>().Find(id) ?? new();
     }
 
+    public virtual T GetById(int id)
+    {
+        return Context.Set<T>().Find(id) ?? new();
+    }
+
     public virtual IEnumerable<T> Find(Expression<Func<T, bool>> expression)
     {
         return Context.Set<T>().Where(expression);

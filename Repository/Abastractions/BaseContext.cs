@@ -15,6 +15,7 @@ namespace Repository.Abastractions;
 
 public class BaseContext<TContext> : DbContext where TContext : DbContext
 {
+    public virtual BaseConstants BASE_CONSTS { get; }
     public BaseContext(DbContextOptions<TContext> options) : base(options) { }
 
     // Definições das entidades
@@ -43,18 +44,18 @@ public class BaseContext<TContext> : DbContext where TContext : DbContext
         modelBuilder.ApplyConfiguration(new CustomerMap());
         modelBuilder.ApplyConfiguration(new MerchantMap());
         modelBuilder.ApplyConfiguration(new PerfilUserMap());
-        modelBuilder.ApplyConfiguration(new PlaylistPersonalMap());
+        modelBuilder.ApplyConfiguration(new PlaylistPersonalMap(BASE_CONSTS));
         modelBuilder.ApplyConfiguration(new SignitureMap());
         modelBuilder.ApplyConfiguration(new UserMap());
         // Notifications
         modelBuilder.ApplyConfiguration(new NotificationMap());
         // Streaming
-        modelBuilder.ApplyConfiguration(new AlbumMap());
+        modelBuilder.ApplyConfiguration(new AlbumMap(BASE_CONSTS));
         modelBuilder.ApplyConfiguration(new BandMap());
         modelBuilder.ApplyConfiguration(new FlatMap());
         modelBuilder.ApplyConfiguration(new GenreMap());
-        modelBuilder.ApplyConfiguration(new MusicMap());
-        modelBuilder.ApplyConfiguration(new PlaylistMap());
+        modelBuilder.ApplyConfiguration(new MusicMap(BASE_CONSTS));
+        modelBuilder.ApplyConfiguration(new PlaylistMap(BASE_CONSTS));
         // Transactions        
         modelBuilder.ApplyConfiguration(new CreditCardBrandMap());
         modelBuilder.ApplyConfiguration(new CreditCardMap());

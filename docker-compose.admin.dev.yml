@@ -1,0 +1,14 @@
+version: '3.4'
+services:
+  app-admin-dev:
+    container_name: dev
+    image: alexfariakof/administrative-app-dev-img
+    build:
+      context: .
+      dockerfile: AdministrativeApp/Dockerfile.Development
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+5171;https://+7230;
+    ports:
+      - 7230:7230
+      - 5171:5171

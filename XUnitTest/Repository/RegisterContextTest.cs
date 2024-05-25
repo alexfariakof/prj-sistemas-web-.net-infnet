@@ -45,9 +45,7 @@ public class RegisterContextTest
     public void Should_Apply_Configurations_RegisterContext()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemory_DataBase_RegisterContext")
-            .Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "InMemory_DataBase_RegisterContext").Options;
 
         // Act
         using (var context = new RegisterContext(options))
