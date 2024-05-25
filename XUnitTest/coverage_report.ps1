@@ -4,7 +4,7 @@ $projectAngular = (Resolve-Path -Path "$projectPath\AngularApp");
 $sourceDirs = "$projectPath\Application;$projectPath\Domain;$projectPath\Repository;$projectPath\WebApi;$projectPath\AdministrativeApp;"
 $reportPath = Join-Path -Path $projectTestPath -ChildPath "TestResults"
 $coverageXmlPath = Join-Path -Path (Join-Path -Path $projectTestPath -ChildPath "TestResults") -ChildPath "coveragereport"
-$filefilters = "$projectPath\DataSeeders\**;-$projectPath\Migrations.MsSqlServer\**;-$projectPath\Migrations.MySqlServer\**;-$projectPath\AngularApp\**-;$projectPath\AdministrativeApp\Views\**;"
+$filefilters = "$projectPath\DataSeeders\**;-$projectPath\Migrations.MsSqlServer\**;-$projectPath\Migrations.MySqlServer\**;-$projectPath\AngularApp\**;-$projectPath\AdministrativeApp\Views\**;"
 
 # Excuta Teste Unitarios sem restore e build e gera o relatório de cobertura do Backend
 dotnet test ./XunitTest.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore --no-build > $null 2>&1
