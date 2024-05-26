@@ -1,0 +1,19 @@
+version: '3.4'
+services:
+  app-sts-dev:
+    container_name: dev
+    image: alexfariakof/app-sts-server-dev-img
+    build:
+      context: ..
+      dockerfile: LiteStreaming.STS/Dockerfile.Development
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+5055;https://+7199;
+      ASPNETCORE_HTTP_PORTS: 5055
+      ASPNETCORE_HTTPS_PORTS: 7199
+    ports:
+       - 5055:80
+       - 7199:443
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

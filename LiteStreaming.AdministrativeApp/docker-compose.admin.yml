@@ -4,5 +4,5 @@ services:
   app-admin:
     image: ${DOCKER_REGISTRY-}app-admin
     build:
-      context: .
-      dockerfile: WebApi/Dockerfile
+      context: ..
+      dockerfile: LiteStreaming.AdministrativeApp/Dockerfile

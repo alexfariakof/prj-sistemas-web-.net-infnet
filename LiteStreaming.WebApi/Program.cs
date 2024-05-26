@@ -6,7 +6,6 @@ using Application.CommonInjectDependence;
 using Repository.CommonInjectDependence;
 using WebApi.CommonInjectDependence;
 using Repository;
-using LiteStreaming.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +17,6 @@ var appDescription = $"API Serviços de Streaming.";
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
-builder.Services.Configure<CryptoOptions>(builder.Configuration.GetSection("Crypto"));
-builder.Services.AddScoped<ICrypto, Crypto>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

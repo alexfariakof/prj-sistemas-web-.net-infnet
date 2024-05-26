@@ -2,22 +2,30 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
-RUN dotnet dev-certs https --trust
-RUN dotnet dev-certs
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+
 WORKDIR /src
+COPY ["LiteStreaming.AdministrativeApp/LiteStreaming.AdministrativeApp.csproj", "LiteStreaming.AdministrativeApp/"]
+RUN dotnet restore "./LiteStreaming.AdministrativeApp/LiteStreaming.AdministrativeApp.csproj"
 COPY . .
 
-WORKDIR /src/AdministrativeApp
-RUN dotnet build --restore -c Release -o /app/build
-RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/LiteStreaming.AdministrativeApp"
+RUN dotnet build "./LiteStreaming.AdministrativeApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet dev-certs https -ep ${HOME}/.aspnet/https/LiteStreaming.AdministrativeApp.pfx -p ${HOME}/.aspnet/https
+RUN dotnet dev-certs https --trust
+RUN dotnet publish "./LiteStreaming.AdministrativeApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+80;https://+443;
 ENV ASPNETCORE_HTTPS_PORT=443
-COPY --from=build /app/publish .
 
-ENTRYPOINT ["dotnet", "AdministrativeApp.dll"]
+COPY --from=publish /root ../root
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "LiteStreaming.AdministrativeApp.dll"]

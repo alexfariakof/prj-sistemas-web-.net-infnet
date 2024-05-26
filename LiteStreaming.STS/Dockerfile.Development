@@ -1,0 +1,30 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
+WORKDIR /app
+EXPOSE 5055
+EXPOSE 7199
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["LiteStreaming.STS/LiteStreaming.STS.csproj", "LiteStreaming.STS/"]
+RUN dotnet restore "./LiteStreaming.STS/LiteStreaming.STS.csproj"
+COPY . .
+WORKDIR "/src/LiteStreaming.STS"
+RUN dotnet build "./LiteStreaming.STS.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet dev-certs https -ep ${HOME}/.aspnet/https/LiteStreaming.STS.pfx -p ${HOME}/.aspnet/https
+RUN dotnet dev-certs https --trust
+RUN dotnet publish "./LiteStreaming.STS.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 as final
+WORKDIR /app
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+80;https://+443;
+ENV ASPNETCORE_HTTP_PORT=5055
+ENV ASPNETCORE_HTTPS_PORT=7199
+COPY --from=publish /root ../root
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "LiteStreaming.STS.dll"]

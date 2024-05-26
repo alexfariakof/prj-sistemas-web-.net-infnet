@@ -15,15 +15,6 @@
 		<None Include="docker-compose.override.yml">
 			<DependentUpon>docker-compose.yml</DependentUpon>
 		</None>
-		<None Include="docker-compose.admin.override.yml">
-			<DependentUpon>docker-compose.admin.yml</DependentUpon>
-		</None>
-		<None Include="docker-compose.override.yml">
-			<DependentUpon>docker-compose.yml</DependentUpon>
-		</None>
-		<None Include="docker-compose.admin.yml" />
-		<None Include="docker-compose.admin.dev.yml" />
-		<None Include="docker-compose.admin.prod.yml" />
 		<None Include="docker-compose.yml" />
 		<None Include="docker-compose.dev.yml" />
 		<None Include="docker-compose.prod.yml" />

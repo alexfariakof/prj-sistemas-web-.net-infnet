@@ -1,16 +1,6 @@
 {
   "profiles": {
-    "http": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5055"
-    },
-    "https": {
+    "LiteStreaming.STS": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -20,15 +10,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7199;http://localhost:5055"
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Container (Dockerfile)": {
+    "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",

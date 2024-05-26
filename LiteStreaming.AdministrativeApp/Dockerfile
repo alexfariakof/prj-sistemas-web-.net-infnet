@@ -10,11 +10,10 @@ COPY . .
 
 WORKDIR /src/AdministrativeApp
 RUN dotnet build --restore -c Release -o /app/build
-RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./LiteStreaming.AdministrativeApp.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build /root ../root
 COPY --from=build /app/publish .
 
 ENTRYPOINT ["dotnet", "AdministrativeApp.dll"]

@@ -6,55 +6,57 @@ using System.Text;
 namespace LiteStreaming.Cryptography;
 public class Crypto : ICrypto
 {
-    private readonly byte[] Key; // Chave fixa de 256 bits
-    private static ICrypto? Instance;
+    private readonly byte[] Key; // Chave fixa de 256 bits    
     private static readonly object LockObject = new object();
+    private static ICrypto? _crypto;
+
     public static ICrypto GetInstance
     {
         get
         {
             lock (LockObject)
             {
-                if (Instance == null)
+                if (_crypto == null)
                 {
-                    Instance = new Crypto();
+                    _crypto = new Crypto();
                 }
 
-                return Instance;
+                return _crypto;
             }
         }
     }
+
     private Crypto()
     {
-        var key = getHashKey();
+        var key = CreateHashKey();
         var keyByte = Convert.FromBase64String(key);
-        Key = keyByte;
+        this.Key = keyByte;
     }
 
     public Crypto(IOptions<CryptoOptions> options)
     {
-        var key = options.Value.Key;
+        var key = options.Value.Key.ToUpper();
         var keyByte = Convert.FromBase64String(key);
-        Key = keyByte;
+        this.Key = keyByte;
     }
 
-    private string getHashKey()
+    private string CreateHashKey()
     {
         var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
-
         if (File.Exists(jsonFilePath))
         {
             var jsonContent = File.ReadAllText(jsonFilePath);
             var config = JObject.Parse(jsonContent);
             var cryptoKey = config["Crypto"]?["Key"]?.ToString();
-
+            ValidateKey(cryptoKey);
             return cryptoKey;
         }
         else
         {
-            throw new ArgumentException("Arquivo com chave de criptografia não encontrado");
+            throw new ArgumentException("Arquivo appsettings.json não encontrado.");
         }
     }
+
     public string Encrypt(string password)
     {
         byte[] iv = GenerateIV();
@@ -103,14 +105,15 @@ public class Crypto : ICrypto
         {
             rngCsp.GetBytes(iv);
         }
-
         return iv;
     }
+
     private static byte[] PerformCryptography(string data, ICryptoTransform transform)
     {
         byte[] inputBytes = Encoding.UTF8.GetBytes(data);
         return PerformCryptography(inputBytes, transform);
     }
+
     private static byte[] PerformCryptography(byte[] data, ICryptoTransform transform)
     {
         using (MemoryStream memoryStream = new MemoryStream())
@@ -122,5 +125,20 @@ public class Crypto : ICrypto
                 return memoryStream.ToArray();
             }
         }
+    }
+
+    private void ValidateKey(string cryptoKey)
+    {
+        if (!cryptoKey.All(IsHexadecimalDigit))
+            throw new ArgumentException("A chave obtida contém caracteres inválidos.");
+
+
+        if (cryptoKey.Length != 32)
+            throw new ArgumentException("A chave obtida não é uma string válida da Base-64.");
+    }
+
+    private bool IsHexadecimalDigit(char c)
+    {
+        return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
     }
 }

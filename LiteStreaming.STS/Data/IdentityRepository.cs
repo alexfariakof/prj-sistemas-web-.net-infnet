@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace LiteStreaming.STS.Data;
 
+
 internal class IdentityRepository : IIdentityRepository
 {
     private readonly string connectionString;
