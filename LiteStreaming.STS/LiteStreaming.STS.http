@@ -1,0 +1,6 @@
+@LiteStreaming.STS_HostAddress = http://localhost:5055
+
+GET {{LiteStreaming.STS_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
