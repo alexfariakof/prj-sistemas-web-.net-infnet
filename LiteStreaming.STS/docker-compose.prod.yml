@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   app-sts-prod:
-    container_name: prod
+    container_name: sts-prod
     image: alexfariakof/app-sts-server-prod-img
     build:
       context: ..

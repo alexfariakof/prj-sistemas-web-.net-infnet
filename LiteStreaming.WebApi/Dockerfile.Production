@@ -6,7 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
 WORKDIR /src
 COPY . .
-RUN dotnet dev-certs https -ep ${HOME}/.aspnet/https/WebApi.pfx -p ${HOME}/.aspnet/https
+RUN dotnet dev-certs https -ep ${HOME}/.aspnet/https/LiteStreaming.pfx -p ${HOME}/.aspnet/https
 RUN dotnet dev-certs https --trust
 
 WORKDIR /src/LiteStreaming.WebApi
