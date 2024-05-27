@@ -30,7 +30,7 @@ public class UserService : IUserService
             throw new ArgumentException("Usuário inexistente!");
         else
         {
-            credentialsValid = user != null && !String.IsNullOrEmpty(user.Login.Password) && !String.IsNullOrEmpty(user.Login.Email) && (_crypto.IsEquals(dto?.Password ?? "", user.Login.Password));
+            credentialsValid = user is not  null && !String.IsNullOrEmpty(user.Login.Password) && !String.IsNullOrEmpty(user.Login.Email) && (_crypto.IsEquals(dto?.Password ?? "", user.Login.Password));
         }
 
         if (credentialsValid)
