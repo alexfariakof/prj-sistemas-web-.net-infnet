@@ -15,13 +15,12 @@ public class UserService : IUserService
     private readonly ICrypto _crypto = Crypto.Instance;
     private readonly IRepository<User> _userRepository;
     private readonly SigningConfigurations _singingConfiguration;
-    private readonly TokenConfiguration _tokenConfiguration;
-    public UserService(IMapper mapper, IRepository<User> userRepository, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration)
+    public UserService(IMapper mapper, IRepository<User> userRepository, SigningConfigurations singingConfiguration)
     {
         _singingConfiguration = singingConfiguration;
-        _tokenConfiguration = tokenConfiguration;
         _userRepository = userRepository;
     }
+
     public AuthenticationDto Authentication(LoginDto dto)
     {
         bool credentialsValid = false;
@@ -40,9 +39,10 @@ public class UserService : IUserService
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
                 new Claim("UserType", user.PerfilType.Description),
+                new Claim("UserId",  user.Id.ToString())
             });
             
-            var token = _singingConfiguration.CreateToken(identity, user.Id, _tokenConfiguration);
+            var token = _singingConfiguration.CreateAccessToken(identity);
             return new AuthenticationDto
             {
                 AccessToken = token,

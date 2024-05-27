@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 using LiteStreaming.Cryptography;
+using Microsoft.Extensions.Options;
 
 public static class Usings
 {
@@ -147,17 +148,14 @@ public static class Usings
 
     public static string GenerateJwtToken(Guid userId, string userType)
     {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        var signingConfigurations = new SigningConfigurations();
-        configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
-
-        var tokenConfigurations = new TokenConfiguration();
-        configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
-
+        //var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
+        var options = Options.Create(new TokenOptions
+        {
+            Issuer = "testIssuer",
+            Audience = "testAudience",
+            Seconds = 3600
+        });
+        var signingConfigurations = new SigningConfigurations(options);
         var securityKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(signingConfigurations.Key.ToString())
         );
@@ -169,10 +167,10 @@ public static class Usings
         };
 
         var token = new JwtSecurityToken(
-            issuer: tokenConfigurations.Issuer,
-            audience: tokenConfigurations.Audience,
+            issuer: signingConfigurations.TokenConfiguration.Issuer,
+            audience: signingConfigurations.TokenConfiguration.Audience,
             claims: claims,
-            expires: DateTime.Now.AddHours(tokenConfigurations.Seconds),
+            expires: DateTime.Now.AddHours(signingConfigurations.TokenConfiguration.Seconds),
             signingCredentials: credentials
         );
 

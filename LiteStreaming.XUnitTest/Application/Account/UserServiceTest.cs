@@ -2,11 +2,11 @@
 using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;
-using Microsoft.Extensions.Configuration;
 using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
 using LiteStreaming.Cryptography;
+using Microsoft.Extensions.Options;
 
 namespace Application.Account;
 public class UserServiceTest
@@ -18,27 +18,18 @@ public class UserServiceTest
     private readonly Mock<ICrypto> cryptoMock;
     public UserServiceTest()
     {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
+        var options = Options.Create(new TokenOptions
+        {
+            Issuer = "testIssuer",
+            Audience = "testAudience",
+            Seconds = 3600
+        });
 
-        var signingConfigurations = new SigningConfigurations();
-        configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
-
-        var tokenConfigurations = new TokenConfiguration();
-        configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
-
+        var signingConfigurations = new SigningConfigurations(options);
         mapperMock = new Mock<IMapper>();
         cryptoMock = new Mock<ICrypto>();
         userRepositoryMock = Usings.MockRepositorio(mockUserList);
-
-        userService = new UserService(
-            mapperMock.Object,
-            userRepositoryMock.Object,
-            signingConfigurations,
-            tokenConfigurations
-        );
+        userService = new UserService(mapperMock.Object, userRepositoryMock.Object, signingConfigurations);
     }
 
     [Fact]

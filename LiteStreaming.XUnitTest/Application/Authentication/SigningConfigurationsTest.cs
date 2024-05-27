@@ -1,6 +1,8 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+
 
 namespace Application.Authentication;
 public class SigningConfigurationsTest
@@ -8,8 +10,11 @@ public class SigningConfigurationsTest
     [Fact]
     public void SigningConfigurations_Should_Initialize_Correctly()
     {
-        // Arrange & Act
-        var signingConfigurations = new SigningConfigurations();
+        // Arrange
+        var options = Options.Create(new TokenOptions());
+
+        // Act
+        var signingConfigurations = new SigningConfigurations(options);
 
         // Assert
         Assert.NotNull(signingConfigurations.Key);
@@ -20,7 +25,10 @@ public class SigningConfigurationsTest
     public void Key_Should_Be_RSA_SecurityKey()
     {
         // Arrange
-        var signingConfigurations = new SigningConfigurations();
+        var options = Options.Create(new TokenOptions());
+
+        // Act
+        var signingConfigurations = new SigningConfigurations(options);
 
         // Assert
         Assert.IsType<RsaSecurityKey>(signingConfigurations.Key);
@@ -30,7 +38,10 @@ public class SigningConfigurationsTest
     public void SigningCredentials_Should_Be_Correct_Algorithm()
     {
         // Arrange
-        var signingConfigurations = new SigningConfigurations();
+        var options = Options.Create(new TokenOptions());
+
+        // Act
+        var signingConfigurations = new SigningConfigurations(options);
 
         // Assert
         Assert.NotNull(signingConfigurations.SigningCredentials.Algorithm);
@@ -38,18 +49,18 @@ public class SigningConfigurationsTest
     }
 
     [Fact]
-    public void CreateToken_Should_Generate_Valid_Token()
+    public void CreateAccessToken_Should_Generate_Valid_Token()
     {
         // Arrange
-        var signingConfigurations = new SigningConfigurations();
-        var handler = new JwtSecurityTokenHandler();
-        var userId = Guid.NewGuid();
-        var tokenConfiguration = new TokenConfiguration
+        var options = Options.Create(new TokenOptions
         {
             Issuer = "testIssuer",
             Audience = "testAudience",
             Seconds = 3600 // 1 hour expiration for testing
-        };
+        });
+        var signingConfigurations = new SigningConfigurations(options);
+        var handler = new JwtSecurityTokenHandler();
+        var userId = Guid.NewGuid();
         var claimsIdentity = new ClaimsIdentity(new[]
         {
             new Claim(ClaimTypes.Name, "testUser"),
@@ -59,7 +70,7 @@ public class SigningConfigurationsTest
         });
 
         // Act
-        var token = signingConfigurations.CreateToken(claimsIdentity, userId, tokenConfiguration);
+        var token = signingConfigurations.CreateAccessToken(claimsIdentity);
 
         // Assert
         Assert.NotNull(token);
@@ -68,9 +79,9 @@ public class SigningConfigurationsTest
         var validatedToken = handler.ValidateToken(token, new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = tokenConfiguration.Issuer,
+            ValidIssuer = options.Value.Issuer,
             ValidateAudience = true,
-            ValidAudience = tokenConfiguration.Audience,
+            ValidAudience = options.Value.Audience,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = signingConfigurations.Key,
             ValidateLifetime = true,

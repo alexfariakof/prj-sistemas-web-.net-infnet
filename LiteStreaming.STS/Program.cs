@@ -2,6 +2,7 @@ using LiteStreaming.Cryptography;
 using LiteStreaming.STS;
 using LiteStreaming.STS.Data;
 using LiteStreaming.STS.GrantType;
+using LiteStreaming.STS.ProfileService;
 using LiteStreaming.STS.SwaggerUIDocumentation;
 using Microsoft.OpenApi.Models;
 
@@ -43,7 +44,8 @@ builder.Services
     .AddInMemoryApiResources(IdentityServerConfigurations.GetApiResources())
     .AddInMemoryApiScopes(IdentityServerConfigurations.GetApiScopes())
     .AddInMemoryClients(IdentityServerConfigurations.GetClients())
-    .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
+    .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
+    .AddProfileService<ProfileService>();
 
 var app = builder.Build();
 
