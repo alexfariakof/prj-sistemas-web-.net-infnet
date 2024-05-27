@@ -21,7 +21,7 @@ internal class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
         var email = context.UserName;
         var user = await this.repository.FindByEmail(email);
 
-        if (user is not null && _crypto.Decrypt(user.Password).Equals(context.Password))
+        if (user is not null && _crypto.IsEquals(context.Password, user.Password))
         {
             context.Result = new GrantValidationResult(user.Id.ToString(), OidcConstants.AuthenticationMethods.Password);
         }

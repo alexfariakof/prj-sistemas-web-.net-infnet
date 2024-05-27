@@ -48,6 +48,7 @@ Stop-ProcessesByName
 Remove-TestResults
 
 dotnet clean > $null 2>&1
+dotnet build $projectTestPath > $null 2>&1
 if ($args -contains "-w") {
 
     $watchProcess = Start-Process "dotnet" -ArgumentList "watch", "test", "--configuration Release", "--project ./LiteStreaming.XunitTest/LiteStreaming.XunitTest.csproj", "--collect:""XPlat Code Coverage;Format=opencover""", "/p:CollectCoverage=true", "/p:CoverletOutputFormat=cobertura" -PassThru

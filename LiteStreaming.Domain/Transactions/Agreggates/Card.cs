@@ -20,7 +20,7 @@ public class Card : Base
     public string? CVV
     {
         get { return _cvv; }
-        set { _cvv = Crypto.GetInstance.Encrypt(value ?? ""); }
+        set { _cvv = Crypto.Instance.Encrypt(value ?? ""); }
     }
     public virtual IList<Transaction> Transactions { get; set; } = new List<Transaction>();
 

@@ -12,7 +12,7 @@ using System.Security.Claims;
 namespace Application.Account;
 public class UserService : IUserService
 {
-    private readonly ICrypto _crypto = Crypto.GetInstance;
+    private readonly ICrypto _crypto = Crypto.Instance;
     private readonly IRepository<User> _userRepository;
     private readonly SigningConfigurations _singingConfiguration;
     private readonly TokenConfiguration _tokenConfiguration;
@@ -31,7 +31,7 @@ public class UserService : IUserService
             throw new ArgumentException("Usuário inexistente!");
         else
         {
-            credentialsValid = user != null && !String.IsNullOrEmpty(user.Login.Password) && !String.IsNullOrEmpty(user.Login.Email) && (_crypto.Decrypt(user.Login.Password).Equals(dto.Password));
+            credentialsValid = user != null && !String.IsNullOrEmpty(user.Login.Password) && !String.IsNullOrEmpty(user.Login.Email) && (_crypto.IsEquals(dto?.Password ?? "", user.Login.Password));
         }
 
         if (credentialsValid)

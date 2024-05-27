@@ -10,7 +10,7 @@ public class Crypto : ICrypto
     private static readonly object LockObject = new object();
     private static ICrypto? _crypto;
 
-    public static ICrypto GetInstance
+    public static ICrypto Instance
     {
         get
         {
@@ -35,7 +35,7 @@ public class Crypto : ICrypto
 
     public Crypto(IOptions<CryptoOptions> options)
     {
-        var key = options.Value.Key.ToUpper();
+        var key = options?.Value?.Key?.ToUpper() ?? "";
         var keyByte = Convert.FromBase64String(key);
         this.Key = keyByte;
     }
@@ -47,7 +47,7 @@ public class Crypto : ICrypto
         {
             var jsonContent = File.ReadAllText(jsonFilePath);
             var config = JObject.Parse(jsonContent);
-            var cryptoKey = config["Crypto"]?["Key"]?.ToString();
+            var cryptoKey = config["Crypto"]?["Key"]?.ToString() ?? "";
             ValidateKey(cryptoKey);
             return cryptoKey;
         }
@@ -76,8 +76,8 @@ public class Crypto : ICrypto
             return Convert.ToBase64String(encryptedData);
         }
     }
-
-    public string Decrypt(string encryptedText)
+    
+    public bool IsEquals(string  plaintText, string encryptedText)
     {
         byte[] encryptedData = Convert.FromBase64String(encryptedText);
         byte[] iv = new byte[16];
@@ -94,16 +94,16 @@ public class Crypto : ICrypto
             ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
             byte[] decryptedBytes = PerformCryptography(encryptedBytes, decryptor);
 
-            return Encoding.UTF8.GetString(decryptedBytes);
+            return Encoding.UTF8.GetString(decryptedBytes) == plaintText;
         }
     }
 
     private static byte[] GenerateIV()
     {
         byte[] iv = new byte[16];
-        using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
         {
-            rngCsp.GetBytes(iv);
+            rng.GetBytes(iv);
         }
         return iv;
     }

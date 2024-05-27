@@ -8,7 +8,7 @@ public class CryptoTest
     {
         // Arrange
         string originalText = "!12345";
-        ICrypto crypto = Crypto.GetInstance;
+        ICrypto crypto = Crypto.Instance;
 
         // Act
         string encryptedText = crypto.Encrypt(originalText);
@@ -22,7 +22,7 @@ public class CryptoTest
     {
         // Arrange
         string originalText = "!12345";
-        ICrypto crypto = Crypto.GetInstance;
+        ICrypto crypto = Crypto.Instance;
 
         // Act
         string encryptedText1 = crypto.Encrypt(originalText);
