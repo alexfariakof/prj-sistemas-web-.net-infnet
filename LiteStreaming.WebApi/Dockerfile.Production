@@ -9,14 +9,14 @@ COPY . .
 RUN dotnet dev-certs https -ep ${HOME}/.aspnet/https/WebApi.pfx -p ${HOME}/.aspnet/https
 RUN dotnet dev-certs https --trust
 
-WORKDIR /src/WebApi
+WORKDIR /src/LiteStreaming.WebApi
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_21.x | bash - && \
     apt-get install -y nodejs
 RUN npm install -g npm@10.2.5 && \
     npm install -g @angular/core@16 @angular/cli@16
-RUN dotnet publish -c Release -o /app/publish  /p:UseAppHost=false
+RUN dotnet publish "./LiteStreaming.WebApi.csproj" -c Release -o /app/publish  /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 as final
 WORKDIR /app
@@ -26,4 +26,4 @@ ENV ASPNETCORE_HTTPS_PORT=443
 
 COPY --from=publish /root ../root
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "WebApi.dll"]
+ENTRYPOINT ["dotnet", "LiteStreaming.WebApi.dll"]

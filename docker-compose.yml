@@ -5,4 +5,4 @@ services:
     image: ${DOCKER_REGISTRY-}app
     build:
       context: .
-      dockerfile: WebApi/Dockerfile
+      dockerfile: LiteStreaming.WebApi/Dockerfile

@@ -6,7 +6,7 @@ using Repository.Interfaces;
 namespace Repository.Persistency;
 public class AdminAccountRepository : BaseRepository<AdministrativeAccount>, IRepository<AdministrativeAccount>
 {
-    public RegisterContextAdministravtive Context { get; set; }
+    private new RegisterContextAdministravtive Context { get; set; }
     public AdminAccountRepository(RegisterContextAdministravtive context) : base(context)
     {
         Context = context;

@@ -6,7 +6,7 @@ using Repository.Interfaces;
 namespace Repository.Persistency.Account;
 public class CustomerRepository : BaseRepository<Customer>, IRepository<Customer>
 {
-    public RegisterContext Context { get; set; }
+    private new RegisterContext Context { get; set; }
     public CustomerRepository(RegisterContext context) : base(context)
     {
         Context = context;

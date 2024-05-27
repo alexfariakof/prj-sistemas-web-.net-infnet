@@ -5,7 +5,7 @@ using Repository.Interfaces;
 namespace Repository.Persistency.Account;
 public class UserTypeRepository : BaseRepository<PerfilUser>, IRepository<PerfilUser>
 {
-    private RegisterContext Context { get; set; }
+    private new RegisterContext Context { get; set; }
     public UserTypeRepository(RegisterContext context) : base(context)
     {
         Context = context;
