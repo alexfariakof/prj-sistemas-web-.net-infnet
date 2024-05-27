@@ -12,10 +12,11 @@ import { MasterPageComponent } from './master.page/master.page.component';
 import { MasterPageModule } from "./master.page/master.page.module";
 import { MatCardModule } from "@angular/material/card";
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @NgModule({
-  imports: [FlexLayoutModule, CommonModule, MatCardModule, MasterPageModule,  AddFavoritesModule, FavoritesBarModule, AudioPlayerModule, SearchModule ],
-  exports: [CommonModule, FlexLayoutModule, MatCardModule, MasterPageComponent, AddFavoritesComponent, FavoritesBarComponent, AudioPlayerComponent, SearchComponent]
+  imports: [FlexLayoutModule, CommonModule, MatFormFieldModule, MatCardModule, MasterPageModule,  AddFavoritesModule, FavoritesBarModule, AudioPlayerModule, SearchModule ],
+  exports: [CommonModule, FlexLayoutModule, MatFormFieldModule, MatCardModule, MasterPageComponent, AddFavoritesComponent, FavoritesBarComponent, AudioPlayerComponent, SearchComponent]
 })
 
 export class SharedModule { }

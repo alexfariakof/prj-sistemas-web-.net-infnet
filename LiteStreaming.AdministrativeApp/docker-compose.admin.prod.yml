@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  app-admin-prod:
+    container_name: admin-prod
+    image: alexfariakof/administrative-app-prod-img
+    build:
+      context: ..
+      dockerfile: LiteStreaming.AdministrativeApp/Dockerfile.Production
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:80;https://+:443
+    ports:
+       - 80:80
+       - 443:443
+
+

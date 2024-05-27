@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  db:
+    container_name: maria-db-in-docker
+    image: maria-db-img
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile.MariaDb
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: "!12345"
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      MYSQL_DATABASE: StreamingDB
+      LANG: C.UTF-8
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_0900_ai_ci
+    ports:
+        - 3306:3306
+    expose:
+      - "6379"

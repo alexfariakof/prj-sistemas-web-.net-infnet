@@ -6,6 +6,7 @@ import { Playlist } from '../../model';
 import { PlaylistService } from '../../services';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPlaylist } from '../../__mocks__';
+import { HomeModule } from './home.module';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -14,7 +15,7 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, HomeModule]
     })
     .compileComponents();
 

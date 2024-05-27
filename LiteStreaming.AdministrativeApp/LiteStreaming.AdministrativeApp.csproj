@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>85450a77-2fcd-43fa-b077-4253e62a08ed</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\LiteStreaming.DataSeeders\LiteStreaming.DataSeeders.csproj" />
+		<ProjectReference Include="..\LiteStreaming.Application\LiteStreaming.Application.csproj" />
+		<ProjectReference Include="..\LiteStreaming.Domain\LiteStreaming.Domain.csproj" />
+		<ProjectReference Include="..\LiteStreaming.Repository\LiteStreaming.Repository.csproj" />
+		<ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
+		<ProjectReference Include="..\Migrations.MySqlServer\Migrations.MySqlServer.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\lib\%40popperjs\dist\" />
+	</ItemGroup>
+
+
+</Project>
