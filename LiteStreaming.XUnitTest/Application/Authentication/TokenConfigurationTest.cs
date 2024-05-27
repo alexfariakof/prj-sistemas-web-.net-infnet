@@ -9,16 +9,13 @@ public class TokenConfigurationTest
         // Arrange
         var options = Options.Create(new TokenOptions
         {
-            Issuer = "testIssuer",
-            Audience = "testAudience",
+            Issuer = "TesteIssuer",
+            Audience = "TesteAudience",
             Seconds = 3600
         });
-        var tokenConfiguration = new TokenConfiguration(options);
 
         // Act
-        tokenConfiguration.Audience = "TesteAudience";
-        tokenConfiguration.Issuer = "TesteIssuer";
-        tokenConfiguration.Seconds = 3600; // 1 hour
+        var tokenConfiguration = new TokenConfiguration(options);
 
         // Assert
         Assert.Equal("TesteAudience", tokenConfiguration.Audience);
