@@ -10,7 +10,7 @@ permissions:
 jobs:
   trigger_build_and_test:
     name: Triggered Deploy Prod
-    uses: alexfariakof/Infnet_Sistemas-Web-com-ASP.NET_24E1_3/.github/workflows/build_and_test.yml@main
+    uses: alexfariakof/prj-sistemas-web-.net-infnet/.github/workflows/build_and_test.yml@main
     secrets: inherit  
    
   deploy:
