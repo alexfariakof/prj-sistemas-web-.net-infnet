@@ -5,8 +5,7 @@ using Repository.Interfaces;
 namespace Repository.Persistency.Streaming;
 public class AlbumRepository : BaseRepository<Album>, IRepository<Album>
 {
-    private new RegisterContext Context { get; set; }
-
+    public RegisterContext Context { get; }
     public AlbumRepository(RegisterContext context) : base(context)
     {
         Context = context;

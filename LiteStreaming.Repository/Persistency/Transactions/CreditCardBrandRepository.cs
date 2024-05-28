@@ -5,7 +5,7 @@ using Repository.Interfaces;
 namespace Repository.Persistency.Transactions;
 public class CreditCardBrandRepository : BaseRepository<CreditCardBrand>, IRepository<CreditCardBrand>
 {
-    private new RegisterContext Context { get; set; }
+    public RegisterContext Context { get; }
     public CreditCardBrandRepository(RegisterContext context) : base(context)
     {
         Context = context;
@@ -13,6 +13,6 @@ public class CreditCardBrandRepository : BaseRepository<CreditCardBrand>, IRepos
 
     public override CreditCardBrand GetById(int id)
     {
-        return this.Context.Set<CreditCardBrand>().Find(id) ?? new();
+        return Context.Set<CreditCardBrand>().Find(id) ?? new();
     }
 }

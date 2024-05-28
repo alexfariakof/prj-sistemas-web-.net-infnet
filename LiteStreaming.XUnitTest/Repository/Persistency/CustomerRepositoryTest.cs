@@ -23,7 +23,7 @@ public class CustomerRepositoryTest
         var repository = new CustomerRepository(contextMock.Object);
         var mockCustomer = MockCustomer.Instance.GetFaker();
         mockCustomer.Cards = MockCard.Instance.GetListFaker(1);
-        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<Expression<Func<PerfilUser, bool>>>())).Returns(mockCustomer.User.PerfilType);
+        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<int>())).Returns(mockCustomer.User.PerfilType);
 
         // Act
         repository.Save(mockCustomer);
@@ -40,7 +40,7 @@ public class CustomerRepositoryTest
         var repository = new CustomerRepository(contextMock.Object);
         var mockCustomer = MockCustomer.Instance.GetFaker();
         mockCustomer.Cards = MockCard.Instance.GetListFaker(1);
-        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<Expression<Func<PerfilUser, bool>>>())).Returns(mockCustomer.User.PerfilType);
+        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<int>())).Returns(mockCustomer.User.PerfilType);
 
         // Act
         repository.Update(mockCustomer);

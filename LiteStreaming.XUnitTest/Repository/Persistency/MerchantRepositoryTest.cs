@@ -23,7 +23,7 @@ public class MerchantRepositoryTest
         var repository = new MerchantRepository(contextMock.Object);
         var mockMerchant = MockMerchant.Instance.GetFaker();
         mockMerchant.Cards = MockCard.Instance.GetListFaker(1);
-        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<Expression<Func<PerfilUser, bool>>>())).Returns(mockMerchant.User.PerfilType);
+        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<int>())).Returns(mockMerchant.User.PerfilType);
 
         // Act
         repository.Save(mockMerchant);
@@ -40,7 +40,7 @@ public class MerchantRepositoryTest
         var repository = new MerchantRepository(contextMock.Object);
         var mockMerchant = MockMerchant.Instance.GetFaker();
         mockMerchant.Cards = MockCard.Instance.GetListFaker(1);
-        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<Expression<Func<PerfilUser, bool>>>())).Returns(mockMerchant.User.PerfilType);
+        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<int>())).Returns(mockMerchant.User.PerfilType);
 
         // Act
         repository.Update(mockMerchant);

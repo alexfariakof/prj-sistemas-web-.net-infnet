@@ -22,7 +22,7 @@ public class UserRepositoryTest
         // Arrange
         var repository = new UserRepository(contextMock.Object);
         var mockUser = MockUser.Instance.GetFaker();
-        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<Expression<Func<PerfilUser, bool>>>())).Returns(mockUser.PerfilType);
+        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<int>())).Returns(mockUser.PerfilType);
 
         // Act
         repository.Save(mockUser);
@@ -38,7 +38,7 @@ public class UserRepositoryTest
         // Arrange
         var repository = new UserRepository(contextMock.Object);
         var mockUser = MockUser.Instance.GetFaker();
-        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<Expression<Func<PerfilUser, bool>>>())).Returns(mockUser.PerfilType);
+        contextMock.Setup(c => c.Set<PerfilUser>().Find(It.IsAny<int>())).Returns(mockUser.PerfilType);
 
         // Act
         repository.Update(mockUser);
