@@ -29,7 +29,7 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "free@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Admin)).First()
                 },
                 Flat = _context.Flat.First(f => f.Name ==  "Free Flat") ?? new()
             };
@@ -167,7 +167,7 @@ public class DataSeederCustomer : IDataSeeder
             };
 
             customer.CreateAccount(customer, address, _context.Flat.First(f => f.Name == "Premium  Flat") ?? new(), card);
-            customer.User.PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Admin)).First();
+            customer.User.PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First();
             _context.Add(customer);
             _context.SaveChanges();
         }
