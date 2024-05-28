@@ -6,6 +6,7 @@ import { of, throwError } from 'rxjs';
 import { Music, Playlist } from '../../model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockPlaylist } from '../../__mocks__';
+import { SharedModule } from 'src/app/components/shared.module';
 
 
 describe('MyplaylistComponent', () => {
@@ -18,7 +19,7 @@ describe('MyplaylistComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MyplaylistComponent],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, SharedModule],
       providers: [
         {
           provide: ActivatedRoute,

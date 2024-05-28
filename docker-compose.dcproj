@@ -7,20 +7,18 @@
     <ProjectGuid>86798ca1-2bd8-40de-bde3-e4959eb40d98</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>webapi</DockerServiceName>
+    <DockerServiceName>app</DockerServiceName>
     <SpaRoot>AngularApp\</SpaRoot>
   </PropertyGroup>
-  
   <ItemGroup>
-    <None Include="docker-compose.dev.yml" />
+    <None Include=".dockerignore" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
-    <None Include="docker-compose.prod.yml" />
     <None Include="docker-compose.yml" />
-    <None Include=".dockerignore" />
+    <None Include="docker-compose.dev.yml" />
+    <None Include="docker-compose.prod.yml" />
   </ItemGroup>
-
   <ItemGroup>
     <!-- Don't publish the SPA source files and dont1t show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
@@ -29,9 +27,9 @@
   </ItemGroup>
   <PropertyGroup>
     <Build>
-      DebugEnsureNodeEnv;
-      DebugEnsureDist;
-    </Build>
+			DebugEnsureNodeEnv;
+			DebugEnsureDist;
+		</Build>
   </PropertyGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

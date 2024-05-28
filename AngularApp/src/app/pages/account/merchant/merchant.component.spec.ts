@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AddressService, MerchantService } from '../../../services';
 import { Address, Merchant } from '../../../model';
 import { of } from 'rxjs';
+import { MerchantModule } from './merchant.module';
 
 describe('MerchantComponent', () => {
   let component: MerchantComponent;
@@ -15,7 +16,7 @@ describe('MerchantComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule, MerchantModule],
       providers:[AddressService]
     })
     .compileComponents();

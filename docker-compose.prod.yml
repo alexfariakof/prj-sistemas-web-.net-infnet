@@ -1,12 +1,12 @@
 version: '3.4'
 
 services:
-  webapi-prod:
+  app-api-prod:
     container_name: prod
     image: alexfariakof/infnet-24e1_3-prod-img
     build:
       context: .
-      dockerfile: WebApi/Dockerfile-Production
+      dockerfile: LiteStreaming.WebApi/Dockerfile.Production
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://+:80;https://+:443

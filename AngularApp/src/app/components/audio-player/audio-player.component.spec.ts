@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AudioService } from '../../services/audio/audio.service';
 import { AudioPlayerComponent } from './audio-player.component';
+import { AudioPlayerModule } from './audio-player.module';
 
 describe('Unit Test AudioPlayerComponent', () => {
   let component: AudioPlayerComponent;
@@ -10,6 +11,7 @@ describe('Unit Test AudioPlayerComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AudioPlayerComponent],
+      imports: [AudioPlayerModule],
       providers: [AudioService]
     });
     fixture = TestBed.createComponent(AudioPlayerComponent);

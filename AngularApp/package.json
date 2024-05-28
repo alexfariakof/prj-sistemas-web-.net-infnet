@@ -31,7 +31,6 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "dayjs": "^1.11.10",
-    "jest-editor-support": "*",
     "jquery": "^3.7.1",
     "run-script-os": "*",
     "rxjs": "~7.8.1",
