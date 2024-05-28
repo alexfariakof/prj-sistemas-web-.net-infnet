@@ -1,6 +1,5 @@
 using Application;
 using Application.Account.Dto;
-using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -19,12 +18,10 @@ public class AlbumController : ControllerBaseTokensProps
 
     [HttpGet]
     [ProducesResponseType((200), Type = typeof(List<AlbumDto>))]
-    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((400), Type = typeof(string))]    
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindAll()
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         try
         {
             var result = this._albumService.FindAll(UserIdentity);
@@ -43,10 +40,10 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(AlbumDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
     public IActionResult FindById([FromRoute] Guid albumId)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         try
         {
             var result = this._albumService.FindById(albumId);
@@ -64,7 +61,8 @@ public class AlbumController : ControllerBaseTokensProps
     [HttpPost]
     [ProducesResponseType((200), Type = typeof(AlbumDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Create([FromBody] AlbumDto dto)
     {
 
@@ -85,11 +83,10 @@ public class AlbumController : ControllerBaseTokensProps
     [HttpPut]
     [ProducesResponseType((200), Type = typeof(AlbumDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Update(AlbumDto dto)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -108,11 +105,10 @@ public class AlbumController : ControllerBaseTokensProps
     [HttpDelete]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Delete(AlbumDto dto)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -125,6 +121,5 @@ public class AlbumController : ControllerBaseTokensProps
         {
             return BadRequest(ex.Message);
         }
-
     }
 }

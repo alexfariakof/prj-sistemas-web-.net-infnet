@@ -1,6 +1,5 @@
 using Application;
 using Application.Account.Dto;
-using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -21,11 +20,10 @@ public class MerchantController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MerchantDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal, Merchant")]
     public IActionResult FindById()
     {
-        if (UserType != PerfilUser.UserType.Merchant) return Unauthorized();
-
         try
         {
             var result = this._merchantService.FindById(UserIdentity);
@@ -44,6 +42,8 @@ public class MerchantController : ControllerBaseTokensProps
     [HttpPost]
     [ProducesResponseType((200), Type = typeof(MerchantDto))]
     [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Create([FromBody] MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -63,11 +63,10 @@ public class MerchantController : ControllerBaseTokensProps
     [HttpPut]
     [ProducesResponseType((200), Type = typeof(MerchantDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Update(MerchantDto dto)
     {
-        if (UserType != PerfilUser.UserType.Merchant) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -87,11 +86,10 @@ public class MerchantController : ControllerBaseTokensProps
     [HttpDelete]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Delete(MerchantDto dto)
     {
-        if (UserType != PerfilUser.UserType.Merchant) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 

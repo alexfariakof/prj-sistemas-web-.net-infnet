@@ -4,6 +4,8 @@ using Application.Shared.Dto;
 using AutoMapper;
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
+using LiteStreaming.Cryptography;
+using Microsoft.Extensions.Options;
 using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
@@ -18,9 +20,14 @@ public class AdministrativeAccountServiceTest
     private readonly List<AdministrativeAccount> mockAccountList = MockAdministrativeAccount.Instance.GetListFaker(10);
     public AdministrativeAccountServiceTest()
     {
-        mapperMock = new Mock<IMapper>();
+        var options = Options.Create(new CryptoOptions
+        {
+            Key = "ABCDEF0123456789ABCDEF0123456789"
+        });
+        var cryptoMock = new Crypto(options);
+        mapperMock = new Mock<IMapper>();        
         administrativeAccountRepositoryMock = new Mock<IRepository<AdministrativeAccount>>();
-        administrativeAccountService = new AdministrativeAccountService(mapperMock.Object, administrativeAccountRepositoryMock.Object);
+        administrativeAccountService = new AdministrativeAccountService(mapperMock.Object, administrativeAccountRepositoryMock.Object, cryptoMock);
     }
 
     [Fact]

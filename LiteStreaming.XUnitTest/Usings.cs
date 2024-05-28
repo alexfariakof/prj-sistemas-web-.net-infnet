@@ -133,12 +133,13 @@ public static class Usings
         {
             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
             new Claim("UserType", new PerfilUser(userType).Description),
+            new Claim("role", userType.ToString()),
         };
         var identity = new ClaimsIdentity(claims, "UserId");
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers.Authorization = "Bearer " + Usings.GenerateJwtToken(userId, userType.ToString());
+        httpContext.Request.Headers.Authorization = "Bearer " + Usings.GenerateJwtToken(userId, userType);
 
         controller.ControllerContext = new ControllerContext
         {
@@ -146,15 +147,16 @@ public static class Usings
         };
     }
 
-    public static string GenerateJwtToken(Guid userId, string userType)
+    public static string GenerateJwtToken(Guid userId, PerfilUser.UserType userType = PerfilUser.UserType.Customer)
     {
-        //var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
         var options = Options.Create(new TokenOptions
         {
             Issuer = "testIssuer",
             Audience = "testAudience",
-            Seconds = 3600
+            Seconds = 3600,
+            DaysToExpiry = 1
         });
+
         var signingConfigurations = new SigningConfigurations(options);
         var securityKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(signingConfigurations.Key.ToString())
@@ -163,14 +165,14 @@ public static class Usings
 
         var claims = new[] { 
             new Claim("UserId", userId.ToString()),
-            new Claim("UserType", userType)
+            new Claim("role", userType.ToString())
         };
 
         var token = new JwtSecurityToken(
             issuer: signingConfigurations.TokenConfiguration.Issuer,
             audience: signingConfigurations.TokenConfiguration.Audience,
             claims: claims,
-            expires: DateTime.Now.AddHours(signingConfigurations.TokenConfiguration.Seconds),
+            expires: DateTime.UtcNow.AddHours(signingConfigurations.TokenConfiguration.Seconds),
             signingCredentials: credentials
         );
 
