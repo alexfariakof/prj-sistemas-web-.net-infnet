@@ -35,7 +35,6 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.Configure<DataBaseoptions>(builder.Configuration.GetSection("ConnectionStrings"));
 builder.Services.Configure<CryptoOptions>(builder.Configuration.GetSection("Crypto")).AddSingleton<ICrypto, Crypto>();
-
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 builder.Services
     .AddIdentityServer()
