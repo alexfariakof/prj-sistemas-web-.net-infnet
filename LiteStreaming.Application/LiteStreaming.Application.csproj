@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.9.1" />
+	  <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.4.0" />
+	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LiteStreaming.Domain\LiteStreaming.Domain.csproj" />
+    <ProjectReference Include="..\LiteStreaming.Repository\LiteStreaming.Repository.csproj" />
+    <ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
+    <ProjectReference Include="..\Migrations.MySqlServer\Migrations.MySqlServer.csproj" />
+  </ItemGroup>
+
+</Project>

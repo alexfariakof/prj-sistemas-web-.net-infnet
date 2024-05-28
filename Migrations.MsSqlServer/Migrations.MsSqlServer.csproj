@@ -12,6 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Repository\Repository.csproj" />
+	  <ProjectReference Include="..\LiteStreaming.Repository\LiteStreaming.Repository.csproj" />
 	</ItemGroup>
 </Project>
