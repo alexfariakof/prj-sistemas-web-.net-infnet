@@ -1,10 +1,7 @@
-﻿using Application.Authentication.Abstractions;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.Extensions.Options;
 
 namespace Application.Authentication;
-public class TokenConfiguration : ITokenConfiguration
+public class TokenConfiguration
 {
     public string? Audience { get; set; }
     public string? Issuer { get; set; }
@@ -17,25 +14,5 @@ public class TokenConfiguration : ITokenConfiguration
         this.Issuer = options.Value.Issuer;
         this.Seconds = options.Value.Seconds;
         this.DaysToExpiry = options.Value.DaysToExpiry;
-    }
-
-    public string GenerateRefreshToken()
-    {
-        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-        SecurityToken securityToken = handler.CreateToken(new SecurityTokenDescriptor()
-        {
-            Audience = this.Audience,
-            Issuer = this.Issuer,
-            Claims = new Dictionary<string, object> { { "KEY", Guid.NewGuid() } },
-            Expires = DateTime.UtcNow.AddDays(this.DaysToExpiry)
-        });
-        return handler.WriteToken(securityToken);
-    }
-
-    public bool ValidateRefreshToken(string refreshToken)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var jwtToken = tokenHandler.ReadToken(refreshToken.Replace("Bearer ", "")) as JwtSecurityToken;
-        return jwtToken?.ValidTo >= DateTime.UtcNow;
     }
 }

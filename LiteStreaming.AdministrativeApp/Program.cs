@@ -15,6 +15,9 @@ builder.Services.AddServicesAdministrativeApp();
 builder.Services.AddAutoMapperAdministrativeApp();
 builder.Services.AddServices();
 
+// Cryptography 
+builder.Services.AddServicesCryptography(builder.Configuration);
+
 
 if (builder.Environment.IsDevelopment())
 {

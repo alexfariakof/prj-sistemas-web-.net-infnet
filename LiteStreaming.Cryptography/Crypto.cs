@@ -47,7 +47,7 @@ public class Crypto : ICrypto
         {
             var jsonContent = File.ReadAllText(jsonFilePath);
             var config = JObject.Parse(jsonContent);
-            var cryptoKey = config["Crypto"]?["Key"]?.ToString() ?? "";
+            var cryptoKey = config["CryptoConfigurations"]?["Key"]?.ToString() ?? "";
             ValidateKey(cryptoKey);
             return cryptoKey;
         }
@@ -127,7 +127,7 @@ public class Crypto : ICrypto
         }
     }
 
-    private void ValidateKey(string cryptoKey)
+    private static void ValidateKey(string cryptoKey)
     {
         if (!cryptoKey.All(IsHexadecimalDigit))
             throw new ArgumentException("A chave obtida contém caracteres inválidos.");
@@ -137,7 +137,7 @@ public class Crypto : ICrypto
             throw new ArgumentException("A chave obtida não é uma string válida da Base-64.");
     }
 
-    private bool IsHexadecimalDigit(char c)
+    private static bool IsHexadecimalDigit(char c)
     {
         return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
     }

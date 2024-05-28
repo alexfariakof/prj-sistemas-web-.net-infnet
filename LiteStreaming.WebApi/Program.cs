@@ -59,11 +59,14 @@ builder.Services.AddAuthConfigurations(builder.Configuration);
 // AutoMapper
 builder.Services.AddAutoMapperWebApiApp();
 
-//Repositories
+// Repositories
 builder.Services.AddRepositoriesWebApiApp();
 
-//Services
+// Services
 builder.Services.AddServicesWebApiApp();
+
+// Cryptography 
+builder.Services.AddServicesCryptography(builder.Configuration);
 
 var app = builder.Build();
 
