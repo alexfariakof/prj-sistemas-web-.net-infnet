@@ -73,10 +73,7 @@ public class Crypto : ICrypto
             var cryptoKey = config["CryptoConfigurations"]?["Key"]?.ToString() ?? throw new ArgumentNullException("Chave Auth não definida.");
             return cryptoKey;
         }
-        else
-        {
-            throw new ArgumentException("File appsettings.json não encontrado.");
-        }
+        throw new ArgumentException("Arquivo appsettings.json não encontrado.");
     }
 
     /// <summary>
@@ -93,10 +90,7 @@ public class Crypto : ICrypto
             var authSalt = config["CryptoConfigurations"]?["AuthSalt"]?.ToString() ?? throw new ArgumentNullException("Chave Auth Salt não definida.");
             return authSalt;
         }
-        else
-        {
-            throw new ArgumentException("File appsettings.json não encontrado.");
-        }
+        throw new ArgumentException("Arquivo appsettings.json não encontrado.");
     }
 
     /// <summary>
