@@ -15,8 +15,6 @@ using Repository.Interfaces;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
-using LiteStreaming.Cryptography;
 using Microsoft.Extensions.Options;
 
 public static class Usings

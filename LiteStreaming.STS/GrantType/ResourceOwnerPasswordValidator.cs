@@ -1,6 +1,6 @@
 ﻿using IdentityModel;
 using IdentityServer4.Validation;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 using LiteStreaming.STS.Data;
 
 namespace LiteStreaming.STS.GrantType;

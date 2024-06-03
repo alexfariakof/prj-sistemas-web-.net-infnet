@@ -5,7 +5,7 @@ using Application.Account.Interfaces;
 using Application.Administrative;
 using Application.Administrative.Interfaces;
 using Microsoft.Extensions.Configuration;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 
 namespace Application.CommonInjectDependence;
 public static class ServiceInjectDependence

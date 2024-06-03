@@ -5,7 +5,7 @@ using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;

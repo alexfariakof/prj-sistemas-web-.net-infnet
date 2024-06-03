@@ -5,7 +5,7 @@ using Domain.Account.Agreggates;
 using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 using Microsoft.Extensions.Options;
 
 namespace Application.Account;

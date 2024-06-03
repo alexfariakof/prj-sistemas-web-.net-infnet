@@ -5,9 +5,8 @@
 		<Nullable>enable</Nullable>
 		<SonarQubeTestProject>false</SonarQubeTestProject>
 	</PropertyGroup>
+	
 	<ItemGroup>
-	  <ProjectReference Include="..\LiteStreaming.Cryptography\LiteStreaming.Cryptography.csproj" />
+	  <PackageReference Include="EasyCryptoSalt" Version="1.0.0" />
 	</ItemGroup>
-
-
 </Project>

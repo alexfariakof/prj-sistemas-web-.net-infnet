@@ -5,7 +5,7 @@ using Application.Shared.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 using Repository.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

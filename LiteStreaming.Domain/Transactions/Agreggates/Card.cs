@@ -2,7 +2,7 @@
 using Domain.Core.Aggreggates;
 using Domain.Core.ValueObject;
 using Domain.Transactions.ValueObject;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 
 namespace Domain.Transactions.Agreggates;
 public class Card : Base
