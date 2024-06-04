@@ -4,7 +4,7 @@ using Application.Shared.Dto;
 using AutoMapper;
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 using Repository.Interfaces;
 
 namespace Application.Administrative;

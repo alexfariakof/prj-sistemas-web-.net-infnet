@@ -1,4 +1,4 @@
-﻿using LiteStreaming.Cryptography;
+﻿using EasyCryptoSalt;
 using System.Text.RegularExpressions;
 
 namespace Domain.Core.ValueObject;

@@ -22,7 +22,7 @@ public class AdminAccountRepositoryTest
     {
         // Arrange
         var mockAdmin = MockAdministrativeAccount.Instance.GetFaker();
-        contextMock.Setup(c => c.Set<Perfil>().Find(It.IsAny<Expression<Func<Perfil, bool>>>())).Returns(mockAdmin.PerfilType);
+        contextMock.Setup(c => c.Set<Perfil>().Find(It.IsAny<int>())).Returns(mockAdmin.PerfilType);
         var repository = new AdminAccountRepository(contextMock.Object);
         
         
@@ -40,7 +40,7 @@ public class AdminAccountRepositoryTest
     {
         // Arrange        
         var mockAdmin = MockAdministrativeAccount.Instance.GetFaker();
-        contextMock.Setup(c => c.Set<Perfil>().Find(It.IsAny<Expression<Func<Perfil, bool>>>())).Returns(mockAdmin.PerfilType);
+        contextMock.Setup(c => c.Set<Perfil>().Find(It.IsAny<int>())).Returns(mockAdmin.PerfilType);
         var repository = new AdminAccountRepository(contextMock.Object);
 
         // Act

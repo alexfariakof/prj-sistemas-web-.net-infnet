@@ -5,7 +5,7 @@ using Domain.Account.Agreggates;
 using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 using Microsoft.Extensions.Options;
 
 namespace Application.Account;
@@ -27,7 +27,8 @@ public class UserServiceTest
 
         var cryptoMock = new Crypto(Options.Create(new CryptoOptions
         {
-            Key = "ABCDEF0123456789ABCDEF0123456789"
+            Key = "[`T,Uj0$zse#_zF=[^*0>|-mYf/uHX=",
+            AuthSalt = "j!SRTGE}46aSb$]R|jjTtKGY`|M<}yT+]W3E}"
         }));
 
         mapperMock = new Mock<IMapper>();        

@@ -5,9 +5,9 @@ using Repository.Mapping.Administrative;
 using Domain.Administrative.ValueObject;
 
 namespace Repository.Abastractions;
-public class BaseRegisterContextAdministravtive<TContext> : DbContext where TContext : DbContext
+public class BaseContextAdministravtive<TContext> : DbContext where TContext : DbContext
 {
-    public BaseRegisterContextAdministravtive(DbContextOptions<TContext> options) : base(options) { }
+    public BaseContextAdministravtive(DbContextOptions<TContext> options) : base(options) { }
     public DbSet<AdministrativeAccount> Admin { get; set; }
     public DbSet<Perfil> Perfil { get; set; }
 

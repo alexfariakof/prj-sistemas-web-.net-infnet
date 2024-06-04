@@ -1,4 +1,4 @@
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 using LiteStreaming.STS;
 using LiteStreaming.STS.Data;
 using LiteStreaming.STS.GrantType;
