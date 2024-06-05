@@ -5,6 +5,8 @@ using Migrations.MySqlServer.CommonInjectDependence;
 using Application.CommonInjectDependence;
 using Repository.CommonInjectDependence;
 using Repository;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,15 @@ else
 }
 
 var app = builder.Build();
+
+var supportedCultures = new[] { new CultureInfo("pt-BR") };
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("pt-BR"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+};
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsProduction())

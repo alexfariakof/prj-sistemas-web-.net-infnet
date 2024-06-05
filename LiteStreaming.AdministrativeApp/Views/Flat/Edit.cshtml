@@ -30,8 +30,11 @@
         <div class="row mb-3">
             <label for="value" class="col-1 col-form-label fs-5 text-end">Valor</label>
             <div class="col-sm-10">
-                @Html.TextBoxFor(flat => flat.Value, new { @class = "form-control ", @id = "value", @required = "" })
-                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Value"></span>
+                <div class="input-group">
+                    <div class="input-group-text">R$</div>
+                    @Html.TextBoxFor(flat => flat.FormattedValue, new { @class = "form-control money", @id = "value", @placeholder = "R$1,000,000.00", @required = "" })
+                </div>                
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="FormattedValue"></span>
             </div>
         </div>
         <div class="row mb-3  d-flex align-items-center justify-content-center ">
