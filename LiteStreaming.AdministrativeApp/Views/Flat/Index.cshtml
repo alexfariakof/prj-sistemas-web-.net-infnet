@@ -1,7 +1,7 @@
-﻿@using Application.Administrative.Dto
-@model IEnumerable<AdministrativeAccountDto>
+﻿@using Application.Streaming.Dto
+@model IEnumerable<FlatDto>
 @{
-    ViewData["Title"] = "User";
+    ViewData["Title"] = "Flat";
 }
 @if (ViewBag.Alert != null)
 {
@@ -14,22 +14,22 @@
     <div style="display:block; position:absolute; height:100%; width:100%;"></div>
 
 }
-<a type="button" class="btn btn-primary mb-2" role="button" href="User/Create">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
-        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
-        <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z" />
+<a type="button" class="btn btn-primary mb-2" role="button" href="Flat/Create">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book-half" viewBox="0 0 16 16">
+        <path d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-
+                .4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
     </svg>
-     Usuário
- </a>
+    Novo Plano
+</a>
 <div class="text-center border border-2 border-dark rounded-2">
     <table class="table table-striped table-dark mb-0">
         <thead>
             <tr>
                 <th scope="col" class="visually-hidden">Id</th>
-                <th scope="col" class="text-start">Name</th>
-                <th scope="col" class="text-start">Email</th>
-                <th scope="col" class="text-start">Perfil</th>
-                <th scope="col" >Actions</th>
+                <th scope="col" class="text-start">Nome</th>
+                <th scope="col" class="text-start">Descrição</th>
+                <th scope="col" class="text-start">Valor</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -38,16 +38,16 @@
                 <tr>
                     <td class="visually-hidden">@item.Id</td>
                     <td class="text-start">@item.Name</td>
-                    <td class="text-start">@item.Email</td>
-                    <td class="text-start">@item.PerfilType</td>
+                    <td class="text-start">@item.Description</td>
+                    <td class="text-start">R$ @item.Value.ToString("N2")</td>
                     <td class=" w-auto text-center">
-                        <a type="button" class="btn btn-success rounded-circle p-2 border border-2 border-secondary" data-toggle="tooltip" data-placement="bottom" title="Editar usuário" href="@Url.Action("Edit", "User", new { IdUsuario = item.Id })">
+                        <a type="button" class="btn btn-success rounded-circle p-2 border border-2 border-secondary" data-toggle="tooltip" data-placement="bottom" title="Editar usuário" href="@Url.Action("Edit", "Flat", new { IdUsuario = item.Id })">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
                             </svg>
                         </a>
-                        <a type="button" class="btn btn-danger rounded-circle p-2 border border-2 border-secondary" data-toggle="tooltip" data-placement="bottom" title="Excluir usuário" href="@Url.Action("Delete", "User", new { IdUsuario = item.Id })">
+                        <a type="button" class="btn btn-danger rounded-circle p-2 border border-2 border-secondary" data-toggle="tooltip" data-placement="bottom" title="Excluir usuário" href="@Url.Action("Delete", "Flat", new { IdUsuario = item.Id })">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />

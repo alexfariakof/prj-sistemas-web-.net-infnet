@@ -1,4 +1,4 @@
-﻿namespace Application.Account.Dto;
+﻿namespace Application.Streaming.Dto;
 public class MusicDto
 {
     public Guid? Id { get; set; }

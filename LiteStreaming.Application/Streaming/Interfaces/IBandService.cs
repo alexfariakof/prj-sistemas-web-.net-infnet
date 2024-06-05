@@ -1,4 +1,4 @@
-﻿namespace Application.Account.Dto.Interfaces;
+﻿namespace Application.Streaming.Dto.Interfaces;
 public interface IBandService
 {
     BandDto Create(BandDto obj);

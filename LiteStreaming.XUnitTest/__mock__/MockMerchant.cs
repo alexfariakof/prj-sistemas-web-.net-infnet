@@ -2,7 +2,7 @@
 using Bogus;
 using Bogus.Extensions.Brazil;
 using Domain.Notifications;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 using Domain.Transactions.Agreggates;
 using Domain.Account.ValueObject;
 

@@ -1,5 +1,5 @@
-﻿using Application.Account.Dto;
-using Application.Account.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Interfaces;
 using Application.Authentication;
 using Application.Shared.Dto;
 using AutoMapper;
@@ -10,7 +10,7 @@ using Repository.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class UserService : IUserService
 {
     private readonly ICrypto _crypto;

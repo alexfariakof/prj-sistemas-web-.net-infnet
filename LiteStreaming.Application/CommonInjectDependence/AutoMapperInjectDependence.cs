@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Application.Account.Profile;
+using Application.Streaming.Profile;
 using Application.Transactions.Profile;
 using Application.Administrative.Profile;
 
@@ -9,6 +9,7 @@ public static class AutoMapperInjectDependence
     public static IServiceCollection AddAutoMapperAdministrativeApp(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(AdministrativeAccountProfile).Assembly);
+        services.AddAutoMapper(typeof(FlatProfile).Assembly);
         return services;
     }
 

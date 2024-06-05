@@ -1,4 +1,4 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Application.Transactions.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
@@ -10,7 +10,7 @@ using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class MerchantServiceTest
 {
     private Mock<IMapper> mapperMock;

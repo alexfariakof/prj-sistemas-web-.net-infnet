@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using EasyCryptoSalt;
 using Microsoft.Extensions.Options;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class UserServiceTest
 {
     private Mock<IMapper> mapperMock;

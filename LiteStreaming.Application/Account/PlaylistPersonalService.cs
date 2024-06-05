@@ -1,11 +1,11 @@
-﻿using Application.Account.Dto;
-using Application.Account.Dto.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
 using Repository.Interfaces;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class PlaylistPersonalService : ServiceBase<PlaylistPersonalDto, PlaylistPersonal>, IService<PlaylistPersonalDto>, IPlaylistPersonalService
 {
     private readonly IRepository<Customer> _customerRepository;

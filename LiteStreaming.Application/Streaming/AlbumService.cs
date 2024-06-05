@@ -1,10 +1,10 @@
-﻿using Application.Account.Dto;
-using Application.Account.Dto.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using Repository.Interfaces;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class AlbumService : ServiceBase<AlbumDto, Album>, IService<AlbumDto>, IAlbumService
 {
     public AlbumService(IMapper mapper, IRepository<Album> AlbumRepository) : base(mapper, AlbumRepository)  { }

@@ -1,9 +1,10 @@
-﻿@using Application.Administrative.Dto
-@model AdministrativeAccountDto
+﻿@using Application.Streaming.Dto
+@model FlatDto
 @if (ViewBag.Alert != null)
 {
     <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
 }
+
 <button type="button" class="btn btn-primary mb-2" role="button" onclick="backHistory()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5" />
@@ -11,46 +12,28 @@
     Voltar
 </button>
 <div class="d-flex flex-column align-items-stretch m-0 p-2 border border-2 border-dark bg-dark rounded-2 align-items-center justify-content-center text-light">
-    <form method="post" asp-controller="User" asp-action="Update">
-        @Html.TextBoxFor(account => account.Id, new { @class = "form-control", @id = "id", @Type = "hidden", @required = "" })
+    <form method="post" asp-controller="Flat" asp-action="Save">
         <div class="row mb-3">
             <label for="name" class="col-1 col-form-label fs-5 text-end">Nome</label>
             <div class="col-sm-10">
-                @Html.TextBoxFor(account => account.Name, new { @class = "form-control", @id = "name", @required = "" })
+                @Html.TextBoxFor(flat => flat.Name, new { @class = "form-control", @id = "name", @required = "" })
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Name"></span>
             </div>
         </div>
         <div class="row mb-3">
-            <label for="email" class="col-1 col-form-label fs-5 text-end">Email</label>
+            <label for="description" class="col-1 col-form-label fs-5 text-end">Descrição</label>
             <div class="col-sm-10">
-                @Html.TextBoxFor(account => account.Email, new { @class = "form-control ", @id = "email", @required = "" })
-                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Email"></span>
+                @Html.TextBoxFor(flat => flat.Description, new { @class = "form-control ", @id = "description", @required = "" })
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Description"></span>
             </div>
         </div>
         <div class="row mb-3">
-            <label for="password" class="col-1 col-form-label fs-5 text-end">Senha</label>
+            <label for="value" class="col-1 col-form-label fs-5 text-end">Valor</label>
             <div class="col-sm-10">
-                @Html.TextBoxFor(account => account.Password, new { @class = "form-control", @id = "password", @type = "password", @autocomplete = "new-password", @required = "" })
-                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Password"></span>
+                @Html.TextBoxFor(flat => flat.Value, new { @class = "form-control ", @id = "value", @required = "" })
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Value"></span>
             </div>
         </div>
-        <fieldset class="row mb-3">
-            <legend class="col-form-label col-1 pt-0 fs-5 text-end">Perfil</legend>
-            <div class="col-sm-10">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" id="perilAdmin" asp-for="PerfilType" value="@PerfilDto.Admin" checked />
-                    <label class="form-check-label" for="perilAdmin">
-                        Acesso Total
-                    </label>
-                </div>
-                <div class="form-check disabled">
-                    <input class="form-check-input" type="radio" id="perilNormal" asp-for="PerfilType" value="@PerfilDto.Normal" />
-                    <label class="form-check-label" for="perilNormal">
-                        Normal
-                    </label>
-                </div>
-            </div>
-        </fieldset>
         <div class="row mb-3  d-flex align-items-center justify-content-center ">
             <button type="submit" class="btn btn-primary w-25 fs-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">

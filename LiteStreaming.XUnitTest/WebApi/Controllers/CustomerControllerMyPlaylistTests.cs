@@ -1,5 +1,5 @@
 using Application;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
