@@ -11,8 +11,8 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import ToolBarSecondaryModule from 'src/app/components/tool-bar-secondary/tool-bar-secondary.module';
-import { SharedModule } from 'src/app/components/shared.module';
+import { SharedModule } from '../../components/shared.module';
+import ToolBarSecondaryModule from '../../components/tool-bar-secondary/tool-bar-secondary.module';
 
 describe('AccountComponent', () => {
   let component: AccountComponent;

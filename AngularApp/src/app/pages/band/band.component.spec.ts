@@ -7,8 +7,7 @@ import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockBand, MockPlaylist, MockAlbum } from '../../__mocks__';
-import { SharedModule } from 'src/app/components/shared.module';
-
+import { SharedModule } from '../../components/shared.module';
 
 describe('BandComponent', () => {
   let component: BandComponent;

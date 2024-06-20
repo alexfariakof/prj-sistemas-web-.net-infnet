@@ -7,7 +7,7 @@ import { Album, Music, Playlist } from '../../model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockAlbum, MockMusic, MockPlaylist } from '../../__mocks__';
-import { SharedModule } from 'src/app/components/shared.module';
+import { SharedModule } from '../../components/shared.module';
 
 describe('AlbumComponent', () => {
   let component: AlbumComponent;

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MusicComponent } from './musics.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule } from 'src/app/components/shared.module';
+import { SharedModule } from '../../components/shared.module';
 
 describe('MusicsComponent', () => {
   let component: MusicComponent;

@@ -4,7 +4,8 @@ import { Music } from '../../model';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 import { MusicService } from '..';
-import { MockMusic } from 'src/app/__mocks__';
+import { MockMusic } from '../../__mocks__';
+
 
 describe('MusicService', () => {
   let httpMock: HttpTestingController;
