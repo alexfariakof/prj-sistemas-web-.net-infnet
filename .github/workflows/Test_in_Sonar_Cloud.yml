@@ -70,7 +70,7 @@ jobs:
         shell: powershell
         run: |                    
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_Infnet_Sistemas-Web-com-ASP.NET_24E1_3" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations.*/**, **/LiteStreaming.DataSeeders/**, **/.documents/**, **/Program.cs, **/*.spec.ts, **/main.ts, **/environment.*, **/*.routing.module.ts, **/*.js, **/test.ts, **/*Test.cs, **/*.cshtml,  **/__mock__/*.ts, **/*.js, **/*Dockerfile*, **/docker-compose*"  /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info" /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"          
-          
+            npm install -g @angular/core @angular/cli > $null 2>&1
             dotnet tool install -g dotnet-reportgenerator-globaltool
             $baseDirectory = Get-Location
             $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "LiteStreaming.XUnitTest"            

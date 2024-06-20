@@ -29,7 +29,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "allowedCommonJsDependencies": ["dayjs", "moment"],
+            "allowedCommonJsDependencies": ["dayjs", "moment", "bootstrap"],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css",
@@ -38,6 +38,7 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/dayjs/dayjs.min.js",
               "node_modules/dayjs/locale/pt-br.js",

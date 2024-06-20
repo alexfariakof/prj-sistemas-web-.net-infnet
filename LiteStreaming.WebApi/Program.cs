@@ -88,11 +88,14 @@ else
 {
     app.UseHttpsRedirection();
 }
-    
-app.UseAuthorization();
-app.MapControllers();
 
-if (app.Environment.IsProduction() || app.Environment.IsStaging())
-    app.MapFallbackToFile("/index.html");
+
+app.UseRouting()
+    .UseAuthorization()
+    .UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+        endpoints.MapFallbackToFile("index.html");
+    });
 
 app.Run();
