@@ -9,8 +9,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { AccountRoutingModule } from "./account.routing.module";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import ToolBarSecondaryModule from "src/app/components/tool-bar-secondary/tool-bar-secondary.module";
 import { MerchantModule } from './merchant/merchant.module';
+import ToolBarSecondaryModule from '../../components/tool-bar-secondary/tool-bar-secondary.module';
 
 @NgModule({
   imports: [AccountRoutingModule, CustomerModule, MerchantModule, CommonModule, MatToolbarModule, ToolBarSecondaryModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FlexLayoutModule],

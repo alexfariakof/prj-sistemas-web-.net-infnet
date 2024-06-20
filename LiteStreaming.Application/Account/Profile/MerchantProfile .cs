@@ -1,10 +1,10 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Application.Transactions.Dto;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Transactions.Agreggates;
 
-namespace Application.Account.Profile;
+namespace Application.Streaming.Profile;
 public class MerchantProfile : AutoMapper.Profile
 {
     public MerchantProfile()

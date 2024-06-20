@@ -3,10 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { PlaylistService } from '../../services';
 import { of, throwError } from 'rxjs';
 import { Playlist  } from '../../model';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { PlaylistComponent } from './playlist.component';
 import { MockPlaylist } from '../../__mocks__';
-import { SharedModule } from 'src/app/components/shared.module';
+import { SharedModule } from '../../components/shared.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PlaylistComponent', () => {
   let component: PlaylistComponent;
@@ -15,18 +16,20 @@ describe('PlaylistComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PlaylistComponent],
-      imports: [HttpClientTestingModule, SharedModule],
-      providers: [
+    declarations: [PlaylistComponent],
+    imports: [SharedModule],
+    providers: [
         {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ playlistId: '1' })
-          }
+            provide: ActivatedRoute,
+            useValue: {
+                params: of({ playlistId: '1' })
+            }
         },
-        PlaylistService
-      ]
-    });
+        PlaylistService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
     fixture = TestBed.createComponent(PlaylistComponent);
     component = fixture.componentInstance;
     playlistService = TestBed.inject(PlaylistService);

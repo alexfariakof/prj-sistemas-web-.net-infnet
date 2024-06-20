@@ -1,4 +1,4 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Bogus;
 using Domain.Streaming.Agreggates;
 

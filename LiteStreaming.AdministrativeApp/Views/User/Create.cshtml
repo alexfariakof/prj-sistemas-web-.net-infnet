@@ -1,10 +1,8 @@
 ﻿@using Application.Administrative.Dto
 @model AdministrativeAccountDto
-@{
-    if (ViewBag.Alert != null)
-    {
-        <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
-    }
+@if (ViewBag.Alert != null)
+{
+    <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
 }
 <button type="button" class="btn btn-primary mb-2" role="button" onclick="backHistory()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">

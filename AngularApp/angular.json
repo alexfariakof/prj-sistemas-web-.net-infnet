@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-app",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -29,6 +29,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "allowedCommonJsDependencies": ["dayjs", "moment", "bootstrap"],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css",
@@ -37,8 +38,11 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/dayjs/dayjs.min.js"
+              "node_modules/dayjs/dayjs.min.js",
+              "node_modules/dayjs/locale/pt-br.js",
+              "node_modules/moment/min/moment.min.js"
             ]
           },
           "configurations": {
@@ -78,11 +82,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "AngularApp:build:production"
+              "buildTarget": "AngularApp:build:production"
             },
             "development": {
-              "browserTarget": "AngularApp:build:development",
-              "proxyConfig": "src/proxy.conf.js"
+              "proxyConfig": "src/proxy.conf.js",
+              "buildTarget": "AngularApp:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -93,7 +97,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "AngularApp:build"
+            "buildTarget": "AngularApp:build"
           }
         },
         "test": {

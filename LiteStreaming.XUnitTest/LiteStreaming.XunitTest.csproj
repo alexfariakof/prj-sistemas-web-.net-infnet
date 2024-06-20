@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -46,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AngularApp\AngularApp.esproj" />
     <ProjectReference Include="..\LiteStreaming.AdministrativeApp\LiteStreaming.AdministrativeApp.csproj" />
     <ProjectReference Include="..\LiteStreaming.Application\LiteStreaming.Application.csproj" />
     <ProjectReference Include="..\LiteStreaming.Domain\LiteStreaming.Domain.csproj" />
@@ -58,19 +59,9 @@
     <Folder Include="AdministrativeApp\Views\" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <TestDependsOn>
-      AfterTest;
-    </TestDependsOn>
-  </PropertyGroup>
-
-  <Target Name="Test" BeforeTargets="Build;Rebuild" DependsOnTargets="$(TestDependsOn)" />
-  <Target Name="AfterTest">
-    <!-- Check if OS is Windows -->
-	  <Exec Condition=" '$(Configuration)' != 'Debug' And '$(OS)' == 'Windows_NT'" Command="powershell -File ./coverage_report.ps1" />
-	  <!-- Check if OS is Linux Base 
-    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="bash ./coverage_report.sh" /> 
-    -->
-  </Target>
-
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
 </Project>

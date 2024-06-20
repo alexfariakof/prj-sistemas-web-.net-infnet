@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Application.Account.Dto;
+namespace Application.Streaming.Dto;
 public class CustomerDto
 {
     [JsonIgnore]

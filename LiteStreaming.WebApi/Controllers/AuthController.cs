@@ -1,5 +1,5 @@
-﻿using Application.Account.Dto;
-using Application.Account.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Interfaces;
 using Application.Shared.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

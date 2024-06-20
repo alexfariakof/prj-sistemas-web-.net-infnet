@@ -1,11 +1,11 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Application.Transactions.Dto;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Core.ValueObject;
 using Domain.Transactions.Agreggates;
 
-namespace Application.Account.Profile;
+namespace Application.Streaming.Profile;
 public class CustomerProfile : AutoMapper.Profile
 {
     public CustomerProfile() 

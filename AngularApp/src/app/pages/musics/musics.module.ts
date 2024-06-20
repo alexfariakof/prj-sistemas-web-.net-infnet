@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { MusicComponent } from "./musics.component";
-import { SharedModule } from "src/app/components/shared.module";
+import { SharedModule } from "../../components/shared.module";
+
 @NgModule({
   declarations: [MusicComponent],
   imports: [ SharedModule],

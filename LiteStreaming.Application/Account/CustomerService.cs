@@ -1,5 +1,5 @@
-﻿using Application.Account.Dto;
-using Application.Account.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
@@ -8,7 +8,7 @@ using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
 using Repository.Interfaces;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<CustomerDto>, ICustomerService
 {
     private readonly IRepository<Flat> _flatRepository;

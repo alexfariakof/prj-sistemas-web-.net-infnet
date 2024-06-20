@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CustomerComponent } from './customer.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomerService, AddressService } from '../../../services';
 import { Address, Customer } from '../../../model';
 import { of } from 'rxjs';
 import { CustomerModule } from './customer.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CustomerComponent', () => {
   let component: CustomerComponent;
@@ -16,9 +17,9 @@ describe('CustomerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule, CustomerModule],
-      providers:[AddressService]
-    })
+    imports: [BrowserAnimationsModule, RouterTestingModule, CustomerModule],
+    providers: [AddressService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(CustomerComponent);

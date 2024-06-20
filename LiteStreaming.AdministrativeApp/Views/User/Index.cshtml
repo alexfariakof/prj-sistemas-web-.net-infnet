@@ -2,13 +2,17 @@
 @model IEnumerable<AdministrativeAccountDto>
 @{
     ViewData["Title"] = "User";
-
 }
-@{
-    if (ViewBag.Alert != null)
-    {
-        <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
-    }
+@if (ViewBag.Alert != null)
+{
+    <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
+}
+
+@if (ViewBag.LoginError != null)
+{
+    <p style="color: red;">@ViewBag.LoginError</p>
+    <div style="display:block; position:absolute; height:100%; width:100%;"></div>
+
 }
 <a type="button" class="btn btn-primary mb-2" role="button" href="User/Create">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">

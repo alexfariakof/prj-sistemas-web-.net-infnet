@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Application.CommonInjectDependence;
-using Application.Account.Profile;
+using Application.Streaming.Profile;
 using Application.Transactions.Profile;
 
 namespace CommonInjectDependence;

@@ -1,5 +1,5 @@
-﻿using Application.Account.Dto;
-using Application.Account.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Interfaces;
 using Application.Shared.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿using Domain.Account.ValueObject;
 using Bogus;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 
 namespace __mock__;
 public class MockAddress
