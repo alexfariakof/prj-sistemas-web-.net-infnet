@@ -8,7 +8,7 @@ on:
       - develop
  
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened]
     branches:       
       - main
 
@@ -56,24 +56,27 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.14.*'
+
       - name: Install Angular dependencies
         run: |
-          cd AngularApp
-          npm install npm@latest > /dev/null 2>&1
-          npm install -g @angular/cli > /dev/null 2>&1
-          npm install 
+          npm install npm@latest >/dev/null 2>&1
+          npm install -g @angular/core @angular/cli >/dev/null 2>&1
+          npm install >/dev/null 2>&1
+        working-directory: AngularApp
         continue-on-error: false
-    
+
       - name: Build Angular App
-        run: |
-            cd AngularApp
-            npm run build
+        run: npm run build
+        working-directory: AngularApp
         continue-on-error: false
 
       - name: Test Angular App
-        run: |
-          cd AngularApp
-          npm run test:coverage
+        run: npm run test:coverage
+        working-directory: AngularApp
         continue-on-error: false
 
   trigger_tests_sonarcloud:
