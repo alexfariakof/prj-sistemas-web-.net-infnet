@@ -23,7 +23,8 @@ public sealed class FlatProfileTest
         Assert.Equal(flatDto.Id, flat.Id);
         Assert.Equal(flatDto.Name, flat.Name);
         Assert.Equal(flatDto.Description, flat.Description);
-        Assert.Equal(flatDto.Value, flat.Value.Value);
+        //Assert.Equal(flatDto.Value, flat.Value.Value);
+        Assert.Equivalent(flatDto.FormattedValue, new FlatDto() { Value = flat.Value }.FormattedValue);
     }
 
     [Fact]
