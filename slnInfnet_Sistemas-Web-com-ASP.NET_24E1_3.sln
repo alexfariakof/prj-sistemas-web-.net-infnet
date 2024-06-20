@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E5B92FE2-DCD7-4675-85B3-E367EB0C7375}"
 	ProjectSection(SolutionItems) = preProject
 		generate_coverage_report.ps1 = generate_coverage_report.ps1
+		generate_coverage_report.sh = generate_coverage_report.sh
 	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}"

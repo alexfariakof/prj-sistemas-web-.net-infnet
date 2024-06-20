@@ -10,8 +10,6 @@ public static class ServiceInjectDependence
             options.Cookie.IsEssential = true;
         });
         return services;
-    }
-
-    
+    }    
 }
 

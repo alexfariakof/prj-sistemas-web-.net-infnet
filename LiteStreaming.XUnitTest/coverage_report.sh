@@ -32,7 +32,7 @@ filefilters="$baseDirectory/LiteStreaming.DataSeeders/**,-$baseDirectory/Migrati
 
 # Executa testes unitários sem restore e build e gera o relatório de cobertura do Backend
 dotnet clean > /dev/null 2>&1
-dotnet test "$projectTestPath/LiteStreaming.XunitTest.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+dotnet test "$projectTestPath/LiteStreaming.XunitTest.csproj" --results-directory "$reportPath" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 reportgenerator -reports:"$projectTestPath/coverage.cobertura.xml" -targetdir:"$coverageXmlPath" -reporttypes:"Html;lcov" -sourcedirs:"$sourceDirs" -filefilters:"-$filefilters"
 
 # Verifica se a pasta node_modules existe, e se não existir, executa npm install

@@ -39,6 +39,7 @@ public class MockBand
 
         return fakeBandDto;
     }
+
     public List<Band> GetListFaker(int count)
     {
         var bandList = new List<Band>();
