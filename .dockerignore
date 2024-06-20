@@ -8,6 +8,12 @@
 **/.toolstarget
 **/.vs
 **/.vscode
+**/.angular
+**/TestResults
+**/*.ps1
+**/*.sh
+**/dist
+**/coverage
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
