@@ -1,7 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { AddressService } from './address.service';
 import { Address } from '../../model';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AddressService', () => {
   let service: AddressService;
@@ -9,9 +10,9 @@ describe('AddressService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [AddressService]
-    });
+    imports: [],
+    providers: [AddressService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
     service = TestBed.inject(AddressService);
     httpMock = TestBed.inject(HttpTestingController);

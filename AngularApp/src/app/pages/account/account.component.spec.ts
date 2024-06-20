@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomerService, AddressService } from '../../services';
@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '../../components/shared.module';
 import ToolBarSecondaryModule from '../../components/tool-bar-secondary/tool-bar-secondary.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccountComponent', () => {
   let component: AccountComponent;
@@ -22,9 +23,9 @@ describe('AccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule, CommonModule, MatToolbarModule, ToolBarSecondaryModule, MatFormFieldModule, MatInputModule, SharedModule],
-      providers:[AddressService]
-    })
+    imports: [BrowserAnimationsModule, RouterTestingModule, CommonModule, MatToolbarModule, ToolBarSecondaryModule, MatFormFieldModule, MatInputModule, SharedModule],
+    providers: [AddressService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(CustomerComponent);

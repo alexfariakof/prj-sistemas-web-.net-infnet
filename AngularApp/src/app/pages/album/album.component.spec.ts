@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { AlbumService, PlaylistManagerService } from '../../services';
 import { of, throwError } from 'rxjs';
 import { Album, Music, Playlist } from '../../model';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockAlbum, MockMusic, MockPlaylist } from '../../__mocks__';
 import { SharedModule } from '../../components/shared.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AlbumComponent', () => {
   let component: AlbumComponent;
@@ -20,19 +21,21 @@ describe('AlbumComponent', () => {
   beforeEach(() => {
 
     TestBed.configureTestingModule({
-      declarations: [AlbumComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule, SharedModule],
-      providers: [
+    declarations: [AlbumComponent],
+    imports: [RouterTestingModule, SharedModule],
+    providers: [
         {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ mockAlbumId })
-          }
+            provide: ActivatedRoute,
+            useValue: {
+                params: of({ mockAlbumId })
+            }
         },
         AlbumService,
-        PlaylistManagerService
-      ]
-    });
+        PlaylistManagerService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+});
     fixture = TestBed.createComponent(AlbumComponent);
     component = fixture.componentInstance;
     albumService = TestBed.inject(AlbumService);
