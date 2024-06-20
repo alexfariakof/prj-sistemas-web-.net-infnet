@@ -18,6 +18,7 @@ public class PerfilUserMap : IEntityTypeConfiguration<PerfilUser>
         builder.HasData
         (
             new PerfilUser(UserType.Admin),
+            new PerfilUser(UserType.Normal),
             new PerfilUser(UserType.Customer),
             new PerfilUser(UserType.Merchant)
         );

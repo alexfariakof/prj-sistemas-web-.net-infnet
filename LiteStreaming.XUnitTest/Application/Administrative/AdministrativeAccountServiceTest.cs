@@ -4,6 +4,8 @@ using Application.Shared.Dto;
 using AutoMapper;
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
+using EasyCryptoSalt;
+using Microsoft.Extensions.Options;
 using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
@@ -18,9 +20,16 @@ public class AdministrativeAccountServiceTest
     private readonly List<AdministrativeAccount> mockAccountList = MockAdministrativeAccount.Instance.GetListFaker(10);
     public AdministrativeAccountServiceTest()
     {
-        mapperMock = new Mock<IMapper>();
+        var options = Options.Create(new CryptoOptions
+        {
+            Key = "[`T,Uj0$zse#_zF=[^*0>|-mYf/uHX=",
+            AuthSalt = "j!SRTGE}46aSb$]R|jjTtKGY`|M<}yT+]W3E}"
+        });
+
+        var cryptoMock = new Crypto(options);
+        mapperMock = new Mock<IMapper>();        
         administrativeAccountRepositoryMock = new Mock<IRepository<AdministrativeAccount>>();
-        administrativeAccountService = new AdministrativeAccountService(mapperMock.Object, administrativeAccountRepositoryMock.Object);
+        administrativeAccountService = new AdministrativeAccountService(mapperMock.Object, administrativeAccountRepositoryMock.Object, cryptoMock);
     }
 
     [Fact]

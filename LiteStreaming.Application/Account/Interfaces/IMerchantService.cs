@@ -1,6 +1,6 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 
-namespace Application.Account.Interfaces;
+namespace Application.Streaming.Interfaces;
 public interface IMerchantService
 {
     MerchantDto Create(MerchantDto obj);

@@ -1,4 +1,4 @@
-﻿using LiteStreaming.Cryptography;
+﻿using EasyCryptoSalt;
 using System.Text.RegularExpressions;
 
 namespace Domain.Core.ValueObject;
@@ -16,7 +16,7 @@ public record Login
     public string Password
     {
         get => _password;
-        set => _password = Crypto.GetInstance.Encrypt(value);
+        set => _password = Crypto.Instance.Encrypt(value);
     }
     private string IsValidEmail(string email)
     {

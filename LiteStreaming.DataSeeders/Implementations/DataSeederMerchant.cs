@@ -36,7 +36,7 @@ public class DataSeederMerchant : IDataSeeder
                 CPF = "123.456.789-00",
                 Phone = "+5521992879325",
                 User = user,
-                Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa8")).FirstOrDefault()
+                Flat = _context.Flat.First(f => f.Name.Contains("Premium"))
             },
             Addresses = new[] {
                     new Address()

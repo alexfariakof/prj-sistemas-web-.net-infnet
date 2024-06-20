@@ -1,16 +1,21 @@
-﻿namespace Application.Authentication;
+﻿using Microsoft.Extensions.Options;
+
+namespace Application.Authentication;
 public class TokenConfigurationTest
 {
     [Fact]
     public void Properties_Should_Be_Set_Correctly()
     {
         // Arrange
-        var tokenConfiguration = new TokenConfiguration();
+        var options = Options.Create(new TokenOptions
+        {
+            Issuer = "TesteIssuer",
+            Audience = "TesteAudience",
+            Seconds = 3600
+        });
 
         // Act
-        tokenConfiguration.Audience = "TesteAudience";
-        tokenConfiguration.Issuer = "TesteIssuer";
-        tokenConfiguration.Seconds = 3600; // 1 hour
+        var tokenConfiguration = new TokenConfiguration(options);
 
         // Assert
         Assert.Equal("TesteAudience", tokenConfiguration.Audience);

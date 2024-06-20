@@ -1,11 +1,11 @@
 ﻿using Moq;
 using System.Linq.Expressions;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using Repository.Interfaces;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class PlaylistServiceTest
 {
     private readonly Mock<IMapper> mapperMock;

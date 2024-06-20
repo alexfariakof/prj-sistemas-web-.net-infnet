@@ -5,10 +5,10 @@ services:
     image: alexfariakof/infnet-24e1_3-dev-img
     build:
       context: .
-      dockerfile: WebApi/Dockerfile.Development
+      dockerfile: LiteStreaming.WebApi/Dockerfile.Development
     environment:
       ASPNETCORE_ENVIRONMENT: Staging
-      ASPNETCORE_URLS: http://+7204;https://+5146;
-    ports:
-       - 7204:7204
+      ASPNETCORE_URLS: http://+5146;https://+7204;
+    ports:       
        - 5146:5146
+       - 7204:7204

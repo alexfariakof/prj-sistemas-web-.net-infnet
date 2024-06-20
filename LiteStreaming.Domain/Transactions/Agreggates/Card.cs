@@ -2,7 +2,7 @@
 using Domain.Core.Aggreggates;
 using Domain.Core.ValueObject;
 using Domain.Transactions.ValueObject;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 
 namespace Domain.Transactions.Agreggates;
 public class Card : Base
@@ -20,7 +20,7 @@ public class Card : Base
     public string? CVV
     {
         get { return _cvv; }
-        set { _cvv = Crypto.GetInstance.Encrypt(value ?? ""); }
+        set { _cvv = Crypto.Instance.Encrypt(value ?? ""); }
     }
     public virtual IList<Transaction> Transactions { get; set; } = new List<Transaction>();
 

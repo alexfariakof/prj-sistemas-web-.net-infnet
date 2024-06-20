@@ -2,43 +2,38 @@
 using Application.Authentication;
 using AutoMapper;
 using Domain.Account.Agreggates;
-using Microsoft.Extensions.Configuration;
 using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
+using Microsoft.Extensions.Options;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class UserServiceTest
 {
     private Mock<IMapper> mapperMock;
     private Mock<IRepository<User>> userRepositoryMock;
     private readonly UserService userService;
     private readonly List<User> mockUserList = MockCustomer.Instance.GetListFaker(3).Select(u => u.User).ToList();
-    private readonly Mock<ICrypto> cryptoMock;
     public UserServiceTest()
     {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
+        var signingConfigurations = new SigningConfigurations(Options.Create(new TokenOptions
+        {
+            Issuer = "testIssuer",
+            Audience = "testAudience",
+            Seconds = 3600,
+            DaysToExpiry = 1
+        }));      
 
-        var signingConfigurations = new SigningConfigurations();
-        configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
+        var cryptoMock = new Crypto(Options.Create(new CryptoOptions
+        {
+            Key = "[`T,Uj0$zse#_zF=[^*0>|-mYf/uHX=",
+            AuthSalt = "j!SRTGE}46aSb$]R|jjTtKGY`|M<}yT+]W3E}"
+        }));
 
-        var tokenConfigurations = new TokenConfiguration();
-        configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
-
-        mapperMock = new Mock<IMapper>();
-        cryptoMock = new Mock<ICrypto>();
+        mapperMock = new Mock<IMapper>();        
         userRepositoryMock = Usings.MockRepositorio(mockUserList);
-
-        userService = new UserService(
-            mapperMock.Object,
-            userRepositoryMock.Object,
-            signingConfigurations,
-            tokenConfigurations
-        );
+        userService = new UserService(mapperMock.Object, userRepositoryMock.Object, signingConfigurations, cryptoMock);
     }
 
     [Fact]
@@ -50,7 +45,6 @@ public class UserServiceTest
         var loginDto = new LoginDto { Email = mockUser.Login.Email, Password = "validPassword" };
         
         userRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<User, bool>>>())).Returns(mockUserList.Where(u => u.Login.Email.Equals(mockUser.Login.Email)));
-        cryptoMock.Setup(crypto => crypto.Encrypt(It.IsAny<string>())).Returns(mockUser.Login.Password);
 
         // Act
         var result = userService.Authentication(loginDto);
@@ -68,7 +62,6 @@ public class UserServiceTest
         var mockUser = mockUserList.First();
         var loginDto = new LoginDto { Email = "invalid.email@example.com", Password = "invalidPassword" };
         userRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<User, bool>>>())).Returns(mockUserList.Where(u => u.Login.Email.Equals(mockUser.Login.Email)));
-        cryptoMock.Setup(crypto => crypto.Encrypt(It.IsAny<string>())).Returns(mockUser.Login.Password);
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentException>(() => userService.Authentication(loginDto));

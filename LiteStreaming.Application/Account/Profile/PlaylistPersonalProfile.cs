@@ -1,8 +1,8 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
 
-namespace Application.Account.Profile;
+namespace Application.Streaming.Profile;
 public class PlaylistPersonalProfile : AutoMapper.Profile
 {
     public PlaylistPersonalProfile() 

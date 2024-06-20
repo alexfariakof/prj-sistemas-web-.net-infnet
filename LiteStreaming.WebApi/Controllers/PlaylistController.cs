@@ -1,6 +1,5 @@
 using Application;
-using Application.Account.Dto;
-using Domain.Account.ValueObject;
+using Application.Streaming.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -41,6 +40,8 @@ public class PlaylistController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
     public IActionResult FindById([FromRoute] Guid playlistId)
     {
         try
@@ -60,11 +61,10 @@ public class PlaylistController : ControllerBaseTokensProps
     [HttpPost]
     [ProducesResponseType((200), Type = typeof(PlaylistDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Create([FromBody] PlaylistDto dto)
     {
-        if (UserType != PerfilUser.UserType.Admin) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
         try
@@ -82,11 +82,10 @@ public class PlaylistController : ControllerBaseTokensProps
     [HttpPut]
     [ProducesResponseType((200), Type = typeof(PlaylistDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Update(PlaylistDto dto)
     {
-        if (UserType != PerfilUser.UserType.Admin) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -105,11 +104,10 @@ public class PlaylistController : ControllerBaseTokensProps
     [HttpDelete]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Delete(PlaylistDto dto)
     {
-        if (UserType != PerfilUser.UserType.Admin) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 

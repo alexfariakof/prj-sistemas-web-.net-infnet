@@ -1,5 +1,6 @@
 html {
   font-size: 14px;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -14,13 +15,7 @@ html {
 
 html {
   position: relative;
-  min-height: 100%;
 }
-
-body {
-  margin-bottom: 60px;
-}
-
 
 .alert {
     display: flex;
@@ -42,5 +37,3 @@ body {
     position: relative;
     z-index: 1051;
 }
-}
-

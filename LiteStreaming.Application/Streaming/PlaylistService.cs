@@ -1,10 +1,10 @@
-﻿using Application.Account.Dto;
-using Application.Account.Dto.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using Repository.Interfaces;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class PlaylistService : ServiceBase<PlaylistDto, Playlist>, IService<PlaylistDto>, IPlaylistService
 {
     public PlaylistService(IMapper mapper, IRepository<Playlist> PlaylistRepository) : base(mapper, PlaylistRepository)  { }

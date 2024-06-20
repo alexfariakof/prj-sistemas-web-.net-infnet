@@ -2,17 +2,19 @@
 using Application.Administrative.Interfaces;
 using Application.Shared.Dto;
 using AutoMapper;
-
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
-using LiteStreaming.Cryptography;
+using EasyCryptoSalt;
 using Repository.Interfaces;
 
 namespace Application.Administrative;
 public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService, IAuthenticationService
 {
-    private readonly ICrypto _crypto = Crypto.GetInstance;
-    public AdministrativeAccountService(IMapper mapper, IRepository<AdministrativeAccount> customerRepository) : base(mapper, customerRepository)    {  }
+    private readonly ICrypto _crypto;
+    public AdministrativeAccountService(IMapper mapper, IRepository<AdministrativeAccount> customerRepository, ICrypto crypto) : base(mapper, customerRepository)    
+    {
+        _crypto = crypto;
+    }
 
     public override AdministrativeAccountDto Create(AdministrativeAccountDto dto)
     {
@@ -73,7 +75,7 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
             throw new ArgumentException("Usuário inexistente!");
         else
         {
-            credentialsValid = account != null && !String.IsNullOrEmpty(account.Login.Password) && !String.IsNullOrEmpty(account.Login.Email) && (_crypto.Decrypt(account.Login.Password).Equals(dto.Password));
+            credentialsValid = account is not null && !String.IsNullOrEmpty(account.Login.Password) && !String.IsNullOrEmpty(account.Login.Email) && (_crypto.IsEquals(dto.Password ?? "", account.Login.Password));
         }
 
         if (credentialsValid)

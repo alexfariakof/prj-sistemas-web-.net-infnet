@@ -10,9 +10,9 @@ using Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Appliction Parameteres
-var appName = "Serviços de Streaming";
+var appName = "Lite Streaming API";
 var appVersion = "v1";
-var appDescription = $"API Serviços de Streaming.";
+var appDescription = $"API Lite Streaming Serviços de Streaming.";
 
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -29,8 +29,8 @@ builder.Services.AddSwaggerGen(c => {
         Description = appDescription,
         Contact = new OpenApiContact
         {
-            Name = "Alex Ribeiro de Faria",
-            Url = new Uri("https://github.com/alexfariakof/Home_Broker_Chart")
+            Name = "Alex Ribeiro de Faria - Projeto Web API .Net Core Lite Streaming ",
+            Url = new Uri("https://github.com/alexfariakof/prj-sistemas-web-.net-infnet/tree/main/LiteStreaming.WebApi")
         }
     });
 });
@@ -59,18 +59,20 @@ builder.Services.AddAuthConfigurations(builder.Configuration);
 // AutoMapper
 builder.Services.AddAutoMapperWebApiApp();
 
-//Repositories
+// Repositories
 builder.Services.AddRepositoriesWebApiApp();
 
-//Services
+// Services
 builder.Services.AddServicesWebApiApp();
+
+// Cryptography 
+builder.Services.AddServicesCryptography(builder.Configuration);
 
 var app = builder.Build();
 
 if (app.Environment.IsStaging())
 {    
     app.Urls.Add("http://0.0.0.0:5146");
-    app.Urls.Add("https://0.0.0.0:7204");
 }
 
 app.UseDefaultFiles();

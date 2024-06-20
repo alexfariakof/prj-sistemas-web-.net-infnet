@@ -1,6 +1,5 @@
 using Application;
-using Application.Account.Dto;
-using Domain.Account.ValueObject;
+using Application.Streaming.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -29,10 +28,10 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MusicDto[]))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
     public IActionResult FindAll()
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         try
         {
             var result = this._musicService.FindAll(UserIdentity);
@@ -52,10 +51,10 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
     public IActionResult FindById([FromRoute] Guid musicId)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         try
         {
             var result = this._musicService.FindById(musicId);
@@ -73,7 +72,8 @@ public class MusicController : ControllerBaseTokensProps
     [HttpPost]
     [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Create([FromBody] MusicDto dto)
     {
 
@@ -94,11 +94,10 @@ public class MusicController : ControllerBaseTokensProps
     [HttpPut]
     [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Update(MusicDto dto)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -117,11 +116,10 @@ public class MusicController : ControllerBaseTokensProps
     [HttpDelete]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Delete(MusicDto dto)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 

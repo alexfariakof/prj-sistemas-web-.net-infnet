@@ -1,5 +1,5 @@
 ﻿using Application;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -26,11 +26,14 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserType.Merchant);
 
         // Act
-        var result = controller.FindById() as UnauthorizedResult;
+        var result = controller.FindById();
 
         // Assert
-        Assert.NotNull(result);
-        Assert.IsType<UnauthorizedResult>(result);
+        //Assert.NotNull(result);
+        //Assert.IsType<UnauthorizedResult>(result);
+
+        var okResult = Assert.IsType<NotFoundResult>(result);
+        Assert.Equal(404, okResult.StatusCode);
     }
 
     [Fact]
@@ -107,11 +110,12 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserType.Merchant);
 
         // Act
-        var result = controller.Update((CustomerDto)null) as UnauthorizedResult;
+        var result = controller.Update((CustomerDto)null);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.IsType<UnauthorizedResult>(result);
+        Assert.NotNull(result);        
+        var badResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, badResult.StatusCode);
     }
 
     [Fact]

@@ -1,6 +1,6 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 
-namespace Application.Account.Dto.Interfaces;
+namespace Application.Streaming.Dto.Interfaces;
 public interface IPlaylistService
 {
     PlaylistDto Create(PlaylistDto obj);

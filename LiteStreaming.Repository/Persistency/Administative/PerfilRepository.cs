@@ -5,13 +5,13 @@ using Repository.Interfaces;
 namespace Repository.Persistency.Administrative;
 public class PerfilRepository : BaseRepository<Perfil>, IRepository<Perfil>
 {
-    private RegisterContextAdministravtive Context { get; set; }
+    public RegisterContextAdministravtive Context { get;  }
     public PerfilRepository(RegisterContextAdministravtive context) : base(context)
     {
         Context = context;
     }
     public override Perfil GetById(int id)
     {
-        return this.Context.Set<Perfil>().Find(id) ?? new();
+        return Context.Set<Perfil>().Find(id) ?? new();
     }
 }

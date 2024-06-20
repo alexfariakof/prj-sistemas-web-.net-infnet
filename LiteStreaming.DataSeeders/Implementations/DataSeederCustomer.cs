@@ -29,9 +29,9 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "free@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Admin)).First()
                 },
-                Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa5")).FirstOrDefault()
+                Flat = _context.Flat.First(f => f.Name ==  "Free Flat") ?? new()
             };
 
             var address = new Address()
@@ -68,9 +68,9 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "basic@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Normal)).First()
                 },
-                Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6")).FirstOrDefault()
+                Flat = _context.Flat.First( f => f.Name == "Basic Flat") ?? new()
             };
             address = new Address()
             {
@@ -98,16 +98,16 @@ public class DataSeederCustomer : IDataSeeder
 
             customer = new Customer
             {
-                Name = "Standard User Test",
+                Name = "Normal User Test",
                 Birth = new DateTime(1993, 1, 1),
                 CPF = "123.456.789-03",
                 Phone = new Phone { Number = "+5521993879312" },
                 User = new User()
                 {
                     Login = new Login { Email = "standard@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Normal)).First()
                 },
-                Flat = _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa7")).FirstOrDefault()
+                Flat = _context.Flat.First( f => f.Name == "Standard  Flat") ?? new()
             };
             address = new Address()
             {
@@ -132,7 +132,6 @@ public class DataSeederCustomer : IDataSeeder
             };
             customer.AddCard(card);
             _context.Add(customer);
-            _context.SaveChanges();
 
             customer = new Customer
             {
@@ -167,7 +166,7 @@ public class DataSeederCustomer : IDataSeeder
                 Limit = 5000m
             };
 
-            customer.CreateAccount(customer, address, _context.Flat.Where(f => f.Id == new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa7")).FirstOrDefault(), card);
+            customer.CreateAccount(customer, address, _context.Flat.First(f => f.Name == "Premium  Flat") ?? new(), card);
             customer.User.PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First();
             _context.Add(customer);
             _context.SaveChanges();

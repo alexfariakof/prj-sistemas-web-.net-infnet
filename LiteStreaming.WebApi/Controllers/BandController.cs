@@ -1,6 +1,5 @@
 using Application;
-using Application.Account.Dto;
-using Domain.Account.ValueObject;
+using Application.Streaming.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -23,8 +22,6 @@ public class BandController : ControllerBaseTokensProps
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindAll()
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         try
         {
             var result = this._bandService.FindAll(UserIdentity);
@@ -45,8 +42,6 @@ public class BandController : ControllerBaseTokensProps
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindById([FromRoute] Guid bandId)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         try
         {
             var result = this._bandService.FindById(bandId);
@@ -64,10 +59,10 @@ public class BandController : ControllerBaseTokensProps
     [HttpPost]
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Create([FromBody] BandDto dto)
     {
-
         if (ModelState is { IsValid: false })
             return BadRequest();
         try
@@ -85,11 +80,10 @@ public class BandController : ControllerBaseTokensProps
     [HttpPut]
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Update(BandDto dto)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 
@@ -108,11 +102,10 @@ public class BandController : ControllerBaseTokensProps
     [HttpDelete]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [Authorize("Bearer")]
+    [ProducesResponseType((403))]
+    [Authorize("Bearer", Roles = "Admin, Normal")]
     public IActionResult Delete(BandDto dto)
     {
-        if (UserType != PerfilUser.UserType.Customer) return Unauthorized();
-
         if (ModelState is { IsValid: false })
             return BadRequest();
 

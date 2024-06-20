@@ -1,5 +1,5 @@
 ﻿using Application;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -284,7 +284,7 @@ public class AlbumControllerTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<UnauthorizedResult>(result);
+        Assert.IsType<BadRequestResult>(result);
         mockAlbumService.Verify(b => b.Delete(It.IsAny<AlbumDto>()), Times.Never);
     }
 }

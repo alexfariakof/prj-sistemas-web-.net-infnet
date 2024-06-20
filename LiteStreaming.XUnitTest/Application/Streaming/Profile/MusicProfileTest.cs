@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Application.Account.Profile;
-using Application.Account.Dto;
+using Application.Streaming.Profile;
+using Application.Streaming.Dto;
 using Domain.Streaming.Agreggates;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class MusicProfileTest
 {
     [Fact]

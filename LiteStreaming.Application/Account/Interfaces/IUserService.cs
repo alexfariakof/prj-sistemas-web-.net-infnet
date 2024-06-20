@@ -1,7 +1,7 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Application.Shared.Dto;
 
-namespace Application.Account.Interfaces;
+namespace Application.Streaming.Interfaces;
 public interface IUserService
 {    AuthenticationDto Authentication(LoginDto dto);
 }

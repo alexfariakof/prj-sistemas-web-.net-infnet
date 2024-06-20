@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   app-sts-dev:
-    container_name: dev
+    container_name: sts-dev
     image: alexfariakof/app-sts-server-dev-img
     build:
       context: ..

@@ -5,6 +5,8 @@ using Migrations.MySqlServer.CommonInjectDependence;
 using Application.CommonInjectDependence;
 using Repository.CommonInjectDependence;
 using Repository;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +17,15 @@ builder.Services.AddServicesAdministrativeApp();
 builder.Services.AddAutoMapperAdministrativeApp();
 builder.Services.AddServices();
 
+// Cryptography 
+builder.Services.AddServicesCryptography(builder.Configuration);
+
 
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDataSeeders();
     builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
@@ -34,6 +40,15 @@ else
 }
 
 var app = builder.Build();
+
+var supportedCultures = new[] { new CultureInfo("pt-BR") };
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("pt-BR"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+};
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsProduction())

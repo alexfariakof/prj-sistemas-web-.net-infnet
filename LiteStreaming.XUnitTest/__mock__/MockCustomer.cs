@@ -3,7 +3,7 @@ using Bogus;
 using Bogus.Extensions.Brazil;
 using Domain.Account.ValueObject;
 using Domain.Transactions.Agreggates;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 
 namespace __mock__;
 public class MockCustomer
