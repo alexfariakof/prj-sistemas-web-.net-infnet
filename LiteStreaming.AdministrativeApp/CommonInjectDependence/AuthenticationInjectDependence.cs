@@ -14,7 +14,7 @@ public static class AuthenticationInjectDependence
             options.AccessDeniedPath = "/account";
             options.LogoutPath = "/account/logout";
             options.SlidingExpiration = true;
-        }); ;
+        });
 
   
         return services;
