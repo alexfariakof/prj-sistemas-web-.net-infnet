@@ -1,9 +1,10 @@
-﻿using AdministrativeApp.Models;
+﻿using LiteStreaming.AdministrativeApp.Models;
 using Application.Streaming.Dto;
 using Application.Streaming.Dto.Interfaces;
 using LiteStreaming.AdministrativeApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using LiteStreaming.XunitTest.__mock__.Admin;
 
 namespace AdministrativeApp.Controllers;
 
@@ -69,8 +70,8 @@ public class FlatControllerTest
     public void Save_ValidDto_RedirectsToIndex()
     {
         // Arrange
-        var dto = MockFlat.Instance.GetFakerDto();
-        flatController.UserId = dto.UsuarioId;
+        var dto = MockFlat.Instance.GetFakerDto();        
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
 
         // Act
         var result = flatController.Save(dto);
@@ -86,10 +87,11 @@ public class FlatControllerTest
     {
         // Arrange
         var dto = MockFlat.Instance.GetFakerDto();
-        flatController.UserId = dto.UsuarioId;
+        
         flatServiceMock.Setup(service => service.Create(It.IsAny<FlatDto>())).Throws(new ArgumentException("Invalid data."));
 
         // Act
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
         var result = flatController.Save(dto);
 
         // Assert
@@ -106,7 +108,7 @@ public class FlatControllerTest
     {
         // Arrange
         var dto = MockFlat.Instance.GetFakerDto();
-        flatController.ControllerContext.HttpContext.Items["UserId"] = dto.UsuarioId;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
         flatServiceMock.Setup(service => service.Create(It.IsAny<FlatDto>())).Throws(new Exception("Error"));
 
         // Act
@@ -126,9 +128,11 @@ public class FlatControllerTest
     {
         // Arrange
         flatController.ModelState.AddModelError("test", "test error");
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", flatController);
 
+        FlatDto? nullflatDto = null;
         // Act
-        var result = flatController.Update(new FlatDto());
+        var result = flatController.Update(nullflatDto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -140,7 +144,7 @@ public class FlatControllerTest
     {
         // Arrange
         var dto = MockFlat.Instance.GetFakerDto();
-        flatController.UserId = dto.UsuarioId;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
 
         // Act
         var result = flatController.Update(dto);
@@ -156,7 +160,7 @@ public class FlatControllerTest
     {
         // Arrange
         var dto = MockFlat.Instance.GetFakerDto();
-        flatController.UserId = dto.UsuarioId;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
         flatServiceMock.Setup(service => service.Update(It.IsAny<FlatDto>())).Throws(new ArgumentException("Invalid data."));
 
         // Act
@@ -176,7 +180,7 @@ public class FlatControllerTest
     {
         // Arrange
         var dto = MockFlat.Instance.GetFakerDto();
-        flatController.UserId = null;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
         flatServiceMock.Setup(service => service.Update(It.IsAny<FlatDto>())).Throws(new Exception("Error"));
 
         // Act
@@ -253,7 +257,7 @@ public class FlatControllerTest
      
         var flatDto = MockFlat.Instance.GetFakerDto();
         var id = flatDto.Id;
-        flatController.UserId = flatDto.UsuarioId;
+        MockHttpContextHelper.MockClaimsIdentitySigned(flatDto.UsuarioId, "teste", "teste@teste.com", flatController);
         flatServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(flatDto);
         flatServiceMock.Setup(service => service.Delete(It.IsAny<FlatDto>())).Returns(true);
         

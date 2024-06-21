@@ -11,10 +11,9 @@ COPY . .
 WORKDIR /src/LiteStreaming.WebApi
 RUN apt-get update && \
     apt-get install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_21.x | bash - && \
+    curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
-RUN npm install -g npm@10.2.5 && \
-    npm install -g @angular/core@16 @angular/cli@16
+RUN npm install -g @angular/core @angular/cli
 
 RUN dotnet build --restore -c Release -o /app/build
 RUN dotnet publish "./LiteStreaming.WebApi.csporj" -c Release -o /app/publish /p:UseAppHost=false

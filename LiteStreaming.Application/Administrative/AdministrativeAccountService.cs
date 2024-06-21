@@ -8,7 +8,7 @@ using EasyCryptoSalt;
 using Repository.Interfaces;
 
 namespace Application.Administrative;
-public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService, IAuthenticationService
+public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService, IAdministrativeAuthenticationService
 {
     private readonly ICrypto _crypto;
     public AdministrativeAccountService(IMapper mapper, IRepository<AdministrativeAccount> customerRepository, ICrypto crypto) : base(mapper, customerRepository)    

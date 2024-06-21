@@ -22,6 +22,12 @@
 **/docker-compose*
 **/Dockerfile*
 **/node_modules
+**/.angular
+**/coverage
+**/TestResults
+**/*.ps1
+**/*.sh
+**/dist
 **/npm-debug.log
 **/obj
 **/secrets.dev.yaml

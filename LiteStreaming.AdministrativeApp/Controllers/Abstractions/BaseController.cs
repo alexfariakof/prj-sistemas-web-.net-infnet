@@ -1,13 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
 
-namespace AdministrativeApp.Controllers.Abastractions;
+namespace LiteStreaming.AdministrativeApp.Controllers.Abstractions;
+
 public abstract class BaseController : Controller
 {
-    public Guid? UserId;
-
-    public string? UserName;
     protected BaseController() { }
+
+    public Guid UserId
+    {
+        get
+        {
+            if (User.Identity.IsAuthenticated && Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid userId))
+            {
+                return userId;
+            }
+            throw new ArgumentNullException();
+        }
+    }
 
     public override void OnActionExecuting(ActionExecutingContext context)
     {
@@ -15,27 +27,12 @@ public abstract class BaseController : Controller
 
         try
         {
-            var userId = HttpContext.Session.GetString("UserId");
-            this.UserId = userId != null ? Guid.Parse(userId) : null;
-            if (this.UserId is null)
-            {
-                ViewBag.LoginError = "Usuário sem permissão de acesso.";
-            }
-
-            var userName = HttpContext.Session.GetString("UserName");
-            this.UserName = !String.IsNullOrEmpty(userName) ? userName : null;
-            if (this.UserName is null)  throw new();
+            var user = UserId.ToString(); 
         }
         catch
         {
-            this.ClaerSession();
+            ViewBag.LoginError = "Usuário sem permissão de acesso.";
+            HttpContext.SignOutAsync();
         }
-    }
-
-    protected void ClaerSession()
-    {
-        HttpContext.Session.Clear();
-        this.UserId = null;
-        this.UserName = null;
     }
 }

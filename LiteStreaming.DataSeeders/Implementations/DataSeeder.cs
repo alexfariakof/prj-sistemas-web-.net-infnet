@@ -12,6 +12,11 @@ public class DataSeeder : IDataSeeder
     {
         try
         {
+            if (_context.Database.CanConnect())
+            {
+                Console.WriteLine("Banco de dados já existe. Não será recriado.");
+                return;
+            }
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
