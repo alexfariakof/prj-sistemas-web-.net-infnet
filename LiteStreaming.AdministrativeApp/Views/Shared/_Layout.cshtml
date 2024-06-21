@@ -1,20 +1,31 @@
-﻿<!DOCTYPE html>
+﻿@functions {
+    public bool IsActive(string controller, string action)
+    {
+        var routeData = ViewContext.RouteData.Values;
+        var currentAction = routeData["action"].ToString();
+        var currentController = routeData["controller"].ToString();
+
+        return string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase);
+    }
+}
+
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Administrative</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"  >
-    <script src="~/lib/bootstrap/dist//dist/js/bootstrap.bundle.min.js" ></script>
-    <script src="~/lib/@@popperjs/dist/popper.min.js"></script>
-    <script src="~/lib/bootstrap/dist//dist/js/bootstrap.min.js" ></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" >
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true" ></script>
+    <script src="~/lib/@@popperjs/dist/popper.min.js" asp-append-version="true" ></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true" ></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true" ></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" ></script>
     <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/AdministrativeApp.styles.css" asp-append-version="true" />
     @await RenderSectionAsync("Scripts", required: false)
 </head>
 <body class="d-flex flex-column h-100 text-light">
@@ -22,8 +33,8 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Lite Streaming</a>
-                <div class="d-flex align-content-stretch justify-content-around" >
-                    <span class="w-100 text-end me-2 @(ViewBag.UserId == null ? "visually-hidden" : "") d-inline-flex d-sm-none">Seja Bem vindo,  @ViewBag.UserName </span>
+                <div class="d-flex align-content-stretch justify-content-around">
+                    <span class="w-100 text-end me-2 @(User.Identity.IsAuthenticated ? "" : "visually-hidden") d-inline-flex d-sm-none">Seja Bem vindo,  @User.Identity.Name </span>
                     <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -31,24 +42,22 @@
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between w-100">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Início</a>
+                        <li class="nav-item me-1 @(User.Identity.IsAuthenticated ? "visually-hidden" : "")">
+                            <a class="nav-link btn btn-primary @(IsActive("Account", "Index") ? "active" : "")" asp-area="" asp-controller="Account" asp-action="Index">Login</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="User" asp-action="Index">Usuário</a>
+
+                        <li class="nav-item me-1">
+                            <a class="nav-link btn btn-primary  @(IsActive("User", "Index") ? "active" : "")" asp-area="" asp-controller="User" asp-action="Index">Usuários</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Flat" asp-action="Index">Plano</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="nav-item me-1">
+                            <a class="nav-link btn btn-primary @(IsActive("Flat", "Index") ? "active" : "")" asp-area="" asp-controller="Flat" asp-action="Index">Planos</a>
                         </li>
                     </ul>
                 </div>
-                <span class="w-auto text-end me-2 @(ViewBag.UserId == null ? "visually-hidden" : "") d-none d-sm-inline-flex">Seja Bem vindo,  @ViewBag.UserName </span>
+                <span class="w-auto text-end me-2 @(User.Identity.IsAuthenticated ? "" : "visually-hidden") d-none d-sm-inline-flex">Seja Bem vindo,  @User.Identity.Name </span>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <a class="d-flex flex-row me-2 btn btn-link w-auto text-end text-decoration-none text-light border border-1 border-light @(ViewBag.UserId == null ? "visually-hidden" : "")" href="@Url.Action("LogOut", "Home")">
-                        <svg class="mx-2 mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                    <a class="d-flex flex-row me-2 btn btn-link bg-success w-auto text-end text-decoration-none text-light border border-1 border-light @(User.Identity.IsAuthenticated ? "" : "visually-hidden")" href="@Url.Action("LogOut", "Account")">
+                        <svg class="bi bi-box-arrow-left mx-2 mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
                             <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
                         </svg>
@@ -63,7 +72,7 @@
             @RenderBody()
         </main>
     </div>
-    <div class="border-top  footer bottom-0 start-0 w-100 text-center position-fixed bg-dark text-muted h-auto">
+    <div class="border-top footer bottom-0 start-0 w-100 text-center position-fixed bg-dark text-muted h-auto">
         <div class="container text-light">
             &copy; 2024 - Lite Streaming AdministrativeApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

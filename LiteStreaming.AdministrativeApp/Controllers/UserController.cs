@@ -1,10 +1,12 @@
-﻿using AdministrativeApp.Controllers.Abastractions;
-using AdministrativeApp.Models;
+﻿using LiteStreaming.AdministrativeApp.Controllers.Abstractions;
+using LiteStreaming.AdministrativeApp.Models;
 using Application.Administrative.Dto;
 using Application.Administrative.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-namespace AdministrativeApp.Controllers;
+namespace LiteStreaming.AdministrativeApp.Controllers;
+
 public class UserController : BaseController
 {
     private IAdministrativeAccountService administrativeAccountService;
@@ -14,6 +16,7 @@ public class UserController : BaseController
         this.administrativeAccountService = administrativeAccountService;
     }
 
+    [Authorize]
     public IActionResult Index()
     {
         return View(this.FindAll());
@@ -26,6 +29,7 @@ public class UserController : BaseController
 
 
     [HttpPost]
+    [Authorize]
     public IActionResult Save(AdministrativeAccountDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -33,7 +37,7 @@ public class UserController : BaseController
 
         try
         {
-            dto.UsuarioId = this.UserId.Value;
+            dto.UsuarioId = UserId;
             administrativeAccountService.Create(dto);
             return RedirectToAction("Index");
         }
@@ -48,6 +52,7 @@ public class UserController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Update(AdministrativeAccountDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -55,7 +60,7 @@ public class UserController : BaseController
 
         try
         {
-            dto.UsuarioId = this.UserId.Value;
+            dto.UsuarioId = UserId;
             administrativeAccountService.Update(dto);
             return RedirectToAction("Index");
         }
@@ -69,11 +74,13 @@ public class UserController : BaseController
         }
     }
 
+    [Authorize]
     private IEnumerable<AdministrativeAccountDto> FindAll()
     {
         return this.administrativeAccountService.FindAll();
     }
 
+    [Authorize]
     public IActionResult Edit(Guid IdUsuario)
     {
         try
@@ -91,13 +98,14 @@ public class UserController : BaseController
         }
         return View("Index", this.FindAll());
     }
-
+    
+    [Authorize]
     public IActionResult Delete(Guid IdUsuario)
     {
         try
         {
             var dto = this.administrativeAccountService.FindById(IdUsuario);
-            dto.UsuarioId = this.UserId.Value;
+            dto.UsuarioId = UserId;
             var result = this.administrativeAccountService.Delete(dto);
             if (result)
                 ViewBag.Alert = new AlertViewModel {  Header = "Sucesso", Type= "success", Message = "Usuário inativado." };
@@ -106,7 +114,6 @@ public class UserController : BaseController
         {
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
-
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao excluir os dados deste usuário." };
         }
