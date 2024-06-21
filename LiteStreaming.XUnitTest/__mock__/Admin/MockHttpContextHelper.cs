@@ -14,7 +14,7 @@ namespace LiteStreaming.XunitTest.__mock__.Admin;
 
 public static class MockHttpContextHelper
 {
-    public static void MockClaimsIdentity(Guid userId, string name, string email, ControllerBase controller)
+    public static void MockClaimsIdentity(Guid? userId, string name, string email, ControllerBase controller)
     {
         var identity = new ClaimsIdentity(IdentityConstants.ApplicationScheme);
         identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId.ToString()));
