@@ -18,7 +18,7 @@ public class AuthorizationInjectDependenceTest
         var services = new ServiceCollection();
 
         // Act
-        services.AddAuthConfigurations(configuration);
+        services.AddAutoAuthConfigurations(configuration);
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();

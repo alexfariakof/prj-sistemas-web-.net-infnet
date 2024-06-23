@@ -3,7 +3,6 @@ using Moq;
 using __mock__.Admin;
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
-using System.Linq.Expressions;
 
 namespace Repository.Persistency.Administrative;
 public class AdminAccountRepositoryTest

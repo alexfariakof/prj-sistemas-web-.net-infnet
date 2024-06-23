@@ -5,66 +5,74 @@ namespace LiteStreaming.STS;
 
 internal class IdentityServerConfigurations
 {
+    const string API_RESOURCE_NAME = "lite-streaming-webapi";
+    const string DISPLAY_API_RESOURCE_NAME = "LiteStreamingResource";
+    static readonly string[] USER_CLAIMS = ["UserId", "role"];
+    static readonly string[] SCOPES = ["lite-streaming-scopes"];
+    const string SCOPE_NAME = "lite-streaming-scope";
+    const string DISPLAY_NAME_SCOPE = "LiteStreamingScope";
+    const string SECRET = "lite-streaming-secret";
+    const string CLIENT_ID = "client-angular-lite-streaming";
+    const string CLIENT_NAME = "FrontEnd Angular Application Lite Streaming";
+
+
     public static IEnumerable<IdentityResource> GetIdentityResource()
     {
-        return new List<IdentityResource>
-        {
+        return
+        [
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-        };
+        ];
     }
 
     public static IEnumerable<ApiResource> GetApiResources() 
     {
-        return new List<ApiResource>
-        {
-            new ApiResource("lite-streaming-webapi", "lite-streaming", new string[] {  "UserId" })
+        return
+        [
+            new ApiResource(API_RESOURCE_NAME , DISPLAY_API_RESOURCE_NAME, USER_CLAIMS )
             {
                 ApiSecrets =
                 {
-                    new Secret("LiteStreamingSecret".Sha256())
+                    new Secret(SECRET.Sha256())
                 },
-                Scopes = 
-                {
-                    "LiteStreamingScope"
-                }
+                Scopes = SCOPES 
             }
-        };
+        ];
     }
 
     public static IEnumerable<ApiScope> GetApiScopes()
     {
-        return new List<ApiScope>()
-        {
+        return
+        [
             new ApiScope()
             {
-                Name = "LiteStreamingScope",
-                DisplayName = "Lite Streaming API",
-                UserClaims = { "UserId" }
+                Name = SCOPE_NAME,
+                DisplayName = DISPLAY_NAME_SCOPE,
+                UserClaims = USER_CLAIMS
             }
-        };
+        ];
     }
 
     public static IEnumerable<Client> GetClients()
     {
-        return new List<Client>()
-        {
+        return
+        [
             new Client()
             {
-                ClientId = "client-angular-lite-streaming",
-                ClientName = "Acesso do Frontend a API",
+                ClientId = CLIENT_ID,
+                ClientName = CLIENT_NAME,
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                ClientSecrets =
+                ClientSecrets = 
                 {
-                    new Secret("LiteStreamingSecret".Sha256())
+                    new Secret(SECRET.Sha256())
                 },
                 AllowedScopes =
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    "LiteStreamingScope"
+                    SCOPE_NAME
                 }
             }
-        };
+        ];
     }
 }

@@ -1,6 +1,6 @@
 ﻿using LiteStreaming.STS.Model;
 
-namespace LiteStreaming.STS.Data;
+namespace LiteStreaming.STS.Data.Interfaces;
 
 internal interface IIdentityRepository
 {

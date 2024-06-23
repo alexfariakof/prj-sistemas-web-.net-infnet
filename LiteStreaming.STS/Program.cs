@@ -1,6 +1,8 @@
 using EasyCryptoSalt;
 using LiteStreaming.STS;
 using LiteStreaming.STS.Data;
+using LiteStreaming.STS.Data.Interfaces;
+using LiteStreaming.STS.Data.Options;
 using LiteStreaming.STS.GrantType;
 using LiteStreaming.STS.ProfileService;
 using LiteStreaming.STS.SwaggerUIDocumentation;
@@ -33,8 +35,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-builder.Services.Configure<DataBaseoptions>(builder.Configuration.GetSection("ConnectionStrings"));
-builder.Services.Configure<CryptoOptions>(builder.Configuration.GetSection("Crypto")).AddSingleton<ICrypto, Crypto>();
+builder.Services.Configure<DataBaseOptions>(builder.Configuration.GetSection("ConnectionStrings"));
+builder.Services.Configure<CryptoOptions>(builder.Configuration.GetSection("CryptoConfigurations")).AddSingleton<ICrypto, Crypto>();
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 builder.Services
     .AddIdentityServer()
@@ -45,6 +47,9 @@ builder.Services
     .AddInMemoryClients(IdentityServerConfigurations.GetClients())
     .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
     .AddProfileService<ProfileService>();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -57,6 +62,7 @@ var app = builder.Build();
         c.SwaggerEndpoint($"/swagger/{currentVersion}/swagger.json", $"{currentVersion} {appName} ");
     });
 /*}*/
+
 app.UseHsts();
 app.UseHttpsRedirection();
 app.UseIdentityServer();

@@ -33,7 +33,7 @@ public class UserServiceTest
 
         mapperMock = new Mock<IMapper>();        
         userRepositoryMock = Usings.MockRepositorio(mockUserList);
-        userService = new UserService(mapperMock.Object, userRepositoryMock.Object, signingConfigurations, cryptoMock);
+        userService = new UserService(mapperMock.Object, userRepositoryMock.Object, cryptoMock);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class UserServiceTest
         // Assert
         userRepositoryMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
         Assert.NotNull(result);
-        Assert.NotNull(result.AccessToken);
+        Assert.True(result.Authenticated);
     }
 
     [Fact]

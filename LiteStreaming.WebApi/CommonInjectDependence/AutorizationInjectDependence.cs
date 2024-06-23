@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Application.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
+using IdentityServer4.AccessTokenValidation;
+using LiteStreaming.WebApi.Options;
 
 namespace WebApi.CommonInjectDependence;
 public static class AutorizationInjectDependence
 {
-    public static void AddAuthConfigurations(this IServiceCollection services, IConfiguration configuration)
+    public static void AddAutoAuthConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<TokenOptions>(configuration.GetSection("TokenConfigurations"));
         var options = services.BuildServiceProvider().GetService<IOptions<TokenOptions>>();
@@ -36,5 +38,36 @@ public static class AutorizationInjectDependence
         {
             auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder().AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​).RequireAuthenticatedUser().Build());
         });
+    }
+
+
+    public static IServiceCollection AddIdentityServerConfigurations(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<IdentityServerConfigurations>(configuration.GetSection("IdentityServerConfigurations"));
+
+        var serviceProvider = services.BuildServiceProvider();
+        var identityServerOptions = serviceProvider.GetRequiredService<IOptions<IdentityServerConfigurations>>().Value;
+
+
+        services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme).AddIdentityServerAuthentication(options =>
+        {
+            options.Authority = identityServerOptions.Authority;
+            options.ApiName = identityServerOptions.ApiName;
+            options.ApiSecret = identityServerOptions.ApiSecret;
+            options.RequireHttpsMetadata = identityServerOptions.RequireHttpsMetadata;
+        });
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("litestreaming-role-users", policy =>
+            {
+                policy.RequireClaim("role", "Admin");
+                policy.RequireClaim("role", "Normal");
+                policy.RequireClaim("role", "Customer");
+                policy.RequireClaim("role", "Merchant");
+            });
+        });
+
+        return services;
     }
 }
