@@ -23,7 +23,7 @@ public static class ServiceInjectDependence
     {
         services.AddScoped<IAdministrativeAccountService, AdministrativeAccountService>();
         services.AddScoped<IFlatService, FlatService>();
-        services.AddScoped<IAuthenticationService, AdministrativeAccountService>();        
+        services.AddScoped<IAdministrativeAuthenticationService, AdministrativeAccountService>();        
         return services;
     }
 

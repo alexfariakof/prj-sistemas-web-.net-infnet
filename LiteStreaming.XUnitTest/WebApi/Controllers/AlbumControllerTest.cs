@@ -40,7 +40,8 @@ public class AlbumControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockAlbumService.Setup(service => service.FindAll(userId)).Returns((List<AlbumDto>)null);
+        List<AlbumDto>? nullObject = null;
+        mockAlbumService.Setup(service => service.FindAll(userId)).Returns(nullObject);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
@@ -92,7 +93,8 @@ public class AlbumControllerTest
     {
         // Arrange        
         var albumId = Guid.NewGuid();
-        mockAlbumService.Setup(service => service.FindById(albumId)).Returns((AlbumDto)null);
+        AlbumDto? nullAlbumDto = null;
+        mockAlbumService.Setup(service => service.FindById(albumId)).Returns(nullAlbumDto);
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
@@ -233,7 +235,7 @@ public class AlbumControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.True((bool)result.Value);
+        Assert.True((bool?)result.Value);
         mockAlbumService.Verify(b => b.Delete(It.IsAny<AlbumDto>()), Times.Once);
     }
 
@@ -245,7 +247,8 @@ public class AlbumControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Delete((AlbumDto)null);
+        AlbumDto? nullAlbumDto = null;
+        var result = controller.Delete(nullAlbumDto);
 
         // Assert
         Assert.NotNull(result);
