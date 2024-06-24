@@ -22,7 +22,7 @@ public class CustomerController : ControllerBaseTokensProps
 
     [HttpGet]
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
-    [ProducesResponseType((400), Type = typeof(string))]    
+    [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
     [Authorize]
@@ -120,7 +120,7 @@ public class CustomerController : ControllerBaseTokensProps
             var result = this._playlistService.FindAll(UserIdentity);
             return Ok(result);
         }
-        catch 
+        catch
         {
             return Ok(new List<PlaylistPersonalDto>());
         }
@@ -179,17 +179,18 @@ public class CustomerController : ControllerBaseTokensProps
 
     public IActionResult UpdatePlaylist(PlaylistPersonalDto dto)
     {
-        var validationResults = new List<ValidationResult>();
-        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
+        try
+        {
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
         {
             { "HttpMethod", "PUT" }
         }), validationResults, validateAllProperties: true);
 
-        if (!isValid)
-            return BadRequest(validationResults.Select(error => error.ErrorMessage));
+            if (!isValid)
+                return BadRequest(validationResults.Select(error => error.ErrorMessage));
 
-        try
-        {
+
             dto.CustomerId = UserIdentity;
             var result = this._playlistService.Update(dto);
             return Ok(result);
@@ -228,7 +229,7 @@ public class CustomerController : ControllerBaseTokensProps
             return BadRequest(ex.Message);
         }
     }
-    
+
     [HttpDelete("MyPlaylist/{playlistId}/Music/{musicId}")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]

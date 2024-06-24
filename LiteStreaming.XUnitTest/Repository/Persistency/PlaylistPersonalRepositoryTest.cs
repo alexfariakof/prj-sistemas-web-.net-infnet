@@ -23,7 +23,7 @@ public class PlaylistPersonalRepositoryTest
         var mockCustomer = mockPlaylistPersonal.Select(p => p.Customer).ToList();
         contextMock.Object.Add(mockMusics);
         contextMock.Setup(dsMusics => dsMusics.Set<Music>()).Returns(Usings.MockDbSet<Music>(mockMusics).Object);
-        contextMock.Setup(dsCustomer => dsCustomer.Set<Customer>()).Returns(Usings.MockDbSet<Customer>(mockCustomer).Object);
+        contextMock.Setup(dsCustomer => dsCustomer.Set<Customer?>()).Returns(Usings.MockDbSet<Customer?>(mockCustomer).Object);
         var repository = new PlaylistPersonalRepository(contextMock.Object);
         var playlistPersonal = MockPlaylistPersonal.Instance.GetFaker();
 
@@ -46,7 +46,7 @@ public class PlaylistPersonalRepositoryTest
         var repository = new PlaylistPersonalRepository(contextMock.Object);
         contextMock.Setup(dsPersonalPlaylist => dsPersonalPlaylist.Set<PlaylistPersonal>()).Returns(Usings.MockDbSet<PlaylistPersonal>(mockPlaylistPersonal).Object);
         contextMock.Setup(dsMusics => dsMusics.Set<Music>()).Returns(Usings.MockDbSet<Music>(mockMusics).Object);
-        contextMock.Setup(dsCustomer => dsCustomer.Set<Customer>()).Returns(Usings.MockDbSet<Customer>(mockCustomer).Object);
+        contextMock.Setup(dsCustomer => dsCustomer.Set<Customer?>()).Returns(Usings.MockDbSet<Customer?>(mockCustomer).Object);
 
         var playlistPersonal = mockPlaylistPersonal.First();
         playlistPersonal.Musics.First().Name = "Teste Repository Update";

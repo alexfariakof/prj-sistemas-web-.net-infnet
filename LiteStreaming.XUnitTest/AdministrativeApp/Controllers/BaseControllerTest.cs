@@ -22,7 +22,7 @@ public class BaseControllerTest
             var context = new ActionExecutingContext(
                 actionContext,
                 new List<IFilterMetadata>(),
-                new Dictionary<string, object>(),
+                new Dictionary<string, object?>(),
                 this);
 
             OnActionExecuting(context);

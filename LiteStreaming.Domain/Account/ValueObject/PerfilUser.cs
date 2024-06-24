@@ -10,24 +10,11 @@ public record PerfilUser : BasePerfil
 
     public PerfilUser(UserType type) : base(type) { }
 
-    public static implicit operator UserType(PerfilUser pu)
-    {
-        return (UserType)pu.Id;
-    }
+    public static implicit operator UserType(PerfilUser pu) => (UserType)pu.Id;
 
-    public static implicit operator PerfilUser(UserType perfil)
-    {
-        return new PerfilUser(perfil);
-    }
-     
+    public static implicit operator PerfilUser(UserType perfil) =>  new PerfilUser(perfil);     
 
-    public static bool operator ==(PerfilUser perfilUsuario, UserType perfil)
-    {
-        return perfilUsuario?.Id == (int)perfil;
-    }
+    public static bool operator ==(PerfilUser perfilUsuario, UserType perfil) => perfilUsuario?.Id == (int)perfil;
 
-    public static bool operator !=(PerfilUser perfilUsuario, UserType perfil)
-    {
-        return !(perfilUsuario?.Id == (int)perfil);
-    }
+    public static bool operator !=(PerfilUser perfilUsuario, UserType perfil) => !(perfilUsuario?.Id == (int)perfil);
 }

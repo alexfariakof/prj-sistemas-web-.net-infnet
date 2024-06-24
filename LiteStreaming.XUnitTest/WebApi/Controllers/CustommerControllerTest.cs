@@ -265,7 +265,7 @@ public class CustomerControllerTest
 
         var validationResults = new List<ValidationResult>();
         var dto = new PlaylistPersonalDto { Id = playlistId, Musics = { new MusicDto { Id = musicId } } };
-        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
+        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object?>
             {
                 { "HttpMethod", "DELETE" }
             }), validationResults, validateAllProperties: true);

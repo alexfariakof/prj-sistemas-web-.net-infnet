@@ -44,23 +44,11 @@ public abstract record BasePerfil
         return (UserType)perfil.Id;
     }
 
-    public static implicit operator BasePerfil(UserType userType)
-    {
-        return new PerfilUser(userType);
-    }
+    public static implicit operator BasePerfil(UserType userType) => new PerfilUser(userType);    
 
-    public static implicit operator BasePerfil(int perfil)
-    {
-        return new PerfilUser((UserType)perfil);
-    }
+    public static implicit operator BasePerfil(int perfil) => new PerfilUser((UserType)perfil);
 
-    public static bool operator ==(BasePerfil perfilUsuario, UserType perfil)
-    {
-        return perfilUsuario?.Id == (int)perfil;
-    }
+    public static bool operator ==(BasePerfil perfilUsuario, UserType perfil) => perfilUsuario?.Id == (int)perfil;    
 
-    public static bool operator !=(BasePerfil perfilUsuario, UserType perfil)
-    {
-        return !(perfilUsuario?.Id == (int)perfil);
-    }
+    public static bool operator !=(BasePerfil perfilUsuario, UserType perfil) => !(perfilUsuario?.Id == (int)perfil);    
 }

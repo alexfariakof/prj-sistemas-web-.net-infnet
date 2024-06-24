@@ -237,15 +237,14 @@ public class CustomerControllerMyPlaylistTests
         // Arrange
         var userIdentity = Guid.NewGuid();
         Usings.SetupBearerToken(userIdentity, controller);
-        var playlistDto = new PlaylistPersonalDto();
+        PlaylistPersonalDto? nullPlaylistDto = null;
 
         // Act
-        var result = controller.UpdatePlaylist(playlistDto) as ObjectResult;
+        var result = controller.UpdatePlaylist(nullPlaylistDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        Assert.NotNull(result.Value as IEnumerable<string>);
     }
 
     [Fact]

@@ -40,7 +40,6 @@ public static class Usings
                 if (existingItem != null)
                 {
                     context.Attach(item);
-
                     context.Entry(item).State = EntityState.Modified;
                     context.SaveChangesAsync().Wait();
                 }
