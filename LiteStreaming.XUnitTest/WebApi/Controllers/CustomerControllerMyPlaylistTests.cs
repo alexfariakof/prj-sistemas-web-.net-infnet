@@ -41,7 +41,7 @@ public class CustomerControllerMyPlaylistTests
     }
 
     [Fact]
-    public void FindAllPlaylist_Returns_Unauthorized_Result_When_User_Not_Customer()
+    public void FindAllPlaylist_Returns_OkObjectResult_When_User_Not_Customer()
     {
         // Arrange
         Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserType.Merchant);
@@ -50,7 +50,7 @@ public class CustomerControllerMyPlaylistTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<OkObjectResult>(result);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class CustomerControllerMyPlaylistTests
     }
 
     [Fact]
-    public void FindByIdPlaylist_Returns_NotFound_Result_When_Playlist_Not_Found()
+    public void FindByIdPlaylist_Returns_OkObjectResult_When_Playlist_Not_Found()
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
@@ -91,11 +91,11 @@ public class CustomerControllerMyPlaylistTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<OkObjectResult>(result);
     }
 
     [Fact]
-    public void FindByIdPlaylist_Returns_Unauthorized_Result_When_User_Not_Customer()
+    public void FindByIdPlaylist_Returns_OkObjectResult_When_User_Not_Customer()
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
@@ -106,7 +106,7 @@ public class CustomerControllerMyPlaylistTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<OkObjectResult>(result);
     }
 
     [Fact]

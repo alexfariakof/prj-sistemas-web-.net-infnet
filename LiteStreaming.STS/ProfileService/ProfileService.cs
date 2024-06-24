@@ -19,9 +19,10 @@ internal class ProfileService: IProfileService
 
         var claims = new List<Claim>()
         {
-            new("iss", "LiteStreaming.STS"),
-            new("UserId", user.Id.ToString()),
-            new("role", user.UserType.ToString())
+            new Claim("iss", "http://localhost:5055"),
+            new Claim("UserId", user.Id.ToString()),
+            new Claim("email", user.Email),
+            new Claim("role", user.UserType.ToString())
         };
         context.IssuedClaims = claims;
     }

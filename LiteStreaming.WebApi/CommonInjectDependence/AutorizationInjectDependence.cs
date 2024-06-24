@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
 using IdentityServer4.AccessTokenValidation;
 using LiteStreaming.WebApi.Options;
+using IdentityModel;
 
 namespace WebApi.CommonInjectDependence;
 public static class AutorizationInjectDependence
@@ -55,19 +56,17 @@ public static class AutorizationInjectDependence
             options.ApiName = identityServerOptions.ApiName;
             options.ApiSecret = identityServerOptions.ApiSecret;
             options.RequireHttpsMetadata = identityServerOptions.RequireHttpsMetadata;
+            options.LegacyAudienceValidation = true;
         });
 
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("litestreaming-role-users", policy =>
-            {
-                policy.RequireClaim("role", "Admin");
-                policy.RequireClaim("role", "Normal");
-                policy.RequireClaim("role", "Customer");
-                policy.RequireClaim("role", "Merchant");
-            });
+            options.AddPolicy("Bearer", new AuthorizationPolicyBuilder().AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build());
+            options.AddPolicy("litestreaming-role-customer", new AuthorizationPolicyBuilder().AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme).RequireRole([ "Customer"]).Build());
+
         });
 
+        services.AddControllers();
         return services;
     }
 }

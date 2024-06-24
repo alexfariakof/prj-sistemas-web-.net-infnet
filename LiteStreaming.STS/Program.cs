@@ -14,7 +14,16 @@ var currentVersion = "v1";
 var appDescription = $"Esta API é um componente de Serviços de Token de Segurança que emite tokens de segurança para autenticar e autorizar solicitações de usuários. ";
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(c =>
+{
+    c.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
 
+    });
+});
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -34,12 +43,13 @@ builder.Services.AddSwaggerGen(c =>
     c.AddDocumentFilterInstance<AuthenticationOperationFilter>(new AuthenticationOperationFilter());
 });
 
-
+builder.Services.AddMvc();
+builder.Services.AddControllersWithViews();
 builder.Services.Configure<DataBaseOptions>(builder.Configuration.GetSection("ConnectionStrings"));
 builder.Services.Configure<CryptoOptions>(builder.Configuration.GetSection("CryptoConfigurations")).AddSingleton<ICrypto, Crypto>();
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 builder.Services
-    .AddIdentityServer()
+    .AddIdentityServer()    
     .AddDeveloperSigningCredential()
     .AddInMemoryIdentityResources(IdentityServerConfigurations.GetIdentityResource())
     .AddInMemoryApiResources(IdentityServerConfigurations.GetApiResources())
@@ -54,19 +64,24 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-/*if (app.Environment.IsDevelopment())
-{*/
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint($"/swagger/{currentVersion}/swagger.json", $"{currentVersion} {appName} ");
     });
-/*}*/
+    app.UseDeveloperExceptionPage();
+}
 
-app.UseHsts();
-app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseCors();
 app.UseIdentityServer();
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+// https://localhost:7199/.well-known/openid-configuration
+// https://github.com/identityServer/IdentityServer4.Quickstart.UI

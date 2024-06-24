@@ -35,18 +35,18 @@ describe('Unit Test AuthService', () => {
       };
 
       const mockResponse: Auth = {
-        accessToken: 'fakeToken',
-        expiration: '2023-01-01T00:00:00Z',
+        access_token: 'fakeToken',
+        expires_in: '2023-01-01T00:00:00Z',
         authenticated: true,
-        created: '2023-01-01T00:00:00Z',
-        refreshToken: 'fakeToken',
-        usertype: 'customer'
+        scope: 'fake-scope',
+        refresh_token: 'fakeToken',
+        token_type: 'Bearer'
       };
 
       service.signIn(loginData).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
-      const expectedUrl = 'api/auth';
+      const expectedUrl = 'http://localhost:5055/connect/token';
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);

@@ -99,6 +99,8 @@ builder.Services.AddServicesCryptography(builder.Configuration);
 
 var app = builder.Build();
 
+
+
 if (app.Environment.IsStaging())
 {    
     app.Urls.Add("http://0.0.0.0:5146");
@@ -114,17 +116,11 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.RunDataSeeders();
 }
 else
-{
-    app.UseHttpsRedirection();
-}
 
 
-app.UseRouting()
-    .UseAuthorization()
-    .UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
-        endpoints.MapFallbackToFile("index.html");
-    });
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseCertificateForwarding();
+app.MapControllers();
 
 app.Run();
