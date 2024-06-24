@@ -4,75 +4,6 @@ namespace Domain.Core.ValueObject;
 
 public abstract record BasePerfil
 {
-    private static readonly object lockObj = new object();
-    private static readonly ThreadLocal<bool> isConverting = new ThreadLocal<bool>(() => false);
-
-    public static implicit operator UserType(BasePerfil pu)
-    {
-        lock (lockObj)
-        {
-            if (isConverting.Value)
-            {
-                throw new InvalidOperationException("Recursion detected in conversion.");
-            }
-
-            isConverting.Value = true;
-            try
-            {
-                return (UserType)pu.Id;
-            }
-            finally
-            {
-                isConverting.Value = false;
-            }
-        }
-    }
-
-    public static implicit operator BasePerfil(UserType perfil)
-    {
-        lock (lockObj)
-        {
-            if (isConverting.Value)
-            {
-                throw new InvalidOperationException("Recursion detected in conversion.");
-            }
-
-            isConverting.Value = true;
-            try
-            {
-                return CreatePerfil(perfil);
-            }
-            finally
-            {
-                isConverting.Value = false;
-            }
-        }
-    }
-
-    public static implicit operator BasePerfil(int perfil)
-    {
-        lock (lockObj)
-        {
-            if (isConverting.Value)
-            {
-                throw new InvalidOperationException("Recursion detected in conversion.");
-            }
-
-            isConverting.Value = true;
-            try
-            {
-                return CreatePerfil((UserType)perfil);
-            }
-            finally
-            {
-                isConverting.Value = false;
-            }
-        }
-    }
-
-    public static bool operator ==(BasePerfil perfilUsuario, UserType perfil) => perfilUsuario?.Id == (int)perfil;
-    public static bool operator !=(BasePerfil perfilUsuario, UserType perfil) => !(perfilUsuario?.Id == (int)perfil);
-
     public enum UserType
     {
         Invalid = 0,
@@ -110,8 +41,31 @@ public abstract record BasePerfil
         };
     }
 
-    private static BasePerfil CreatePerfil(UserType userType)
+    public static implicit operator UserType(BasePerfil perfil)
+    {
+        if (perfil == null)
+            return UserType.Invalid;
+
+        return (UserType)perfil.Id;
+    }
+
+    public static implicit operator BasePerfil(UserType userType)
     {
         return new PerfilUser(userType);
+    }
+
+    public static implicit operator BasePerfil(int perfil)
+    {
+        return new PerfilUser((UserType)perfil);
+    }
+
+    public static bool operator ==(BasePerfil perfilUsuario, UserType perfil)
+    {
+        return perfilUsuario?.Id == (int)perfil;
+    }
+
+    public static bool operator !=(BasePerfil perfilUsuario, UserType perfil)
+    {
+        return !(perfilUsuario?.Id == (int)perfil);
     }
 }
