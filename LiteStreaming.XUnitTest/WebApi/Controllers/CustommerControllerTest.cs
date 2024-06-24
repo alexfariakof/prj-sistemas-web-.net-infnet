@@ -3,6 +3,7 @@ using Application.Streaming.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Controllers;
 public class CustomerControllerTest
@@ -252,5 +253,49 @@ public class CustomerControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
+    [Fact]
+    public void DeleteMusicFromPlaylist_Returns_BadRequest_Result_When_Validation_Fails()
+    {
+        // Arrange
+        var playlistId = Guid.NewGuid();
+        var musicId = Guid.NewGuid();
+        var playlist = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
+
+        var validationResults = new List<ValidationResult>();
+        var dto = new PlaylistPersonalDto { Id = playlistId, Musics = { new MusicDto { Id = musicId } } };
+        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
+            {
+                { "HttpMethod", "DELETE" }
+            }), validationResults, validateAllProperties: true);
+
+        mockPlaylistPersonalService.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(playlist);
+
+        // Act
+        var result = controller.DeleteMusicFromPlaylist(playlistId, musicId) as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.IsType<string>(result.Value);
+    }
+
+    [Fact]
+    public void DeleteMusicFromPlaylist_Returns_BadRequest_Result_On_Exception()
+    {
+        // Arrange
+        var playlistId = Guid.NewGuid();
+        var musicId = Guid.NewGuid();
+
+        mockPlaylistPersonalService.Setup(service => service.FindById(playlistId)).Throws(new Exception("BadRequest_Error_Message"));
+
+        // Act
+        var result = controller.DeleteMusicFromPlaylist(playlistId, musicId) as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("BadRequest_Error_Message", result.Value);
     }
 }
