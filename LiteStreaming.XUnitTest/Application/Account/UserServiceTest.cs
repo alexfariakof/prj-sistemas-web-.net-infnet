@@ -23,7 +23,7 @@ public class UserServiceTest
             Audience = "testAudience",
             Seconds = 3600,
             DaysToExpiry = 1
-        }));      
+        }));
 
         var cryptoMock = new Crypto(Options.Create(new CryptoOptions
         {
@@ -31,9 +31,9 @@ public class UserServiceTest
             AuthSalt = "j!SRTGE}46aSb$]R|jjTtKGY`|M<}yT+]W3E}"
         }));
 
-        mapperMock = new Mock<IMapper>();        
+        mapperMock = new Mock<IMapper>();
         userRepositoryMock = Usings.MockRepositorio(mockUserList);
-        userService = new UserService(mapperMock.Object, userRepositoryMock.Object, cryptoMock);
+        userService = new UserService(mapperMock.Object, userRepositoryMock.Object, signingConfigurations, cryptoMock);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class UserServiceTest
         var mockUser = mockUserList.First();
         mockUser.Login.Password = "validPassword";
         var loginDto = new LoginDto { Email = mockUser.Login.Email, Password = "validPassword" };
-        
+
         userRepositoryMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<User, bool>>>())).Returns(mockUserList.Where(u => u.Login.Email.Equals(mockUser.Login.Email)));
 
         // Act
@@ -52,7 +52,7 @@ public class UserServiceTest
         // Assert
         userRepositoryMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
         Assert.NotNull(result);
-        Assert.True(result.Authenticated);
+        Assert.NotNull(result.access_token);
     }
 
     [Fact]

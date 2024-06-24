@@ -79,7 +79,10 @@ else if (builder.Environment.IsProduction())
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
 
-// Autorization Configuratons
+//Add SigningConfigurations Configuratons
+builder.Services.AddSigningConfigurations(builder.Configuration); 
+
+// Add AutoAuthConfigurations Configuratons
 //builder.Services.AddAutoAuthConfigurations(builder.Configuration);
 
 // Autorization Configuratons Identity Server STS
@@ -116,7 +119,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.RunDataSeeders();
 }
 else
-
+    app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

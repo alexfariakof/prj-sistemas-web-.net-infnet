@@ -23,7 +23,7 @@ public class AuthControllerTest
         // Arrange
         var expectedAuthenticationDto = new AuthenticationDto 
         { 
-            AccessToken = "Bearer " + Usings.GenerateJwtToken(Guid.NewGuid()) 
+            access_token = "Bearer " + Usings.GenerateJwtToken(Guid.NewGuid()) 
         };
         var loginDto = new LoginDto { Email = "customer@example.com", Password = "password"};
         mockUserService.Setup(service => service.Authentication(loginDto)).Returns(expectedAuthenticationDto);
@@ -44,7 +44,7 @@ public class AuthControllerTest
         // Arrange
         var expectedAuthenticationDto = new AuthenticationDto
         {
-            AccessToken = "Bearer " + Usings.GenerateJwtToken(Guid.NewGuid(), PerfilUser.UserType.Merchant)
+            access_token = "Bearer " + Usings.GenerateJwtToken(Guid.NewGuid(), PerfilUser.UserType.Merchant)
         };
 
         var loginDto = new LoginDto { Email = "merchant@example.com", Password = "password"};

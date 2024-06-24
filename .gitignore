@@ -485,3 +485,7 @@ Thumbs.db
 **/.vscode
 **/coverage
 **/dist
+*.pem
+*.pfx
+*.csr
+LiteStreaming.WebApi/gencert.sh
