@@ -278,7 +278,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Delete(playlistDto)).Returns(false);
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto.Id.Value);
+        var result = controller.DeletePlaylist(playlistDto.Id);
 
         // Assert
         //Assert.NotNull(result);
@@ -304,7 +304,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(true);
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto.Id.Value) as ObjectResult;
+        var result = controller.DeletePlaylist(playlistDto.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -324,7 +324,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(() => throw new Exception("Failed to delete the playlist."));
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto.Id.Value) as BadRequestObjectResult;
+        var result = controller.DeletePlaylist(playlistDto.Id) as BadRequestObjectResult;
 
         // Assert
         Assert.NotNull(result);
