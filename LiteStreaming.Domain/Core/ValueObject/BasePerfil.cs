@@ -28,7 +28,7 @@ public abstract record BasePerfil
         Description = GetDescription(type);
     }
 
-    private string GetDescription(UserType userType)
+    private static string GetDescription(UserType userType)
     {
         return userType switch
         {
