@@ -5,13 +5,13 @@ using Moq;
 namespace Repository.Persistency.Administrative;
 public class PerfilRepositoryTest
 {
-    private Mock<RegisterContextAdministravtive> contextMock;
+    private Mock<RegisterContextAdministrative> contextMock;
 
     public PerfilRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministravtive>().UseInMemoryDatabase(databaseName: "TestDatabase_PerfilRepositoryTest").Options;
-        contextMock = new Mock<RegisterContextAdministravtive>(options);
+        var options = new DbContextOptionsBuilder<RegisterContextAdministrative>().UseInMemoryDatabase(databaseName: "TestDatabase_PerfilRepositoryTest").Options;
+        contextMock = new Mock<RegisterContextAdministrative>(options);
     }
 
     [Fact]

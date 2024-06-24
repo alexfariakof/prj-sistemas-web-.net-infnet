@@ -16,7 +16,7 @@ public sealed class FlatProfileTest
 
         // Act
         var flatDto = mapper.Map<FlatDto>(flat);
-        flatDto.FormattedValue = flat.Value.Value.ToString();
+        flatDto.FormattedValue = flat.Monetary.Value.ToString();
 
         // Assert
         Assert.NotNull(flat);
@@ -44,6 +44,6 @@ public sealed class FlatProfileTest
         Assert.Equal(flatDto.Id, flat.Id);
         Assert.Equal(flatDto.Name, flat.Name);
         Assert.Equal(flatDto.Description, flat.Description);
-        Assert.Equal(flatDto.Value, flat.Value.Value);
+        Assert.Equal(flatDto.Value, flat.Monetary.Value);
     }
 }

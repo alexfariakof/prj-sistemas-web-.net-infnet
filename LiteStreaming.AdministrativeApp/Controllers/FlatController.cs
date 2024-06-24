@@ -42,7 +42,7 @@ public class FlatController : BaseController
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao salvar os dados." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao salvar os dados do plano." };
             return View("Create");
         }
     }
@@ -64,7 +64,7 @@ public class FlatController : BaseController
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao atualizar os dados deste usuário." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao atualizar os dados deste plano." };
             return View("Edit");
         }
     }
@@ -87,7 +87,7 @@ public class FlatController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
 
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao editar os dados deste usuário." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao editar os dados deste plano." };
         }
         return View("Index", this.FindAll());
     }
@@ -108,7 +108,7 @@ public class FlatController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
 
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao excluir os dados deste usuário." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao excluir os dados deste plano." };
         }
         return View("Index", this.FindAll());
     }

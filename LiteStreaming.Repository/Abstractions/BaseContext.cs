@@ -11,11 +11,11 @@ using Repository.Mapping.Notifications;
 using Repository.Mapping.Streaming;
 using Repository.Mapping.Transactions;
 
-namespace Repository.Abastractions;
+namespace Repository.Abstractions;
 
 public class BaseContext<TContext> : DbContext where TContext : DbContext
 {
-    public virtual BaseConstants BASE_CONSTS { get; }
+    public virtual BaseConstants? BASE_CONSTS { get; }
     public BaseContext(DbContextOptions<TContext> options) : base(options) { }
 
     // Definições das entidades
@@ -47,6 +47,7 @@ public class BaseContext<TContext> : DbContext where TContext : DbContext
         modelBuilder.ApplyConfiguration(new PlaylistPersonalMap(BASE_CONSTS));
         modelBuilder.ApplyConfiguration(new SignitureMap());
         modelBuilder.ApplyConfiguration(new UserMap());
+        
         // Notifications
         modelBuilder.ApplyConfiguration(new NotificationMap());
         // Streaming

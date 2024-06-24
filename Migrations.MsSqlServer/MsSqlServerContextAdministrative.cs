@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Repository.Abastractions;
+using Repository.Abstractions;
 
 namespace Migrations.MsSqlServer;
-public class MsSqlServerContextAdministrative : BaseContextAdministravtive<MsSqlServerContextAdministrative>
+public class MsSqlServerContextAdministrative : BaseContextAdministrative<MsSqlServerContextAdministrative>
 {
     public MsSqlServerContextAdministrative(DbContextOptions<MsSqlServerContextAdministrative> options) : base(options) { }
 }

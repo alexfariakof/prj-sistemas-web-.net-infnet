@@ -8,8 +8,8 @@ public class Customer : AbstractAccount<Customer>
     private const string PLAYLIST_NAME = "Favoritas";
     public DateTime Birth { get; set; }
     public string CPF { get; set; } = String.Empty;
-    public Phone Phone { get; set; } = new();
-    public virtual Flat Flat { get; set; }
+    public virtual Phone Phone { get; set; } = new();
+    public virtual Flat? Flat { get; set; }
     public virtual IList<PlaylistPersonal> Playlists { get; set; } = new List<PlaylistPersonal>();
     public virtual IList<Transaction> Transactions { get; set; } = new List<Transaction>();
     public override void CreateAccount(Customer customer, Address address, Flat flat, Card card)

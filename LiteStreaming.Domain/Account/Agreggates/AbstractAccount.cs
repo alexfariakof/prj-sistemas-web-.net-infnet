@@ -24,7 +24,7 @@ public abstract class AbstractAccount<T> : Base
         card.Id = Guid.NewGuid();
         card.Active = true;
         card.Limit = 1000;
-        card.CreateTransaction(customer, new Monetary(flat.Value), flat.Description ?? "");
+        card.CreateTransaction(customer, new Monetary(flat.Monetary), flat.Description ?? "");
         DisableActiveSigniture();
         this.Signatures.Add(new Signature()
         {

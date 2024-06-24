@@ -10,10 +10,10 @@ public class Card : Base
     private const int INTERVAL_TRANSACTON = -2;
     private const int REPEAT_TRANSACTON_MERCHANT = 1;
     public Boolean Active { get; set; }
-    public Monetary Limit { get; set; } = 0;
+    public virtual Monetary Limit { get; set; } = 0;
     public String? Number { get; set; }
     public virtual CreditCardBrand? CardBrand { get; set; }        
-    public ExpiryDate? Validate { get; set; }
+    public virtual ExpiryDate? Validate { get; set; }
     
     private string? _cvv;
 
@@ -22,6 +22,7 @@ public class Card : Base
         get { return _cvv; }
         set { _cvv = Crypto.Instance.Encrypt(value ?? ""); }
     }
+
     public virtual IList<Transaction> Transactions { get; set; } = new List<Transaction>();
 
     public void CreateTransaction(Customer customer, Monetary value, string description = "")
@@ -32,7 +33,7 @@ public class Card : Base
         Transaction transaction = new Transaction
         {
             Customer = customer,
-            Value = value,
+            Monetary = value,
             Description = description,
             DtTransaction = DateTime.Now,
         };
@@ -47,7 +48,7 @@ public class Card : Base
         transaction.Id = Guid.NewGuid();
 
         // Diminui Limite com o valor da tranzação 
-        this.Limit -= transaction.Value;
+        this.Limit -= transaction.Monetary;
 
         this.Transactions.Add(transaction);
     }
@@ -61,7 +62,7 @@ public class Card : Base
 
         var transactionRepetedByMerchant = lastTransactions?
                                             .Where(x => x.Customer.Name.ToUpper().Equals(transaction.Customer.Name.ToUpper())
-                                            && x.Value == transaction.Value)
+                                            && x.Monetary == transaction.Monetary)
                                             .Count() >= REPEAT_TRANSACTON_MERCHANT;
 
         if (transactionRepetedByMerchant)
@@ -69,7 +70,7 @@ public class Card : Base
     }
     private void VerifyLimit(Transaction transaction)
     {
-        if (this.Limit < transaction.Value) 
+        if (this.Limit < transaction.Monetary) 
         {
             throw new Exception("Cartão não possui limite para esta transação.");
         }
@@ -82,5 +83,4 @@ public class Card : Base
             throw new Exception("Cartão não está ativo.");
         }
     }
-
 }

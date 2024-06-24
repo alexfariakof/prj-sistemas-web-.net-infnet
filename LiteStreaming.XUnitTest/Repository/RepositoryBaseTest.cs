@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
-using Repository.Abastractions;
+using Repository.Abstractions;
 
 namespace Repository;
 public class TestEntity

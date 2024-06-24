@@ -30,7 +30,7 @@ public class FlatServiceTest
             Id = mockFlatService.Id,
             Name = mockFlatService.Name,
             Description = mockFlatService.Description,
-            Value = mockFlatService.Value,
+            Value = mockFlatService.Monetary,
         };
 
         flatRepositoryMock.Setup(repo => repo.Exists(It.IsAny<Expression<Func<Flat, bool>>>())).Returns(false);

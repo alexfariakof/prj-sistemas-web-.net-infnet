@@ -86,7 +86,7 @@ public class CardTest
             {
                 Name = "Dummy"
             },
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -98,7 +98,7 @@ public class CardTest
             {
                 Name = "Dummy"
             },
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -110,7 +110,7 @@ public class CardTest
             {
                 Name = "Dummy"
             },
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -144,7 +144,7 @@ public class CardTest
             DtTransaction = DateTime.Now,
             Id = Guid.NewGuid(),
             Customer = customer,
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -153,7 +153,7 @@ public class CardTest
             DtTransaction = DateTime.Now,
             Id = Guid.NewGuid(),
             Customer = customer,
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -181,7 +181,7 @@ public class CardTest
             DtTransaction = DateTime.Now,
             Id = Guid.NewGuid(),
             Customer = customer,
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -190,7 +190,7 @@ public class CardTest
             DtTransaction = DateTime.Now.AddMinutes(-0.5),
             Id = Guid.NewGuid(),
             Customer = customer,
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -203,7 +203,7 @@ public class CardTest
             {
                 Name = "Dummy"
             },
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -215,7 +215,7 @@ public class CardTest
             {
                 Name = "Dummy"
             },
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 
@@ -227,7 +227,7 @@ public class CardTest
             {
                 Name = "Dummy"
             },
-            Value = 19M,
+            Monetary = 19M,
             Description = "saljasdlak"
         });
 

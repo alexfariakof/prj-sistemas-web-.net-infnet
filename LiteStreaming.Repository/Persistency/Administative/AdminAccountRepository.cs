@@ -1,13 +1,13 @@
 ﻿using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
-using Repository.Abastractions;
+using Repository.Abstractions;
 using Repository.Interfaces;
 
 namespace Repository.Persistency;
 public class AdminAccountRepository : BaseRepository<AdministrativeAccount>, IRepository<AdministrativeAccount>
 {
-    public RegisterContextAdministravtive Context { get;  }
-    public AdminAccountRepository(RegisterContextAdministravtive context) : base(context)
+    public RegisterContextAdministrative Context { get;  }
+    public AdminAccountRepository(RegisterContextAdministrative context) : base(context)
     {
         Context = context;
     }

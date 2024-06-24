@@ -4,7 +4,7 @@ using Domain.Administrative.Agreggates;
 using Repository.Mapping.Administrative;
 using Domain.Administrative.ValueObject;
 
-namespace Repository.Abastractions;
+namespace Repository.Abstractions;
 public class BaseRegisterContextAdministravtive<TContext> : DbContext where TContext : DbContext
 {
     public BaseRegisterContextAdministravtive(DbContextOptions<TContext> options) : base(options) { }

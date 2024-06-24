@@ -3,8 +3,8 @@
 namespace DataSeeders.Administrative;
 public class DataSeederAdministrative : IDataSeeder
 {
-    private readonly RegisterContextAdministravtive _context;
-    public DataSeederAdministrative(RegisterContextAdministravtive context)
+    private readonly RegisterContextAdministrative _context;
+    public DataSeederAdministrative(RegisterContextAdministrative context)
     {
         _context = context;
     }

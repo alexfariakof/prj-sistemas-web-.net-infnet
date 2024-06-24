@@ -25,18 +25,18 @@ builder.Services.AddDataSeeders();
 
 if (builder.Environment.IsDevelopment())
 {    
-    builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
+    builder.Services.AddDbContext<RegisterContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 else if (builder.Environment.IsProduction())
 {
-    builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
+    builder.Services.AddDbContext<RegisterContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
 }
 else
 {
-    builder.Services.AddDbContext<RegisterContextAdministravtive>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
+    builder.Services.AddDbContext<RegisterContextAdministrative>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
 }
 
 var app = builder.Build();

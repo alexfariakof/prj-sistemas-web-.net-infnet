@@ -70,7 +70,7 @@ if (builder.Environment.IsStaging())
 else if (builder.Environment.IsDevelopment())
 {    
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
-    builder.Services.AddDbContext<RegisterContextAdministravtive>();
+    builder.Services.AddDbContext<RegisterContextAdministrative>();
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }

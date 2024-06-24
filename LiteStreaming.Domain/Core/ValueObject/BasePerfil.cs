@@ -16,7 +16,11 @@ public abstract record BasePerfil
     public virtual int Id { get; set; }
     public virtual string? Description { get; set; }
 
-    protected BasePerfil() { }
+    public BasePerfil() 
+    {
+        Id = 0;
+        Description = null;
+    }
 
     public BasePerfil(UserType type)
     {

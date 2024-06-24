@@ -9,7 +9,7 @@ public class PerfilUserMap : IEntityTypeConfiguration<PerfilUser>
 {
     public void Configure(EntityTypeBuilder<PerfilUser> builder)
     {
-        builder.ToTable("Perfil");
+        builder.ToTable("PerfilUser");
 
         builder.HasKey(perfil => perfil.Id);
         builder.Property(perfil => perfil.Id).IsRequired().HasConversion<int>();
@@ -17,8 +17,6 @@ public class PerfilUserMap : IEntityTypeConfiguration<PerfilUser>
 
         builder.HasData
         (
-            new PerfilUser(UserType.Admin),
-            new PerfilUser(UserType.Normal),
             new PerfilUser(UserType.Customer),
             new PerfilUser(UserType.Merchant)
         );

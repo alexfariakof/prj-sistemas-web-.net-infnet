@@ -6,9 +6,9 @@ using Repository;
 namespace DataSeeders.Administrative;
 public class DataSeederAdministrativeAccount : IDataSeeder
 {
-    private readonly RegisterContextAdministravtive _context;
+    private readonly RegisterContextAdministrative _context;
 
-    public DataSeederAdministrativeAccount(RegisterContextAdministravtive context)
+    public DataSeederAdministrativeAccount(RegisterContextAdministrative context)
     {
         _context = context;
     }

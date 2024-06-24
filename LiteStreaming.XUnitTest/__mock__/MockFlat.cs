@@ -15,7 +15,7 @@ public class MockFlat
             .RuleFor(f => f.Id, f => f.Random.Guid())
             .RuleFor(f => f.Name, f => f.Commerce.ProductName())
             .RuleFor(f => f.Description, f => f.Lorem.Sentence())
-            .RuleFor(f => f.Value, f => new Monetary(f.Finance.Amount()));
+            .RuleFor(f => f.Monetary, f => new Monetary(f.Finance.Amount()));
     }
 
     public static MockFlat Instance => _instance.Value;
@@ -53,7 +53,7 @@ public class MockFlat
             .RuleFor(b => b.Id, f => flat.Id)
             .RuleFor(b => b.Name, f => flat.Name)
             .RuleFor(b => b.Description, f => flat.Description)
-            .RuleFor(b => b.Value, f => flat.Value.Value)
+            .RuleFor(b => b.Value, f => flat.Monetary.Value)
             .Generate();
         return fakeFlatDto;
     }

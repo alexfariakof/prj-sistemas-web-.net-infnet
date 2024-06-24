@@ -66,7 +66,7 @@ namespace Migrations.MySqlServer.Migrations.Application
                         .HasMaxLength(14)
                         .HasColumnType("varchar(14)");
 
-                    b.Property<Guid>("FlatId")
+                    b.Property<Guid?>("FlatId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
@@ -273,22 +273,17 @@ namespace Migrations.MySqlServer.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("Perfil", (string)null);
+                    b.ToTable("PerfilUser", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Description = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
+                            Id = 3,
                             Description = "Customer"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 4,
                             Description = "Merchant"
                         });
                 });
@@ -604,7 +599,8 @@ namespace Migrations.MySqlServer.Migrations.Application
 
                     b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("Now()");
 
                     b.HasKey("FlatId", "AlbumId");
 
@@ -623,7 +619,8 @@ namespace Migrations.MySqlServer.Migrations.Application
 
                     b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("Now()");
 
                     b.HasKey("FlatsId", "MusicsId");
 
@@ -642,7 +639,8 @@ namespace Migrations.MySqlServer.Migrations.Application
 
                     b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("Now()");
 
                     b.HasKey("FlatsId", "PlaylistsId");
 
@@ -691,7 +689,8 @@ namespace Migrations.MySqlServer.Migrations.Application
 
                     b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("Now()");
 
                     b.HasKey("MusicsId", "PlaylistsId");
 
@@ -710,7 +709,8 @@ namespace Migrations.MySqlServer.Migrations.Application
 
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("Now()");
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
@@ -753,9 +753,7 @@ namespace Migrations.MySqlServer.Migrations.Application
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
                         .WithMany()
-                        .HasForeignKey("FlatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FlatId");
 
                     b.HasOne("Domain.Account.Agreggates.User", "User")
                         .WithMany()
@@ -922,7 +920,7 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Flat", b =>
                 {
-                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
+                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Monetary", b1 =>
                         {
                             b1.Property<Guid>("FlatId")
                                 .HasColumnType("char(36)");
@@ -939,7 +937,7 @@ namespace Migrations.MySqlServer.Migrations.Application
                                 .HasForeignKey("FlatId");
                         });
 
-                    b.Navigation("Value")
+                    b.Navigation("Monetary")
                         .IsRequired();
                 });
 
@@ -1057,7 +1055,7 @@ namespace Migrations.MySqlServer.Migrations.Application
                         .WithMany("Transactions")
                         .HasForeignKey("MerchantId");
 
-                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
+                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Monetary", b1 =>
                         {
                             b1.Property<Guid>("TransactionId")
                                 .HasColumnType("char(36)");
@@ -1076,7 +1074,7 @@ namespace Migrations.MySqlServer.Migrations.Application
 
                     b.Navigation("Customer");
 
-                    b.Navigation("Value")
+                    b.Navigation("Monetary")
                         .IsRequired();
                 });
 

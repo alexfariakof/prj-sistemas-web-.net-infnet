@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Repository.Abastractions;
+namespace Repository.Abstractions;
 public abstract class BaseRepository<T> where T : class, new()
 {
     private DbContext Context { get; set; }
