@@ -11,9 +11,7 @@ public class GenreMapTest
         const int PROPERTY_COUNT = 2;
 
         // Arrange
-        var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_GenreMapTest")
-            .Options;
+        var options = new DbContextOptionsBuilder<MockRegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_GenreMapTest").Options;
 
         using (var context = new MockRegisterContext(options))
         {

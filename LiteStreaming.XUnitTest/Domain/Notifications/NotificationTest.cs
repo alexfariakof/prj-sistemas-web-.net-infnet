@@ -1,4 +1,4 @@
-﻿using __mock__;
+﻿using Domain.Account.Agreggates;
 
 namespace Domain.Notifications;
 public class NotificationTest
@@ -35,7 +35,8 @@ public class NotificationTest
         var notificationType = NotificationType.User;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => Notification.Create(title, message, notificationType, null));
+        Customer? nullCustomer = null;
+        Assert.Throws<ArgumentNullException>(() => Notification.Create(title, message, notificationType, nullCustomer));
     }
 
     [Fact]
@@ -47,7 +48,8 @@ public class NotificationTest
         var notificationType = NotificationType.User;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => Notification.Create(null, message, notificationType, destination));
+        string? nullString = null;
+        Assert.Throws<ArgumentNullException>(() => Notification.Create(nullString, message, notificationType, destination));
     }
 
     [Fact]
@@ -59,7 +61,8 @@ public class NotificationTest
         var notificationType = NotificationType.User;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => Notification.Create(title, null, notificationType, destination));
+        string? nullString = null;
+        Assert.Throws<ArgumentNullException>(() => Notification.Create(title, nullString, notificationType, destination));
     }
 
     [Fact]
@@ -72,6 +75,7 @@ public class NotificationTest
         var notificationType = NotificationType.User;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => Notification.Create(title, message, notificationType, destination, null));
+        Customer? nullCustomer = null;
+        Assert.Throws<ArgumentNullException>(() => Notification.Create(title, message, notificationType, destination, nullCustomer));
     }
 }

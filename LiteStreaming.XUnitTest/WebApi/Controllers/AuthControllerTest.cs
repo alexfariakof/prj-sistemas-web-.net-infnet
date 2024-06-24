@@ -29,7 +29,7 @@ public class AuthControllerTest
         mockUserService.Setup(service => service.Authentication(loginDto)).Returns(expectedAuthenticationDto);
 
         // Act
-        var result = mockController.SignIn(loginDto) as OkObjectResult;
+        var result = mockController.SignIn(loginDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -51,7 +51,7 @@ public class AuthControllerTest
         mockUserService.Setup(service => service.Authentication(loginDto)).Returns(expectedAuthenticationDto);
 
         // Act
-        var result = mockController.SignIn(loginDto) as OkObjectResult;
+        var result = mockController.SignIn(loginDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -67,7 +67,7 @@ public class AuthControllerTest
         mockController.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = mockController.SignIn(It.IsAny<LoginDto>()) as BadRequestResult;
+        var result = mockController.SignIn(It.IsAny<LoginDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -81,7 +81,7 @@ public class AuthControllerTest
         var loginDto = new LoginDto { Email = "invalid@example.com", Password = "password"  };
 
         // Act
-        var result = mockController.SignIn(loginDto) as BadRequestObjectResult;
+        var result = mockController.SignIn(loginDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -97,7 +97,7 @@ public class AuthControllerTest
         mockUserService.Setup(service => service.Authentication(loginDto)).Throws(new ArgumentException("Authentication failed"));
 
         // Act
-        var result = mockController.SignIn(loginDto) as BadRequestObjectResult;
+        var result = mockController.SignIn(loginDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -113,7 +113,7 @@ public class AuthControllerTest
         mockUserService.Setup(service => service.Authentication(loginDto)).Throws(new Exception("Exception_Occurs"));
 
         // Act
-        var result = mockController.SignIn(loginDto) as BadRequestObjectResult;
+        var result = mockController.SignIn(loginDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);

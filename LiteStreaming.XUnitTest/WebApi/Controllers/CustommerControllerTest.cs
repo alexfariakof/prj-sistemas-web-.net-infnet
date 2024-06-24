@@ -46,7 +46,7 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(customerId, controller);
 
         // Act
-        var result = controller.FindById() as OkObjectResult;
+        var result = controller.FindById() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -60,11 +60,11 @@ public class CustomerControllerTest
     {
         // Arrange        
         var customerId = Guid.NewGuid();
-        mockCustomerService.Setup(service => service.FindById(customerId)).Returns((CustomerDto)null);
+        mockCustomerService.Setup(service => service.FindById(customerId)).Returns(() => null);
         Usings.SetupBearerToken(customerId, controller);
 
         // Act
-        var result = controller.FindById() as NotFoundResult;
+        var result = controller.FindById();
 
         // Assert
         Assert.NotNull(result);
@@ -79,7 +79,7 @@ public class CustomerControllerTest
         mockCustomerService.Setup(service => service.Create(validCustomerDto)).Returns(validCustomerDto);
 
         // Act
-        var result = controller.Create(validCustomerDto) as OkObjectResult;
+        var result = controller.Create(validCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -95,7 +95,7 @@ public class CustomerControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Create(new()) as BadRequestResult;
+        var result = controller.Create(new());
 
         // Assert
         Assert.NotNull(result);
@@ -110,7 +110,8 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserType.Merchant);
 
         // Act
-        var result = controller.Update((CustomerDto)null);
+        CustomerDto? nullCustomerDto  = null;
+        var result = controller.Update(nullCustomerDto);
 
         // Assert
         Assert.NotNull(result);        
@@ -126,7 +127,7 @@ public class CustomerControllerTest
         mockCustomerService.Setup(service => service.Update(validCustomerDto)).Returns(validCustomerDto);
         Usings.SetupBearerToken(validCustomerDto.Id, controller);
         // Act
-        var result = controller.Update(validCustomerDto) as OkObjectResult;
+        var result = controller.Update(validCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -143,7 +144,7 @@ public class CustomerControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(new()) as BadRequestResult;
+        var result = controller.Update(new());
 
         // Assert
         Assert.NotNull(result);
@@ -165,7 +166,7 @@ public class CustomerControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.True((bool)result.Value);
+        Assert.True((bool?)result.Value);
         mockCustomerService.Verify(b => b.Delete(It.IsAny<CustomerDto>()), Times.Once);
     }
 
@@ -194,7 +195,7 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(customerId, controller);
 
         // Act
-        var result = controller.FindById() as BadRequestObjectResult;
+        var result = controller.FindById() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -210,7 +211,7 @@ public class CustomerControllerTest
         mockCustomerService.Setup(service => service.Create(invalidCustomerDto)).Throws(new Exception("BadRequest_Erro_Message"));
 
         // Act
-        var result = controller.Create(invalidCustomerDto) as BadRequestObjectResult;
+        var result = controller.Create(invalidCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -227,7 +228,7 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(validCustomerDto.Id, controller);
 
         // Act
-        var result = controller.Update(validCustomerDto) as BadRequestObjectResult;
+        var result = controller.Update(validCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -245,7 +246,7 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(mockCustomerDto.Id, controller);
 
         // Act
-        var result = controller.Delete(mockCustomerDto) as BadRequestObjectResult;
+        var result = controller.Delete(mockCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);

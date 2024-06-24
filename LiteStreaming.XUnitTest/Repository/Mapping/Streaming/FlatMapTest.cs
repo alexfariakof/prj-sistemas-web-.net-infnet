@@ -10,9 +10,7 @@ public class FlatMapTest
     {
         const int PROPERTY_COUNT = 4;
         // Arrange
-        var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_FlatMapTest")
-            .Options;
+        var options = new DbContextOptionsBuilder<MockRegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_FlatMapTest").Options;
 
         using (var context = new MockRegisterContext(options))
         {

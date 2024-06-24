@@ -10,10 +10,7 @@ public class PerfilRepositoryTest
     public PerfilRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministravtive>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase_PerfilRepositoryTest")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContextAdministravtive>().UseInMemoryDatabase(databaseName: "TestDatabase_PerfilRepositoryTest").Options;
         contextMock = new Mock<RegisterContextAdministravtive>(options);
     }
 

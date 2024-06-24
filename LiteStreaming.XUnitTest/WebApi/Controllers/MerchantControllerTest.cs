@@ -25,7 +25,7 @@ public class MerchantControllerTest
         mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns(expectedMerchantDto);
         
         // Act
-        var result = controller.FindById() as OkObjectResult;
+        var result = controller.FindById() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -40,10 +40,10 @@ public class MerchantControllerTest
         // Arrange        
         var expectedMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         Usings.SetupBearerToken(expectedMerchantDto.Id, controller,  PerfilUser.UserType.Merchant);
-        mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns((MerchantDto)null);
+        mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns(() => null);
 
         // Act
-        var result = controller.FindById() as NotFoundResult;
+        var result = controller.FindById();
 
         // Assert
         Assert.NotNull(result);
@@ -59,7 +59,7 @@ public class MerchantControllerTest
         mockMerchantService.Setup(service => service.Create(validMerchantDto)).Returns(validMerchantDto);
 
         // Act
-        var result = controller.Create(validMerchantDto) as OkObjectResult;
+        var result = controller.Create(validMerchantDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -75,7 +75,7 @@ public class MerchantControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserType.Merchant);
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
         // Act
-        var result = controller.Create(It.IsAny<MerchantDto>()) as BadRequestResult;
+        var result = controller.Create(It.IsAny<MerchantDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -91,7 +91,7 @@ public class MerchantControllerTest
         mockMerchantService.Setup(service => service.Update(validMerchantDto)).Returns(validMerchantDto);
         
         // Act
-        var result = controller.Update(validMerchantDto) as OkObjectResult;
+        var result = controller.Update(validMerchantDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -108,7 +108,7 @@ public class MerchantControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(It.IsAny<MerchantDto>()) as BadRequestResult;
+        var result = controller.Update(It.IsAny<MerchantDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -130,7 +130,7 @@ public class MerchantControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.True((bool)result.Value);
+        Assert.True((bool?)result.Value);
         mockMerchantService.Verify(b => b.Delete(It.IsAny<MerchantDto>()), Times.Once);
     }
 
@@ -142,7 +142,8 @@ public class MerchantControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Delete((MerchantDto)null);
+        MerchantDto? nullMerchantDto = null;
+        var result = controller.Delete(nullMerchantDto);
 
         // Assert
         Assert.NotNull(result);
@@ -159,7 +160,7 @@ public class MerchantControllerTest
         Usings.SetupBearerToken(merchantId, controller, PerfilUser.UserType.Merchant);
 
         // Act
-        var result = controller.FindById() as BadRequestObjectResult;
+        var result = controller.FindById() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -175,7 +176,7 @@ public class MerchantControllerTest
         mockMerchantService.Setup(service => service.Create(invalidMerchantDto)).Throws(new Exception("BadRequest_Erro_Message"));
 
         // Act
-        var result = controller.Create(invalidMerchantDto) as BadRequestObjectResult;
+        var result = controller.Create(invalidMerchantDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -192,7 +193,7 @@ public class MerchantControllerTest
         Usings.SetupBearerToken(validMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
 
         // Act
-        var result = controller.Update(validMerchantDto) as BadRequestObjectResult;
+        var result = controller.Update(validMerchantDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -210,7 +211,7 @@ public class MerchantControllerTest
         Usings.SetupBearerToken(mockMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
 
         // Act
-        var result = controller.Delete(mockMerchantDto) as BadRequestObjectResult;
+        var result = controller.Delete(mockMerchantDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);

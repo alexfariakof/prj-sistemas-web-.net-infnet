@@ -14,10 +14,10 @@ public class AdministrativeAccountTest
         // Act - No need for action in this case
 
         // Assert
-        Assert.NotNull(administrativeAccount.Id);
-        Assert.NotNull(administrativeAccount.Login);
-        Assert.NotNull(administrativeAccount.DtCreated);
-        Assert.NotNull(administrativeAccount.Name);
-        Assert.NotNull(administrativeAccount.PerfilType);
+        Assert.NotNull(administrativeAccount?.Id);
+        Assert.NotNull(administrativeAccount?.Login);
+        Assert.NotNull(administrativeAccount?.DtCreated);
+        Assert.NotNull(administrativeAccount?.Name);
+        Assert.NotNull(administrativeAccount?.PerfilType);
     }
 }

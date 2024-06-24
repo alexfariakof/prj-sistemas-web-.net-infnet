@@ -10,10 +10,7 @@ public class PlaylistPersonalRepositoryTest
     public PlaylistPersonalRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase PlaylistPersonal")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase PlaylistPersonal").Options;
         contextMock = new Mock<RegisterContext>(options);
     }
 

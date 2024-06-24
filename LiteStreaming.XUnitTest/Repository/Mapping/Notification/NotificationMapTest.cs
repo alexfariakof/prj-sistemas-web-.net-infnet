@@ -11,10 +11,7 @@ public class NotificationMapTest
         // Existem mais 2 Propiedades que não estam sendo Mapeadas e validadas
         const int PROPERTY_COUNT = 9;
         // Arrange
-        var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_NotificationMapTest")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<MockRegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_NotificationMapTest").Options;
         using (var context = new MockRegisterContext(options))
         {
             var builder = new ModelBuilder(new ConventionSet());

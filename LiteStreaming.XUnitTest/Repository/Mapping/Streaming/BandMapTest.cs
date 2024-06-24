@@ -11,9 +11,7 @@ public class BandMapTest
         const int PROPERTY_COUNT = 5;
 
         // Arrange
-        var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_BandMapTest")
-            .Options;
+        var options = new DbContextOptionsBuilder<MockRegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_BandMapTest").Options;
 
         using (var context = new MockRegisterContext(options))
         {

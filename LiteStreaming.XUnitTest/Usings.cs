@@ -193,7 +193,8 @@ public static class Usings
                     value = (byte[])storedValue;
                     return true;
                 }
-                value = null;
+                byte[]? nullByte = null;
+                value = nullByte;
                 return false;
             });
 

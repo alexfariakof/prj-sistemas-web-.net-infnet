@@ -11,9 +11,7 @@ public class TransactionMapTest
         const int PROPERTY_COUNT = 5;           
 
         // Arrange
-        var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_TransactionMapTest")
-            .Options;
+        var options = new DbContextOptionsBuilder<MockRegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_TransactionMapTest").Options;
 
         using (var context = new MockRegisterContext(options))
         {

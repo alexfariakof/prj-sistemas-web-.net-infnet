@@ -107,7 +107,7 @@ public class CustomerServiceTest
         // Arrange
         var customerDto = new CustomerDto();
 
-        flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns((Flat)null);
+        flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns(() => null);
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentException>(() => customerService.Create(customerDto));

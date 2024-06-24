@@ -8,7 +8,7 @@ using Application.Streaming.Dto;
 namespace __mock__;
 public class MockCustomer
 {
-    private static MockCustomer _instance;
+    private static MockCustomer? _instance;
     private static readonly object LockObject = new object();
     public static MockCustomer Instance
     {

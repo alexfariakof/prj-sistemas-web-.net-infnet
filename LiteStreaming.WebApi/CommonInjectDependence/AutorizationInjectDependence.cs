@@ -41,7 +41,6 @@ public static class AutorizationInjectDependence
         });
     }
 
-
     public static IServiceCollection AddIdentityServerConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<IdentityServerConfigurations>(configuration.GetSection("IdentityServerConfigurations"));

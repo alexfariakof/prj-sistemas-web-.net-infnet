@@ -11,7 +11,7 @@ public class MockAlbum
 
     private MockAlbum() { }
 
-    public Album GetFaker(IList<Music> musics = null)
+    public Album GetFaker(IList<Music>? musics = null)
     {
         if (musics == null)
             musics = MockMusic.Instance.GetListFaker(3);

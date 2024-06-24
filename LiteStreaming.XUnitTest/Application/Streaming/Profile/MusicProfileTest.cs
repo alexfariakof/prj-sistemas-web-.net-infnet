@@ -51,6 +51,6 @@ public class MusicProfileTest
         Assert.NotNull(musicDto);
         Assert.Equal(music.Id, musicDto.Id);
         Assert.Equal(music.Name, musicDto.Name);
-        Assert.NotNull(musicDto.AlbumId);
+        Assert.NotNull(musicDto?.AlbumId);
     }
 }
