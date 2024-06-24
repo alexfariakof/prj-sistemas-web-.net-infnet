@@ -12,8 +12,8 @@ public class PerfilTest
         var perfil = new Perfil();
 
         // Assert
-        Assert.Equal(0, perfil.Id);
-        Assert.NotNull(perfil.Description);
+        Assert.Equal(0, perfil?.Id);
+        Assert.Null(perfil.Description);
     }
 
     [Fact]

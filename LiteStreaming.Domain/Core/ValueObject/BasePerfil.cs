@@ -14,13 +14,9 @@ public abstract record BasePerfil
     }
 
     public virtual int Id { get; set; }
-    public virtual string Description { get; set; }
+    public virtual string? Description { get; set; }
 
-    public BasePerfil()
-    {
-        Id = 0;
-        Description = GetDescription(UserType.Invalid);
-    }
+    protected BasePerfil() { }
 
     public BasePerfil(UserType type)
     {
@@ -35,9 +31,8 @@ public abstract record BasePerfil
             UserType.Admin => "Administrador",
             UserType.Normal => "Normal",
             UserType.Customer => "Customer",
-            UserType.Merchant => "Merchant",
-            UserType.Invalid => "Invalid",
-            _ => throw new ArgumentException("Tipo de usuário inexistente.")
+            UserType.Merchant => "Merchant",            
+            _ => throw new ArgumentException("Tipo de usuário inválido.")
         };
     }
 

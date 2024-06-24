@@ -6,14 +6,14 @@ namespace Domain.Account;
 public class PerfilUserTest
 {
     [Fact]
-    public void Perfil_Default_Constructor_Should_Set_Default_Values()
+    public void Perfil_Default_Constructor_Should_Set_Default_Values_AndT()
     {
         // Arrange & Act
         var perfil = new PerfilUser();
 
         // Assert
-        Assert.Equal(0, perfil.Id);
-        Assert.NotNull(perfil.Description);
+        Assert.Equal(0, perfil?.Id);
+        Assert.Null(perfil.Description);
     }
 
     [Fact]
