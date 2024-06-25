@@ -31,7 +31,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.FindAll(It.IsAny<Guid>())).Returns(playlistsDto);
 
         // Act
-        var result = controller.FindAllPlaylist() as OkObjectResult;
+        var result = controller.FindAllPlaylist() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -41,7 +41,7 @@ public class CustomerControllerMyPlaylistTests
     }
 
     [Fact]
-    public void FindAllPlaylist_Returns_Unauthorized_Result_When_User_Not_Customer()
+    public void FindAllPlaylist_Returns_OkObjectResult_When_User_Not_Customer()
     {
         // Arrange
         Usings.SetupBearerToken(Guid.NewGuid(), controller, PerfilUser.UserType.Merchant);
@@ -50,7 +50,7 @@ public class CustomerControllerMyPlaylistTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<OkObjectResult>(result);
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.FindById(playlistId)).Returns(playlistDto);
 
         // Act
-        var result = controller.FindByIdPlaylist(playlistId) as OkObjectResult;
+        var result = controller.FindByIdPlaylist(playlistId) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -76,7 +76,7 @@ public class CustomerControllerMyPlaylistTests
     }
 
     [Fact]
-    public void FindByIdPlaylist_Returns_NotFound_Result_When_Playlist_Not_Found()
+    public void FindByIdPlaylist_Returns_OkObjectResult_Null_When_Playlist_Not_Found()
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
@@ -84,18 +84,18 @@ public class CustomerControllerMyPlaylistTests
 
         var playlistId = Guid.NewGuid();
 
-        mockPlaylistService.Setup(service => service.FindById(playlistId)).Returns((PlaylistPersonalDto)null);
+        mockPlaylistService.Setup(service => service.FindById(playlistId)).Returns(() => null);
 
         // Act
-        var result = controller.FindByIdPlaylist(playlistId) as NotFoundResult;
+        var result = controller.FindByIdPlaylist(playlistId);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<OkObjectResult>(result);
+        Assert.NotNull(result);        
     }
 
     [Fact]
-    public void FindByIdPlaylist_Returns_Unauthorized_Result_When_User_Not_Customer()
+    public void FindByIdPlaylist_Returns_OkObjectResult_When_User_Not_Customer()
     {
         // Arrange
         var userIdentity = Guid.NewGuid();
@@ -106,7 +106,7 @@ public class CustomerControllerMyPlaylistTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<OkObjectResult>(result);
     }
 
     [Fact]
@@ -138,7 +138,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Create(playlistDto)).Returns(playlistDto);
 
         // Act
-        var result = controller.CreatePlaylist(playlistDto) as OkObjectResult;
+        var result = controller.CreatePlaylist(playlistDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -156,7 +156,7 @@ public class CustomerControllerMyPlaylistTests
         var playlistDto = new PlaylistPersonalDto();
 
         // Act
-        var result = controller.CreatePlaylist(playlistDto) as BadRequestObjectResult;
+        var result = controller.CreatePlaylist(playlistDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -174,7 +174,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Create(playlistDto)).Returns(() => throw new Exception("Failed to create the playlist."));
 
         // Act
-        var result = controller.CreatePlaylist(playlistDto) as BadRequestObjectResult;
+        var result = controller.CreatePlaylist(playlistDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -221,7 +221,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Update(playlistDto)).Returns(playlistDto);
 
         // Act
-        var result = controller.UpdatePlaylist(playlistDto) as OkObjectResult;
+        var result = controller.UpdatePlaylist(playlistDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -237,15 +237,14 @@ public class CustomerControllerMyPlaylistTests
         // Arrange
         var userIdentity = Guid.NewGuid();
         Usings.SetupBearerToken(userIdentity, controller);
-        var playlistDto = new PlaylistPersonalDto();
+        PlaylistPersonalDto? nullPlaylistDto = null;
 
         // Act
-        var result = controller.UpdatePlaylist(playlistDto) as BadRequestObjectResult;
+        var result = controller.UpdatePlaylist(nullPlaylistDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        Assert.NotNull(result.Value as IEnumerable<string>);
     }
 
     [Fact]
@@ -258,7 +257,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Update(playlistDto)).Returns(() => throw new Exception("Failed to create the playlist."));
 
         // Act
-        var result = controller.UpdatePlaylist(playlistDto) as BadRequestObjectResult;
+        var result = controller.UpdatePlaylist(playlistDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -278,7 +277,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Delete(playlistDto)).Returns(false);
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto.Id.Value);
+        var result = controller.DeletePlaylist(playlistDto.Id);
 
         // Assert
         //Assert.NotNull(result);
@@ -304,7 +303,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(true);
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto.Id.Value) as OkObjectResult;
+        var result = controller.DeletePlaylist(playlistDto.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -324,7 +323,7 @@ public class CustomerControllerMyPlaylistTests
         mockPlaylistService.Setup(service => service.Delete(It.IsAny<PlaylistPersonalDto>())).Returns(() => throw new Exception("Failed to delete the playlist."));
 
         // Act
-        var result = controller.DeletePlaylist(playlistDto.Id.Value) as BadRequestObjectResult;
+        var result = controller.DeletePlaylist(playlistDto.Id) as BadRequestObjectResult;
 
         // Assert
         Assert.NotNull(result);

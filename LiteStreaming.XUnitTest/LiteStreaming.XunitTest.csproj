@@ -55,11 +55,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AdministrativeApp\Models\" />
-    <Folder Include="AdministrativeApp\Views\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig">
       <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
     </None>

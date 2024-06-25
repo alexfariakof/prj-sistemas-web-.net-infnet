@@ -1,5 +1,5 @@
 ﻿using Domain.Transactions.ValueObject;
-using Repository.Abastractions;
+using Repository.Abstractions;
 using Repository.Interfaces;
 
 namespace Repository.Persistency.Transactions;

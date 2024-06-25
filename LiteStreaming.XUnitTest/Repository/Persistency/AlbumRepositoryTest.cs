@@ -10,10 +10,7 @@ public class AlbumRepositoryTest
     public AlbumRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase_AlbumRepositoryTest")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase_AlbumRepositoryTest").Options;
         contextMock = new Mock<RegisterContext>(options);
     }
 

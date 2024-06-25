@@ -21,6 +21,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
+
+
     c.SwaggerDoc(appVersion,
     new OpenApiInfo
     {
@@ -31,6 +33,30 @@ builder.Services.AddSwaggerGen(c => {
         {
             Name = "Alex Ribeiro de Faria - Projeto Web API .Net Core Lite Streaming ",
             Url = new Uri("https://github.com/alexfariakof/prj-sistemas-web-.net-infnet/tree/main/LiteStreaming.WebApi")
+        }
+    });
+
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
+    {
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Description = "Adicione o token JWT para fazer as requisições na APIs",
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
         }
     });
 });
@@ -44,17 +70,26 @@ if (builder.Environment.IsStaging())
 else if (builder.Environment.IsDevelopment())
 {    
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
-    builder.Services.AddDbContext<RegisterContextAdministravtive>();
-    builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
-    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
+else
+{
+    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
+    builder.Services.MsSqlServerMigrationsApplicationContext(builder.Configuration);
+    builder.Services.MySqlServerMigrationsApplicationContext(builder.Configuration);
+}
 
-// Autorization Configuratons
-builder.Services.AddAuthConfigurations(builder.Configuration);
+//Add SigningConfigurations Configuratons
+builder.Services.AddSigningConfigurations(builder.Configuration); 
+
+// Add AutoAuthConfigurations Configuratons
+//builder.Services.AddAutoAuthConfigurations(builder.Configuration);
+
+// Autorization Configuratons Identity Server STS
+builder.Services.AddIdentityServerConfigurations(builder.Configuration);
 
 // AutoMapper
 builder.Services.AddAutoMapperWebApiApp();
@@ -69,6 +104,8 @@ builder.Services.AddServicesWebApiApp();
 builder.Services.AddServicesCryptography(builder.Configuration);
 
 var app = builder.Build();
+
+
 
 if (app.Environment.IsStaging())
 {    
@@ -85,17 +122,11 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.RunDataSeeders();
 }
 else
-{
     app.UseHttpsRedirection();
-}
 
-
-app.UseRouting()
-    .UseAuthorization()
-    .UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
-        endpoints.MapFallbackToFile("index.html");
-    });
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseCertificateForwarding();
+app.MapControllers();
 
 app.Run();

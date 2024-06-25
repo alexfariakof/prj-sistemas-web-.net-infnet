@@ -14,6 +14,7 @@ public static class RepositoryInjectDependence
     {
         services.AddScoped(typeof(IRepository<AdministrativeAccount>), typeof(AdminAccountRepository));
         services.AddScoped(typeof(IRepository<Flat>), typeof(FlatRepository));
+        services.AddScoped(typeof(IRepository<Genre>), typeof(GenreRepository));
         return services;
     }
 

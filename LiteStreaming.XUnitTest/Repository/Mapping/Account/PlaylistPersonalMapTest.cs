@@ -17,7 +17,7 @@ public class PlaylistPersonalMapTest
         using (var context = new MockRegisterContext(options))
         {
             var builder = new ModelBuilder(new ConventionSet());
-            var configuration = new PlaylistPersonalMap(new Abastractions.BaseConstants());
+            var configuration = new PlaylistPersonalMap(new Abstractions.BaseConstants());
 
             configuration.Configure(builder.Entity<PlaylistPersonal>());
 

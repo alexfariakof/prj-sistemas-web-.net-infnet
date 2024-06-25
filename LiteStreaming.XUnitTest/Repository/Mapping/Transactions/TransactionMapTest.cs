@@ -11,9 +11,7 @@ public class TransactionMapTest
         const int PROPERTY_COUNT = 5;           
 
         // Arrange
-        var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_TransactionMapTest")
-            .Options;
+        var options = new DbContextOptionsBuilder<MockRegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_TransactionMapTest").Options;
 
         using (var context = new MockRegisterContext(options))
         {
@@ -34,7 +32,7 @@ public class TransactionMapTest
             var descriptionProperty = entityType?.FindProperty("Description");
             var customerNavigation = entityType?.FindNavigation("Customer");
 
-            var monetaryValueProperty = entityType?.FindNavigation("Value")?.ForeignKey.Properties.First();
+            var monetaryValueProperty = entityType?.FindNavigation("Monetary")?.ForeignKey.Properties.First();
 
 
             // Assert

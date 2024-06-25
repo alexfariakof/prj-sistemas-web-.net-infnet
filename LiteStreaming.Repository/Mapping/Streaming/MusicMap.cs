@@ -2,7 +2,7 @@
 using Domain.Streaming.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Repository.Abastractions;
+using Repository.Abstractions;
 
 namespace Repository.Mapping.Streaming;
 public class MusicMap : IEntityTypeConfiguration<Music>

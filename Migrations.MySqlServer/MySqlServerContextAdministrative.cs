@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Repository.Abastractions;
+using Repository.Abstractions;
 
 namespace Migrations.MySqlServer;
-public class MySqlServerContextAdministrative : BaseContextAdministravtive<MySqlServerContextAdministrative>
+public class MySqlServerContextAdministrative : BaseContextAdministrative<MySqlServerContextAdministrative>
 {
     public MySqlServerContextAdministrative(DbContextOptions<MySqlServerContextAdministrative> options) : base(options) { }
 }

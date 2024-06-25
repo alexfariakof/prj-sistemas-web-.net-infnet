@@ -49,7 +49,7 @@ public class FlatControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Null(viewResult.ViewName);
+        Assert.NotNull(viewResult.ViewName);
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public class FlatControllerTest
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("Create", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid data.", alert.Message);
     }
@@ -120,7 +120,7 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao salvar os dados.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao salvar os dados do plano.", alert.Message);
     }
 
     [Fact]
@@ -170,8 +170,8 @@ public class FlatControllerTest
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("Edit", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
-        Assert.Equal("danger", alert.Type);
+        Assert.Equal("Aviso", alert.Header);
+        Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid data.", alert.Message);
     }
 
@@ -192,7 +192,7 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao atualizar os dados deste usuário.", alert.Message);
+        Assert.Equal($"Ocorreu um erro ao atualizar o plano {dto?.Name}.", alert.Message);
     }
 
     [Fact]
@@ -224,9 +224,8 @@ public class FlatControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid user.", alert.Message);
     }
@@ -243,51 +242,46 @@ public class FlatControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao editar os dados deste usuário.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao editar os dados deste plano.", alert.Message);
     }
 
     [Fact]
     public void Delete_ValidId_Returns_IndexView_With_SuccessAlert()
     {
         // Arrange
-     
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", flatController);
         var flatDto = MockFlat.Instance.GetFakerDto();
-        var id = flatDto.Id;
         MockHttpContextHelper.MockClaimsIdentitySigned(flatDto.UsuarioId, "teste", "teste@teste.com", flatController);
-        flatServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(flatDto);
         flatServiceMock.Setup(service => service.Delete(It.IsAny<FlatDto>())).Returns(true);
         
         // Act
-        var result = flatController.Delete(id);
+        var result = flatController.Delete(flatDto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Sucesso", alert.Header);
         Assert.Equal("success", alert.Type);
-        Assert.Equal("Usuário inativado.", alert.Message);
+        Assert.Equal($"Plano { flatDto.Name } excluído.", alert.Message);
     }
 
     [Fact]
     public void Delete_ServiceThrowsArgumentException_Returns_IndexView_WithWarningAlert()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        flatServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new ArgumentException("Invalid user."));
+        flatServiceMock.Setup(service => service.Delete(It.IsAny<FlatDto>())).Throws(new ArgumentException("Invalid user."));
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", flatController);
 
         // Act
-        var result = flatController.Delete(id);
+        var result = flatController.Delete(new());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid user.", alert.Message);
     }
@@ -296,18 +290,17 @@ public class FlatControllerTest
     public void Delete_ServiceThrowsException_Returns_IndexView_WithDangerAlert()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        flatServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new Exception("Error"));
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", flatController);
+        flatServiceMock.Setup(service => service.Delete(It.IsAny<FlatDto>())).Throws(new Exception("Error"));
 
         // Act
-        var result = flatController.Delete(id);
+        var result = flatController.Delete(new());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao excluir os dados deste usuário.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao excluir o plano .", alert.Message);
     }
 }

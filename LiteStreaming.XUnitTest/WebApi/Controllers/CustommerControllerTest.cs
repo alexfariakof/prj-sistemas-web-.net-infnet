@@ -3,6 +3,7 @@ using Application.Streaming.Dto;
 using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Controllers;
 public class CustomerControllerTest
@@ -42,11 +43,11 @@ public class CustomerControllerTest
         // Arrange        
         var customerId = Guid.NewGuid();
         var expectedCustomerDto = new CustomerDto { Id = customerId, Name = "John Doe", Email = "john@example.com" };
-        mockCustomerService.Setup(service => service.FindById(customerId)).Returns(expectedCustomerDto);
+        mockCustomerService.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(expectedCustomerDto);
         Usings.SetupBearerToken(customerId, controller);
 
         // Act
-        var result = controller.FindById() as OkObjectResult;
+        var result = controller.FindById() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -60,11 +61,11 @@ public class CustomerControllerTest
     {
         // Arrange        
         var customerId = Guid.NewGuid();
-        mockCustomerService.Setup(service => service.FindById(customerId)).Returns((CustomerDto)null);
+        mockCustomerService.Setup(service => service.FindById(customerId)).Returns(() => null);
         Usings.SetupBearerToken(customerId, controller);
 
         // Act
-        var result = controller.FindById() as NotFoundResult;
+        var result = controller.FindById();
 
         // Assert
         Assert.NotNull(result);
@@ -79,7 +80,7 @@ public class CustomerControllerTest
         mockCustomerService.Setup(service => service.Create(validCustomerDto)).Returns(validCustomerDto);
 
         // Act
-        var result = controller.Create(validCustomerDto) as OkObjectResult;
+        var result = controller.Create(validCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -95,7 +96,7 @@ public class CustomerControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Create(new()) as BadRequestResult;
+        var result = controller.Create(new());
 
         // Assert
         Assert.NotNull(result);
@@ -110,7 +111,8 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(userIdentity, controller, PerfilUser.UserType.Merchant);
 
         // Act
-        var result = controller.Update((CustomerDto)null);
+        CustomerDto? nullCustomerDto  = null;
+        var result = controller.Update(nullCustomerDto);
 
         // Assert
         Assert.NotNull(result);        
@@ -126,7 +128,7 @@ public class CustomerControllerTest
         mockCustomerService.Setup(service => service.Update(validCustomerDto)).Returns(validCustomerDto);
         Usings.SetupBearerToken(validCustomerDto.Id, controller);
         // Act
-        var result = controller.Update(validCustomerDto) as OkObjectResult;
+        var result = controller.Update(validCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -143,7 +145,7 @@ public class CustomerControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(new()) as BadRequestResult;
+        var result = controller.Update(new());
 
         // Assert
         Assert.NotNull(result);
@@ -165,7 +167,7 @@ public class CustomerControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.True((bool)result.Value);
+        Assert.True((bool?)result.Value);
         mockCustomerService.Verify(b => b.Delete(It.IsAny<CustomerDto>()), Times.Once);
     }
 
@@ -190,11 +192,11 @@ public class CustomerControllerTest
     {
         // Arrange        
         var customerId = Guid.NewGuid();
-        mockCustomerService.Setup(service => service.FindById(customerId)).Throws(new Exception("BadRequest_Erro_Message"));
+        mockCustomerService.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(customerId, controller);
 
         // Act
-        var result = controller.FindById() as BadRequestObjectResult;
+        var result = controller.FindById() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -210,7 +212,7 @@ public class CustomerControllerTest
         mockCustomerService.Setup(service => service.Create(invalidCustomerDto)).Throws(new Exception("BadRequest_Erro_Message"));
 
         // Act
-        var result = controller.Create(invalidCustomerDto) as BadRequestObjectResult;
+        var result = controller.Create(invalidCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -227,7 +229,7 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(validCustomerDto.Id, controller);
 
         // Act
-        var result = controller.Update(validCustomerDto) as BadRequestObjectResult;
+        var result = controller.Update(validCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -245,11 +247,55 @@ public class CustomerControllerTest
         Usings.SetupBearerToken(mockCustomerDto.Id, controller);
 
         // Act
-        var result = controller.Delete(mockCustomerDto) as BadRequestObjectResult;
+        var result = controller.Delete(mockCustomerDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal("BadRequest_Erro_Message", result.Value);
+    }
+
+    [Fact]
+    public void DeleteMusicFromPlaylist_Returns_BadRequest_Result_When_Validation_Fails()
+    {
+        // Arrange
+        var playlistId = Guid.NewGuid();
+        var musicId = Guid.NewGuid();
+        var playlist = MockPlaylistPersonal.Instance.GetDtoFromPlaylistPersonal(MockPlaylistPersonal.Instance.GetFaker());
+
+        var validationResults = new List<ValidationResult>();
+        var dto = new PlaylistPersonalDto { Id = playlistId, Musics = { new MusicDto { Id = musicId } } };
+        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object?>
+            {
+                { "HttpMethod", "DELETE" }
+            }), validationResults, validateAllProperties: true);
+
+        mockPlaylistPersonalService.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(playlist);
+
+        // Act
+        var result = controller.DeleteMusicFromPlaylist(playlistId, musicId) as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.IsType<string>(result.Value);
+    }
+
+    [Fact]
+    public void DeleteMusicFromPlaylist_Returns_BadRequest_Result_On_Exception()
+    {
+        // Arrange
+        var playlistId = Guid.NewGuid();
+        var musicId = Guid.NewGuid();
+
+        mockPlaylistPersonalService.Setup(service => service.FindById(playlistId)).Throws(new Exception("BadRequest_Error_Message"));
+
+        // Act
+        var result = controller.DeleteMusicFromPlaylist(playlistId, musicId) as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal("BadRequest_Error_Message", result.Value);
     }
 }

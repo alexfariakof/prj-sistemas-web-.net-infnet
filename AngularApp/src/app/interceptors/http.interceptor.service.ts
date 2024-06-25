@@ -13,12 +13,19 @@ export class CustomInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.showLoader();
-    const modifiedRequest = request.clone({
-      url: `${request.url}`,
-      setHeaders: {
-        Authorization: `Bearer ${sessionStorage.getItem('@token')}`
-      }
-    });
+    let  modifiedRequest: any;
+    if (request.url === 'http://localhost:5055/connect/token'){
+      modifiedRequest = request.clone({ url: `${request.url}` });
+    }
+    else{
+      modifiedRequest = request.clone({
+        url:  `${request.url}`,
+        setHeaders: {
+          Authorization: `Bearer ${sessionStorage.getItem('@token')}`
+        }
+      });
+
+    }
     return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
         console.log(() => error.message);

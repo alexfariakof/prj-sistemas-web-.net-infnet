@@ -13,7 +13,7 @@ public class TransactionTest
         {
             Id = expectedTransaction.Id,
             DtTransaction = expectedTransaction.DtTransaction,
-            Value = expectedTransaction.Value,
+            Monetary = expectedTransaction.Monetary,
             Description = expectedTransaction.Description,
             Customer = expectedTransaction.Customer
         };
@@ -22,7 +22,7 @@ public class TransactionTest
         Assert.NotNull(actualTransaction);
         Assert.Equal(expectedTransaction.Id, actualTransaction.Id);
         Assert.Equal(expectedTransaction.DtTransaction, actualTransaction.DtTransaction);
-        Assert.Equal(expectedTransaction.Value, actualTransaction.Value);
+        Assert.Equal(expectedTransaction.Monetary, actualTransaction.Monetary);
         Assert.Equal(expectedTransaction.Description, actualTransaction.Description);
         Assert.Equal(expectedTransaction.Customer, actualTransaction.Customer);
     }

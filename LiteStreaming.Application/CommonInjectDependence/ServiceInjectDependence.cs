@@ -21,9 +21,10 @@ public static class ServiceInjectDependence
 
     public static IServiceCollection AddServicesAdministrativeApp(this IServiceCollection services)
     {
+        services.AddScoped<IAdministrativeAuthenticationService, AdministrativeAccountService>();
         services.AddScoped<IAdministrativeAccountService, AdministrativeAccountService>();
         services.AddScoped<IFlatService, FlatService>();
-        services.AddScoped<IAdministrativeAuthenticationService, AdministrativeAccountService>();        
+        services.AddScoped<IGenreService, GenreService>();
         return services;
     }
 

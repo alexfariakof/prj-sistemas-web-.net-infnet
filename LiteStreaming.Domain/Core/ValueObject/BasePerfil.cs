@@ -1,13 +1,9 @@
-﻿namespace Domain.Core.ValueObject;
+﻿using Domain.Account.ValueObject;
+
+namespace Domain.Core.ValueObject;
+
 public abstract record BasePerfil
 {
-    public static implicit operator UserType(BasePerfil pu) => (UserType)pu.Id;
-    public static implicit operator BasePerfil(UserType perfil) => perfil;
-    public static implicit operator BasePerfil(int perfil) => perfil;
-
-    public static bool operator ==(BasePerfil perfilUsuario, UserType perfil) => perfilUsuario?.Id == (int)perfil;
-    public static bool operator !=(BasePerfil perfilUsuario, UserType perfil) => !(perfilUsuario?.Id == (int)perfil);
-
     public enum UserType
     {
         Invalid = 0,
@@ -18,13 +14,9 @@ public abstract record BasePerfil
     }
 
     public virtual int Id { get; set; }
-    public virtual string Description { get; set; }
+    public virtual string? Description { get; set; }
 
-    public BasePerfil() 
-    { 
-        Id = 0;
-        Description = GetDescription(0);
-    }
+    protected BasePerfil() { }
 
     public BasePerfil(UserType type)
     {
@@ -32,29 +24,31 @@ public abstract record BasePerfil
         Description = GetDescription(type);
     }
 
-    private string GetDescription(UserType userType = UserType.Invalid)
+    private static string GetDescription(UserType userType)
     {
-        if (UserType.Admin == (UserType)userType)
+        return userType switch
         {
-            return "Administrador";
-        }
-        else if (UserType.Normal == (UserType)userType)
-        {
-            return "Normal";
-        }
-        else if (UserType.Customer == userType)
-        {
-            return "Customer";
-        }
-        else if (UserType.Merchant == userType)
-        {
-            return "Merchant";
-        }
-        else if (UserType.Invalid == userType)
-        {
-            return "Invalid";
-        }
-
-        throw new ArgumentException("Tipo de usuário inexistente.");
+            UserType.Admin => "Administrador",
+            UserType.Normal => "Normal",
+            UserType.Customer => "Customer",
+            UserType.Merchant => "Merchant",            
+            _ => throw new ArgumentException("Tipo de usuário inválido.")
+        };
     }
+
+    public static implicit operator UserType(BasePerfil perfil)
+    {
+        if (perfil == null)
+            return UserType.Invalid;
+
+        return (UserType)perfil.Id;
+    }
+
+    public static implicit operator BasePerfil(UserType userType) => new PerfilUser(userType);    
+
+    public static implicit operator BasePerfil(int perfil) => new PerfilUser((UserType)perfil);
+
+    public static bool operator ==(BasePerfil perfilUsuario, UserType perfil) => perfilUsuario?.Id == (int)perfil;    
+
+    public static bool operator !=(BasePerfil perfilUsuario, UserType perfil) => !(perfilUsuario?.Id == (int)perfil);    
 }

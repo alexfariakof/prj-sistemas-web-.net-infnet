@@ -46,7 +46,7 @@ public class PlaylistPersonalService : ServiceBase<PlaylistPersonalDto, Playlist
     }
     public override PlaylistPersonalDto Update(PlaylistPersonalDto dto)
     {
-        var playlist = this.Repository.GetById(dto.Id.Value);
+        var playlist = this.Repository.GetById(dto.Id);
         playlist.Customer = this._customerRepository.Find(c => c.Id == playlist.CustomerId).First();
         playlist.Musics = this._musicRepository.Find(m => dto.Musics.Select(em => em.Id).Contains(m.Id)).ToList();
         Repository.Update(playlist);

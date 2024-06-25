@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.authService.signIn(login)
     .pipe(
       map((response: Auth) => {
-        if (response.authenticated) {
+        if (response) {
           return response;
         }
         else {

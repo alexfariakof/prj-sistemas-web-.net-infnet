@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
 using Moq;
-using System.Linq.Expressions;
 using Domain.Account.ValueObject;
 
 namespace Repository.Persistency.Account;

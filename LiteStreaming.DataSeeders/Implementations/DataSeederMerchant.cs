@@ -8,10 +8,8 @@ namespace DataSeeders;
 public class DataSeederMerchant : IDataSeeder
 {
     private readonly RegisterContext _context;
-    public DataSeederMerchant(RegisterContext context)
-    {
-        _context = context;
-    }
+    public DataSeederMerchant(RegisterContext context) => _context = context;
+
     public void SeedData()
     {
         var user = new User()
@@ -38,7 +36,7 @@ public class DataSeederMerchant : IDataSeeder
                 User = user,
                 Flat = _context.Flat.First(f => f.Name.Contains("Premium"))
             },
-            Addresses = new[] {
+            Addresses = [
                     new Address()
                     {
                         Zipcode = "12345-678",
@@ -50,9 +48,9 @@ public class DataSeederMerchant : IDataSeeder
                         Complement = "Apt 456",
                         Country = "CompanyCountryland"
                     }
-                },
-            Cards = new[]
-            {
+                ],
+            Cards =
+            [
                     new Card()
                     {
                         Number = "3478 932908 50247",
@@ -62,7 +60,7 @@ public class DataSeederMerchant : IDataSeeder
                         Active = true,
                         Limit = 5000m
                     }
-                },
+                ],
         };
 
         try

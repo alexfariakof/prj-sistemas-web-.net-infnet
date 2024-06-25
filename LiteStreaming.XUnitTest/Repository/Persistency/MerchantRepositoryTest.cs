@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
 using Moq;
-using __mock__;
 using Domain.Account.ValueObject;
-using System.Linq.Expressions;
 
 namespace Repository.Persistency.Account;
 public class MerchantRepositoryTest

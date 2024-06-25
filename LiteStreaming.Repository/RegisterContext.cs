@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Repository.Abastractions;
+using Repository.Abstractions;
 
 namespace Repository;
 public class RegisterContext : BaseContext<RegisterContext>

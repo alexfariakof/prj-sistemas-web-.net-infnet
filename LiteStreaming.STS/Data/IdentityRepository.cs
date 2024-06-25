@@ -1,16 +1,17 @@
 ﻿using Dapper;
+using LiteStreaming.STS.Data.Interfaces;
+using LiteStreaming.STS.Data.Options;
 using LiteStreaming.STS.Model;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 
 namespace LiteStreaming.STS.Data;
 
-
 internal class IdentityRepository : IIdentityRepository
 {
-    private readonly string connectionString;
+    private readonly string? connectionString;
 
-    public IdentityRepository(IOptions<DataBaseoptions> options)
+    public IdentityRepository(IOptions<DataBaseOptions> options)
     {
         this.connectionString = options.Value.DefaultConnectionString;
     }

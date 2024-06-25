@@ -22,10 +22,10 @@ public class CustomerController : ControllerBaseTokensProps
 
     [HttpGet]
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
-    [ProducesResponseType((400), Type = typeof(string))]    
+    [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
+    [Authorize]
     public IActionResult FindById()
     {
         try
@@ -47,7 +47,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Create([FromBody] CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -68,7 +68,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
+    [Authorize]
     public IActionResult Update(CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -90,7 +90,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Delete(CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -110,45 +110,37 @@ public class CustomerController : ControllerBaseTokensProps
 
     [HttpGet("MyPlaylist")]
     [ProducesResponseType((200), Type = typeof(List<PlaylistPersonalDto>))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((404), Type = null)]
+    [ProducesResponseType((401))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize]
     public IActionResult FindAllPlaylist()
     {
         try
         {
             var result = this._playlistService.FindAll(UserIdentity);
-            if (result == null)
-                return NotFound();
-
             return Ok(result);
         }
-        catch (Exception ex)
+        catch
         {
-            return BadRequest(ex.Message);
+            return Ok(new List<PlaylistPersonalDto>());
         }
     }
 
     [HttpGet("MyPlaylist/{playlistId}")]
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((404), Type = null)]
+    [ProducesResponseType((401))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize]
     public IActionResult FindByIdPlaylist([FromRoute] Guid playlistId)
     {
         try
         {
             var result = this._playlistService.FindById(playlistId);
-            if (result == null)
-                return NotFound();
-
             return Ok(result);
         }
-        catch (Exception ex)
+        catch
         {
-            return BadRequest(ex.Message);
+            return Ok(new List<PlaylistPersonalDto>());
         }
     }
 
@@ -156,7 +148,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize]
     public IActionResult CreatePlaylist([FromBody] PlaylistPersonalDto dto)
     {
         var validationResults = new List<ValidationResult>();
@@ -183,21 +175,22 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize]
 
     public IActionResult UpdatePlaylist(PlaylistPersonalDto dto)
     {
-        var validationResults = new List<ValidationResult>();
-        bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
+        try
+        {
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto, serviceProvider: null, items: new Dictionary<object, object>
         {
             { "HttpMethod", "PUT" }
         }), validationResults, validateAllProperties: true);
 
-        if (!isValid)
-            return BadRequest(validationResults.Select(error => error.ErrorMessage));
+            if (!isValid)
+                return BadRequest(validationResults.Select(error => error.ErrorMessage));
 
-        try
-        {
+
             dto.CustomerId = UserIdentity;
             var result = this._playlistService.Update(dto);
             return Ok(result);
@@ -212,7 +205,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize]
     public IActionResult DeletePlaylist([FromRoute] Guid playlistId)
     {
         var dto = new PlaylistPersonalDto { Id = playlistId };
@@ -236,12 +229,12 @@ public class CustomerController : ControllerBaseTokensProps
             return BadRequest(ex.Message);
         }
     }
-    
+
     [HttpDelete("MyPlaylist/{playlistId}/Music/{musicId}")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize]
     public IActionResult DeleteMusicFromPlaylist([FromRoute] Guid playlistId, [FromRoute] Guid musicId)
     {
         var dto = new PlaylistPersonalDto { Id = playlistId, Musics = { new MusicDto { Id = musicId } } };
