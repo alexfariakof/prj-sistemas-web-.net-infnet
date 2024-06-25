@@ -70,13 +70,16 @@ if (builder.Environment.IsStaging())
 else if (builder.Environment.IsDevelopment())
 {    
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
-    builder.Services.AddDbContext<RegisterContextAdministrative>();
-    builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
-    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
+}
+else
+{
+    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
+    builder.Services.MsSqlServerMigrationsApplicationContext(builder.Configuration);
+    builder.Services.MySqlServerMigrationsApplicationContext(builder.Configuration);
 }
 
 //Add SigningConfigurations Configuratons

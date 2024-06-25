@@ -27,8 +27,6 @@ if (builder.Environment.IsDevelopment())
 {    
     builder.Services.AddDbContext<RegisterContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
-    builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
-    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 else if (builder.Environment.IsProduction())
 {
@@ -37,6 +35,8 @@ else if (builder.Environment.IsProduction())
 else
 {
     builder.Services.AddDbContext<RegisterContextAdministrative>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
+    builder.Services.MsSqlServerMigrationsAdministrativeContext(builder.Configuration);
+    builder.Services.MySqlServerMigrationsAdministrativeContext(builder.Configuration);
 }
 
 var app = builder.Build();
