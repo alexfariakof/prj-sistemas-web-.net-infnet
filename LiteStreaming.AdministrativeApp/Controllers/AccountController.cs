@@ -56,10 +56,9 @@ public class AccountController : BaseController
             if (ex is ArgumentException argEx)
             {
                 ModelState.AddModelError("login_failed", argEx.Message);
-                //ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
             }
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao realizar login." };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao realizar login.");
             return View("Index");
         }
     }

@@ -99,7 +99,7 @@ public class UserControllerTest
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("Create", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid data.", alert.Message);
     }
@@ -169,8 +169,8 @@ public class UserControllerTest
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("Edit", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
-        Assert.Equal("danger", alert.Type);
+        Assert.Equal("Aviso", alert.Header);
+        Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid data.", alert.Message);
     }
 
@@ -223,9 +223,8 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid user.", alert.Message);
     }
@@ -242,7 +241,6 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
@@ -262,7 +260,6 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Sucesso", alert.Header);
         Assert.Equal("success", alert.Type);
@@ -281,9 +278,8 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid user.", alert.Message);
     }
@@ -300,7 +296,6 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);

@@ -19,7 +19,7 @@ public class UserController : BaseController
     [Authorize]
     public IActionResult Index()
     {
-        return this.FindAll();
+        return View(this.administrativeAccountService.FindAll());
     }
 
     public IActionResult Create()
@@ -43,9 +43,9 @@ public class UserController : BaseController
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao salvar os dados do usuário." };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do usuário.");
             return CreateView();
         }
     }
@@ -66,9 +66,9 @@ public class UserController : BaseController
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar os dados do usuário { dto?.Name }." };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar os dados do usuário { dto?.Name }.");
             return EditView();
         }
     }
@@ -84,14 +84,14 @@ public class UserController : BaseController
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
 
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao editar os dados deste usuário." };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste usuário.");
         }
-        return this.FindAll();
+        return View(INDEX, this.administrativeAccountService.FindAll());
     }
-    
+
     [Authorize]
     public IActionResult Delete(AdministrativeAccountDto dto)
     {
@@ -100,20 +100,16 @@ public class UserController : BaseController
             dto.UsuarioId = UserId;
             var result = this.administrativeAccountService.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel {  Header = "Sucesso", Type= "success", Message = $"Usuário { dto?.Name } excluído." };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Usuário { dto?.Name } excluído.");
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o usuário { dto?.Name }." };
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o usuário { dto?.Name }.");
         }
-        return this.FindAll();
-    }
-
-    private IActionResult FindAll()
-    {
         return View(INDEX, this.administrativeAccountService.FindAll());
-    }   
+
+    }
 }
