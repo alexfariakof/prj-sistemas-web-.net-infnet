@@ -26,6 +26,7 @@ public static class ServiceInjectDependence
         services.AddScoped<IFlatService, FlatService>();
         services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IBandService, BandService>();
+        services.AddScoped<IMusicService, MusicService>();
         return services;
     }
 
