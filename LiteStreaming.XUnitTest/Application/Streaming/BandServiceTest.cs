@@ -59,19 +59,16 @@ public class BandServiceTest
     {
         // Arrange
         var bandDtos = MockBand.Instance.GetDtoListFromBandList(mockBandList);
-        var userId = mockBandList.First().Id;
-        mapperMock.Setup(mapper => mapper.Map<List<BandDto>>(It.IsAny<List<Band>>())).Returns(bandDtos.FindAll(c => c.Id.Equals(userId)));
+        mapperMock.Setup(mapper => mapper.Map<List<BandDto>>(It.IsAny<List<Band>>())).Returns(bandDtos);
 
         // Act
-        var result = bandService.FindAll(userId);
+        var result = bandService.FindAll();
 
         // Assert
         bandRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<BandDto>>(It.IsAny<List<Band>>()), Times.Once);
-
         Assert.NotNull(result);
-        Assert.Equal(mockBandList.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
-        Assert.All(result, bandDto => Assert.Equal(userId, bandDto.Id));
+        Assert.Equal(mockBandList.Count, result.Count);
     }
 
     [Fact]
