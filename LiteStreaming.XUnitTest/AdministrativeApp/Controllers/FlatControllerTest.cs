@@ -5,7 +5,6 @@ using LiteStreaming.AdministrativeApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using LiteStreaming.XunitTest.__mock__.Admin;
-using Humanizer;
 
 namespace AdministrativeApp.Controllers;
 

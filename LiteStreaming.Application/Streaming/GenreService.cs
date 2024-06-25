@@ -18,9 +18,9 @@ public class GenreService : ServiceBase<GenreDto, Genre>, IService<GenreDto>, IG
         var result = Mapper.Map<GenreDto>(Genre);
         return result;
     }
-    public override GenreDto FindById(Guid GenreId)
+    public override GenreDto FindById(Guid id)
     {
-        var Genre = Repository.GetById(GenreId);
+        var Genre = Repository.GetById(id);
         var result = Mapper.Map<GenreDto>(Genre);
         return result;
     }
