@@ -22,11 +22,13 @@ public abstract class BaseRepository<T> where T : class, new()
         Context.Update(entity);
         Context.SaveChanges();
     }
+
     public virtual void Delete(T entity)
     {
         Context.Remove(entity);
         Context.SaveChanges();
     }
+
     public virtual IEnumerable<T> GetAll()
     {
         return Context.Set<T>().ToList();

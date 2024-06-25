@@ -46,7 +46,7 @@ public class UserController : BaseController
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao salvar os dados." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao salvar os dados do usuário ." };
             return View("Create");
         }
     }
@@ -69,7 +69,7 @@ public class UserController : BaseController
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao atualizar os dados deste usuário." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar os dados do usuário { dto.Name }." };
             return View("Edit");
         }
     }
@@ -100,22 +100,21 @@ public class UserController : BaseController
     }
     
     [Authorize]
-    public IActionResult Delete(Guid IdUsuario)
+    public IActionResult Delete(AdministrativeAccountDto dto)
     {
         try
         {
-            var dto = this.administrativeAccountService.FindById(IdUsuario);
             dto.UsuarioId = UserId;
             var result = this.administrativeAccountService.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel {  Header = "Sucesso", Type= "success", Message = "Usuário inativado." };
+                ViewBag.Alert = new AlertViewModel {  Header = "Sucesso", Type= "success", Message = $"Usuário { dto.Name } excluído." };
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao excluir os dados deste usuário." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o usuário { dto.Name }." };
         }
         return View("Index", this.FindAll());
     }

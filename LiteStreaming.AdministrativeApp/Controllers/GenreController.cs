@@ -24,7 +24,6 @@ public class GenreController : BaseController
         return View();
     }
 
-
     [HttpPost]
     public IActionResult Save(GenreDto dto)
     {
@@ -64,7 +63,7 @@ public class GenreController : BaseController
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao atualizar os dados deste gênero." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar o gênero { dto.Name }." };
             return View("Edit");
         }
     }
@@ -92,15 +91,14 @@ public class GenreController : BaseController
         return View("Index", this.FindAll());
     }
 
-    public IActionResult Delete(Guid IdUsuario)
+    public IActionResult Delete(GenreDto dto)
     {
         try
         {
-            var dto = this.genreService.FindById(IdUsuario);
             dto.UsuarioId = UserId;
             var result = this.genreService.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = "Usuário inativado." };
+                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = $"Gênero { dto.Name } excluído." };
         }
         catch (Exception ex)
         {
@@ -108,7 +106,7 @@ public class GenreController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
 
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao excluir os dados deste gênero." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o gênero { dto.Name }." };
         }
         return View("Index", this.FindAll());
     }

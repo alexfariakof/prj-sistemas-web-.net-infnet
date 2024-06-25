@@ -64,7 +64,7 @@ public class FlatController : BaseController
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao atualizar os dados deste plano." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar o plano { dto.Name }." };
             return View("Edit");
         }
     }
@@ -92,15 +92,14 @@ public class FlatController : BaseController
         return View("Index", this.FindAll());
     }
 
-    public IActionResult Delete(Guid IdUsuario)
+    public IActionResult Delete(FlatDto dto)
     {
         try
         {
-            var dto = this.flatService.FindById(IdUsuario);                
             dto.UsuarioId = UserId;
             var result = this.flatService.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = "Usuário inativado." };
+                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = $"Plano { dto.Name } exclúido." };
         }
         catch (Exception ex)
         {
@@ -108,7 +107,7 @@ public class FlatController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
 
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao excluir os dados deste plano." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o plano { dto.Name }." };
         }
         return View("Index", this.FindAll());
     }
