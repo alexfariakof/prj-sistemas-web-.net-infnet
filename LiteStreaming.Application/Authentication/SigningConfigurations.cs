@@ -16,12 +16,11 @@ namespace Application.Authentication
 
         public SigningConfigurations(IOptions<TokenOptions> options)
         {
-            TokenConfiguration = new TokenConfiguration(options);
+            TokenConfiguration = new TokenConfiguration(options);            
 
-            string certificatePath = Path.Combine(AppContext.BaseDirectory, options.Value.Certificate);
-
-            if (File.Exists(certificatePath))
+            if (!String.IsNullOrEmpty(options.Value.Certificate))
             {
+                string certificatePath = Path.Combine(AppContext.BaseDirectory, options.Value.Certificate);                
                 X509Certificate2 certificate = new X509Certificate2(certificatePath, options.Value.Password, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
                 RSA? rsa = null;
                 rsa = certificate.GetRSAPrivateKey();

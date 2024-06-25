@@ -14,13 +14,14 @@ namespace CommonInjectDependence;
 public class AuthorizationInjectDependenceTest
 {
     [Fact]
-    public void AddAuthConfigurations_ShouldAddAuthenticationAndAuthorizationConfigurations()
+    public void AddAutoAuthenticationConfigurations_ShouldAddAuthenticationAndAuthorizationConfigurations()
     {
         // Arrange
         var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
         var services = new ServiceCollection();
 
         // Act
+        services.AddSigningConfigurations(configuration);
         services.AddAutoAuthenticationConfigurations();
 
         // Assert

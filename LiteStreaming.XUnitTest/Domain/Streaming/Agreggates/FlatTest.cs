@@ -14,7 +14,7 @@ public class FlatTest
             Id = expectedFlat.Id,
             Name = expectedFlat.Name,
             Description = expectedFlat.Description,
-            Monetary = expectedFlat.Monetary
+            Value = expectedFlat.Value
         };
 
         // Assert
@@ -22,6 +22,6 @@ public class FlatTest
         Assert.Equal(expectedFlat.Id, actualFlat.Id);
         Assert.Equal(expectedFlat.Name, actualFlat.Name);
         Assert.Equal(expectedFlat.Description, actualFlat.Description);
-        Assert.Equal(expectedFlat.Monetary, actualFlat.Monetary);
+        Assert.Equal(expectedFlat.Value, actualFlat.Value);
     }
 }

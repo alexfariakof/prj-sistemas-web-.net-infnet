@@ -16,26 +16,26 @@ public class DataSeederFlat : IDataSeeder
             {
                 Name = "Free Flat",
                 Description = "Free Flat Desciption",
-                Monetary = 250m
+                Value = 250m
             },
 
             new Flat
             {
                 Name = "Basic Flat",
                 Description = "Basic Flat Desciption",
-                Monetary = 260m
+                Value = 260m
             },
             new Flat
             {
                 Name = "Standard  Flat",
                 Description = "Standard  Flat Desciption",
-                Monetary = 500m
+                Value = 500m
             },
             new Flat
             {
                 Name = "Premium  Flat",
                 Description = "Premium  Flat Desciption",
-                Monetary = 750m
+                Value = 750m
             });
         try
         {

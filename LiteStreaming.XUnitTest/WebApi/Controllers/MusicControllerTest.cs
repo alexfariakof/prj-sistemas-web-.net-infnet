@@ -45,7 +45,7 @@ public class MusicControllerTest
         var userId = Guid.NewGuid();
         var musicList = MockMusic.Instance.GetListFaker(2);
         var expectedMusicDtoList = MockMusic.Instance.GetDtoListFromMusicList(musicList);
-        mockMusicService.Setup(service => service.FindAll(userId)).Returns(expectedMusicDtoList);
+        mockMusicService.Setup(service => service.FindAll(It.IsAny<Guid>())).Returns(expectedMusicDtoList);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
@@ -79,7 +79,7 @@ public class MusicControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockMusicService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
+        mockMusicService.Setup(service => service.FindAll(It.IsAny<Guid>())).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(userId, controller);
 
         // Act

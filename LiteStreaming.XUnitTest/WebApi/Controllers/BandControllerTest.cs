@@ -22,7 +22,7 @@ public class BandControllerTest
         var userId = Guid.NewGuid();
         var bandList = MockBand.Instance.GetListFaker(2);
         var expectedBandDtoList = MockBand.Instance.GetDtoListFromBandList(bandList);
-        mockBandService.Setup(service => service.FindAll(userId)).Returns(expectedBandDtoList);
+        mockBandService.Setup(service => service.FindAll(It.IsAny<Guid>())).Returns(expectedBandDtoList);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
@@ -56,7 +56,7 @@ public class BandControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockBandService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
+        mockBandService.Setup(service => service.FindAll(It.IsAny<Guid>())).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(userId, controller);
 
         // Act

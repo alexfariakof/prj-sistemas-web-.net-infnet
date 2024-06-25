@@ -32,7 +32,7 @@ public class TransactionMapTest
             var descriptionProperty = entityType?.FindProperty("Description");
             var customerNavigation = entityType?.FindNavigation("Customer");
 
-            var monetaryValueProperty = entityType?.FindNavigation("Value")?.ForeignKey.Properties.First();
+            var monetaryValueProperty = entityType?.FindNavigation("Monetary")?.ForeignKey.Properties.First();
 
 
             // Assert

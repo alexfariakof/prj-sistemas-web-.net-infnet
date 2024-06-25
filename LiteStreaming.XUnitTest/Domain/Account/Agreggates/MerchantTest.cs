@@ -13,7 +13,7 @@ public class MerchantTest
         {
             Id = Guid.NewGuid(),
             Name = "Test Flat",
-            Monetary = 50.0m,
+            Value = 50.0m,
             Description = "Test Description"
             
         };

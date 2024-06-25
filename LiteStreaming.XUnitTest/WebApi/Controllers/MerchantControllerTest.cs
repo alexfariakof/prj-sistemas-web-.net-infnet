@@ -22,7 +22,7 @@ public class MerchantControllerTest
         // Arrange        
         var expectedMerchantDto = MockMerchant.Instance.GetDtoFromMerchant(MockMerchant.Instance.GetFaker());
         Usings.SetupBearerToken(expectedMerchantDto.Id, controller, PerfilUser.UserType.Merchant);
-        mockMerchantService.Setup(service => service.FindById(expectedMerchantDto.Id)).Returns(expectedMerchantDto);
+        mockMerchantService.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(expectedMerchantDto);
         
         // Act
         var result = controller.FindById() as ObjectResult;
@@ -156,7 +156,7 @@ public class MerchantControllerTest
     {
         // Arrange        
         var merchantId = Guid.NewGuid();
-        mockMerchantService.Setup(service => service.FindById(merchantId)).Throws(new Exception("BadRequest_Erro_Message"));
+        mockMerchantService.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(merchantId, controller, PerfilUser.UserType.Merchant);
 
         // Act

@@ -43,7 +43,7 @@ public class CustomerControllerTest
         // Arrange        
         var customerId = Guid.NewGuid();
         var expectedCustomerDto = new CustomerDto { Id = customerId, Name = "John Doe", Email = "john@example.com" };
-        mockCustomerService.Setup(service => service.FindById(customerId)).Returns(expectedCustomerDto);
+        mockCustomerService.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(expectedCustomerDto);
         Usings.SetupBearerToken(customerId, controller);
 
         // Act
@@ -192,7 +192,7 @@ public class CustomerControllerTest
     {
         // Arrange        
         var customerId = Guid.NewGuid();
-        mockCustomerService.Setup(service => service.FindById(customerId)).Throws(new Exception("BadRequest_Erro_Message"));
+        mockCustomerService.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(customerId, controller);
 
         // Act

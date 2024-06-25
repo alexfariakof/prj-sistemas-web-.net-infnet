@@ -34,7 +34,7 @@ public class AbstractAccountTests
         {
             Id = Guid.NewGuid(),
             Name = "Test Flat",
-            Monetary = 50.0m,
+            Value = 50.0m,
             Description = "Test Description"
         };
         var card = MockCard.Instance.GetFaker();
@@ -64,7 +64,7 @@ public class AbstractAccountTests
         {
             Id = Guid.NewGuid(),
             Name = "Test Flat",
-            Monetary = 50.0m,
+            Value = 50.0m,
             Description = "Test Description"
         };
         var cards = MockCard.Instance.GetListFaker(100);
@@ -92,7 +92,7 @@ public class AbstractAccountTests
         {
             Id = Guid.NewGuid(),
             Name = "Test Flat",
-            Monetary = 50.0m,
+            Value = 50.0m,
             Description = "Test Description"
         };
 

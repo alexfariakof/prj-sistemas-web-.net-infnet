@@ -120,7 +120,7 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao salvar os dados.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao salvar os dados do plano.", alert.Message);
     }
 
     [Fact]
@@ -192,7 +192,7 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao atualizar os dados deste usuário.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao atualizar os dados deste plano.", alert.Message);
     }
 
     [Fact]
@@ -247,7 +247,7 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao editar os dados deste usuário.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao editar os dados deste plano.", alert.Message);
     }
 
     [Fact]
@@ -308,6 +308,6 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao excluir os dados deste usuário.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao excluir os dados deste plano.", alert.Message);
     }
 }

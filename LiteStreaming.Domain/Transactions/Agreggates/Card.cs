@@ -10,10 +10,10 @@ public class Card : Base
     private const int INTERVAL_TRANSACTON = -2;
     private const int REPEAT_TRANSACTON_MERCHANT = 1;
     public Boolean Active { get; set; }
-    public virtual Monetary Limit { get; set; } = 0;
+    public Monetary Limit { get; set; } = 0;
     public String? Number { get; set; }
     public virtual CreditCardBrand? CardBrand { get; set; }        
-    public virtual ExpiryDate? Validate { get; set; }
+    public ExpiryDate? Validate { get; set; }
     
     private string? _cvv;
 
