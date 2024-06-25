@@ -49,7 +49,7 @@ public class GenreControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Null(viewResult.ViewName);
+        Assert.NotNull(viewResult.ViewName);
     }
 
     [Fact]

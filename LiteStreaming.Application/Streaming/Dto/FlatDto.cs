@@ -32,7 +32,7 @@ public class FlatDto : BaseDto
             }
             else
             {
-                throw new ArgumentException("A string fornecida não é um valor de moeda válido.");
+                throw new ArgumentException("A campo valor fornecido não é um valor de moeda válido.");
             }
         }
     }

@@ -19,27 +19,26 @@ public class UserController : BaseController
     [Authorize]
     public IActionResult Index()
     {
-        return View(this.FindAll());
+        return this.FindAll();
     }
 
     public IActionResult Create()
     {
-        return View();
+        return CreateView();
     }
-
 
     [HttpPost]
     [Authorize]
     public IActionResult Save(AdministrativeAccountDto dto)
     {
         if (ModelState is { IsValid: false })
-            return View("Create");
+            return CreateView();
 
         try
         {
             dto.UsuarioId = UserId;
             administrativeAccountService.Create(dto);
-            return RedirectToAction("Index");
+            return this.RedirectToIndexView();
         }
         catch (Exception ex)
         {
@@ -47,7 +46,7 @@ public class UserController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao salvar os dados do usuário." };
-            return View("Create");
+            return CreateView();
         }
     }
 
@@ -56,13 +55,13 @@ public class UserController : BaseController
     public IActionResult Update(AdministrativeAccountDto dto)
     {
         if (ModelState is { IsValid: false })
-            return View("Edit");
+            return EditView();
 
         try
         {
             dto.UsuarioId = UserId;
             administrativeAccountService.Update(dto);
-            return RedirectToAction("Index");
+            return this.RedirectToIndexView();
         }
         catch (Exception ex)
         {
@@ -70,16 +69,10 @@ public class UserController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar os dados do usuário { dto?.Name }." };
-            return View("Edit");
+            return EditView();
         }
     }
-
-    [Authorize]
-    private IEnumerable<AdministrativeAccountDto> FindAll()
-    {
-        return this.administrativeAccountService.FindAll();
-    }
-
+       
     [Authorize]
     public IActionResult Edit(Guid IdUsuario)
     {
@@ -96,7 +89,7 @@ public class UserController : BaseController
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao editar os dados deste usuário." };
         }
-        return View("Index", this.FindAll());
+        return this.FindAll();
     }
     
     [Authorize]
@@ -116,6 +109,11 @@ public class UserController : BaseController
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o usuário { dto?.Name }." };
         }
-        return View("Index", this.FindAll());
+        return this.FindAll();
     }
+
+    private IActionResult FindAll()
+    {
+        return View(INDEX, this.administrativeAccountService.FindAll());
+    }   
 }

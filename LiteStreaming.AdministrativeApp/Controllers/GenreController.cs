@@ -16,25 +16,25 @@ public class GenreController : BaseController
 
     public IActionResult Index()
     {
-        return View(this.FindAll());
+        return this.FindAll();
     }
 
     public IActionResult Create()
     {
-        return View();
+        return CreateView();
     }
 
     [HttpPost]
     public IActionResult Save(GenreDto dto)
     {
         if (ModelState is { IsValid: false })
-            return View("Create");
+            return CreateView();
 
         try
         {
             dto.UsuarioId = UserId;
             genreService.Create(dto);
-            return RedirectToAction("Index");
+            return this.RedirectToIndexView();
         }
         catch (Exception ex)
         {
@@ -42,7 +42,7 @@ public class GenreController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao salvar os dados do gênero." };
-            return View("Create");
+            return CreateView();
         }
     }
 
@@ -50,13 +50,13 @@ public class GenreController : BaseController
     public IActionResult Update(GenreDto dto)
     {
         if (ModelState is { IsValid: false })
-            return View("Edit");
+            return EditView();
 
         try
         {
             dto.UsuarioId = UserId;
             genreService.Update(dto);
-            return RedirectToAction("Index");
+            return this.RedirectToIndexView();
         }
         catch (Exception ex)
         {
@@ -64,15 +64,10 @@ public class GenreController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar o gênero { dto?.Name }." };
-            return View("Edit");
+            return EditView();
         }
     }
-
-    private IEnumerable<GenreDto> FindAll()
-    {
-        return this.genreService.FindAll();
-    }
-
+      
     public IActionResult Edit(Guid IdUsuario)
     {
         try
@@ -88,7 +83,7 @@ public class GenreController : BaseController
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao editar os dados deste gênero." };
         }
-        return View("Index", this.FindAll());
+        return this.FindAll();
     }
 
     public IActionResult Delete(GenreDto dto)
@@ -108,6 +103,11 @@ public class GenreController : BaseController
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o gênero { dto?.Name }." };
         }
-        return View("Index", this.FindAll());
+        return this.FindAll();
+    }
+
+    private IActionResult FindAll()
+    {
+        return View(INDEX, this.genreService.FindAll());
     }
 }

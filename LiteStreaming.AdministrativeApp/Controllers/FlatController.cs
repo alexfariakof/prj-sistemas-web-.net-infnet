@@ -16,26 +16,25 @@ public class FlatController : BaseController
 
     public IActionResult Index()
     {
-        return View(this.FindAll());
+        return this.FindAll();
     }
 
     public IActionResult Create()
     {
-        return View();
+        return CreateView();
     }
-
 
     [HttpPost]
     public IActionResult Save(FlatDto dto)
     {
         if (ModelState is { IsValid: false })
-            return View("Create");
+            return CreateView();
 
         try
         {
             dto.UsuarioId = UserId;
             flatService.Create(dto);
-            return RedirectToAction("Index");
+            return this.RedirectToIndexView();
         }
         catch (Exception ex)
         {
@@ -43,7 +42,7 @@ public class FlatController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao salvar os dados do plano." };
-            return View("Create");
+            return CreateView();
         }
     }
 
@@ -51,13 +50,13 @@ public class FlatController : BaseController
     public IActionResult Update(FlatDto dto)
     {
         if (ModelState is { IsValid: false })
-            return View("Edit");
+            return EditView();
 
         try
         {
             dto.UsuarioId = UserId;
             flatService.Update(dto);
-            return RedirectToAction("Index");
+            return this.RedirectToIndexView();
         }
         catch (Exception ex)
         {
@@ -65,13 +64,8 @@ public class FlatController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar o plano { dto?.Name }." };
-            return View("Edit");
+            return EditView();
         }
-    }
-
-    private IEnumerable<FlatDto> FindAll()
-    {
-        return this.flatService.FindAll();            
     }
 
     public IActionResult Edit(Guid IdUsuario)
@@ -89,7 +83,7 @@ public class FlatController : BaseController
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = "Ocorreu um erro ao editar os dados deste plano." };
         }
-        return View("Index", this.FindAll());
+        return this.FindAll();
     }
 
     public IActionResult Delete(FlatDto dto)
@@ -109,6 +103,11 @@ public class FlatController : BaseController
             else
                 ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o plano { dto?.Name }." };
         }
-        return View("Index", this.FindAll());
+        return this.FindAll();
+    }
+
+    private IActionResult FindAll()
+    {
+        return View(INDEX, this.flatService.FindAll());
     }
 }
