@@ -64,7 +64,7 @@ public class FlatController : BaseController
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar o plano { dto.Name }." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar o plano { dto?.Name }." };
             return View("Edit");
         }
     }
@@ -99,7 +99,7 @@ public class FlatController : BaseController
             dto.UsuarioId = UserId;
             var result = this.flatService.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = $"Plano { dto.Name } exclúido." };
+                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = $"Plano { dto?.Name } exclúido." };
         }
         catch (Exception ex)
         {
@@ -107,7 +107,7 @@ public class FlatController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
 
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o plano { dto.Name }." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o plano { dto?.Name }." };
         }
         return View("Index", this.FindAll());
     }

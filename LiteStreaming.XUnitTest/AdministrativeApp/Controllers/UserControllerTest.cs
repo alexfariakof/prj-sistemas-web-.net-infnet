@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using LiteStreaming.AdministrativeApp.Controllers;
 using LiteStreaming.XunitTest.__mock__.Admin;
+using Humanizer;
 
 namespace AdministrativeApp.Controllers;
 
@@ -121,7 +122,7 @@ public class UserControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao salvar os dados.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao salvar os dados do usuário.", alert.Message);
     }
 
     [Fact]
@@ -191,7 +192,7 @@ public class UserControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao atualizar os dados deste usuário.", alert.Message);
+        Assert.Equal($"Ocorreu um erro ao atualizar os dados do usuário {dto?.Name}.", alert.Message);
     }
 
     [Fact]
@@ -252,16 +253,13 @@ public class UserControllerTest
     [Fact]
     public void Delete_ValidId_Returns_IndexView_With_SuccessAlert()
     {
-        // Arrange
-     
+        // Arrange     
         var accountDto = MockAdministrativeAccount.Instance.GetFakerDto();
-        var id = accountDto.UsuarioId;
         MockHttpContextHelper.MockClaimsIdentitySigned(accountDto.UsuarioId, accountDto.Name, accountDto.Email, userController);
-        administrativeAccountServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(accountDto);
         administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Returns(true);
         
         // Act
-        var result = userController.Delete(id);
+        var result = userController.Delete(accountDto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -269,18 +267,18 @@ public class UserControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Sucesso", alert.Header);
         Assert.Equal("success", alert.Type);
-        Assert.Equal("Usuário inativado.", alert.Message);
+        Assert.Equal($"Usuário {accountDto?.Name} excluído.", alert.Message);
     }
 
     [Fact]
     public void Delete_ServiceThrowsArgumentException_Returns_IndexView_WithWarningAlert()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        administrativeAccountServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new ArgumentException("Invalid user."));
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", userController);
+        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Throws(new ArgumentException("Invalid user."));
 
         // Act
-        var result = userController.Delete(id);
+        var result = userController.Delete(new());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -295,11 +293,11 @@ public class UserControllerTest
     public void Delete_ServiceThrowsException_Returns_IndexView_WithDangerAlert()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        administrativeAccountServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new Exception("Error"));
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", userController);
+        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Throws(new Exception("Error"));
 
         // Act
-        var result = userController.Delete(id);
+        var result = userController.Delete(new());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -307,6 +305,6 @@ public class UserControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao excluir os dados deste usuário.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao excluir o usuário .", alert.Message);
     }
 }

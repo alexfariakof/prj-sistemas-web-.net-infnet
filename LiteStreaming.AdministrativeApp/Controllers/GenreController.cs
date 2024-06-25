@@ -63,7 +63,7 @@ public class GenreController : BaseController
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "danger", Message = argEx.Message };
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar o gênero { dto.Name }." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao atualizar o gênero { dto?.Name }." };
             return View("Edit");
         }
     }
@@ -98,7 +98,7 @@ public class GenreController : BaseController
             dto.UsuarioId = UserId;
             var result = this.genreService.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = $"Gênero { dto.Name } excluído." };
+                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = $"Gênero { dto?.Name } excluído." };
         }
         catch (Exception ex)
         {
@@ -106,7 +106,7 @@ public class GenreController : BaseController
                 ViewBag.Alert = new AlertViewModel { Header = "Informação", Type = "warning", Message = argEx.Message };
 
             else
-                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o gênero { dto.Name }." };
+                ViewBag.Alert = new AlertViewModel { Header = "Erro", Type = "danger", Message = $"Ocorreu um erro ao excluir o gênero { dto?.Name }." };
         }
         return View("Index", this.FindAll());
     }

@@ -2,13 +2,13 @@
 
 ## Migrations.Application
 dotnet ef migrations add Initial -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
-dotnet ef migrations add Update-Configurations-Perfil -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
+dotnet ef migrations add Update-Databae-Context -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
 dotnet ef database update -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.WebApi
 
 ## Migrations.Administrative
 dotnet ef migrations add Initial -c MySqlServerContextAdministrative -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.AdministrativeApp -o Migrations.Administrative
 dotnet ef migrations add Create-PefilMapping -c MySqlServerContextAdministrative -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.AdministrativeApp -o Migrations.Administrative
-dotnet ef migrations add Update-Configurations-Perfil -c MySqlServerContextAdministrative -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.AdministrativeApp -o Migrations.Administrative
+dotnet ef migrations add Update-Database-Context -c MySqlServerContextAdministrative -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.AdministrativeApp -o Migrations.Administrative
 
 dotnet ef database update -c MySqlServerContextAdministrative -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.AdministrativeApp
 
