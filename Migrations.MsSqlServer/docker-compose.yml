@@ -4,6 +4,7 @@ services:
   db:
     container_name: mssql-server-in-docker
     image: mssql-server-db-img
+    restart: always
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"

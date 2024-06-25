@@ -4,7 +4,6 @@ services:
   db:
     container_name: maria-db-in-docker
     image: maria-db-img
-    restart: always
     build:
       context: .
       dockerfile: ./Dockerfile.MariaDb
