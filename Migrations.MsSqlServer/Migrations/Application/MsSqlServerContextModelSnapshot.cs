@@ -279,7 +279,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("PerfilUser", (string)null);
+                    b.ToTable("Perfil", (string)null);
 
                     b.HasData(
                         new
@@ -928,7 +928,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Flat", b =>
                 {
-                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Monetary", b1 =>
+                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
                         {
                             b1.Property<Guid>("FlatId")
                                 .HasColumnType("uniqueidentifier");
@@ -945,7 +945,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
                                 .HasForeignKey("FlatId");
                         });
 
-                    b.Navigation("Monetary")
+                    b.Navigation("Value")
                         .IsRequired();
                 });
 

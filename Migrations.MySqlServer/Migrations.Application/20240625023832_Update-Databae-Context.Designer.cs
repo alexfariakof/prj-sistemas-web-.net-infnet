@@ -11,8 +11,8 @@ using Migrations.MySqlServer;
 namespace Migrations.MySqlServer.Migrations.Application
 {
     [DbContext(typeof(MySqlServerContext))]
-    [Migration("20240624233709_Update-Configurations-Perfil")]
-    partial class UpdateConfigurationsPerfil
+    [Migration("20240625023832_Update-Databae-Context")]
+    partial class UpdateDatabaeContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -276,7 +276,7 @@ namespace Migrations.MySqlServer.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("PerfilUser", (string)null);
+                    b.ToTable("Perfil", (string)null);
 
                     b.HasData(
                         new
@@ -923,7 +923,7 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Streaming.Agreggates.Flat", b =>
                 {
-                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Monetary", b1 =>
+                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
                         {
                             b1.Property<Guid>("FlatId")
                                 .HasColumnType("char(36)");
@@ -940,7 +940,7 @@ namespace Migrations.MySqlServer.Migrations.Application
                                 .HasForeignKey("FlatId");
                         });
 
-                    b.Navigation("Monetary")
+                    b.Navigation("Value")
                         .IsRequired();
                 });
 

@@ -1,112 +1,187 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Migrations.MySqlServer.Migrations.Administrative
+namespace Migrations.MsSqlServer.Migrations.Administrative
 {
     /// <inheritdoc />
-    public partial class UpdateConfigurationsPerfil : Migration
+    public partial class UpdateDatabaseContext : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "AlbumGenre");
+
+            migrationBuilder.DropTable(
+                name: "BandGenre");
+
+            migrationBuilder.DropTable(
+                name: "FlatAlbum");
+
+            migrationBuilder.DropTable(
+                name: "FlatMusic");
+
+            migrationBuilder.DropTable(
+                name: "FlatPlayList");
+
+            migrationBuilder.DropTable(
+                name: "GenreMusic");
+
+            migrationBuilder.DropTable(
+                name: "GenrePlaylist");
+
+            migrationBuilder.DropTable(
+                name: "MusicPlayList");
+
+            migrationBuilder.DropTable(
+                name: "MusicPlayListPersonal");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
+
+            migrationBuilder.DropTable(
+                name: "Signature");
+
+            migrationBuilder.DropTable(
+                name: "Transaction");
+
+            migrationBuilder.DropTable(
+                name: "Genre");
+
+            migrationBuilder.DropTable(
+                name: "Playlist");
+
+            migrationBuilder.DropTable(
+                name: "Music");
+
+            migrationBuilder.DropTable(
+                name: "PlaylistPersonal");
+
+            migrationBuilder.DropTable(
+                name: "Card");
+
+            migrationBuilder.DropTable(
+                name: "Album");
+
+            migrationBuilder.DropTable(
+                name: "CardBrand");
+
+            migrationBuilder.DropTable(
+                name: "Merchant");
+
+            migrationBuilder.DropTable(
+                name: "Band");
+
+            migrationBuilder.DropTable(
+                name: "Customer");
+
+            migrationBuilder.DropTable(
+                name: "Flat");
+
+            migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
+                name: "PerfilUser");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Band",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: false),
-                    Backdrop = table.Column<string>(type: "longtext", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Backdrop = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Band", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "CardBrand",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CardBrand", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Flat",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Monetary = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Flat", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Genre",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genre", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "PerfilUser",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PerfilUser", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Playlist",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Backdrop = table.Column<string>(type: "longtext", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Backdrop = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Playlist", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Album",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Backdrop = table.Column<string>(type: "longtext", nullable: false),
-                    BandId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Backdrop = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,15 +192,14 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Band",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "BandGenre",
                 columns: table => new
                 {
-                    BandsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    GenresId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    BandsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GenresId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,19 +216,17 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Genre",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PerfilTypeId = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
-                    Password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    DtCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
+                    DtCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,16 +237,15 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "PerfilUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "FlatPlayList",
                 columns: table => new
                 {
-                    FlatsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    PlaylistsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: true, defaultValueSql: "GetDate()")
+                    FlatsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlaylistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GetDate()")
                 },
                 constraints: table =>
                 {
@@ -191,15 +262,14 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Playlist",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "GenrePlaylist",
                 columns: table => new
                 {
-                    GenresId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    PlaylistsId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    GenresId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlaylistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,15 +286,14 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Playlist",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "AlbumGenre",
                 columns: table => new
                 {
-                    AlbumsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    GenresId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    AlbumsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GenresId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,16 +310,15 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Genre",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "FlatAlbum",
                 columns: table => new
                 {
-                    FlatId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    AlbumId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: true, defaultValueSql: "GetDate()")
+                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GetDate()")
                 },
                 constraints: table =>
                 {
@@ -267,19 +335,18 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Flat",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Music",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Duration = table.Column<int>(type: "int", maxLength: 50, nullable: false),
-                    Url = table.Column<string>(type: "longtext", nullable: false),
-                    AlbumId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    BandId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<int>(type: "int", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -294,20 +361,19 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         column: x => x.BandId,
                         principalTable: "Band",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Customer",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Birth = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CPF = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false),
-                    Phone = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    FlatId = table.Column<Guid>(type: "char(36)", nullable: true),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    UserId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Birth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CPF = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -322,16 +388,15 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "FlatMusic",
                 columns: table => new
                 {
-                    FlatsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    MusicsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: true, defaultValueSql: "GetDate()")
+                    FlatsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MusicsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GetDate()")
                 },
                 constraints: table =>
                 {
@@ -348,15 +413,14 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Music",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "GenreMusic",
                 columns: table => new
                 {
-                    GenresId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    MusicsId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    GenresId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MusicsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -373,16 +437,15 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Music",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "MusicPlayList",
                 columns: table => new
                 {
-                    MusicsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    PlaylistsId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: true, defaultValueSql: "GetDate()")
+                    MusicsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlaylistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GetDate()")
                 },
                 constraints: table =>
                 {
@@ -399,18 +462,17 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Playlist",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Merchant",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    CNPJ = table.Column<string>(type: "varchar(18)", maxLength: 18, nullable: false),
-                    CustomerId = table.Column<Guid>(type: "char(36)", nullable: true),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    UserId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CNPJ = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -426,20 +488,18 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "PlaylistPersonal",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DtCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    AlbumId = table.Column<Guid>(type: "char(36)", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DtCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -455,24 +515,23 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "Customer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Address",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Zipcode = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
-                    Street = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    Number = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
-                    Neighborhood = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    City = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    State = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Complement = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    Country = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
-                    CustomerId = table.Column<Guid>(type: "char(36)", nullable: true),
-                    MerchantId = table.Column<Guid>(type: "char(36)", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Complement = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Neighborhood = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Number = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    State = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Zipcode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -487,22 +546,21 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         column: x => x.MerchantId,
                         principalTable: "Merchant",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Card",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Limit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Number = table.Column<string>(type: "varchar(19)", maxLength: 19, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CardBrandId = table.Column<int>(type: "int", nullable: false),
-                    Validate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CVV = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    CustomerId = table.Column<Guid>(type: "char(36)", nullable: true),
-                    MerchantId = table.Column<Guid>(type: "char(36)", nullable: true)
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CVV = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Number = table.Column<string>(type: "nvarchar(19)", maxLength: 19, nullable: false),
+                    Limit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Validate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -523,21 +581,20 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         column: x => x.MerchantId,
                         principalTable: "Merchant",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Notification",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtNotification = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Message = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
-                    Title = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
-                    DestinationId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    SenderId = table.Column<Guid>(type: "char(36)", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DestinationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DtNotification = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     NotificationType = table.Column<int>(type: "int", nullable: false),
-                    MerchantId = table.Column<Guid>(type: "char(36)", nullable: true)
+                    Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -558,19 +615,18 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         column: x => x.MerchantId,
                         principalTable: "Merchant",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Signature",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    FlatId = table.Column<Guid>(type: "char(36)", nullable: true),
-                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DtActivation = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "char(36)", nullable: true),
-                    MerchantId = table.Column<Guid>(type: "char(36)", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DtActivation = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -590,16 +646,15 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         column: x => x.MerchantId,
                         principalTable: "Merchant",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "MusicPlayListPersonal",
                 columns: table => new
                 {
-                    MusicId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    PlaylistPersonalId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "GetDate()")
+                    MusicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlaylistPersonalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DtAdded = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()")
                 },
                 constraints: table =>
                 {
@@ -616,20 +671,19 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         principalTable: "PlaylistPersonal",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Transaction",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DtTransaction = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Monetary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Description = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    CorrelationId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    CardId = table.Column<Guid>(type: "char(36)", nullable: true),
-                    MerchantId = table.Column<Guid>(type: "char(36)", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CorrelationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DtTransaction = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Monetary = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -650,8 +704,7 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         column: x => x.MerchantId,
                         principalTable: "Merchant",
                         principalColumn: "Id");
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                });
 
             migrationBuilder.InsertData(
                 table: "CardBrand",
@@ -675,12 +728,6 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                     { 3, "Customer" },
                     { 4, "Merchant" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Account_Email",
-                table: "Account",
-                column: "Email",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Address_CustomerId",
@@ -761,7 +808,8 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                 name: "IX_Merchant_CustomerId",
                 table: "Merchant",
                 column: "CustomerId",
-                unique: true);
+                unique: true,
+                filter: "[CustomerId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Merchant_UserId",
@@ -842,92 +890,6 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                 name: "IX_User_PerfilTypeId",
                 table: "User",
                 column: "PerfilTypeId");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Address");
-
-            migrationBuilder.DropTable(
-                name: "AlbumGenre");
-
-            migrationBuilder.DropTable(
-                name: "BandGenre");
-
-            migrationBuilder.DropTable(
-                name: "FlatAlbum");
-
-            migrationBuilder.DropTable(
-                name: "FlatMusic");
-
-            migrationBuilder.DropTable(
-                name: "FlatPlayList");
-
-            migrationBuilder.DropTable(
-                name: "GenreMusic");
-
-            migrationBuilder.DropTable(
-                name: "GenrePlaylist");
-
-            migrationBuilder.DropTable(
-                name: "MusicPlayList");
-
-            migrationBuilder.DropTable(
-                name: "MusicPlayListPersonal");
-
-            migrationBuilder.DropTable(
-                name: "Notification");
-
-            migrationBuilder.DropTable(
-                name: "Signature");
-
-            migrationBuilder.DropTable(
-                name: "Transaction");
-
-            migrationBuilder.DropTable(
-                name: "Genre");
-
-            migrationBuilder.DropTable(
-                name: "Playlist");
-
-            migrationBuilder.DropTable(
-                name: "Music");
-
-            migrationBuilder.DropTable(
-                name: "PlaylistPersonal");
-
-            migrationBuilder.DropTable(
-                name: "Card");
-
-            migrationBuilder.DropTable(
-                name: "Album");
-
-            migrationBuilder.DropTable(
-                name: "CardBrand");
-
-            migrationBuilder.DropTable(
-                name: "Merchant");
-
-            migrationBuilder.DropTable(
-                name: "Band");
-
-            migrationBuilder.DropTable(
-                name: "Customer");
-
-            migrationBuilder.DropTable(
-                name: "Flat");
-
-            migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropTable(
-                name: "PerfilUser");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Account_Email",
-                table: "Account");
         }
     }
 }

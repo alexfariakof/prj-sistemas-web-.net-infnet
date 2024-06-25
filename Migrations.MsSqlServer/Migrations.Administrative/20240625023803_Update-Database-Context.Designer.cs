@@ -2,17 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Migrations.MySqlServer;
+using Migrations.MsSqlServer;
 
 #nullable disable
 
-namespace Migrations.MySqlServer.Migrations.Administrative
+namespace Migrations.MsSqlServer.Migrations.Administrative
 {
-    [DbContext(typeof(MySqlServerContextAdministrative))]
-    partial class MySqlServerContextAdministravtiveModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MsSqlServerContextAdministrative))]
+    [Migration("20240625023803_Update-Database-Context")]
+    partial class UpdateDatabaseContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,21 +24,23 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Administrative.Agreggates.AdministrativeAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DtCreated")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("PerfilTypeId")
                         .HasColumnType("int");
@@ -52,9 +58,11 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -84,18 +92,18 @@ namespace Migrations.MySqlServer.Migrations.Administrative
                     b.OwnsOne("Domain.Core.ValueObject.Login", "Login", b1 =>
                         {
                             b1.Property<Guid>("AdministrativeAccountId")
-                                .HasColumnType("char(36)");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Email")
                                 .IsRequired()
                                 .HasMaxLength(150)
-                                .HasColumnType("varchar(150)")
+                                .HasColumnType("nvarchar(150)")
                                 .HasColumnName("Email");
 
                             b1.Property<string>("Password")
                                 .IsRequired()
                                 .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
+                                .HasColumnType("nvarchar(255)")
                                 .HasColumnName("Password");
 
                             b1.HasKey("AdministrativeAccountId");

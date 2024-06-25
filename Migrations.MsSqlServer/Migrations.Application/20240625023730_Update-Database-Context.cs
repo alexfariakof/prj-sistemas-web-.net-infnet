@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace Migrations.MySqlServer.Migrations.Application
+namespace Migrations.MsSqlServer.Migrations.Application
 {
     /// <inheritdoc />
-    public partial class UpdateConfigurationsPerfil : Migration
+    public partial class UpdateDatabaseContext : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
