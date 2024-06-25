@@ -62,6 +62,5 @@ public class MockFlat
     {
         var flatDtoList = flats.Select(GetDtoFromFlat).ToList();
         return flatDtoList;
-    }
-    
+    }    
 }

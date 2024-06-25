@@ -99,7 +99,7 @@ public class FlatController : BaseController
             dto.UsuarioId = UserId;
             var result = this.flatService.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = $"Plano { dto?.Name } exclúido." };
+                ViewBag.Alert = new AlertViewModel { Header = "Sucesso", Type = "success", Message = $"Plano { dto?.Name } excluído." };
         }
         catch (Exception ex)
         {

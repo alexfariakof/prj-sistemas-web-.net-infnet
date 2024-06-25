@@ -9,15 +9,15 @@ using Humanizer;
 
 namespace AdministrativeApp.Controllers;
 
-public class FlatControllerTest
+public class GenreControllerTest
 {
-    private readonly Mock<IFlatService> flatServiceMock;
-    private readonly FlatController flatController;
+    private readonly Mock<IGenreService> genreServiceMock;
+    private readonly GenreController genreController;
 
-    public FlatControllerTest()
+    public GenreControllerTest()
     {
-        flatServiceMock = new Mock<IFlatService>();
-        flatController = new FlatController(flatServiceMock.Object)
+        genreServiceMock = new Mock<IGenreService>();
+        genreController = new GenreController(genreServiceMock.Object)
         {
             ControllerContext = new ControllerContext
             {
@@ -30,23 +30,23 @@ public class FlatControllerTest
     public void Index_Returns_ViewResult_With_Model()
     {
         // Arrange
-        var flatsDto = MockFlat.Instance.GetDtoListFromFlatList(MockFlat.Instance.GetListFaker());
-        flatServiceMock.Setup(service => service.FindAll()).Returns(flatsDto);
+        var genresDto = MockGenre.Instance.GetDtoListFromGenreList(MockGenre.Instance.GetListFaker());
+        genreServiceMock.Setup(service => service.FindAll()).Returns(genresDto);
 
         // Act
-        var result = flatController.Index();
+        var result = genreController.Index();
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsAssignableFrom<IEnumerable<FlatDto>>(viewResult.Model);
-        Assert.Equal(flatsDto, model);
+        var model = Assert.IsAssignableFrom<IEnumerable<GenreDto>>(viewResult.Model);
+        Assert.Equal(genresDto, model);
     }
 
     [Fact]
     public void Create_Returns_ViewResult()
     {
         // Act
-        var result = flatController.Create();
+        var result = genreController.Create();
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -57,10 +57,10 @@ public class FlatControllerTest
     public void Save_ModelStateInvalid_Returns_CreateView()
     {
         // Arrange
-        flatController.ModelState.AddModelError("test", "test error");
+        genreController.ModelState.AddModelError("test", "test error");
 
         // Act
-        var result = flatController.Save(new FlatDto());
+        var result = genreController.Save(new GenreDto());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -71,29 +71,29 @@ public class FlatControllerTest
     public void Save_ValidDto_RedirectsToIndex()
     {
         // Arrange
-        var dto = MockFlat.Instance.GetFakerDto();        
-        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
+        var dto = MockGenre.Instance.GetFakerDto();        
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", genreController);
 
         // Act
-        var result = flatController.Save(dto);
+        var result = genreController.Save(dto);
 
         // Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Index", redirectResult.ActionName);
-        flatServiceMock.Verify(service => service.Create(dto), Times.Once);
+        genreServiceMock.Verify(service => service.Create(dto), Times.Once);
     }
 
     [Fact]
     public void Save_ServiceThrowsArgumentException_Returns_CreateView_WithWarningAlert()
     {
         // Arrange
-        var dto = MockFlat.Instance.GetFakerDto();
+        var dto = MockGenre.Instance.GetFakerDto();
         
-        flatServiceMock.Setup(service => service.Create(It.IsAny<FlatDto>())).Throws(new ArgumentException("Invalid data."));
+        genreServiceMock.Setup(service => service.Create(It.IsAny<GenreDto>())).Throws(new ArgumentException("Invalid data."));
 
         // Act
-        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
-        var result = flatController.Save(dto);
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", genreController);
+        var result = genreController.Save(dto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -108,12 +108,12 @@ public class FlatControllerTest
     public void Save_ServiceThrowsException_Returns_CreateView_WithDangerAlert()
     {
         // Arrange
-        var dto = MockFlat.Instance.GetFakerDto();
-        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
-        flatServiceMock.Setup(service => service.Create(It.IsAny<FlatDto>())).Throws(new Exception("Error"));
+        var dto = MockGenre.Instance.GetFakerDto();
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", genreController);
+        genreServiceMock.Setup(service => service.Create(It.IsAny<GenreDto>())).Throws(new Exception("Error"));
 
         // Act
-        var result = flatController.Save(dto);
+        var result = genreController.Save(dto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -121,19 +121,19 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao salvar os dados do plano.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao salvar os dados do gênero.", alert.Message);
     }
 
     [Fact]
     public void Update_ModelStateInvalid_Returns_EditView()
     {
         // Arrange
-        flatController.ModelState.AddModelError("test", "test error");
-        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", flatController);
+        genreController.ModelState.AddModelError("test", "test error");
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", genreController);
 
-        FlatDto? nullflatDto = null;
+        GenreDto? nullgenreDto = null;
         // Act
-        var result = flatController.Update(nullflatDto);
+        var result = genreController.Update(nullgenreDto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -144,28 +144,28 @@ public class FlatControllerTest
     public void Update_ValidDto_RedirectsToIndex()
     {
         // Arrange
-        var dto = MockFlat.Instance.GetFakerDto();
-        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
+        var dto = MockGenre.Instance.GetFakerDto();
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", genreController);
 
         // Act
-        var result = flatController.Update(dto);
+        var result = genreController.Update(dto);
 
         // Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Index", redirectResult.ActionName);
-        flatServiceMock.Verify(service => service.Update(dto), Times.Once);
+        genreServiceMock.Verify(service => service.Update(dto), Times.Once);
     }
 
     [Fact]
     public void Update_ServiceThrowsArgumentException_Returns_EditView_WithWarningAlert()
     {
         // Arrange
-        var dto = MockFlat.Instance.GetFakerDto();
-        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
-        flatServiceMock.Setup(service => service.Update(It.IsAny<FlatDto>())).Throws(new ArgumentException("Invalid data."));
+        var dto = MockGenre.Instance.GetFakerDto();
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", genreController);
+        genreServiceMock.Setup(service => service.Update(It.IsAny<GenreDto>())).Throws(new ArgumentException("Invalid data."));
 
         // Act
-        var result = flatController.Update(dto);
+        var result = genreController.Update(dto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -180,12 +180,12 @@ public class FlatControllerTest
     public void Update_ServiceThrowsException_Returns_EditView_WithDangerAlert()
     {
         // Arrange
-        var dto = MockFlat.Instance.GetFakerDto();
-        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", flatController);
-        flatServiceMock.Setup(service => service.Update(It.IsAny<FlatDto>())).Throws(new Exception("Error"));
+        var dto = MockGenre.Instance.GetFakerDto();
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, "teste", "teste@teste.com", genreController);
+        genreServiceMock.Setup(service => service.Update(It.IsAny<GenreDto>())).Throws(new Exception("Error"));
 
         // Act
-        var result = flatController.Update(dto);
+        var result = genreController.Update(dto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -193,24 +193,24 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal($"Ocorreu um erro ao atualizar o plano {dto?.Name}.", alert.Message);
+        Assert.Equal($"Ocorreu um erro ao atualizar o gênero {dto?.Name}.", alert.Message);
     }
 
     [Fact]
     public void Edit_ValidId_Returns_ViewResult_With_Model()
     {
         // Arrange        
-        var flatDto = MockFlat.Instance.GetFakerDto();
-        var id = flatDto.Id;
-        flatServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(flatDto);
+        var genreDto = MockGenre.Instance.GetFakerDto();
+        var id = genreDto.Id;
+        genreServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(genreDto);
 
         // Act
-        var result = flatController.Edit(id);
+        var result = genreController.Edit(id);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<FlatDto>(viewResult.Model);
-        Assert.Equal(flatDto, model);
+        var model = Assert.IsType<GenreDto>(viewResult.Model);
+        Assert.Equal(genreDto, model);
     }
 
     [Fact]
@@ -218,10 +218,10 @@ public class FlatControllerTest
     {
         // Arrange
         var id = Guid.NewGuid();
-        flatServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new ArgumentException("Invalid user."));
+        genreServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new ArgumentException("Invalid user."));
 
         // Act
-        var result = flatController.Edit(id);
+        var result = genreController.Edit(id);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -237,10 +237,10 @@ public class FlatControllerTest
     {
         // Arrange
         var id = Guid.NewGuid();
-        flatServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new Exception("Error"));
+        genreServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new Exception("Error"));
 
         // Act
-        var result = flatController.Edit(id);
+        var result = genreController.Edit(id);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -248,20 +248,20 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao editar os dados deste plano.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao editar os dados deste gênero.", alert.Message);
     }
 
     [Fact]
     public void Delete_ValidId_Returns_IndexView_With_SuccessAlert()
     {
         // Arrange
-        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", flatController);
-        var flatDto = MockFlat.Instance.GetFakerDto();
-        MockHttpContextHelper.MockClaimsIdentitySigned(flatDto.UsuarioId, "teste", "teste@teste.com", flatController);
-        flatServiceMock.Setup(service => service.Delete(It.IsAny<FlatDto>())).Returns(true);
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", genreController);
+        var genreDto = MockGenre.Instance.GetFakerDto();
+        MockHttpContextHelper.MockClaimsIdentitySigned(genreDto.UsuarioId, "teste", "teste@teste.com", genreController);
+        genreServiceMock.Setup(service => service.Delete(It.IsAny<GenreDto>())).Returns(true);
         
         // Act
-        var result = flatController.Delete(flatDto);
+        var result = genreController.Delete(genreDto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -269,18 +269,18 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Sucesso", alert.Header);
         Assert.Equal("success", alert.Type);
-        Assert.Equal($"Plano { flatDto.Name } excluído.", alert.Message);
+        Assert.Equal($"Gênero { genreDto.Name } excluído.", alert.Message);
     }
 
     [Fact]
     public void Delete_ServiceThrowsArgumentException_Returns_IndexView_WithWarningAlert()
     {
         // Arrange
-        flatServiceMock.Setup(service => service.Delete(It.IsAny<FlatDto>())).Throws(new ArgumentException("Invalid user."));
-        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", flatController);
+        genreServiceMock.Setup(service => service.Delete(It.IsAny<GenreDto>())).Throws(new ArgumentException("Invalid user."));
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", genreController);
 
         // Act
-        var result = flatController.Delete(new());
+        var result = genreController.Delete(new());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -295,11 +295,11 @@ public class FlatControllerTest
     public void Delete_ServiceThrowsException_Returns_IndexView_WithDangerAlert()
     {
         // Arrange
-        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", flatController);
-        flatServiceMock.Setup(service => service.Delete(It.IsAny<FlatDto>())).Throws(new Exception("Error"));
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", genreController);
+        genreServiceMock.Setup(service => service.Delete(It.IsAny<GenreDto>())).Throws(new Exception("Error"));
 
         // Act
-        var result = flatController.Delete(new());
+        var result = genreController.Delete(new());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -307,6 +307,6 @@ public class FlatControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao excluir o plano .", alert.Message);
+        Assert.Equal("Ocorreu um erro ao excluir o gênero .", alert.Message);
     }
 }
