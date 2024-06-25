@@ -5,9 +5,8 @@ using Repository.Mapping.Administrative;
 using Domain.Administrative.ValueObject;
 
 namespace Repository.Abstractions;
-public class BaseContextAdministrative<TContext> : BaseContext<TContext> where TContext : DbContext
+public class BaseContextAdministrative<TContext> : DbContext where TContext : DbContext
 {
-    public override BaseConstants BASE_CONSTS { get; } = new BaseConstants();
     public BaseContextAdministrative(DbContextOptions<TContext> options) : base(options) { }
     public DbSet<AdministrativeAccount> Admin { get; set; }
     public DbSet<Perfil> Perfil { get; set; }
