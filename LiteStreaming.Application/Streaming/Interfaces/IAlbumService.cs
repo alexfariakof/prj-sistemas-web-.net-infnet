@@ -2,7 +2,7 @@
 public interface IAlbumService
 {
     AlbumDto Create(AlbumDto obj);
-    List<AlbumDto> FindAll(Guid userId);
+    List<AlbumDto> FindAll();
     AlbumDto FindById(Guid id);
     AlbumDto Update(AlbumDto obj);
     bool Delete(AlbumDto obj);
