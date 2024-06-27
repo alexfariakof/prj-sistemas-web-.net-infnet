@@ -7,6 +7,8 @@ using Application.Administrative.Interfaces;
 using Microsoft.Extensions.Configuration;
 using EasyCryptoSalt;
 using Application.Streaming.Dto.Interfaces;
+using LiteStreaming.Application.Abstractions;
+using LiteStreaming.Application.Core.Interfaces.Query;
 
 namespace Application.CommonInjectDependence;
 public static class ServiceInjectDependence
@@ -25,8 +27,11 @@ public static class ServiceInjectDependence
         services.AddScoped<IAdministrativeAccountService, AdministrativeAccountService>();
         services.AddScoped<IFlatService, FlatService>();
         services.AddScoped<IGenreService, GenreService>();
+        services.AddScoped<IFindAll<GenreDto>, GenreService>();
         services.AddScoped<IBandService, BandService>();
-        services.AddScoped<IMusicService, MusicService>();
+        services.AddScoped<IFindAll<BandDto>, BandService>();
+        services.AddScoped<IFindAll<AlbumDto>, AlbumService>();
+        services.AddScoped<IMusicService, MusicService>();        
         return services;
     }
 

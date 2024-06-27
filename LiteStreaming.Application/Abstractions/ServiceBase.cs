@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Repository.Interfaces;
 
-namespace Application;
+namespace LiteStreaming.Application.Abstractions;
 public abstract class ServiceBase<Dto, Entity> where Dto : class, new() where Entity : class, new()
 {
     protected IMapper Mapper { get; set; }

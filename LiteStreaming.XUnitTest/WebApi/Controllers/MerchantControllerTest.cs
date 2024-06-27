@@ -1,8 +1,8 @@
-﻿using Application;
-using Application.Streaming.Dto;
+﻿using Application.Streaming.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Domain.Account.ValueObject;
+using LiteStreaming.Application.Abstractions;
 
 namespace WebApi.Controllers;
 public class MerchantControllerTest

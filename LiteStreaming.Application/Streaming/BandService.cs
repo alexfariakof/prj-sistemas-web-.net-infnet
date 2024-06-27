@@ -2,10 +2,12 @@
 using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
+using LiteStreaming.Application.Abstractions;
+using LiteStreaming.Application.Core.Interfaces.Query;
 using Repository.Interfaces;
 
 namespace Application.Streaming;
-public class BandService : ServiceBase<BandDto, Band>, IService<BandDto>, IBandService
+public class BandService : ServiceBase<BandDto, Band>, IService<BandDto>, IBandService, IFindAll<BandDto>
 {
     public BandService(IMapper mapper, IRepository<Band> bandRepository) : base(mapper, bandRepository)  { }
     public override BandDto Create(BandDto dto)
