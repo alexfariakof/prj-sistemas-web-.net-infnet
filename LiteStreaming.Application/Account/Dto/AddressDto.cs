@@ -1,4 +1,4 @@
-﻿namespace Application.Account.Dto;
+﻿namespace Application.Streaming.Dto;
 public class AddressDto 
 {
     public string? Zipcode { get; set; }

@@ -7,11 +7,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Address, Customer, Merchant } from '../../model';
 import { AddressService, CustomerService, MerchantService } from '../../services';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import ToolBarSecondaryModule from 'src/app/components/tool-bar-secondary/tool-bar-secondary.module';
+import ToolBarSecondaryModule from '../../components/tool-bar-secondary/tool-bar-secondary.module';
 
 @Component({
   selector: 'app-account-form',

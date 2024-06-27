@@ -3,12 +3,12 @@ using Bogus;
 using Bogus.Extensions.Brazil;
 using Domain.Account.ValueObject;
 using Domain.Transactions.Agreggates;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 
 namespace __mock__;
 public class MockCustomer
 {
-    private static MockCustomer _instance;
+    private static MockCustomer? _instance;
     private static readonly object LockObject = new object();
     public static MockCustomer Instance
     {

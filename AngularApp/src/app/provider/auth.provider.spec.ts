@@ -17,12 +17,12 @@ describe('AuthProvider', () => {
   it('should allow activation when user is authenticated', () => {
     // Arrange
     const fakeAuth: Auth = {
-      accessToken: 'fakeToken',
-      expiration: '2023-01-01T00:00:00Z',
+      access_token: 'fakeToken',
+      expires_in: '2023-01-01T00:00:00Z',
       authenticated: true,
-      created: '2023-01-01T00:00:00Z',
-      refreshToken: 'fakeToken',
-      usertype: 'customer'
+      scope: 'fak-scope',
+      refresh_token: 'fakeToken',
+      token_type: 'Bearer'
     };
 
     authProvider.createAccessToken(fakeAuth);

@@ -8,6 +8,12 @@
 **/.toolstarget
 **/.vs
 **/.vscode
+**/.angular
+**/TestResults
+**/*.ps1
+**/*.sh
+**/dist
+**/coverage
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
@@ -16,6 +22,12 @@
 **/docker-compose*
 **/Dockerfile*
 **/node_modules
+**/.angular
+**/coverage
+**/TestResults
+**/*.ps1
+**/*.sh
+**/dist
 **/npm-debug.log
 **/obj
 **/secrets.dev.yaml

@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { AuthService } from './auth.service';
 import { Auth, Login } from '../../model';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 
 describe('Unit Test AuthService', () => {
@@ -10,10 +10,10 @@ describe('Unit Test AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers:[AuthService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
-    });
+    imports: [],
+    providers: [AuthService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -35,18 +35,18 @@ describe('Unit Test AuthService', () => {
       };
 
       const mockResponse: Auth = {
-        accessToken: 'fakeToken',
-        expiration: '2023-01-01T00:00:00Z',
+        access_token: 'fakeToken',
+        expires_in: '2023-01-01T00:00:00Z',
         authenticated: true,
-        created: '2023-01-01T00:00:00Z',
-        refreshToken: 'fakeToken',
-        usertype: 'customer'
+        scope: 'fake-scope',
+        refresh_token: 'fakeToken',
+        token_type: 'Bearer'
       };
 
       service.signIn(loginData).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
-      const expectedUrl = 'api/auth';
+      const expectedUrl = 'http://localhost:5055/connect/token';
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);

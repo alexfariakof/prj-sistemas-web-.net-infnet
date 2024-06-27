@@ -2,7 +2,6 @@
 using Domain.Account.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System.Linq.Expressions;
 
 namespace Repository.Persistency.Account;
 public class UserRepositoryTest

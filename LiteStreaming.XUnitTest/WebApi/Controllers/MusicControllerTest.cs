@@ -1,5 +1,5 @@
-﻿using Application;
-using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -24,18 +24,18 @@ public class MusicControllerTest
         var musicList = MockMusic.Instance.GetListFaker(10);
         var expectedMusicDtoList = MockMusic.Instance.GetDtoListFromMusicList(musicList.Where(m => m.Name.ToLower().Contains(searchParam.ToLower())).ToList());
 
-        mockMusicService.Setup(service => service.FindAll(It.IsAny<Guid>())).Returns(expectedMusicDtoList);
+        mockMusicService.Setup(service => service.FindAll()).Returns(expectedMusicDtoList);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.Serach(searchParam) as OkObjectResult;
+        var result = controller.Serach(searchParam) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
         var musicDtoArray = Assert.IsAssignableFrom<IEnumerable<MusicDto>>(result.Value);
         Assert.Equal(expectedMusicDtoList.Count, musicDtoArray.Count());
-        mockMusicService.Verify(x => x.FindAll(It.IsAny<Guid>()), Times.Once);
+        mockMusicService.Verify(x => x.FindAll(), Times.Once);
     }
 
     [Fact]
@@ -45,11 +45,11 @@ public class MusicControllerTest
         var userId = Guid.NewGuid();
         var musicList = MockMusic.Instance.GetListFaker(2);
         var expectedMusicDtoList = MockMusic.Instance.GetDtoListFromMusicList(musicList);
-        mockMusicService.Setup(service => service.FindAll(userId)).Returns(expectedMusicDtoList);
+        mockMusicService.Setup(service => service.FindAll()).Returns(expectedMusicDtoList);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.FindAll() as OkObjectResult;
+        var result = controller.FindAll() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -63,11 +63,11 @@ public class MusicControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockMusicService.Setup(service => service.FindAll(userId)).Returns((List<MusicDto>)null);
+        mockMusicService.Setup(service => service.FindAll()).Returns(() => null);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.FindAll() as NotFoundResult;
+        var result = controller.FindAll();
 
         // Assert
         Assert.NotNull(result);
@@ -79,11 +79,11 @@ public class MusicControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockMusicService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
+        mockMusicService.Setup(service => service.FindAll()).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.FindAll() as BadRequestObjectResult;
+        var result = controller.FindAll() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -101,7 +101,7 @@ public class MusicControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(music.Id) as OkObjectResult;
+        var result = controller.FindById(music.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -115,11 +115,11 @@ public class MusicControllerTest
     {
         // Arrange        
         var musicId = Guid.NewGuid();
-        mockMusicService.Setup(service => service.FindById(musicId)).Returns((MusicDto)null);
+        mockMusicService.Setup(service => service.FindById(musicId)).Returns(() => null);
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(musicId) as NotFoundResult;
+        var result = controller.FindById(musicId);
 
         // Assert
         Assert.NotNull(result);
@@ -135,7 +135,7 @@ public class MusicControllerTest
         mockMusicService.Setup(service => service.Create(validMusicDto)).Returns(validMusicDto);
 
         // Act
-        var result = controller.Create(validMusicDto) as OkObjectResult;
+        var result = controller.Create(validMusicDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -151,7 +151,7 @@ public class MusicControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Create(It.IsAny<MusicDto>()) as BadRequestResult;
+        var result = controller.Create(It.IsAny<MusicDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -166,7 +166,7 @@ public class MusicControllerTest
         mockMusicService.Setup(service => service.Update(validMusicDto)).Returns(validMusicDto);
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
         // Act
-        var result = controller.Update(validMusicDto) as OkObjectResult;
+        var result = controller.Update(validMusicDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -183,7 +183,7 @@ public class MusicControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(It.IsAny<MusicDto>()) as BadRequestResult;
+        var result = controller.Update(It.IsAny<MusicDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -196,7 +196,7 @@ public class MusicControllerTest
         // Arrange        
         var mockMusicDto = MockMusic.Instance.GetDtoFromMusic(MockMusic.Instance.GetFaker());
         mockMusicService.Setup(service => service.Delete(It.IsAny<MusicDto>())).Returns(true);
-        mockMusicService.Setup(service => service.FindById(mockMusicDto.Id.Value)).Returns(mockMusicDto);
+        mockMusicService.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(mockMusicDto);
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
@@ -205,7 +205,7 @@ public class MusicControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.True((bool)result.Value);
+        Assert.True((bool?)result.Value);
         mockMusicService.Verify(b => b.Delete(It.IsAny<MusicDto>()), Times.Once);
     }
 
@@ -217,7 +217,8 @@ public class MusicControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Delete((MusicDto)null);
+        MusicDto? nullMusicDto = null;
+        var result = controller.Delete(nullMusicDto);
 
         // Assert
         Assert.NotNull(result);
@@ -234,7 +235,7 @@ public class MusicControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(musicId) as BadRequestObjectResult;
+        var result = controller.FindById(musicId) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -250,7 +251,7 @@ public class MusicControllerTest
         mockMusicService.Setup(service => service.Create(invalidMusicDto)).Throws(new Exception("BadRequest_Erro_Message"));
 
         // Act
-        var result = controller.Create(invalidMusicDto) as BadRequestObjectResult;
+        var result = controller.Create(invalidMusicDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -267,7 +268,7 @@ public class MusicControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.Update(validMusicDto) as BadRequestObjectResult;
+        var result = controller.Update(validMusicDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -281,11 +282,11 @@ public class MusicControllerTest
         // Arrange        
         var mockMusicDto = MockMusic.Instance.GetDtoFromMusic(MockMusic.Instance.GetFaker());
         mockMusicService.Setup(service => service.Delete(It.IsAny<MusicDto>())).Throws(new Exception("BadRequest_Erro_Message"));
-        mockMusicService.Setup(service => service.FindById(mockMusicDto.Id.Value)).Returns(mockMusicDto);
+        mockMusicService.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(mockMusicDto);
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.Delete(mockMusicDto) as BadRequestObjectResult;
+        var result = controller.Delete(mockMusicDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);

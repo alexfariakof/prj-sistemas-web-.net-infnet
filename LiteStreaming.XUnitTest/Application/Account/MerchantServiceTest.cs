@@ -1,31 +1,27 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Application.Transactions.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
-using EasyCryptoSalt;
 using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class MerchantServiceTest
 {
     private Mock<IMapper> mapperMock;
-    private readonly Mock<ICrypto> cryptoMock;
     private Mock<IRepository<Merchant>> merchantRepositoryMock;
     private Mock<IRepository<Flat>> flatRepositoryMock;
     private readonly MerchantService merchantService;    
     private readonly List<Merchant> mockListMerchant = MockMerchant.Instance.GetListFaker(5);
     public MerchantServiceTest()
     {        
-
         mapperMock = new Mock<IMapper>();
         merchantRepositoryMock = Usings.MockRepositorio(mockListMerchant);
-        flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());
-        
+        flatRepositoryMock = Usings.MockRepositorio(new List<Flat>());        
         merchantService = new MerchantService(mapperMock.Object, merchantRepositoryMock.Object, flatRepositoryMock.Object);
     }
 
@@ -90,7 +86,7 @@ public class MerchantServiceTest
         // Arrange
         var merchantDto = new MerchantDto();
 
-        flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns((Flat)null);
+        flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns(() => null);
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentException>(() => merchantService.Create(merchantDto));
@@ -102,6 +98,24 @@ public class MerchantServiceTest
 
     [Fact]
     public void FindAll_Merchants_Successfully()
+    {
+        // Arrange
+        var merchantDtos = MockMerchant.Instance.GetDtoListFromMerchantList(mockListMerchant);
+        mapperMock.Setup(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>())).Returns(merchantDtos);
+        
+        // Act
+        var result = merchantService.FindAll();
+
+        // Assert
+        merchantRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>()), Times.Once);
+
+        Assert.NotNull(result);
+        Assert.Equal(mockListMerchant.Count, result.Count);
+    }
+
+    [Fact]
+    public void FindAllByUserId_Merchants_Successfully()
     {
         // Arrange
         var merchantDtos = MockMerchant.Instance.GetDtoListFromMerchantList(mockListMerchant);

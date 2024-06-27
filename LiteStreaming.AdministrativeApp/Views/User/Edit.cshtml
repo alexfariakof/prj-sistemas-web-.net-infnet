@@ -1,10 +1,8 @@
 ﻿@using Application.Administrative.Dto
 @model AdministrativeAccountDto
-@{
-    if (ViewBag.Alert != null)
-    {
-        <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
-    }
+@if (ViewBag.Alert != null)
+{
+    <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
 }
 <button type="button" class="btn btn-primary mb-2" role="button" onclick="backHistory()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
@@ -14,7 +12,7 @@
 </button>
 <div class="d-flex flex-column align-items-stretch m-0 p-2 border border-2 border-dark bg-dark rounded-2 align-items-center justify-content-center text-light">
     <form method="post" asp-controller="User" asp-action="Update">
-        @Html.TextBoxFor(account => account.Id, new { @class = "form-control", @id = "id",@Type="hidden", @required = "" })
+        @Html.TextBoxFor(account => account.Id, new { @class = "form-control", @id = "id", @Type = "hidden", @required = "" })
         <div class="row mb-3">
             <label for="name" class="col-1 col-form-label fs-5 text-end">Nome</label>
             <div class="col-sm-10">

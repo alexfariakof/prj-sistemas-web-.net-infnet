@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Application.Account.Dto;
+namespace Application.Streaming.Dto;
 public class PlaylistPersonalDto : IValidatableObject
 {
-    public Guid? Id { get; set; }
+    public Guid Id { get; set; }
     public string? Name { get; set; }
     public IList<MusicDto> Musics { get; set; } = new List<MusicDto>();
 
@@ -26,7 +26,7 @@ public class PlaylistPersonalDto : IValidatableObject
                 }
             }
 
-            if (method.Equals("PUT", StringComparison.OrdinalIgnoreCase) && playlist.Id == null)
+            if (method.Equals("PUT", StringComparison.OrdinalIgnoreCase) && playlist?.Id == null)
             {
                 yield return new ValidationResult("ID is required for update a playlist.", new[] { nameof(Id) });
 
@@ -36,7 +36,7 @@ public class PlaylistPersonalDto : IValidatableObject
                 }
             }
 
-            if (method.Equals("DELETE", StringComparison.OrdinalIgnoreCase) && playlist.Id == null)
+            if (method.Equals("DELETE", StringComparison.OrdinalIgnoreCase) && playlist?.Id == null)
             {
                 yield return new ValidationResult("ID is required for delete a playlist.", new[] { nameof(Id) });
             }

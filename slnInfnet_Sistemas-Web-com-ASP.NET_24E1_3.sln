@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E5B92FE2-DCD7-4675-85B3-E367EB0C7375}"
 	ProjectSection(SolutionItems) = preProject
 		generate_coverage_report.ps1 = generate_coverage_report.ps1
+		generate_coverage_report.sh = generate_coverage_report.sh
 	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}"
@@ -41,9 +42,13 @@ Global
 		{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86798CA1-2BD8-40DE-BDE3-E4959EB40D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{400F7D6F-17B0-44A8-BC2E-0470AFA606A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{400F7D6F-17B0-44A8-BC2E-0470AFA606A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{400F7D6F-17B0-44A8-BC2E-0470AFA606A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{400F7D6F-17B0-44A8-BC2E-0470AFA606A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C5979965-7D8E-43D5-9E71-2085DD02F7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5979965-7D8E-43D5-9E71-2085DD02F7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5979965-7D8E-43D5-9E71-2085DD02F7E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5979965-7D8E-43D5-9E71-2085DD02F7E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62E47475-C736-45FF-82F9-5AEE16F01692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62E47475-C736-45FF-82F9-5AEE16F01692}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{62E47475-C736-45FF-82F9-5AEE16F01692}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,5 +1,5 @@
-using Application;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -18,13 +18,13 @@ public class AlbumController : ControllerBaseTokensProps
 
     [HttpGet]
     [ProducesResponseType((200), Type = typeof(List<AlbumDto>))]
-    [ProducesResponseType((400), Type = typeof(string))]    
+    [ProducesResponseType(400)]    
     [ProducesResponseType((404), Type = null)]
     public IActionResult FindAll()
     {
         try
         {
-            var result = this._albumService.FindAll(UserIdentity);
+            var result = this._albumService.FindAll();
             if (result == null)
                 return NotFound();
 
@@ -41,7 +41,7 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
+    [Authorize]
     public IActionResult FindById([FromRoute] Guid albumId)
     {
         try
@@ -62,7 +62,7 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(AlbumDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Create([FromBody] AlbumDto dto)
     {
 
@@ -84,7 +84,7 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(AlbumDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Update(AlbumDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -106,7 +106,7 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Delete(AlbumDto dto)
     {
         if (ModelState is { IsValid: false })

@@ -1,6 +1,6 @@
 ﻿using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
-using Repository.Abastractions;
+using Repository.Abstractions;
 using Repository.Interfaces;
 
 namespace Repository.Persistency.Account;

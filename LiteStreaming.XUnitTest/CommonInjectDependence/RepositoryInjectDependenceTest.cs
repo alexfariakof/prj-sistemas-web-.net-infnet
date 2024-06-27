@@ -18,19 +18,19 @@ public class RepositoryInjectDependenceTest
         var services = new ServiceCollection();
 
         // Act
-        services.AddRepositoriesWebApiApp();
+        services?.AddRepositoriesWebApiApp();
 
         // Assert
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<User>) && descriptor.ImplementationType == typeof(UserRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Customer>) && descriptor.ImplementationType == typeof(CustomerRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Merchant>) && descriptor.ImplementationType == typeof(MerchantRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Flat>) && descriptor.ImplementationType == typeof(FlatRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Band>) && descriptor.ImplementationType == typeof(BandRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Music>) && descriptor.ImplementationType == typeof(MusicRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Playlist>) && descriptor.ImplementationType == typeof(PlaylistRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Album>) && descriptor.ImplementationType == typeof(AlbumRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<PlaylistPersonal>) && descriptor.ImplementationType == typeof(PlaylistPersonalRepository)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Genre>) && descriptor.ImplementationType == typeof(GenreRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<User>) && descriptor.ImplementationType == typeof(UserRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Customer>) && descriptor.ImplementationType == typeof(CustomerRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Merchant>) && descriptor.ImplementationType == typeof(MerchantRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Flat>) && descriptor.ImplementationType == typeof(FlatRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Band>) && descriptor.ImplementationType == typeof(BandRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Music>) && descriptor.ImplementationType == typeof(MusicRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Playlist>) && descriptor.ImplementationType == typeof(PlaylistRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Album>) && descriptor.ImplementationType == typeof(AlbumRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<PlaylistPersonal>) && descriptor.ImplementationType == typeof(PlaylistPersonalRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<Genre>) && descriptor.ImplementationType == typeof(GenreRepository)));
     }
 
     [Fact]
@@ -40,9 +40,9 @@ public class RepositoryInjectDependenceTest
         var services = new ServiceCollection();
 
         // Act
-        services.AddRepositoriesAdministrativeApp();
+        services?.AddRepositoriesAdministrativeApp();
 
         // Assert
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepository<AdministrativeAccount>) && descriptor.ImplementationType == typeof(AdminAccountRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<AdministrativeAccount>) && descriptor.ImplementationType == typeof(AdminAccountRepository)));
     }
 }

@@ -1,8 +1,8 @@
 import { PlaylistManagerService } from './../../services/myplaylist/myplaylist.manager.service';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Music, Playlist } from 'src/app/model';
-import { AlbumService, BandService, MusicService } from 'src/app/services';
+import { Music, Playlist } from '../../model';
+import { MusicService, AlbumService, BandService } from '../../services';
 
 @Component({
   selector: 'app-musics',

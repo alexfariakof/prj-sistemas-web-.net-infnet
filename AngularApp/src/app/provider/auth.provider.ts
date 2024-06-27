@@ -47,7 +47,7 @@ export class AuthProvider implements CanActivate {
   }
 
   createAccessToken(auth: Auth): void {
-    sessionStorage.setItem('@token', auth.accessToken);
-    this.setAccessToken(auth.accessToken);
+    sessionStorage.setItem('@token', auth.access_token);
+    this.setAccessToken(auth.access_token);
   }
 }

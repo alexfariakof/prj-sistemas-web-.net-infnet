@@ -2,15 +2,11 @@ name: Test and Analysis Code In Sonar Cloud
 on:
   workflow_call:
 
-  push:
-    branches: 
-      - hotfix/*
-      - feature/*
-      - bugfix/*  
-
   pull_request:
     types: [opened, synchronize, reopened]
-    branches:       
+    branches:
+      - develop
+      - staging
       - hotfix/*
       - feature/*
       - bugfix/*  
@@ -61,6 +57,11 @@ jobs:
         run: |
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.14.*'
     
       - name: Build and analyze
         env:
@@ -68,11 +69,26 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |                    
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_Infnet_Sistemas-Web-com-ASP.NET_24E1_3" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations.*/**, **/LiteStreaming.DataSeeders/**, **/.documents/**, **/Program.cs, **/*.spec.ts, **/main.ts, **/environment.*, **/*.routing.module.ts, **/*.js, **/test.ts, **/*Test.cs, **/*.cshtml"  /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info" /d:sonar.typescript.opencover.reportsPaths="**/coverage/angular-app/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/angular-app/lcov.info"          
-          
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          # Executa Build/Restore das  configura��es do projeto executando automaticamente a gera��o do report Genetator do Backend e Frontend
-          dotnet test ./LiteStreaming.XunitTest/LiteStreaming.XunitTest.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
-          
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_Infnet_Sistemas-Web-com-ASP.NET_24E1_3" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations.*/**, **/LiteStreaming.DataSeeders/**, **/.documents/**, **/Program.cs, **/*.spec.ts, **/main.ts, **/environment.*, **/*.routing.module.ts, **/*.js, **/test.ts, **/*Test.cs, **/*.cshtml,  **/__mock__/*.ts, **/*.js, **/*Dockerfile*, **/docker-compose*"  /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info" /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"          
+            npm install -g @angular/core @angular/cli > $null 2>&1
+            dotnet tool install -g dotnet-reportgenerator-globaltool
+            $baseDirectory = Get-Location
+            $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "LiteStreaming.XUnitTest"            
+            $projectAngular = Join-Path -Path ($baseDirectory) -ChildPath "AngularApp"
+            $sourceDirs = "$baseDirectory\LiteStreaming.Application;$baseDirectory\LiteStreaming.Domain;$baseDirectory\LiteStreaming.Repository;$baseDirectory\LiteStreaming.WebApi;$baseDirectory\LiteStreaming.AdministrativeApp;"
+            $filefilters = "$baseDirectory\LiteStreaming.DataSeeders\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\AngularApp\**;-$baseDirectory\LiteStreaming.AdministrativeApp\Views\**;"
+            $reportPath = Join-Path -Path ($projectTestPath) -ChildPath "TestResults"
+            $coveragePath = Join-Path -Path $reportPath -ChildPath "coveragereport"
+            $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
+
+            # Gera o Relatario de Cobertura de Codigo Backend
+            dotnet test $projectTestPath\LiteStreaming.XunitTest.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+            reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
+
+
+            # Gera o Relatario de Cobertura de Codigo do Frontend 
+            $watchProcess = Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
+            $watchProcess.WaitForExit()
+
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
   

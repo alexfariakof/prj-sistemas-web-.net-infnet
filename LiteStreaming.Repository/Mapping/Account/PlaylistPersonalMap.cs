@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
-using Repository.Abastractions;
+using Repository.Abstractions;
 
 namespace Repository.Mapping.Account;
 public class PlaylistPersonalMap : IEntityTypeConfiguration<PlaylistPersonal>

@@ -7,8 +7,8 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import ToolBarSecondaryModule from "src/app/components/tool-bar-secondary/tool-bar-secondary.module";
 import { CustomerComponent } from "./customer.component";
+import ToolBarSecondaryModule from "../../../components/tool-bar-secondary/tool-bar-secondary.module";
 
 @NgModule({
   declarations: [CustomerComponent ],

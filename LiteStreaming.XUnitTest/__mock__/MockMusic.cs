@@ -1,4 +1,5 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
+using AutoFixture;
 using Bogus;
 using Domain.Streaming.Agreggates;
 using Domain.Streaming.ValueObject;
@@ -7,8 +8,12 @@ namespace __mock__;
 public class MockMusic
 {
     private static readonly Lazy<MockMusic> _instance = new Lazy<MockMusic>(() => new MockMusic());
+    private readonly Fixture fixture;
 
-    private MockMusic() { }
+    private MockMusic() 
+    { 
+        fixture = new Fixture();
+    }
 
     public static MockMusic Instance => _instance.Value;
 
@@ -25,7 +30,13 @@ public class MockMusic
         return fakeMusic;
     }
 
-    public List<Music> GetListFaker(int count)
+    public MusicDto GetFakerDto()
+    {
+        var musicDto = fixture.Create<MusicDto>();
+        return musicDto;
+    }
+
+    public List<Music> GetListFaker(int count = 3)
     {
         var mockPlaylist = MockPlaylist.Instance.GetFaker();
         var musicList = new List<Music>();
@@ -37,7 +48,7 @@ public class MockMusic
             musicList.Add(mockMusic);
         }
         return musicList;
-    }
+    }    
 
     public MusicDto GetDtoFromMusic(Music music)
     {

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Application.Account.Profile;
-using Application.Account.Dto;
+using Application.Streaming.Profile;
+using Application.Streaming.Dto;
 using Domain.Streaming.Agreggates;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class MusicProfileTest
 {
     [Fact]
@@ -51,6 +51,6 @@ public class MusicProfileTest
         Assert.NotNull(musicDto);
         Assert.Equal(music.Id, musicDto.Id);
         Assert.Equal(music.Name, musicDto.Name);
-        Assert.NotNull(musicDto.AlbumId);
+        Assert.NotNull(musicDto?.AlbumId);
     }
 }

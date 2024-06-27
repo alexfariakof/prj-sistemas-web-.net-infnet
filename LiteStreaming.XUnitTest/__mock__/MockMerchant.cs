@@ -2,14 +2,14 @@
 using Bogus;
 using Bogus.Extensions.Brazil;
 using Domain.Notifications;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 using Domain.Transactions.Agreggates;
 using Domain.Account.ValueObject;
 
 namespace __mock__;
 public class MockMerchant
 {
-    private static MockMerchant _instance;
+    private static MockMerchant? _instance;
     private static readonly object LockObject = new object();
 
     public static MockMerchant Instance

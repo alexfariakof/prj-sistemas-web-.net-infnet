@@ -1,11 +1,11 @@
 ﻿using Moq;
 using System.Linq.Expressions;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using Repository.Interfaces;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class PlaylistServiceTest
 {
     private readonly Mock<IMapper> mapperMock;
@@ -58,18 +58,17 @@ public class PlaylistServiceTest
         // Arrange
         var playlistDtos = MockPlaylist.Instance.GetDtoListFromPlaylistList(mockPlaylistList);
         var userId = mockPlaylistList.First().Id;
-        mapperMock.Setup(mapper => mapper.Map<List<PlaylistDto>>(It.IsAny<List<Playlist>>())).Returns(playlistDtos.FindAll(c => c.Id.Equals(userId)));
+        mapperMock.Setup(mapper => mapper.Map<List<PlaylistDto>>(It.IsAny<IEnumerable<Playlist>>())).Returns(playlistDtos);
 
         // Act
-        var result = playlistService.FindAll(userId);
+        var result = playlistService.FindAll();
 
         // Assert
         playlistRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
-        mapperMock.Verify(mapper => mapper.Map<List<PlaylistDto>>(It.IsAny<List<Playlist>>()), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<List<PlaylistDto>>(It.IsAny<IEnumerable<Playlist>>()), Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(mockPlaylistList.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
-        Assert.All(result, playlistDto => Assert.Equal(userId, playlistDto.Id));
+        Assert.Equal(mockPlaylistList.Count, result.Count);
     }
 
     [Fact]

@@ -1,26 +1,21 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    overflow: hidden;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
 }
-
-body {
-  margin-bottom: 60px;
-}
-
 
 .alert {
     display: flex;
@@ -42,5 +37,9 @@ body {
     position: relative;
     z-index: 1051;
 }
-}
 
+.input-validation-error {
+    border-color: #dc3545;
+    background-color: #f8d7da;
+    color: #dc3545;
+}

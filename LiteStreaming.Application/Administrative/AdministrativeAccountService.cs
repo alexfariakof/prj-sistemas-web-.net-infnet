@@ -5,10 +5,11 @@ using AutoMapper;
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
 using EasyCryptoSalt;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
 namespace Application.Administrative;
-public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService, IAuthenticationService
+public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService, IAdministrativeAuthenticationService
 {
     private readonly ICrypto _crypto;
     public AdministrativeAccountService(IMapper mapper, IRepository<AdministrativeAccount> customerRepository, ICrypto crypto) : base(mapper, customerRepository)    
@@ -36,12 +37,19 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         return result;
     }
 
-    public override List<AdministrativeAccountDto> FindAll(Guid userId)
+    public List<AdministrativeAccountDto> FindAll(Guid userId)
     {
         var accounts = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
         var result = this.Mapper.Map<List<AdministrativeAccountDto>>(accounts);
         return result;
     }
+
+    public override List<AdministrativeAccountDto> FindAll()
+    {
+        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.GetAll());
+        return result;
+    }
+
 
     public override AdministrativeAccountDto Update(AdministrativeAccountDto dto)
     {
@@ -57,14 +65,6 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         var account = this.Mapper.Map<AdministrativeAccount>(dto);
         this.Repository.Delete(account);
         return true; 
-    }
-
-    public IEnumerable<AdministrativeAccountDto> FindAll()
-    {
-        var accounts = this.Repository.GetAll().AsEnumerable();
-        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(accounts);
-        return result;
-
     }
 
     public AdministrativeAccountDto Authentication(LoginDto dto)

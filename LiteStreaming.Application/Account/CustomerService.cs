@@ -1,14 +1,15 @@
-﻿using Application.Account.Dto;
-using Application.Account.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<CustomerDto>, ICustomerService
 {
     private readonly IRepository<Flat> _flatRepository;
@@ -65,12 +66,19 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
         return result;
     }
 
-    public override List<CustomerDto> FindAll(Guid userId)
+    public List<CustomerDto> FindAll(Guid userId)
     {
         var customers = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
         var result = this.Mapper.Map<List<CustomerDto>>(customers);
         return result;
     }
+
+    public override List<CustomerDto> FindAll()
+    {
+        var result = this.Mapper.Map<List<CustomerDto>>(this.Repository.GetAll());
+        return result;
+    }
+
     public override CustomerDto Update(CustomerDto dto)
     {
         var customer = this.Mapper.Map<Customer>(dto);

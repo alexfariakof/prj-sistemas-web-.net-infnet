@@ -1,5 +1,5 @@
-using Application;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -20,7 +20,7 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MusicDto[]))]
     public IActionResult Serach([FromRoute] string searchParam)
     {
-        var result = this._musicService.FindAll(UserIdentity).Where(m => m.Name.ToLower().Contains(searchParam.ToLower()));
+        var result = this._musicService.FindAll().Where(m => m.Name.ToLower().Contains(searchParam.ToLower()));
         return Ok(result);
     }
 
@@ -29,12 +29,12 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
+    [Authorize]
     public IActionResult FindAll()
     {
         try
         {
-            var result = this._musicService.FindAll(UserIdentity);
+            var result = this._musicService.FindAll();
             if (result == null)
                 return NotFound();
 
@@ -52,7 +52,7 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
+    [Authorize]
     public IActionResult FindById([FromRoute] Guid musicId)
     {
         try
@@ -73,7 +73,7 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Create([FromBody] MusicDto dto)
     {
 
@@ -95,7 +95,7 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MusicDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Update(MusicDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -117,7 +117,7 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Delete(MusicDto dto)
     {
         if (ModelState is { IsValid: false })

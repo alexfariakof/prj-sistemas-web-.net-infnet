@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MerchantComponent } from './merchant.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AddressService, MerchantService } from '../../../services';
 import { Address, Merchant } from '../../../model';
 import { of } from 'rxjs';
 import { MerchantModule } from './merchant.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('MerchantComponent', () => {
   let component: MerchantComponent;
@@ -16,9 +17,9 @@ describe('MerchantComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, BrowserAnimationsModule, RouterTestingModule, MerchantModule],
-      providers:[AddressService]
-    })
+    imports: [BrowserAnimationsModule, RouterTestingModule, MerchantModule],
+    providers: [AddressService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(MerchantComponent);

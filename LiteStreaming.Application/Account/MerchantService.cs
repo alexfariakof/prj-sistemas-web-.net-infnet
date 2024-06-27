@@ -1,14 +1,15 @@
-﻿using Application.Account.Dto;
-using Application.Account.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
 using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<MerchantDto>, IMerchantService
 {
     private readonly IRepository<Flat> _flatRepository;
@@ -72,10 +73,16 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
         return result;
     }
 
-    public override List<MerchantDto> FindAll(Guid userId)
+    public List<MerchantDto> FindAll(Guid userId)
     {
         var merchants = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
         var result = this.Mapper.Map<List<MerchantDto>>(merchants);
+        return result;
+    }
+
+    public override List<MerchantDto> FindAll()
+    {
+        var result = this.Mapper.Map<List<MerchantDto>>(this.Repository.GetAll());
         return result;
     }
 

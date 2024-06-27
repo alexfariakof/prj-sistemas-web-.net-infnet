@@ -1,4 +1,4 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Bogus;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
@@ -12,7 +12,7 @@ public sealed class MockPlaylistPersonal
 
     public static MockPlaylistPersonal Instance => _instance.Value;
 
-    public PlaylistPersonal GetFaker(List<Music> musics = null)
+    public PlaylistPersonal GetFaker(List<Music>? musics = null)
     {
         if (musics == null) musics = new List<Music>();
 
@@ -26,7 +26,7 @@ public sealed class MockPlaylistPersonal
         return fakePlaylist;
     }
 
-    public List<PlaylistPersonal> GetListFaker(int count, List<Music> musics = null)
+    public List<PlaylistPersonal> GetListFaker(int count, List<Music>? musics = null)
     {
         var playlistList = new List<PlaylistPersonal>();
         for (var i = 0; i < count; i++)

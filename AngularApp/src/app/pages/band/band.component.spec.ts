@@ -4,11 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Album, Band, Music, Playlist } from '../../model';
 import { MyPlaylistService, BandService, PlaylistManagerService } from '../../services';
 import { of, throwError } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockBand, MockPlaylist, MockAlbum } from '../../__mocks__';
-import { SharedModule } from 'src/app/components/shared.module';
-
+import { SharedModule } from '../../components/shared.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('BandComponent', () => {
   let component: BandComponent;
@@ -19,19 +19,21 @@ describe('BandComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BandComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule],
-      providers: [
+    declarations: [BandComponent],
+    imports: [RouterTestingModule, SharedModule],
+    providers: [
         {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ bandId: '1' })
-          }
+            provide: ActivatedRoute,
+            useValue: {
+                params: of({ bandId: '1' })
+            }
         },
         MyPlaylistService,
-        BandService
-      ]
-    }).compileComponents();
+        BandService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(BandComponent);
     component = fixture.componentInstance;

@@ -1,5 +1,5 @@
 ﻿using Domain.Streaming.Agreggates;
-using Repository.Abastractions;
+using Repository.Abstractions;
 using Repository.Interfaces;
 
 namespace Repository.Persistency.Streaming;

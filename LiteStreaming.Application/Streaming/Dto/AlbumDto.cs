@@ -1,16 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Core.Aggreggates;
+using System.ComponentModel.DataAnnotations;
 
-namespace Application.Account.Dto;
-public class AlbumDto
+namespace Application.Streaming.Dto;
+public class AlbumDto: BaseDto
 {
-    public Guid Id { get; set; }
 
-    [Required]
-    public string Name { get; set; }
+    [Required(ErrorMessage = "O campo Nome é obrigatório.")]
+    public string? Name { get; set; }
 
-    [Required]
     public Guid FlatId { get; set; }
+    
+    [Required]
     public Guid BandId { get; set; }
-    public string Backdrop { get; set; }
-    public List<MusicDto> Musics { get; set; } = new List<MusicDto>();
+    
+    [Required]
+    public Guid GenreId { get; set; }
+
+    [Required(ErrorMessage = "O campo Backdrop é obrigatório.")]
+    [Url(ErrorMessage = "Está não é uma url válida.")]
+    public string? Backdrop { get; set; }
+        
+    public List<MusicDto>? Musics { get; set; }
 }

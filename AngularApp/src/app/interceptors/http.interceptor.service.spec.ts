@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomInterceptor } from './http.interceptor.service';
-import { HttpErrorResponse, HttpRequest, HttpHandler } from '@angular/common/http';
+import { HttpErrorResponse, HttpRequest, HttpHandler, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 describe('CustomInterceptor', () => {
@@ -12,9 +12,9 @@ describe('CustomInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [CustomInterceptor, NgbModal],
-    });
+    imports: [],
+    providers: [CustomInterceptor, NgbModal, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
     interceptor = TestBed.inject(CustomInterceptor);
     modalService = TestBed.inject(NgbModal);

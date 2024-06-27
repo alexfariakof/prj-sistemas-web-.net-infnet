@@ -1,4 +1,4 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Application.Transactions.Dto;
 using AutoMapper;
 using Domain.Account.Agreggates;
@@ -9,7 +9,7 @@ using Moq;
 using Repository.Interfaces;
 using System.Linq.Expressions;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class CustomerServiceTest
 {
     private Mock<IMapper> mapperMock;
@@ -107,7 +107,7 @@ public class CustomerServiceTest
         // Arrange
         var customerDto = new CustomerDto();
 
-        flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns((Flat)null);
+        flatRepositoryMock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns(() => null);
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentException>(() => customerService.Create(customerDto));
@@ -119,6 +119,24 @@ public class CustomerServiceTest
 
     [Fact]
     public void FindAll_Customers_Successfully()
+    {
+        // Arrange
+        var customerDtos = MockCustomer.Instance.GetDtoListFromCustomerList(mockCustomerList);
+        mapperMock.Setup(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>())).Returns(customerDtos);
+
+        // Act
+        var result = customerService.FindAll();
+
+        // Assert
+        customerRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>()), Times.Once);
+
+        Assert.NotNull(result);
+        Assert.Equal(mockCustomerList.Count, result.Count);
+    }
+
+    [Fact]
+    public void FindAllByUserId_Customers_Successfully()
     {
         // Arrange
         var customerDtos = MockCustomer.Instance.GetDtoListFromCustomerList(mockCustomerList);

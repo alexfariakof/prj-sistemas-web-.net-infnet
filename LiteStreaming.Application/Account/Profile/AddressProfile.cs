@@ -1,7 +1,7 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Domain.Account.ValueObject;
 
-namespace Application.Account.Profile;
+namespace Application.Streaming.Profile;
 public class AddressProfile : AutoMapper.Profile
 {
     public AddressProfile() 

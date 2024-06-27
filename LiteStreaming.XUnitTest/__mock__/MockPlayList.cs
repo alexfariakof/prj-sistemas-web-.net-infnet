@@ -1,4 +1,4 @@
-﻿using Application.Account.Dto;
+﻿using Application.Streaming.Dto;
 using Bogus;
 using Domain.Streaming.Agreggates;
 
@@ -23,7 +23,17 @@ public sealed class MockPlaylist
         return fakePlaylist;
     }
 
-    public List<Playlist> GetListFaker(int count)
+    public PlaylistDto GetFakerDto()
+    {
+        var fakePlaylistDto = new Faker<PlaylistDto>()
+            .RuleFor(p => p.Id, f => f.Random.Guid())
+            .RuleFor(p => p.Name, f => f.Lorem.Word())
+            .RuleFor(p => p.Backdrop, f => f.Internet.Url())
+            .Generate();
+        return fakePlaylistDto;
+    }    
+
+    public List<Playlist> GetListFaker(int count = 3)
     {
         var playlistList = new List<Playlist>();
         for (var i = 0; i < count; i++)

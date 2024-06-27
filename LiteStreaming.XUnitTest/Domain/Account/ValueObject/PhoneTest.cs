@@ -43,10 +43,12 @@ public class PhoneTest
     [Fact]
     public void Should_Throw_Exception_With_Null_Phone_Number()
     {
-        // Arrange & Act
-        var exception = Assert.Throws<ArgumentException>(() => new Phone(null));
+        // Arrange
+        Phone? nullPhone = null;
 
-        // Assert
+        // Act & Assert 
+        var exception = Assert.Throws<ArgumentException>(() => new Phone(""));
         Assert.Equal("Valor do telefone não pode ser em branco", exception.Message);
+        Assert.Throws<NullReferenceException>(() => new Phone(nullPhone));        
     }
 }

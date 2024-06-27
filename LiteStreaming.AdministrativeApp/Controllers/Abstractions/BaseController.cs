@@ -1,14 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LiteStreaming.Application.Abstractions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
 
-namespace AdministrativeApp.Controllers.Abastractions;
-public abstract class BaseController : Controller
+namespace LiteStreaming.AdministrativeApp.Controllers.Abstractions;
+
+public abstract class BaseController<T> : Controller where T : class, new()
 {
-    public Guid? UserId;
+    protected string CREATE { get;  } = "Create";
+    protected string INDEX { get; }  = "Index";
+    protected string EDIT { get; }  = "Edit";
 
-    public string UserName;
-    protected BaseController()
+    private readonly IService<T> service;
+    protected BaseController(IService<T> service) 
     {
+        this.service = service;    
+    }
+
+    public virtual IActionResult Index()
+    {
+        return View(this.service.FindAll());
+    }
+
+    public Guid UserId
+    {
+        get
+        {
+            if (User.Identity.IsAuthenticated && Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid userId))
+            {
+                return userId;
+            }
+            throw new ArgumentNullException();
+        }
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
@@ -17,30 +41,27 @@ public abstract class BaseController : Controller
 
         try
         {
-            var userId = HttpContext.Session.GetString("UserId");
-            this.UserId = userId != null ? Guid.Parse(userId) : null;
-            if (this.UserId != null)
-            {
-                ViewBag.UserId = this.UserId;
-            }
-
-            var userName = HttpContext.Session.GetString("UserName");
-            this.UserName = !String.IsNullOrEmpty(userName) ? userName : null;
-            if (this.UserId != null)
-            {
-                ViewBag.UserName = this.UserName;
-            }
+            var user = UserId.ToString(); 
         }
         catch
         {
-            this.ClaerSession();
+            ViewBag.LoginError = "Usuário sem permissão de acesso.";
+            HttpContext.SignOutAsync();
         }
     }
 
-    protected void ClaerSession()
+    protected IActionResult CreateView()
     {
-        HttpContext.Session.Clear();
-        this.UserId = null;
-        this.UserName = null;
+        return View(CREATE);
+    }
+
+    protected IActionResult EditView()
+    {
+        return View(EDIT);
+    }
+
+    protected IActionResult RedirectToIndexView()
+    {
+        return RedirectToAction(INDEX);
     }
 }

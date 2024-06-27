@@ -1,5 +1,5 @@
-﻿using Application.Account.Dto;
-using Application.Account.Interfaces;
+﻿using Application.Streaming.Dto;
+using Application.Streaming.Interfaces;
 using Application.Authentication;
 using Application.Shared.Dto;
 using AutoMapper;
@@ -10,7 +10,7 @@ using Repository.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class UserService : IUserService
 {
     private readonly ICrypto _crypto;
@@ -40,16 +40,17 @@ public class UserService : IUserService
             ClaimsIdentity identity = new ClaimsIdentity(new[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                new Claim("UserType", user.PerfilType.Description),
                 new Claim("role", ((PerfilUser.UserType)user.PerfilType.Id).ToString()),
-                new Claim("UserId",  user.Id.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.AuthTime, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
             });
-            
+
             var token = _singingConfiguration.CreateAccessToken(identity);
             return new AuthenticationDto
             {
-                AccessToken = token,
-                Authenticated = true,                
+                access_token = token,
+                Authenticated = true,
                 UserType = user.PerfilType.Description
             };
         }

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Application.Account.Dto;
+using Application.Streaming.Dto;
 using Domain.Account.ValueObject;
-using Application.Account.Profile;
+using Application.Streaming.Profile;
 
-namespace Application.Account;
+namespace Application.Streaming;
 public class AddressProfileTest
 {
     [Fact]

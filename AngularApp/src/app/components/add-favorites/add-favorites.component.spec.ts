@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddFavoritesComponent } from './add-favorites.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { PlaylistManagerService } from '../../services';
 import { Playlist } from '../../model';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AddFavoritesComponent', () => {
   let component: AddFavoritesComponent;
@@ -11,10 +12,10 @@ describe('AddFavoritesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AddFavoritesComponent],
-      imports: [HttpClientTestingModule],
-      providers: [PlaylistManagerService]
-    });
+    declarations: [AddFavoritesComponent],
+    imports: [],
+    providers: [PlaylistManagerService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     fixture = TestBed.createComponent(AddFavoritesComponent);
     component = fixture.componentInstance;
     playlistManagerService = TestBed.inject(PlaylistManagerService);
