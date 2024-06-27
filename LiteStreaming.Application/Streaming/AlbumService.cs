@@ -22,9 +22,9 @@ public class AlbumService : ServiceBase<AlbumDto, Album>, IService<AlbumDto>, IA
         return result;
     }
 
-    public override AlbumDto FindById(Guid albumId)
+    public override AlbumDto FindById(Guid id)
     {
-        var album = Repository.GetById(albumId);
+        var album = Repository.GetById(id);
         var result = Mapper.Map<AlbumDto>(album);
         return result;
     }
