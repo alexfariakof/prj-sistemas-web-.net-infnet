@@ -3,15 +3,15 @@ using LiteStreaming.AdministrativeApp.Models;
 using Application.Streaming.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Application.Streaming.Dto.Interfaces;
 using LiteStreaming.Application.Core.Interfaces.Query;
 using LiteStreaming.XunitTest.__mock__.Admin;
+using LiteStreaming.Application.Abstractions;
 
 namespace AdministrativeApp.Controllers;
 
 public class MusicControllerTest
 {
-    private readonly Mock<IMusicService> musicServiceMock;
+    private readonly Mock<IService<MusicDto>> musicServiceMock;
     private readonly Mock<IFindAll<BandDto>> bandServiceMock;
     private readonly Mock<IFindAll<GenreDto>> genreServiceMock;
     private readonly Mock<IFindAll<AlbumDto>> albumServiceMock;
@@ -19,7 +19,7 @@ public class MusicControllerTest
 
     public MusicControllerTest()
     {
-        musicServiceMock = new Mock<IMusicService>();
+        musicServiceMock = new Mock<IService<MusicDto>>();
         bandServiceMock = new Mock<IFindAll<BandDto>>();
         genreServiceMock = new Mock<IFindAll<GenreDto>>();
         albumServiceMock = new Mock<IFindAll<AlbumDto>>();

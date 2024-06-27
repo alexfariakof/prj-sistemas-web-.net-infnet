@@ -1,17 +1,27 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using LiteStreaming.Application.Abstractions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
 namespace LiteStreaming.AdministrativeApp.Controllers.Abstractions;
 
-public abstract class BaseController : Controller
+public abstract class BaseController<T> : Controller where T : class, new()
 {
     protected string CREATE { get;  } = "Create";
     protected string INDEX { get; }  = "Index";
     protected string EDIT { get; }  = "Edit";
 
-    protected BaseController() { }
+    private readonly IService<T> service;
+    protected BaseController(IService<T> service) 
+    {
+        this.service = service;    
+    }
+
+    public virtual IActionResult Index()
+    {
+        return View(this.service.FindAll());
+    }
 
     public Guid UserId
     {

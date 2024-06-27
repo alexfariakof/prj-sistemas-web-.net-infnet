@@ -1,11 +1,10 @@
-using LiteStreaming.AdministrativeApp.Controllers.Abstractions;
 using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class HomeController : BaseController
+public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
 
@@ -13,7 +12,6 @@ public class HomeController : BaseController
     {
         _logger = logger;
     }
-
     public IActionResult Index()
     {
         return View();

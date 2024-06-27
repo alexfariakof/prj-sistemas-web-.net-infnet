@@ -29,7 +29,7 @@ public class AlbumService : ServiceBase<AlbumDto, Album>, IService<AlbumDto>, IA
         return result;
     }
 
-    public List<AlbumDto> FindAll()
+    public override List<AlbumDto> FindAll()
     {
         var albums = Repository.GetAll().ToList();
         var result = Mapper.Map<List<AlbumDto>>(albums);

@@ -16,7 +16,7 @@
         <div class="row mb-2">
             <label for="band" class="col-1 col-form-label fs-5 text-end">Banda</label>
             <div class="col">
-                <select id="band" name="Music.BandId" class="form-select" required>
+                <select id="band" name="Music.BandId" class="form-select" required >
                     <option value="" disabled selected >Selecione uma Banda</option>
                     @foreach (var band in Model.Bands)
                     {
@@ -40,8 +40,7 @@
         <div class="row mb-2">
             <label for="genre" class="col-1 col-form-label fs-5 text-end">Gênero</label>
             <div class="col">
-                <select id="genre" name="Music.GenreId" class="form-select" required>
-                    <option value="" disabled selected>Selecione um Gênero</option>
+                <select id="genre" name="Music.GenreId" class="form-select" required multiple>
                     @foreach (var genre in Model.Genres)
                     {
                         <option value="@genre?.Id">@genre?.Name</option>

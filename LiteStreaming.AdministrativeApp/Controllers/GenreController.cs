@@ -2,19 +2,19 @@
 using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
+using LiteStreaming.Application.Abstractions;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class GenreController : BaseController
+public class GenreController : BaseController<GenreDto>
 {
-    private readonly IGenreService genreService;
-    public GenreController(IGenreService genreService)
+    private readonly IService<GenreDto> genreService;
+    public GenreController(IService<GenreDto> genreService): base(genreService)
     {
         this.genreService = genreService;
     }
 
-    public IActionResult Index()
+    public override IActionResult Index()
     {
         return View(this.genreService.FindAll());
     }

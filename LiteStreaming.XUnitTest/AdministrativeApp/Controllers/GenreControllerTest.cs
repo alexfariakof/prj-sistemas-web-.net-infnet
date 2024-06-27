@@ -1,21 +1,21 @@
 ﻿using LiteStreaming.AdministrativeApp.Models;
 using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
 using LiteStreaming.AdministrativeApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using LiteStreaming.XunitTest.__mock__.Admin;
+using LiteStreaming.Application.Abstractions;
 
 namespace AdministrativeApp.Controllers;
 
 public class GenreControllerTest
 {
-    private readonly Mock<IGenreService> genreServiceMock;
+    private readonly Mock<IService<GenreDto>> genreServiceMock;
     private readonly GenreController genreController;
 
     public GenreControllerTest()
     {
-        genreServiceMock = new Mock<IGenreService>();
+        genreServiceMock = new Mock<IService<GenreDto>>();
         genreController = new GenreController(genreServiceMock.Object)
         {
             ControllerContext = new ControllerContext

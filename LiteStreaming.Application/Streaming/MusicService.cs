@@ -28,9 +28,9 @@ public class MusicService : ServiceBase<MusicDto, Music>, IService<MusicDto>, IM
         return result;
     }
 
-    public List<MusicDto> FindAll()
+    public override List<MusicDto> FindAll()
     {
-        var musics = Repository.GetAll().ToList();
+        var musics = Repository.GetAll();
         var result = Mapper.Map<List<MusicDto>>(musics);
         return result;
     }

@@ -1,4 +1,5 @@
 using Application.Streaming.Dto;
+using Application.Streaming.Dto.Interfaces;
 using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,9 @@ namespace WebApi.Controllers;
 public class CustomerController : ControllerBaseTokensProps
 {
     private readonly IService<CustomerDto> _customerService;
-    private readonly IService<PlaylistPersonalDto> _playlistService;
+    private readonly IPlaylistPersonalService _playlistService;
 
-    public CustomerController(IService<CustomerDto> customerService, IService<PlaylistPersonalDto> playlistService)
+    public CustomerController(IService<CustomerDto> customerService, IPlaylistPersonalService playlistService)
     {
         _customerService = customerService;
         _playlistService = playlistService;

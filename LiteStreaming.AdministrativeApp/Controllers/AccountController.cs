@@ -7,16 +7,15 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using LiteStreaming.AdministrativeApp.Controllers.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class AccountController : BaseController
+public class AccountController : Controller
 {
     private readonly IAdministrativeAuthenticationService authenticationService;
 
-    public AccountController(IAdministrativeAuthenticationService authenticationService)
+    public AccountController(IAdministrativeAuthenticationService authenticationService) 
     {
         this.authenticationService = authenticationService;
     }
@@ -40,6 +39,7 @@ public class AccountController : BaseController
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, accountDto.Id.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name, accountDto.Name));
             identity.AddClaim(new Claim(ClaimTypes.Email, accountDto.Email));
+            identity.AddClaim(new Claim(ClaimTypes.Role, accountDto.PerfilType.ToString()));
 
             var authProperties = new AuthenticationProperties
             {

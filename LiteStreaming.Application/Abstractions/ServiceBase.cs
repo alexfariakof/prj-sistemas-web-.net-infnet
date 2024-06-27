@@ -12,7 +12,7 @@ public abstract class ServiceBase<Dto, Entity> where Dto : class, new() where En
         Repository = repository;
     }
     public abstract Dto Create(Dto obj);
-    public virtual List<Dto> FindAll(Guid userId) { throw new NotImplementedException(); }
+    public abstract List<Dto> FindAll();
     public abstract Dto FindById(Guid id);
     public abstract Dto Update(Dto obj);
     public abstract bool Delete(Dto obj);

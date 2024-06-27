@@ -2,18 +2,19 @@
 using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
 using LiteStreaming.Application.Core.Interfaces.Query;
+using Microsoft.AspNetCore.Authorization;
+using LiteStreaming.Application.Abstractions;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class MusicController : BaseController
+public class MusicController : BaseController<MusicDto>
 {
-    private readonly IMusicService musicService;
+    private readonly IService<MusicDto> musicService;
     private readonly IFindAll<BandDto> bandService;
     private readonly IFindAll<GenreDto> genreService;
     private readonly IFindAll<AlbumDto> albumService;
-    public MusicController(IMusicService musicService, IFindAll<GenreDto> genreFindAllService, IFindAll<BandDto> bandFindAllService, IFindAll<AlbumDto> albumService)
+    public MusicController(IService<MusicDto> musicService, IFindAll<GenreDto> genreFindAllService, IFindAll<BandDto> bandFindAllService, IFindAll<AlbumDto> albumService): base(musicService)
     {
         this.musicService = musicService;
         this.bandService = bandFindAllService;
@@ -21,11 +22,7 @@ public class MusicController : BaseController
         this.albumService = albumService;
     }
 
-    public IActionResult Index()
-    {
-        return View(this.musicService.FindAll());
-    }
-
+    [Authorize]
     public IActionResult Create()
     {
         var genres = genreService.FindAll();
@@ -42,6 +39,7 @@ public class MusicController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Save(MusicViewModel viewModel)
     {
         if (ModelState is { IsValid: false })
@@ -64,6 +62,7 @@ public class MusicController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Update(MusicViewModel viewModel)
     {
         if (ModelState is { IsValid: false })
@@ -85,6 +84,7 @@ public class MusicController : BaseController
         }
     }
 
+    [Authorize]
     public IActionResult Edit(Guid Id)
     {
         try
@@ -112,6 +112,7 @@ public class MusicController : BaseController
         return View(INDEX, this.musicService.FindAll());
     }
 
+    [Authorize]
     public IActionResult Delete(MusicDto dto)
     {
         try

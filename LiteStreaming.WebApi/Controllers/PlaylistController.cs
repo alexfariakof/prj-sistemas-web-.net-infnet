@@ -24,7 +24,7 @@ public class PlaylistController : ControllerBaseTokensProps
     {
         try
         {
-            var result = this._playlistService.FindAll(UserIdentity);
+            var result = this._playlistService.FindAll();
             if (result == null)
                 return NotFound();
 

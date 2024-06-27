@@ -3,28 +3,27 @@ using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Streaming.Dto;
 using Application.Streaming.Dto.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using LiteStreaming.Application.Abstractions;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class AlbumController : BaseController
+public class AlbumController : BaseController<AlbumDto>
 {
-    private readonly IAlbumService albumService;
-    public AlbumController(IAlbumService albumService)
+    private readonly IService<AlbumDto> albumService;
+    public AlbumController(IService<AlbumDto> albumService): base(albumService)
     {
         this.albumService = albumService;
     }
 
-    public IActionResult Index()
-    {
-        return View(this.albumService.FindAll());
-    }
-
+    [Authorize]
     public IActionResult Create()
     {
         return CreateView();
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Save(AlbumDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -47,6 +46,7 @@ public class AlbumController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Update(AlbumDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -68,6 +68,7 @@ public class AlbumController : BaseController
         }
     }
 
+    [Authorize]
     public IActionResult Edit(Guid Id)
     {
         try
@@ -85,6 +86,7 @@ public class AlbumController : BaseController
         return View(INDEX, this.albumService.FindAll());
     }
 
+    [Authorize]
     public IActionResult Delete(AlbumDto dto)
     {
         try

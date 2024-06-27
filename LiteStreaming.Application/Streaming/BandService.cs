@@ -29,7 +29,7 @@ public class BandService : ServiceBase<BandDto, Band>, IService<BandDto>, IBandS
         return result;
     }
 
-    public  List<BandDto> FindAll()
+    public override List<BandDto> FindAll()
     {
         var bands = Repository.GetAll().ToList();
         var result = Mapper.Map<List<BandDto>>(bands);
