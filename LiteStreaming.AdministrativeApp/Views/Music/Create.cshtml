@@ -1,5 +1,5 @@
-﻿@using Application.Streaming.Dto
-@model MusicDto
+﻿@model MusicViewModel
+
 @if (ViewBag.Alert != null)
 {
     <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
@@ -12,26 +12,65 @@
     Voltar
 </button>
 <div class="d-flex flex-column align-items-stretch m-0 p-2 border border-2 border-dark bg-dark rounded-2 align-items-center justify-content-center text-light">
-    <form method="post" asp-controller="Music" asp-action="Save" >
+    <form method="post" asp-controller="Music" asp-action="Save">
+        <div class="row mb-2">
+            <label for="band" class="col-1 col-form-label fs-5 text-end">Banda</label>
+            <div class="col">
+                <select id="band" name="Music.BandId" class="form-select" required>
+                    <option value="" disabled selected >Selecione uma Banda</option>
+                    @foreach (var band in Model.Bands)
+                    {
+                        <option value="@band.Id">@band.Name</option>
+                    }
+                </select>
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.BandId"></span>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label for="album" class="col-1 col-form-label fs-5 text-end">Album</label>
+            <div class="col">
+                <select id="album" name="Music.AlbumId" class="form-select" required>
+                    <option value="" disabled selected>Selecione um Album</option>
+                    @foreach (var album in Model.Albums)
+                    {
+                        <option value="@album.Id">@album.Name</option>
+                    }
+                </select>
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.AlbumId"></span>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label for="genre" class="col-1 col-form-label fs-5 text-end">Gênero</label>
+            <div class="col">
+                <select id="genre" name="Music.GenreId" class="form-select" required>
+                    <option value="" disabled selected>Selecione um Gênero</option>
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <option value="@genre.Id">@genre.Name</option>
+                    }
+                </select>
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.GenreId"></span>
+            </div>
+        </div>
         <div class="row mb-2">
             <label for="name" class="col-1 col-form-label fs-5 text-end">Nome</label>
             <div class="col">
-                @Html.TextBoxFor(music => music.Name, new { @class = "form-control", @id = "name", @required = "" })
-                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Name"></span>
+                @Html.TextBoxFor(model => model.Music.Name, new { @class = "form-control", @id = "name", @required = "" })
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.Name"></span>
             </div>
         </div>
         <div class="row mb-3">
             <label for="url" class="col-1 col-form-label fs-5 text-end">Url</label>
-            <div class="col-sm-10">
-                @Html.TextBoxFor(music => music.Url, new { @class = "form-control ", @id = "url", @required = "" })
-                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Url"></span>
+            <div class="col">
+                @Html.TextBoxFor(model => model.Music.Url, new { @class = "form-control ", @id = "url", @required = "" })
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.Url"></span>
             </div>
         </div>
         <div class="row mb-3">
             <label for="duration" class="col-1 col-form-label fs-5 text-end">Duração</label>
             <div class="col-sm-2">
-                @Html.TextBoxFor(music => music.Duration, new { @class = "form-control ", @id = "duration", @required = "", @type = "number" })
-                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Duration"></span>
+                @Html.TextBoxFor(model => model.Music.Duration, new { @class = "form-control ", @id = "duration", @required = "", @type = "number" })
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.Duration"></span>
             </div>
         </div>
         <div class="row mb-3 d-flex align-items-center justify-content-center ">
