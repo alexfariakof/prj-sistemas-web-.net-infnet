@@ -23,13 +23,13 @@
         <div class="row mb-2">
             <label for="description" class="col-1 col-form-label fs-5 text-end">Descrição</label>
             <div class="col">
-                @Html.TextBoxFor(band => band.Description, new { @class = "form-control ", @id = "description", @required = "" })
+                @Html.TextAreaFor(band => band.Description, new { @class = "form-control ", @id = "description", @required = "" })
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Description"></span>
             </div>
         </div>
         <div class="row mb-3">
             <label for="backdrop" class="col-1 col-form-label fs-5 text-end">Backdrop</label>
-            <div class="col-sm-10">
+            <div class="col">
                 @Html.TextBoxFor(band => band.Backdrop, new { @class = "form-control ", @id = "backdrop", @required = "" })
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Backdrop"></span>
             </div>
