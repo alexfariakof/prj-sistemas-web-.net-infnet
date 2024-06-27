@@ -7,6 +7,7 @@ using LiteStreaming.Application.Abstractions;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
+[Authorize]
 public class UserController : BaseController<AdministrativeAccountDto>
 {
     private readonly IService<AdministrativeAccountDto> administrativeAccountService;

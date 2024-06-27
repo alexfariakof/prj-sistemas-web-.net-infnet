@@ -26,14 +26,15 @@ public static class ServiceInjectDependence
     {
         services.AddScoped<IService<AdministrativeAccountDto>, AdministrativeAccountService>();
         services.AddScoped<IAdministrativeAuthenticationService, AdministrativeAccountService>();
-        services.AddScoped<IService<FlatDto>, FlatService >();
+        services.AddScoped<IService<FlatDto>, FlatService>();
         services.AddScoped<IService<GenreDto>, GenreService>();
         services.AddScoped<IFindAll<GenreDto>, GenreService>();
         services.AddScoped<IService<BandDto>, BandService>();
         services.AddScoped<IFindAll<BandDto>, BandService>();
         services.AddScoped<IService<AlbumDto>, AlbumService>();
         services.AddScoped<IFindAll<AlbumDto>, AlbumService>();
-        services.AddScoped<IService<MusicDto>, MusicService>();        
+        services.AddScoped<IService<MusicDto>, MusicService>();
+        services.AddScoped<IService<PlaylistDto>, PlaylistService>();
         return services;
     }
 

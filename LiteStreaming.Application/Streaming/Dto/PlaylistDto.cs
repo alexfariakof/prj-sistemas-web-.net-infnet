@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Core.Aggreggates;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Streaming.Dto;
-public class PlaylistDto : IValidatableObject
+public class PlaylistDto : BaseDto, IValidatableObject
 {
-    public Guid? Id { get; set; }
+    [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     public string? Name { get; set; }
+
+    [Required(ErrorMessage = "O campo Backdrop é obrigatório.")]
+    [Url(ErrorMessage = "Está não é uma url válida.")]
     public string? Backdrop { get; set; }
     public IList<MusicDto> Musics { get; set; } = new List<MusicDto>();
 
