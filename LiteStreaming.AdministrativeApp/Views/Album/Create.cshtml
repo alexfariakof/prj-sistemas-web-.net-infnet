@@ -1,5 +1,5 @@
 ﻿@using Application.Streaming.Dto
-@model AlbumDto
+@model AlbumViewModel
 @if (ViewBag.Alert != null)
 {
     <partial name="Alert" model="(AlertViewModel)ViewBag.Alert" />
@@ -16,8 +16,39 @@
         <div class="row mb-2">
             <label for="name" class="col-1 col-form-label fs-5 text-end">Nome</label>
             <div class="col">
-                @Html.TextBoxFor(album => album.Name, new { @class = "form-control", @id = "name", @required = "" })
-                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Name"></span>
+                @Html.TextBoxFor(Model => Model.Album.Name, new { @class = "form-control", @id = "name", @required = "" })
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Album.Name"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="backdrop" class="col-1 col-form-label fs-5 text-end">Backdrop</label>
+            <div class="col">
+                @Html.TextBoxFor(model => model.Album.Backdrop, new { @class = "form-control", @id = "backdrop", @required = "" })
+                <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Album.Backdrop"></span>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label for="band" class="col-1 col-form-label fs-5 text-end">Banda</label>
+            <div class="col">
+                <select id="band" name="Album.BandId" class="form-select" required>
+                    <option value="" disabled selected>Selecione uma Banda</option>
+                    @foreach (var band in Model.Bands)
+                    {
+                        <option value="@band?.Id" >@band?.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label for="genre" class="col-1 col-form-label fs-5 text-end">Gênero</label>
+            <div class="col">
+                <select id="genre" name="Album.GenreId" class="form-select" required>
+                    <option value="" disabled selected>Selecione um Gênero</option>
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <option value="@genre?.Id" >@genre?.Name</option>
+                    }
+                </select>
             </div>
         </div>
         <div class="row mb-3 d-flex align-items-center justify-content-center ">
