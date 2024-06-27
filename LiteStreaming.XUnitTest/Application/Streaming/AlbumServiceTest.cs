@@ -57,19 +57,17 @@ public class AlbumServiceTest
     {
         // Arrange
         var albumDtos = MockAlbum.Instance.GetDtoListFromAlbumList(mockAlbumList);
-        var userId = mockAlbumList.First().Id;
-        mapperMock.Setup(mapper => mapper.Map<List<AlbumDto>>(It.IsAny<List<Album>>())).Returns(albumDtos.FindAll(c => c.Id.Equals(userId)));
+        mapperMock.Setup(mapper => mapper.Map<List<AlbumDto>>(It.IsAny<List<Album>>())).Returns(albumDtos);
 
         // Act
-        var result = albumService.FindAll(userId);
+        var result = albumService.FindAll();
 
         // Assert
         albumRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<AlbumDto>>(It.IsAny<List<Album>>()), Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(mockAlbumList.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
-        Assert.All(result, albumDto => Assert.Equal(userId, albumDto.Id));
+        Assert.Equal(mockAlbumList.Count, result.Count);
     }
 
     [Fact]
