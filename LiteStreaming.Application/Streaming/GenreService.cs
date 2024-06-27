@@ -2,10 +2,12 @@
 using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
+using LiteStreaming.Application.Abstractions;
+using LiteStreaming.Application.Core.Interfaces.Query;
 using Repository.Interfaces;
 
 namespace Application.Streaming;
-public class GenreService : ServiceBase<GenreDto, Genre>, IService<GenreDto>, IGenreService
+public class GenreService : ServiceBase<GenreDto, Genre>, IService<GenreDto>, IGenreService, IFindAll<GenreDto>
 {
     public GenreService(IMapper mapper, IRepository<Genre> GenreRepository) : base(mapper, GenreRepository)  { }
     public override GenreDto Create(GenreDto dto)

@@ -68,11 +68,11 @@ public class BandController : BaseController
         }
     }
 
-    public IActionResult Edit(Guid IdUsuario)
+    public IActionResult Edit(Guid Id)
     {
         try
         {
-            var result = this.bandService.FindById(IdUsuario);
+            var result = this.bandService.FindById(Id);
             return View(result);
         }
         catch (Exception ex)

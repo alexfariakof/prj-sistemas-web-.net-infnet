@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>85450a77-2fcd-43fa-b077-4253e62a08ed</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<EnableHotReload>true</EnableHotReload>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,6 +26,5 @@
 		<None Include="..\.editorconfig" Link=".editorconfig">
 			<DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
 		</None>
-	</ItemGroup>
-
+	</ItemGroup>	
 </Project>

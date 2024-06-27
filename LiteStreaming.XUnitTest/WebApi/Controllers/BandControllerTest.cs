@@ -1,5 +1,5 @@
-﻿using Application;
-using Application.Streaming.Dto;
+﻿using Application.Streaming.Dto;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 

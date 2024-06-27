@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
 using EasyCryptoSalt;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
 namespace Application.Administrative;

@@ -2,6 +2,7 @@
 using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
 namespace Application.Streaming;
@@ -19,6 +20,7 @@ public class MusicService : ServiceBase<MusicDto, Music>, IService<MusicDto>, IM
         var result = Mapper.Map<MusicDto>(music);
         return result;
     }
+
     public override MusicDto FindById(Guid id)
     {
         var music = Repository.GetById(id);
@@ -26,18 +28,20 @@ public class MusicService : ServiceBase<MusicDto, Music>, IService<MusicDto>, IM
         return result;
     }
 
-    public override List<MusicDto> FindAll(Guid musicId)
+    public List<MusicDto> FindAll()
     {
         var musics = Repository.GetAll().ToList();
         var result = Mapper.Map<List<MusicDto>>(musics);
         return result;
     }
+
     public override MusicDto Update(MusicDto dto)
     {
         var music = Mapper.Map<Music>(dto);
         Repository.Update(music);
         return Mapper.Map<MusicDto>(music);
     }
+
     public override bool Delete(MusicDto dto)
     {
         var music = Mapper.Map<Music>(dto);

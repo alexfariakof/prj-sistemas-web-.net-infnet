@@ -2,6 +2,7 @@
 using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
 namespace Application.Streaming;

@@ -15,21 +15,21 @@
         @Html.TextBoxFor(account => account.Id, new { @class = "form-control", @id = "id", @Type = "hidden", @required = "" })
         <div class="row mb-3">
             <label for="name" class="col-1 col-form-label fs-5 text-end">Nome</label>
-            <div class="col-sm-10">
+            <div class="col">
                 @Html.TextBoxFor(band => band.Name, new { @class = "form-control", @id = "name", @required = "" })
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Name"></span>
             </div>
         </div>
         <div class="row mb-3">
             <label for="description" class="col-1 col-form-label fs-5 text-end">Descrição</label>
-            <div class="col-sm-10">
-                @Html.TextBoxFor(band => band.Description, new { @class = "form-control ", @id = "description", @required = "" })
+            <div class="col">
+                @Html.TextAreaFor(band => band.Description, new { @class = "form-control ", @id = "description", @required = "", @type= "textarea" })
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Description"></span>
             </div>
         </div>
         <div class="row mb-3">
             <label for="backdrop" class="col-1 col-form-label fs-5 text-end">Backdrop</label>
-            <div class="col-sm-10">
+            <div class="col">
                 @Html.TextBoxFor(band => band.Backdrop, new { @class = "form-control ", @id = "backdrop", @required = "" })
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Backdrop"></span>
             </div>

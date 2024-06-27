@@ -68,11 +68,11 @@ public class GenreController : BaseController
         }
     }
 
-    public IActionResult Edit(Guid IdUsuario)
+    public IActionResult Edit(Guid Id)
     {
         try
         {
-            var result = this.genreService.FindById(IdUsuario);
+            var result = this.genreService.FindById(Id);
             return View(result);
         }
         catch (Exception ex)

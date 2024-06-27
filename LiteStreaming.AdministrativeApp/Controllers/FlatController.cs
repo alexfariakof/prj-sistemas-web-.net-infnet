@@ -68,11 +68,11 @@ public class FlatController : BaseController
         }
     }
 
-    public IActionResult Edit(Guid IdUsuario)
+    public IActionResult Edit(Guid Id)
     {
         try
         {
-            var result = this.flatService.FindById(IdUsuario);
+            var result = this.flatService.FindById(Id);
             return View(result);
         }
         catch (Exception ex)

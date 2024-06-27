@@ -74,11 +74,11 @@ public class UserController : BaseController
     }
        
     [Authorize]
-    public IActionResult Edit(Guid IdUsuario)
+    public IActionResult Edit(Guid Id)
     {
         try
         {
-            var result = this.administrativeAccountService.FindById(IdUsuario);
+            var result = this.administrativeAccountService.FindById(Id);
             return View(result);
         }
         catch (Exception ex)
