@@ -1,5 +1,5 @@
-using Application;
 using Application.Streaming.Dto;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -24,7 +24,7 @@ public class PlaylistController : ControllerBaseTokensProps
     {
         try
         {
-            var result = this._playlistService.FindAll(UserIdentity);
+            var result = this._playlistService.FindAll();
             if (result == null)
                 return NotFound();
 
@@ -41,7 +41,7 @@ public class PlaylistController : ControllerBaseTokensProps
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal, Customer")]
+    [Authorize]
     public IActionResult FindById([FromRoute] Guid playlistId)
     {
         try
@@ -62,7 +62,7 @@ public class PlaylistController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Create([FromBody] PlaylistDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -83,7 +83,7 @@ public class PlaylistController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Update(PlaylistDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -105,7 +105,7 @@ public class PlaylistController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Delete(PlaylistDto dto)
     {
         if (ModelState is { IsValid: false })

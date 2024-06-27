@@ -14,7 +14,7 @@ public abstract class ControllerBaseTokensProps : ControllerBase
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = HttpContext.Request.Headers.Authorization.ToString();
                 var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
-                var userId = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "UserId")?.Value;
+                var userId = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "sub")?.Value;
                 return new Guid(userId);
             }
             catch

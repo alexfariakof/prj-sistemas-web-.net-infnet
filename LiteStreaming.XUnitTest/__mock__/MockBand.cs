@@ -27,6 +27,18 @@ public class MockBand
         return fakeBand;
     }
 
+    public BandDto GetFakerDto()
+    {
+        var fakeBandDto = new Faker<BandDto>()
+            .RuleFor(b => b.Id, f => f.Random.Guid())
+            .RuleFor(b => b.Name, f => f.Name.FullName())
+            .RuleFor(b => b.Description, f => f.Lorem.Sentence())
+            .RuleFor(b => b.Backdrop, f => f.Image.PlaceImgUrl())
+            .RuleFor(b => b.Albums, f => MockAlbum.Instance.GetDtoListFromAlbumList(MockAlbum.Instance.GetListFaker(2)))
+            .Generate();
+        return fakeBandDto;
+    }
+
     public BandDto GetDtoFromBand(Band band)
     {
         var fakeBandDto = new Faker<BandDto>()
@@ -39,7 +51,8 @@ public class MockBand
 
         return fakeBandDto;
     }
-    public List<Band> GetListFaker(int count)
+
+    public List<Band> GetListFaker(int count = 3)
     {
         var bandList = new List<Band>();
         for (var i = 0; i < count; i++)

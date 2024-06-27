@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Music } from '../../model';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 import { MusicService } from '..';
 import { MockMusic } from '../../__mocks__';
@@ -12,10 +12,10 @@ describe('MusicService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [MusicService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
-    });
+    imports: [],
+    providers: [MusicService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     httpMock = TestBed.inject(HttpTestingController);
   });
 

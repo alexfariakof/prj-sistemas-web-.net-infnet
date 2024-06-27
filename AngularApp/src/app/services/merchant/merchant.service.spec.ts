@@ -1,5 +1,5 @@
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { HttpTestingController, HttpClientTestingModule } from "@angular/common/http/testing";
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
 import { TestBed, inject } from "@angular/core/testing";
 import { CustomInterceptor } from "../../interceptors/http.interceptor.service";
 import { Address, Merchant } from "../../model";
@@ -10,10 +10,10 @@ describe('MerchantService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [MerchantService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
-    });
+    imports: [],
+    providers: [MerchantService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     httpMock = TestBed.inject(HttpTestingController);
   });
 

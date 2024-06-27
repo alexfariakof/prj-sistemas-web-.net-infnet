@@ -12,9 +12,7 @@ public class CardMapTest
         const int PROPERTY_COUNT = 9;  
 
         // Arrange
-        var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_CardMap")
-            .Options;
+        var options = new DbContextOptionsBuilder<MockRegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_CardMap").Options;
 
         using (var context = new MockRegisterContext(options))
         {

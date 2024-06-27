@@ -7,6 +7,7 @@ using Repository.CommonInjectDependence;
 using Repository;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using LiteStreaming.AdministrativeApp.CommonDependenceInject;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,28 +16,27 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRepositoriesAdministrativeApp();
 builder.Services.AddServicesAdministrativeApp();
 builder.Services.AddAutoMapperAdministrativeApp();
-builder.Services.AddServices();
+builder.Services.AddAuthenticationCookeis();
+
 
 // Cryptography 
 builder.Services.AddServicesCryptography(builder.Configuration);
-
+builder.Services.AddDataSeeders();
 
 if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddDataSeeders();
-    builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
+{    
+    builder.Services.AddDbContext<RegisterContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
-    builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
-    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 else if (builder.Environment.IsProduction())
 {
-    builder.Services.AddDbContext<RegisterContextAdministravtive>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
+    builder.Services.AddDbContext<RegisterContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
 }
 else
 {
-    builder.Services.AddDataSeeders();
-    builder.Services.AddDbContext<RegisterContextAdministravtive>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
+    builder.Services.AddDbContext<RegisterContextAdministrative>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
+    builder.Services.MsSqlServerMigrationsAdministrativeContext(builder.Configuration);
+    builder.Services.MySqlServerMigrationsAdministrativeContext(builder.Configuration);
 }
 
 var app = builder.Build();
@@ -60,11 +60,11 @@ if (app.Environment.IsProduction())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
 if (!app.Environment.IsProduction())
     app.RunDataSeeders();
 
-app.UseSession();
 app.Run();

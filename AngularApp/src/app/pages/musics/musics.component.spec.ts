@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MusicComponent } from './musics.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '../../components/shared.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('MusicsComponent', () => {
   let component: MusicComponent;
@@ -10,8 +11,9 @@ describe('MusicsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule]
-    })
+    imports: [RouterTestingModule, SharedModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(MusicComponent);

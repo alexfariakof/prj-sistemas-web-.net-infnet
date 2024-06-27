@@ -10,6 +10,7 @@ public static class AutoMapperInjectDependence
     {
         services.AddAutoMapper(typeof(AdministrativeAccountProfile).Assembly);
         services.AddAutoMapper(typeof(FlatProfile).Assembly);
+        services.AddAutoMapper(typeof(GenreProfile).Assembly);
         return services;
     }
 

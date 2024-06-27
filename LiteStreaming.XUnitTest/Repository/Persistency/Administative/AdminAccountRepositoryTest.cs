@@ -3,18 +3,17 @@ using Moq;
 using __mock__.Admin;
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
-using System.Linq.Expressions;
 
 namespace Repository.Persistency.Administrative;
 public class AdminAccountRepositoryTest
 {
-    private Mock<RegisterContextAdministravtive> contextMock;
+    private Mock<RegisterContextAdministrative> contextMock;
 
     public AdminAccountRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministravtive>().UseInMemoryDatabase(databaseName: "TestDatabase_AdminAccountRepositoryTest").Options;
-        contextMock = new Mock<RegisterContextAdministravtive>(options);
+        var options = new DbContextOptionsBuilder<RegisterContextAdministrative>().UseInMemoryDatabase(databaseName: "TestDatabase_AdminAccountRepositoryTest").Options;
+        contextMock = new Mock<RegisterContextAdministrative>(options);
     }
 
     [Fact]

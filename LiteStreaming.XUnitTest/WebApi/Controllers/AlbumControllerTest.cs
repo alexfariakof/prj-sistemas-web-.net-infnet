@@ -1,6 +1,6 @@
-﻿using Application;
-using Application.Streaming.Dto;
+﻿using Application.Streaming.Dto;
 using Domain.Account.ValueObject;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -22,7 +22,7 @@ public class AlbumControllerTest
         var userId = Guid.NewGuid();
         var albumList = MockAlbum.Instance.GetListFaker(2);
         var expectedAlbumDtoList = MockAlbum.Instance.GetDtoListFromAlbumList(albumList);
-        mockAlbumService.Setup(service => service.FindAll(userId)).Returns(expectedAlbumDtoList);
+        mockAlbumService.Setup(service => service.FindAll()).Returns(expectedAlbumDtoList);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
@@ -40,11 +40,12 @@ public class AlbumControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockAlbumService.Setup(service => service.FindAll(userId)).Returns((List<AlbumDto>)null);
+        List<AlbumDto>? nullObject = null;
+        mockAlbumService.Setup(service => service.FindAll()).Returns(nullObject);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.FindAll() as NotFoundResult;
+        var result = controller.FindAll();
 
         // Assert
         Assert.NotNull(result);
@@ -56,11 +57,11 @@ public class AlbumControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockAlbumService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
+        mockAlbumService.Setup(service => service.FindAll()).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.FindAll() as BadRequestObjectResult;
+        var result = controller.FindAll() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -78,7 +79,7 @@ public class AlbumControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(album.Id) as OkObjectResult;
+        var result = controller.FindById(album.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -92,11 +93,12 @@ public class AlbumControllerTest
     {
         // Arrange        
         var albumId = Guid.NewGuid();
-        mockAlbumService.Setup(service => service.FindById(albumId)).Returns((AlbumDto)null);
+        AlbumDto? nullAlbumDto = null;
+        mockAlbumService.Setup(service => service.FindById(albumId)).Returns(nullAlbumDto);
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(albumId) as NotFoundResult;
+        var result = controller.FindById(albumId);
 
         // Assert
         Assert.NotNull(result);
@@ -112,7 +114,7 @@ public class AlbumControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(albumId) as BadRequestObjectResult;
+        var result = controller.FindById(albumId) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -129,7 +131,7 @@ public class AlbumControllerTest
         mockAlbumService.Setup(service => service.Create(validAlbumDto)).Returns(validAlbumDto);
 
         // Act
-        var result = controller.Create(validAlbumDto) as OkObjectResult;
+        var result = controller.Create(validAlbumDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -145,7 +147,7 @@ public class AlbumControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Create(It.IsAny<AlbumDto>()) as BadRequestResult;
+        var result = controller.Create(It.IsAny<AlbumDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -160,7 +162,7 @@ public class AlbumControllerTest
         mockAlbumService.Setup(service => service.Create(invalidAlbumDto)).Throws(new Exception("BadRequest_Erro_Message"));
 
         // Act
-        var result = controller.Create(invalidAlbumDto) as BadRequestObjectResult;
+        var result = controller.Create(invalidAlbumDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -177,7 +179,7 @@ public class AlbumControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.Update(validAlbumDto) as OkObjectResult;
+        var result = controller.Update(validAlbumDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -194,7 +196,7 @@ public class AlbumControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(It.IsAny<AlbumDto>()) as BadRequestResult;
+        var result = controller.Update(It.IsAny<AlbumDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -210,7 +212,7 @@ public class AlbumControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.Update(validAlbumDto) as BadRequestObjectResult;
+        var result = controller.Update(validAlbumDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -233,7 +235,7 @@ public class AlbumControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.True((bool)result.Value);
+        Assert.True((bool?)result.Value);
         mockAlbumService.Verify(b => b.Delete(It.IsAny<AlbumDto>()), Times.Once);
     }
 
@@ -245,7 +247,8 @@ public class AlbumControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Delete((AlbumDto)null);
+        AlbumDto? nullAlbumDto = null;
+        var result = controller.Delete(nullAlbumDto);
 
         // Assert
         Assert.NotNull(result);
@@ -263,7 +266,7 @@ public class AlbumControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.Delete(mockAlbumDto) as BadRequestObjectResult;
+        var result = controller.Delete(mockAlbumDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);

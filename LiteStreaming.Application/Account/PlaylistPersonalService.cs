@@ -3,6 +3,7 @@ using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
 namespace Application.Streaming;
@@ -37,16 +38,23 @@ public class PlaylistPersonalService : ServiceBase<PlaylistPersonalDto, Playlist
         return result;
     }
 
-    public override List<PlaylistPersonalDto> FindAll(Guid userId)
+    public List<PlaylistPersonalDto> FindAll(Guid userId)
     {
         var customer = _customerRepository.Find(x => x.User.Id == userId).First();
         var playlists = Repository.Find(x => x.CustomerId == customer.Id).ToList();
         var result = Mapper.Map<List<PlaylistPersonalDto>>(playlists);
         return result;
     }
+
+    public override List<PlaylistPersonalDto> FindAll()
+    {
+        var result = Mapper.Map<List<PlaylistPersonalDto>>(Repository.GetAll());
+        return result;
+    }
+
     public override PlaylistPersonalDto Update(PlaylistPersonalDto dto)
     {
-        var playlist = this.Repository.GetById(dto.Id.Value);
+        var playlist = this.Repository.GetById(dto.Id);
         playlist.Customer = this._customerRepository.Find(c => c.Id == playlist.CustomerId).First();
         playlist.Musics = this._musicRepository.Find(m => dto.Musics.Select(em => em.Id).Contains(m.Id)).ToList();
         Repository.Update(playlist);

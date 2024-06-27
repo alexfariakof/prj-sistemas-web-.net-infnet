@@ -2,6 +2,7 @@
 using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
 namespace Application.Streaming;
@@ -24,7 +25,7 @@ public class FlatService: ServiceBase<FlatDto, Flat>, IService<FlatDto>, IFlatSe
         var result = Mapper.Map<FlatDto>(flat);
         return result;
     }
-    public List<FlatDto> FindAll()
+    public override List<FlatDto> FindAll()
     {
         var flats = Repository.GetAll().ToList();
         var result = Mapper.Map<List<FlatDto>>(flats);

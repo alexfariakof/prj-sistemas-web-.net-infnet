@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Band } from '../../model';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CustomInterceptor } from '../../interceptors/http.interceptor.service';
 import { BandService } from './band.service';
 import { MockBand } from '../../__mocks__';
@@ -11,10 +11,10 @@ describe('BandService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [BandService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }]
-    });
+    imports: [],
+    providers: [BandService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     httpMock = TestBed.inject(HttpTestingController);
   });
 

@@ -9,9 +9,7 @@ public class AdminAccountMapTest
     public void EntityConfiguration_IsValid()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<DbContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_AdminAccountMapTest")
-            .Options;
+        var options = new DbContextOptionsBuilder<DbContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_AdminAccountMapTest").Options;
 
         using (var context = new DbContext(options))
         {
@@ -42,7 +40,7 @@ public class AdminAccountMapTest
             Assert.Equal(100, nameProperty.GetMaxLength());
             Assert.False(dtCreatedProperty.IsNullable);
             Assert.False(perfilTypeNavigation.IsCollection);
-            Assert.NotNull(perfilTypeNavigation.ForeignKey.DeleteBehavior);
+            Assert.NotNull(perfilTypeNavigation?.ForeignKey.DeleteBehavior);
             Assert.NotNull(loginNavigation);
         }
     }

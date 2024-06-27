@@ -10,10 +10,7 @@ public class FlatRepositoryTest
     public FlatRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase Flat")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase Flat").Options;
         contextMock = new Mock<RegisterContext>(options);
     }
 

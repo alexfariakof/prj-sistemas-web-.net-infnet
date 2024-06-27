@@ -11,14 +11,12 @@ public class AlbumMapTest
         const int PROPERTY_COUNT = 4;
 
         // Arrange
-        var options = new DbContextOptionsBuilder<MockRegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase_AlbumMapTest")
-            .Options;
+        var options = new DbContextOptionsBuilder<MockRegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase_AlbumMapTest").Options;
 
         using (var context = new MockRegisterContext(options))
         {
             var builder = new ModelBuilder(new ConventionSet());
-            var configuration = new AlbumMap(new Abastractions.BaseConstants());
+            var configuration = new AlbumMap(new Abstractions.BaseConstants());
 
             configuration.Configure(builder.Entity<Album>());
 

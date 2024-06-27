@@ -59,19 +59,17 @@ public class MusicServiceTest
     {
         // Arrange
         var musicDtos = MockMusic.Instance.GetDtoListFromMusicList(mockMusicList);
-        var userId = mockMusicList.First().Id;
-        mapperMock.Setup(mapper => mapper.Map<List<MusicDto>>(It.IsAny<List<Music>>())).Returns(musicDtos.FindAll(c => c.Id.Equals(userId)));
+        mapperMock.Setup(mapper => mapper.Map<List<MusicDto>>(It.IsAny<IEnumerable<Music>>())).Returns(musicDtos);
 
         // Act
-        var result = musicService.FindAll(userId);
+        var result = musicService.FindAll();
 
         // Assert
         musicRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
-        mapperMock.Verify(mapper => mapper.Map<List<MusicDto>>(It.IsAny<List<Music>>()), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<List<MusicDto>>(It.IsAny<IEnumerable<Music>>()), Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(mockMusicList.FindAll(c => c.Id.Equals(userId)).Count, result.Count);
-        Assert.All(result, musicDto => Assert.Equal(userId, musicDto.Id));
+        Assert.Equal(mockMusicList.Count, result.Count);
     }
 
     [Fact]

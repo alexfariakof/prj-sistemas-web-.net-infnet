@@ -1,6 +1,8 @@
 <app-tool-bar-secondary></app-tool-bar-secondary>
-<div class="p-1 h-auto bg-secondary" >
-  <div class="d-flex flex-column w-100 rounded-2 bg-dark h-auto align-items-stretch align-items-md-center align-items-lg-center justify-content-center" fxFill>
+<div class="p-1 h-auto bg-secondary">
+  <div
+    class="d-flex flex-column w-100 rounded-2 bg-dark h-auto align-items-stretch align-items-md-center align-items-lg-center justify-content-center"
+    fxFill>
     <form
       class="d-flex flex-column h-auto  m-2  b-0 p-2 align-items-sm-stretch align-items-center justify-content-center  rounded-2 bg-dark-subtle text-black"
       (submit)="onSaveClick()" [formGroup]="createAccountForm">
@@ -10,7 +12,6 @@
       <h1 *ngIf="accountType === 'merchant'"
         class="fs-1 border border-2 border-black text-light rounded-2 bg-secondary w-100 p-2 shadow">Crie sua conta como
         Parceiro</h1>
-
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
         <input matInput id="email" name="email" formControlName="email" type="text" class="form-control"
@@ -126,11 +127,10 @@
             autocomplete="new-password" placeholder="Entre com uma senha" [type]="showPassword ? 'text' : 'password'"
             class="form-control"
             [ngClass]="{'is-invalid': createAccountForm.get('password')?.errors?.['required'] && createAccountForm.get('password')?.touched }" />
-          <span id="basic-addon1" class="input-group-text border-0 bg-transparent" (click)="onTooglePassword()"
-            [class.text-danger]="createAccountForm.get('password')?.hasError('required') &&  createAccountForm.get('password')?.touched">
-            <i width="64" height="64" [ngClass]="eyeIconClass"
+          <mat-icon matSuffix>
+            <i class="position-fixed" (click)="onTooglePassword()" [ngClass]="eyeIconClass"
               [class.text-danger]="createAccountForm.get('password')?.hasError('required') && createAccountForm.get('password')?.touched"></i>
-          </span>
+          </mat-icon>
         </div>
       </mat-form-field>
       <mat-form-field appearance="outline" class="w-100">
@@ -140,10 +140,10 @@
             autocomplete="new-password" type="password" class="form-control me-1" placeholder="Confirme a senha"
             [type]="showConfirmPassword ? 'text' : 'password'"
             [ngClass]="{ 'is-invalid': createAccountForm.get('confirmPassword')?.errors?.['required'] && createAccountForm.get('confirmPassword')?.touched}" />
-          <span id="basic-addon1" class="input-group-text border-0 bg-transparent" (click)="onToogleConfirmPassword()"
-            [class.text-danger]="createAccountForm.get('confirmPassword')?.hasError('required') &&  createAccountForm.get('confirmPassword')?.touched">
-            <i width="64" height="64" [ngClass]="eyeIconClassConfirmPassword"></i>
-          </span>
+          <mat-icon matSuffix>
+            <i class="position-fixed" [ngClass]="eyeIconClassConfirmPassword" (click)="onToogleConfirmPassword()"
+              [class.text-danger]="createAccountForm.get('confirmPassword')?.hasError('required') &&  createAccountForm.get('confirmPassword')?.touched"></i>
+          </mat-icon>
         </div>
       </mat-form-field>
       <small>

@@ -29,7 +29,7 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "free@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Admin)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
                 },
                 Flat = _context.Flat.First(f => f.Name ==  "Free Flat") ?? new()
             };
@@ -68,7 +68,7 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "basic@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Normal)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
                 },
                 Flat = _context.Flat.First( f => f.Name == "Basic Flat") ?? new()
             };
@@ -105,7 +105,7 @@ public class DataSeederCustomer : IDataSeeder
                 User = new User()
                 {
                     Login = new Login { Email = "standard@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Normal)).First()
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
                 },
                 Flat = _context.Flat.First( f => f.Name == "Standard  Flat") ?? new()
             };

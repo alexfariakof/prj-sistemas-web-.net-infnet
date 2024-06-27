@@ -6,7 +6,7 @@ using Application.Administrative.Dto;
 namespace __mock__.Admin;
 public class MockAdministrativeAccount
 {
-    private static MockAdministrativeAccount _instance;
+    private static MockAdministrativeAccount? _instance;
     private static readonly object LockObject = new object();
     public static MockAdministrativeAccount Instance
     {
@@ -61,7 +61,7 @@ public class MockAdministrativeAccount
         return administrativeAccounts;
     }
     
-    public AdministrativeAccountDto GetFakerDto(AdministrativeAccount account = null)
+    public AdministrativeAccountDto GetFakerDto(AdministrativeAccount? account = null)
     {
         lock (LockObject)
         {
@@ -80,7 +80,7 @@ public class MockAdministrativeAccount
         }
     }
 
-    public List<AdministrativeAccountDto> GetFakerListDto(IList<AdministrativeAccount> accounts = null, int count = 3)
+    public List<AdministrativeAccountDto> GetFakerListDto(IList<AdministrativeAccount>? accounts = null, int count = 3)
     {
         lock (LockObject)
         {

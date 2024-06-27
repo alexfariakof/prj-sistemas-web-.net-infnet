@@ -10,10 +10,7 @@ public class BandRepositoryTest
     public BandRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase Band")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase Band").Options;
         contextMock = new Mock<RegisterContext>(options);
     }
 

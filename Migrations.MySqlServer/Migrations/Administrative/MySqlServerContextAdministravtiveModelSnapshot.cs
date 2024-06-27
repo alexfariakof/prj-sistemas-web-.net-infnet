@@ -100,6 +100,9 @@ namespace Migrations.MySqlServer.Migrations.Administrative
 
                             b1.HasKey("AdministrativeAccountId");
 
+                            b1.HasIndex("Email")
+                                .IsUnique();
+
                             b1.ToTable("Account");
 
                             b1.WithOwner()

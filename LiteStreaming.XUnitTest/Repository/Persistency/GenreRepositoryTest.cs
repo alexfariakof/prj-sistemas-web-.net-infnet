@@ -10,10 +10,7 @@ public class GenreRepositoryTest
     public GenreRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase_GenreRepositoryTest")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase_GenreRepositoryTest").Options;
         contextMock = new Mock<RegisterContext>(options);
     }
 

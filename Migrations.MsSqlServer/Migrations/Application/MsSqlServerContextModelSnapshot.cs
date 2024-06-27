@@ -69,7 +69,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
 
-                    b.Property<Guid>("FlatId")
+                    b.Property<Guid?>("FlatId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -284,17 +284,12 @@ namespace Migrations.MsSqlServer.Migrations.Application
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Description = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
+                            Id = 3,
                             Description = "Customer"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 4,
                             Description = "Merchant"
                         });
                 });
@@ -612,7 +607,8 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
                     b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.HasKey("FlatId", "AlbumId");
 
@@ -631,7 +627,8 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
                     b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.HasKey("FlatsId", "MusicsId");
 
@@ -650,7 +647,8 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
                     b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.HasKey("FlatsId", "PlaylistsId");
 
@@ -699,7 +697,8 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
                     b.Property<DateTime?>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.HasKey("MusicsId", "PlaylistsId");
 
@@ -718,7 +717,8 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
                     b.Property<DateTime>("DtAdded")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.HasKey("MusicId", "PlaylistPersonalId");
 
@@ -761,9 +761,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
                 {
                     b.HasOne("Domain.Streaming.Agreggates.Flat", "Flat")
                         .WithMany()
-                        .HasForeignKey("FlatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FlatId");
 
                     b.HasOne("Domain.Account.Agreggates.User", "User")
                         .WithMany()
@@ -1065,7 +1063,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
                         .WithMany("Transactions")
                         .HasForeignKey("MerchantId");
 
-                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Value", b1 =>
+                    b.OwnsOne("Domain.Core.ValueObject.Monetary", "Monetary", b1 =>
                         {
                             b1.Property<Guid>("TransactionId")
                                 .HasColumnType("uniqueidentifier");
@@ -1084,7 +1082,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
                     b.Navigation("Customer");
 
-                    b.Navigation("Value")
+                    b.Navigation("Monetary")
                         .IsRequired();
                 });
 

@@ -5,6 +5,7 @@ using Domain.Account.Agreggates;
 using Application.Streaming.Dto;
 using Repository.Interfaces;
 using Domain.Streaming.Agreggates;
+using Castle.Core.Resource;
 
 namespace Application.Streaming;
 public class PlaylistPersonalServiceTest
@@ -67,6 +68,23 @@ public class PlaylistPersonalServiceTest
 
     [Fact]
     public void FindAll_PlaylistPersonalServices_Successfully()
+    {
+        // Arrange
+        var playlistPersonalDtos = MockPlaylistPersonal.Instance.GetDtoListFromPlaylistPersonalList(mockPlaylistPersonalList);
+        mapperMock.Setup(mapper => mapper.Map<List<PlaylistPersonalDto>>(It.IsAny<IEnumerable<PlaylistPersonal>>())).Returns(playlistPersonalDtos);
+        playlistPersonalRepositoryMock.Setup(repo => repo.GetAll()).Returns(mockPlaylistPersonalList);
+
+        // Act
+        var result = playlistPersonalService.FindAll();
+
+        // Assert
+        mapperMock.Verify(mapper => mapper.Map<List<PlaylistPersonalDto>>(It.IsAny<IEnumerable<PlaylistPersonal>>()), Times.Once);
+        Assert.NotNull(result);
+        Assert.Equal(mockPlaylistPersonalList.Count, result.Count);
+    }
+
+    [Fact]
+    public void FindAllByUserId_PlaylistPersonalServices_Successfully()
     {
         // Arrange
         var playlistPersonalDtos = MockPlaylistPersonal.Instance.GetDtoListFromPlaylistPersonalList(mockPlaylistPersonalList);

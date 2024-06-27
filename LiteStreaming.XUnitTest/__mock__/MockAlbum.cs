@@ -11,7 +11,7 @@ public class MockAlbum
 
     private MockAlbum() { }
 
-    public Album GetFaker(IList<Music> musics = null)
+    public Album GetFaker(IList<Music>? musics = null)
     {
         if (musics == null)
             musics = MockMusic.Instance.GetListFaker(3);
@@ -27,7 +27,19 @@ public class MockAlbum
         return fakeAlbum;
     }
 
-    public List<Album> GetListFaker(int count)
+    public AlbumDto GetFakerDto()
+    {
+        var fakeAlbumDto = new Faker<AlbumDto>()
+            .RuleFor(a => a.Id, f => f.Random.Guid())
+            .RuleFor(a => a.Name, f => f.Commerce.ProductName())
+            .RuleFor(a => a.Backdrop, f => f.Internet.Url())
+            .Generate();
+        return fakeAlbumDto;
+    }
+
+    
+
+    public List<Album> GetListFaker(int count = 3)
     {
         var albumList = new List<Album>();
 

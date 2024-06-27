@@ -40,7 +40,6 @@ public static class Usings
                 if (existingItem != null)
                 {
                     context.Attach(item);
-
                     context.Entry(item).State = EntityState.Modified;
                     context.SaveChangesAsync().Wait();
                 }
@@ -193,7 +192,8 @@ public static class Usings
                     value = (byte[])storedValue;
                     return true;
                 }
-                value = null;
+                byte[]? nullByte = null;
+                value = nullByte;
                 return false;
             });
 

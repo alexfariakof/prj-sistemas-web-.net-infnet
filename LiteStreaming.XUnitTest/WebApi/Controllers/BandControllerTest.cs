@@ -1,5 +1,5 @@
-﻿using Application;
-using Application.Streaming.Dto;
+﻿using Application.Streaming.Dto;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -22,11 +22,11 @@ public class BandControllerTest
         var userId = Guid.NewGuid();
         var bandList = MockBand.Instance.GetListFaker(2);
         var expectedBandDtoList = MockBand.Instance.GetDtoListFromBandList(bandList);
-        mockBandService.Setup(service => service.FindAll(userId)).Returns(expectedBandDtoList);
+        mockBandService.Setup(service => service.FindAll()).Returns(expectedBandDtoList);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.FindAll() as OkObjectResult;
+        var result = controller.FindAll() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -40,11 +40,11 @@ public class BandControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockBandService.Setup(service => service.FindAll(userId)).Returns((List<BandDto>)null);
+        mockBandService.Setup(service => service.FindAll()).Returns(() => null);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.FindAll() as NotFoundResult;
+        var result = controller.FindAll();
 
         // Assert
         Assert.NotNull(result);
@@ -56,11 +56,11 @@ public class BandControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockBandService.Setup(service => service.FindAll(userId)).Throws(new Exception("BadRequest_Erro_Message"));
+        mockBandService.Setup(service => service.FindAll()).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(userId, controller);
 
         // Act
-        var result = controller.FindAll() as BadRequestObjectResult;
+        var result = controller.FindAll() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -78,7 +78,7 @@ public class BandControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(band.Id) as OkObjectResult;
+        var result = controller.FindById(band.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -92,11 +92,11 @@ public class BandControllerTest
     {
         // Arrange        
         var bandId = Guid.NewGuid();
-        mockBandService.Setup(service => service.FindById(bandId)).Returns((BandDto)null);
+        mockBandService.Setup(service => service.FindById(bandId)).Returns(() => null);
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(bandId) as NotFoundResult;
+        var result = controller.FindById(bandId);
 
         // Assert
         Assert.NotNull(result);
@@ -112,7 +112,7 @@ public class BandControllerTest
         mockBandService.Setup(service => service.Create(validBandDto)).Returns(validBandDto);
 
         // Act
-        var result = controller.Create(validBandDto) as OkObjectResult;
+        var result = controller.Create(validBandDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -128,7 +128,7 @@ public class BandControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Create(It.IsAny<BandDto>()) as BadRequestResult;
+        var result = controller.Create(It.IsAny<BandDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -143,7 +143,7 @@ public class BandControllerTest
         mockBandService.Setup(service => service.Update(validBandDto)).Returns(validBandDto);
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
         // Act
-        var result = controller.Update(validBandDto) as OkObjectResult;
+        var result = controller.Update(validBandDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -160,7 +160,7 @@ public class BandControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Update(It.IsAny<BandDto>()) as BadRequestResult;
+        var result = controller.Update(It.IsAny<BandDto>());
 
         // Assert
         Assert.NotNull(result);
@@ -182,7 +182,7 @@ public class BandControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.True((bool)result.Value);
+        Assert.True((bool?)result.Value);
         mockBandService.Verify(b => b.Delete(It.IsAny<BandDto>()), Times.Once);
     }
 
@@ -194,7 +194,8 @@ public class BandControllerTest
         controller.ModelState.AddModelError("errorKey", "ErrorMessage");
 
         // Act
-        var result = controller.Delete((BandDto)null);
+        BandDto? nullBandDto = null;
+        var result = controller.Delete(nullBandDto);
 
         // Assert
         Assert.NotNull(result);
@@ -211,7 +212,7 @@ public class BandControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.FindById(bandId) as BadRequestObjectResult;
+        var result = controller.FindById(bandId) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -227,7 +228,7 @@ public class BandControllerTest
         mockBandService.Setup(service => service.Create(invalidBandDto)).Throws(new Exception("BadRequest_Erro_Message"));
 
         // Act
-        var result = controller.Create(invalidBandDto) as BadRequestObjectResult;
+        var result = controller.Create(invalidBandDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -244,7 +245,7 @@ public class BandControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.Update(validBandDto) as BadRequestObjectResult;
+        var result = controller.Update(validBandDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -262,7 +263,7 @@ public class BandControllerTest
         Usings.SetupBearerToken(Guid.NewGuid(), controller);
 
         // Act
-        var result = controller.Delete(mockBandDto) as BadRequestObjectResult;
+        var result = controller.Delete(mockBandDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);

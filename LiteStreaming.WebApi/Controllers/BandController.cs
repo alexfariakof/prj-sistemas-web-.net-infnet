@@ -1,5 +1,5 @@
-using Application;
 using Application.Streaming.Dto;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Abstractions;
@@ -24,7 +24,7 @@ public class BandController : ControllerBaseTokensProps
     {
         try
         {
-            var result = this._bandService.FindAll(UserIdentity);
+            var result = this._bandService.FindAll();
             if (result == null)
                 return NotFound();
 
@@ -60,7 +60,7 @@ public class BandController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Create([FromBody] BandDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -81,7 +81,7 @@ public class BandController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Update(BandDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -103,7 +103,7 @@ public class BandController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Admin, Normal")]
+    [Authorize]
     public IActionResult Delete(BandDto dto)
     {
         if (ModelState is { IsValid: false })

@@ -10,10 +10,7 @@ public class UserTypeRepositoryTest
     public UserTypeRepositoryTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase_UserTypeRepositoryTest")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase_UserTypeRepositoryTest").Options;
         contextMock = new Mock<RegisterContext>(options);
     }
 

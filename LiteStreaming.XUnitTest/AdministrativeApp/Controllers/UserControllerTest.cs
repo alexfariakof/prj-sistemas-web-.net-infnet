@@ -1,20 +1,22 @@
 ﻿using __mock__.Admin;
-using AdministrativeApp.Models;
+using LiteStreaming.AdministrativeApp.Models;
 using Application.Administrative.Dto;
-using Application.Administrative.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using LiteStreaming.AdministrativeApp.Controllers;
+using LiteStreaming.XunitTest.__mock__.Admin;
+using LiteStreaming.Application.Abstractions;
 
 namespace AdministrativeApp.Controllers;
 
 public class UserControllerTest
 {
-    private readonly Mock<IAdministrativeAccountService> administrativeAccountServiceMock;
+    private readonly Mock<IService<AdministrativeAccountDto>> administrativeAccountServiceMock;
     private readonly UserController userController;
 
     public UserControllerTest()
     {
-        administrativeAccountServiceMock = new Mock<IAdministrativeAccountService>();
+        administrativeAccountServiceMock = new Mock<IService<AdministrativeAccountDto>>();
         userController = new UserController(administrativeAccountServiceMock.Object)
         {
             ControllerContext = new ControllerContext
@@ -44,11 +46,12 @@ public class UserControllerTest
     public void Create_Returns_ViewResult()
     {
         // Act
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", userController);
         var result = userController.Create();
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Null(viewResult.ViewName);
+        Assert.NotNull(viewResult.ViewName);
     }
 
     [Fact]
@@ -69,8 +72,8 @@ public class UserControllerTest
     public void Save_ValidDto_RedirectsToIndex()
     {
         // Arrange
-        var dto = MockAdministrativeAccount.Instance.GetFakerDto();
-        userController.UserId = dto.UsuarioId;
+        var dto = MockAdministrativeAccount.Instance.GetFakerDto();        
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
 
         // Act
         var result = userController.Save(dto);
@@ -86,7 +89,7 @@ public class UserControllerTest
     {
         // Arrange
         var dto = MockAdministrativeAccount.Instance.GetFakerDto();
-        userController.UserId = dto.UsuarioId;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
         administrativeAccountServiceMock.Setup(service => service.Create(It.IsAny<AdministrativeAccountDto>())).Throws(new ArgumentException("Invalid data."));
 
         // Act
@@ -96,7 +99,7 @@ public class UserControllerTest
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("Create", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid data.", alert.Message);
     }
@@ -106,7 +109,7 @@ public class UserControllerTest
     {
         // Arrange
         var dto = MockAdministrativeAccount.Instance.GetFakerDto();
-        userController.ControllerContext.HttpContext.Items["UserId"] = dto.UsuarioId;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
         administrativeAccountServiceMock.Setup(service => service.Create(It.IsAny<AdministrativeAccountDto>())).Throws(new Exception("Error"));
 
         // Act
@@ -118,7 +121,7 @@ public class UserControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao salvar os dados.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao salvar os dados do usuário.", alert.Message);
     }
 
     [Fact]
@@ -140,7 +143,7 @@ public class UserControllerTest
     {
         // Arrange
         var dto = MockAdministrativeAccount.Instance.GetFakerDto();
-        userController.UserId = dto.UsuarioId;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
 
         // Act
         var result = userController.Update(dto);
@@ -156,7 +159,7 @@ public class UserControllerTest
     {
         // Arrange
         var dto = MockAdministrativeAccount.Instance.GetFakerDto();
-        userController.UserId = dto.UsuarioId;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
         administrativeAccountServiceMock.Setup(service => service.Update(It.IsAny<AdministrativeAccountDto>())).Throws(new ArgumentException("Invalid data."));
 
         // Act
@@ -166,8 +169,8 @@ public class UserControllerTest
         var viewResult = Assert.IsType<ViewResult>(result);
         Assert.Equal("Edit", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
-        Assert.Equal("danger", alert.Type);
+        Assert.Equal("Aviso", alert.Header);
+        Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid data.", alert.Message);
     }
 
@@ -176,7 +179,7 @@ public class UserControllerTest
     {
         // Arrange
         var dto = MockAdministrativeAccount.Instance.GetFakerDto();
-        userController.UserId = null;
+        MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
         administrativeAccountServiceMock.Setup(service => service.Update(It.IsAny<AdministrativeAccountDto>())).Throws(new Exception("Error"));
 
         // Act
@@ -188,7 +191,7 @@ public class UserControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao atualizar os dados deste usuário.", alert.Message);
+        Assert.Equal($"Ocorreu um erro ao atualizar os dados do usuário {dto?.Name}.", alert.Message);
     }
 
     [Fact]
@@ -220,9 +223,8 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid user.", alert.Message);
     }
@@ -239,7 +241,6 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
@@ -249,41 +250,36 @@ public class UserControllerTest
     [Fact]
     public void Delete_ValidId_Returns_IndexView_With_SuccessAlert()
     {
-        // Arrange
-     
+        // Arrange     
         var accountDto = MockAdministrativeAccount.Instance.GetFakerDto();
-        var id = accountDto.UsuarioId;
-        userController.UserId = id;
-        administrativeAccountServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(accountDto);
+        MockHttpContextHelper.MockClaimsIdentitySigned(accountDto.UsuarioId, accountDto.Name, accountDto.Email, userController);
         administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Returns(true);
         
         // Act
-        var result = userController.Delete(id);
+        var result = userController.Delete(accountDto);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Sucesso", alert.Header);
         Assert.Equal("success", alert.Type);
-        Assert.Equal("Usuário inativado.", alert.Message);
+        Assert.Equal($"Usuário {accountDto?.Name} excluído.", alert.Message);
     }
 
     [Fact]
     public void Delete_ServiceThrowsArgumentException_Returns_IndexView_WithWarningAlert()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        administrativeAccountServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new ArgumentException("Invalid user."));
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", userController);
+        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Throws(new ArgumentException("Invalid user."));
 
         // Act
-        var result = userController.Delete(id);
+        var result = userController.Delete(new());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
-        Assert.Equal("Informação", alert.Header);
+        Assert.Equal("Aviso", alert.Header);
         Assert.Equal("warning", alert.Type);
         Assert.Equal("Invalid user.", alert.Message);
     }
@@ -292,18 +288,17 @@ public class UserControllerTest
     public void Delete_ServiceThrowsException_Returns_IndexView_WithDangerAlert()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        administrativeAccountServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Throws(new Exception("Error"));
+        MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", userController);
+        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Throws(new Exception("Error"));
 
         // Act
-        var result = userController.Delete(id);
+        var result = userController.Delete(new());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        Assert.Equal("Index", viewResult.ViewName);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao excluir os dados deste usuário.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao excluir o usuário .", alert.Message);
     }
 }

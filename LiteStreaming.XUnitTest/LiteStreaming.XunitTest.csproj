@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.18.1" />
     <PackageReference Include="Bogus" Version="35.5.1" />
     <PackageReference Include="coverlet.msbuild" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -52,11 +53,6 @@
     <ProjectReference Include="..\LiteStreaming.Domain\LiteStreaming.Domain.csproj" />
     <ProjectReference Include="..\LiteStreaming.Repository\LiteStreaming.Repository.csproj" />
     <ProjectReference Include="..\LiteStreaming.WebApi\LiteStreaming.WebApi.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AdministrativeApp\Models\" />
-    <Folder Include="AdministrativeApp\Views\" />
   </ItemGroup>
 
   <ItemGroup>

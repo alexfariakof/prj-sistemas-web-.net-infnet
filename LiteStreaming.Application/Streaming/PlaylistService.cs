@@ -2,6 +2,7 @@
 using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
+using LiteStreaming.Application.Abstractions;
 using Repository.Interfaces;
 
 namespace Application.Streaming;
@@ -26,9 +27,9 @@ public class PlaylistService : ServiceBase<PlaylistDto, Playlist>, IService<Play
         return result;
     }
 
-    public override List<PlaylistDto> FindAll(Guid userId)
+    public override List<PlaylistDto> FindAll()
     {
-        var Playlists = Repository.GetAll().ToList();
+        var Playlists = Repository.GetAll();
         var result = Mapper.Map<List<PlaylistDto>>(Playlists);
         return result;
     }

@@ -1,17 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Core.Aggreggates;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Streaming.Dto;
-public class BandDto
-{
-    public Guid Id { get; set; }
-    
-    [Required]
-    public string Name { get; set; }
+public class BandDto: BaseDto
+{    
+    [Required(ErrorMessage = "O campo Nome é obrigatório.")]
+    public string? Name { get; set; }
 
-    [Required]
-    public string Description { get; set; }
+    [Required(ErrorMessage = "O campo Descrição é obrigatório.")]
+    public string? Description { get; set; }
 
-    [Required]
-    public string Backdrop { get; set; }
-    public List<AlbumDto> Albums { get; set; }
+    [Required(ErrorMessage = "O campo Backdrop é obrigatório.")]
+    [Url(ErrorMessage = "Está não é uma url válida.")]
+    public string? Backdrop { get; set; }
+    public List<AlbumDto>? Albums { get; set; }
 }

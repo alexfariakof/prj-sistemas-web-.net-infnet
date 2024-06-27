@@ -5,10 +5,10 @@ using System.Globalization;
 namespace Application.Streaming.Dto;
 public class FlatDto : BaseDto
 {
-    [Required]
+    [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     public string? Name { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "O campo Descrição é obrigatório.")]
     public string? Description { get; set; }
 
     private decimal _value;
@@ -20,7 +20,7 @@ public class FlatDto : BaseDto
         set => _value = value;
     }
 
-    // Propriedade para retornar o valor formatado como string
+    [Required(ErrorMessage = "O campo Valor é obrigatório.")]
     public string FormattedValue
     {
         get => _value.ToString("N2", CultureInfo.GetCultureInfo("pt-BR"));
@@ -32,7 +32,7 @@ public class FlatDto : BaseDto
             }
             else
             {
-                throw new ArgumentException("A string fornecida não é um valor de moeda válido.");
+                throw new ArgumentException("A campo valor fornecido não é um valor de moeda válido.");
             }
         }
     }
