@@ -122,6 +122,24 @@ public class CustomerServiceTest
     {
         // Arrange
         var customerDtos = MockCustomer.Instance.GetDtoListFromCustomerList(mockCustomerList);
+        mapperMock.Setup(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>())).Returns(customerDtos);
+
+        // Act
+        var result = customerService.FindAll();
+
+        // Assert
+        customerRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>()), Times.Once);
+
+        Assert.NotNull(result);
+        Assert.Equal(mockCustomerList.Count, result.Count);
+    }
+
+    [Fact]
+    public void FindAllByUserId_Customers_Successfully()
+    {
+        // Arrange
+        var customerDtos = MockCustomer.Instance.GetDtoListFromCustomerList(mockCustomerList);
         var userId = mockCustomerList.First().Id;
         mapperMock.Setup(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>())).Returns(customerDtos.FindAll(c => c.Id.Equals(userId)));
 

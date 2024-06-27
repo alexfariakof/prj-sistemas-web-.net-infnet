@@ -101,6 +101,24 @@ public class MerchantServiceTest
     {
         // Arrange
         var merchantDtos = MockMerchant.Instance.GetDtoListFromMerchantList(mockListMerchant);
+        mapperMock.Setup(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>())).Returns(merchantDtos);
+        
+        // Act
+        var result = merchantService.FindAll();
+
+        // Assert
+        merchantRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>()), Times.Once);
+
+        Assert.NotNull(result);
+        Assert.Equal(mockListMerchant.Count, result.Count);
+    }
+
+    [Fact]
+    public void FindAllByUserId_Merchants_Successfully()
+    {
+        // Arrange
+        var merchantDtos = MockMerchant.Instance.GetDtoListFromMerchantList(mockListMerchant);
         var userId = mockListMerchant.First().Id;
         mapperMock.Setup(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>())).Returns(merchantDtos.FindAll(c => c.Id.Equals(userId)));
         
