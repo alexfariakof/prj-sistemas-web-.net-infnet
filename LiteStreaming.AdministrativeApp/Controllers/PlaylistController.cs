@@ -18,8 +18,7 @@ public class PlaylistController : BaseController<PlaylistDto>
     [Authorize]
     public IActionResult Create()
     {
-        var viewModel = new PlaylistDto();
-        return View(viewModel);
+        return CreateView();
     }
 
     [HttpPost]
