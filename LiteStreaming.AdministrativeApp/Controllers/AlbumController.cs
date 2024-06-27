@@ -2,24 +2,22 @@
 using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Streaming.Dto;
-using LiteStreaming.Application.Core.Interfaces.Query;
 using Microsoft.AspNetCore.Authorization;
 using LiteStreaming.Application.Abstractions;
+using LiteStreaming.Application.Core.Interfaces.Query;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class MusicController : BaseController<MusicDto>
+public class AlbumController : BaseController<AlbumDto>
 {
-    private readonly IService<MusicDto> musicService;
+    private readonly IService<AlbumDto> albumService;
     private readonly IFindAll<BandDto> bandService;
     private readonly IFindAll<GenreDto> genreService;
-    private readonly IFindAll<AlbumDto> albumService;
-    public MusicController(IService<MusicDto> musicService, IFindAll<GenreDto> genreFindAllService, IFindAll<BandDto> bandFindAllService, IFindAll<AlbumDto> albumService): base(musicService)
+    public AlbumController(IService<AlbumDto> albumService, IFindAll<BandDto> bandFindAllService, IFindAll<GenreDto> genreFindAllService) : base(albumService)
     {
-        this.musicService = musicService;
+        this.albumService = albumService;
         this.bandService = bandFindAllService;
         this.genreService = genreFindAllService;
-        this.albumService = albumService;
     }
 
     [Authorize]
@@ -27,28 +25,26 @@ public class MusicController : BaseController<MusicDto>
     {
         var genres = genreService.FindAll();
         var bands = bandService.FindAll();
-        var albums = albumService.FindAll();
-        var viewModel = new MusicViewModel
+        var viewModel = new AlbumViewModel()
         {
-            Music = new MusicDto(),
+            Album = new AlbumDto(),
             Bands = bands,
-            Genres = genres,
-            Albums = albums
+            Genres = genres
         };
         return View(viewModel);
     }
 
     [HttpPost]
     [Authorize]
-    public IActionResult Save(MusicViewModel viewModel)
+    public IActionResult Save(AlbumViewModel viewModel)
     {
         if (ModelState is { IsValid: false })
             return CreateView();
 
         try
         {
-            viewModel.Music.UsuarioId = UserId;
-            musicService.Create(viewModel.Music);
+            viewModel.Album.UsuarioId = UserId;
+            albumService.Create(viewModel.Album);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -56,22 +52,22 @@ public class MusicController : BaseController<MusicDto>
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados da musica.");
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do álbum.");
             return CreateView();
         }
     }
 
     [HttpPost]
     [Authorize]
-    public IActionResult Update(MusicViewModel viewModel)
+    public IActionResult Update(AlbumViewModel viewModel)
     {
         if (ModelState is { IsValid: false })
             return EditView();
 
         try
         {
-            viewModel.Music.UsuarioId = UserId;
-            musicService.Update(viewModel.Music);
+            viewModel.Album.UsuarioId = UserId;
+            albumService.Update(viewModel.Album);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -79,7 +75,7 @@ public class MusicController : BaseController<MusicDto>
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar a musica { viewModel.Music?.Name }.");
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar o álbum {viewModel.Album?.Name }.");
             return EditView();
         }
     }
@@ -91,14 +87,11 @@ public class MusicController : BaseController<MusicDto>
         {
             var genres = genreService.FindAll();
             var bands = bandService.FindAll();
-            var albums = albumService.FindAll();
-
-            var viewModel = new MusicViewModel
+            var viewModel = new AlbumViewModel
             {
-                Music = this.musicService.FindById(Id),
+                Album = this.albumService.FindById(Id),
                 Bands = bands,
-                Genres = genres,
-                Albums = albums
+                Genres = genres
             };
             return View(viewModel);
         }
@@ -107,20 +100,20 @@ public class MusicController : BaseController<MusicDto>
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados desta musica.");
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste álbum.");
         }
-        return View(INDEX, this.musicService.FindAll());
+        return View(INDEX, this.albumService.FindAll());
     }
 
     [Authorize]
-    public IActionResult Delete(MusicDto dto)
+    public IActionResult Delete(AlbumDto dto)
     {
         try
         {
             dto.UsuarioId = UserId;
-            var result = this.musicService.Delete(dto);
+            var result = this.albumService.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Musica { dto?.Name } excluída.");
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Álbum { dto?.Name } excluído.");
         }
         catch (Exception ex)
         {
@@ -128,8 +121,8 @@ public class MusicController : BaseController<MusicDto>
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
 
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir a musica {dto?.Name }.");
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o álbum { dto?.Name }.");
         }
-        return View(INDEX, this.musicService.FindAll());
+        return View(INDEX, this.albumService.FindAll());
     }
 }

@@ -1,21 +1,21 @@
 ﻿using LiteStreaming.AdministrativeApp.Models;
 using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
 using LiteStreaming.AdministrativeApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using LiteStreaming.XunitTest.__mock__.Admin;
+using LiteStreaming.Application.Abstractions;
 
 namespace AdministrativeApp.Controllers;
 
 public class FlatControllerTest
 {
-    private readonly Mock<IFlatService> flatServiceMock;
+    private readonly Mock<IService<FlatDto>> flatServiceMock;
     private readonly FlatController flatController;
 
     public FlatControllerTest()
     {
-        flatServiceMock = new Mock<IFlatService>();
+        flatServiceMock = new Mock<IService<FlatDto>>();
         flatController = new FlatController(flatServiceMock.Object)
         {
             ControllerContext = new ControllerContext

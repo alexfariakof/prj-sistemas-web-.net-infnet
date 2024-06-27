@@ -66,12 +66,19 @@ public class CustomerService : ServiceBase<CustomerDto, Customer>, IService<Cust
         return result;
     }
 
-    public override List<CustomerDto> FindAll(Guid userId)
+    public List<CustomerDto> FindAll(Guid userId)
     {
         var customers = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
         var result = this.Mapper.Map<List<CustomerDto>>(customers);
         return result;
     }
+
+    public override List<CustomerDto> FindAll()
+    {
+        var result = this.Mapper.Map<List<CustomerDto>>(this.Repository.GetAll());
+        return result;
+    }
+
     public override CustomerDto Update(CustomerDto dto)
     {
         var customer = this.Mapper.Map<Customer>(dto);

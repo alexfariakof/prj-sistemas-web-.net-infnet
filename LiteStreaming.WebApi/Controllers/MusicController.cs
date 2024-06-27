@@ -20,7 +20,7 @@ public class MusicController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MusicDto[]))]
     public IActionResult Serach([FromRoute] string searchParam)
     {
-        var result = this._musicService.FindAll(UserIdentity).Where(m => m.Name.ToLower().Contains(searchParam.ToLower()));
+        var result = this._musicService.FindAll().Where(m => m.Name.ToLower().Contains(searchParam.ToLower()));
         return Ok(result);
     }
 
@@ -34,7 +34,7 @@ public class MusicController : ControllerBaseTokensProps
     {
         try
         {
-            var result = this._musicService.FindAll(UserIdentity);
+            var result = this._musicService.FindAll();
             if (result == null)
                 return NotFound();
 

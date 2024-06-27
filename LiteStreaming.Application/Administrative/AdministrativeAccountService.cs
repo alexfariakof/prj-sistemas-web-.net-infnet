@@ -37,12 +37,19 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         return result;
     }
 
-    public override List<AdministrativeAccountDto> FindAll(Guid userId)
+    public List<AdministrativeAccountDto> FindAll(Guid userId)
     {
         var accounts = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
         var result = this.Mapper.Map<List<AdministrativeAccountDto>>(accounts);
         return result;
     }
+
+    public override List<AdministrativeAccountDto> FindAll()
+    {
+        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.GetAll());
+        return result;
+    }
+
 
     public override AdministrativeAccountDto Update(AdministrativeAccountDto dto)
     {
@@ -58,14 +65,6 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         var account = this.Mapper.Map<AdministrativeAccount>(dto);
         this.Repository.Delete(account);
         return true; 
-    }
-
-    public IEnumerable<AdministrativeAccountDto> FindAll()
-    {
-        var accounts = this.Repository.GetAll().AsEnumerable();
-        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(accounts);
-        return result;
-
     }
 
     public AdministrativeAccountDto Authentication(LoginDto dto)

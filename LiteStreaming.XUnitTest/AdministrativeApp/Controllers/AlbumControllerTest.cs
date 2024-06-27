@@ -9,26 +9,20 @@ using LiteStreaming.Application.Abstractions;
 
 namespace AdministrativeApp.Controllers;
 
-public class MusicControllerTest
+public class AlbumControllerTest
 {
-    private readonly Mock<IService<MusicDto>> musicServiceMock;
+    private readonly Mock<IService<AlbumDto>> albumServiceMock;
     private readonly Mock<IFindAll<BandDto>> bandServiceMock;
     private readonly Mock<IFindAll<GenreDto>> genreServiceMock;
-    private readonly Mock<IFindAll<AlbumDto>> albumServiceMock;
-    private readonly MusicController musicController;
+    private readonly AlbumController albumController;
 
-    public MusicControllerTest()
+    public AlbumControllerTest()
     {
-        musicServiceMock = new Mock<IService<MusicDto>>();
+        albumServiceMock = new Mock<IService<AlbumDto>>();
         bandServiceMock = new Mock<IFindAll<BandDto>>();
         genreServiceMock = new Mock<IFindAll<GenreDto>>();
-        albumServiceMock = new Mock<IFindAll<AlbumDto>>();
 
-        musicController = new MusicController(
-            musicServiceMock.Object,
-            genreServiceMock.Object,
-            bandServiceMock.Object,
-            albumServiceMock.Object)
+        albumController = new AlbumController(albumServiceMock.Object, bandServiceMock.Object, genreServiceMock.Object)
         {
             ControllerContext = new ControllerContext
             {
@@ -41,49 +35,47 @@ public class MusicControllerTest
     public void Index_Returns_ViewResult_With_Model()
     {
         // Arrange
-        var musicsDto = MockMusic.Instance.GetDtoListFromMusicList(MockMusic.Instance.GetListFaker());
-        musicServiceMock.Setup(service => service.FindAll()).Returns(musicsDto);
+        var albumsDto = MockAlbum.Instance.GetDtoListFromAlbumList(MockAlbum.Instance.GetListFaker());
+        albumServiceMock.Setup(service => service.FindAll()).Returns(albumsDto);
 
         // Act
-        var result = musicController.Index();
+        var result = albumController.Index();
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsAssignableFrom<IEnumerable<MusicDto>>(viewResult.Model);
-        Assert.Equal(musicsDto, model);
+        var model = Assert.IsAssignableFrom<IEnumerable<AlbumDto>>(viewResult.Model);
+        Assert.Equal(albumsDto, model);
     }
 
     [Fact]
     public void Create_Returns_ViewResult_With_Model()
     {
         // Act
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentity(Guid.NewGuid(), "teste", "teste@teste.com", musicController);
-        musicServiceMock.Setup(s => s.FindAll()).Returns(new List<MusicDto>() { viewModel.Music });
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentity(Guid.NewGuid(), "teste", "teste@teste.com", albumController);
+        albumServiceMock.Setup(s => s.FindAll()).Returns(new List<AlbumDto>() { viewModel.Album });
         bandServiceMock.Setup(s => s.FindAll()).Returns(viewModel.Bands);
         genreServiceMock.Setup(s => s.FindAll()).Returns(viewModel.Genres);
-        albumServiceMock.Setup(s => s.FindAll()).Returns(viewModel.Albums);
 
-        var result = musicController.Create();
+        var result = albumController.Create();
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<MusicViewModel>(viewResult.Model);
+        var model = Assert.IsType<AlbumViewModel>(viewResult.Model);
         Assert.NotNull(model);
-        Assert.NotNull(model.Music);
+        Assert.NotNull(model.Album);
         Assert.NotNull(model.Bands);
         Assert.NotNull(model.Genres);
-        Assert.NotNull(model.Albums);
     }
 
     [Fact]
     public void Save_ModelStateInvalid_Returns_CreateView()
     {
         // Arrange
-        musicController.ModelState.AddModelError("test", "test error");
+        albumController.ModelState.AddModelError("test", "test error");
 
         // Act
-        var result = musicController.Save(new MusicViewModel());
+        var result = albumController.Save(new AlbumViewModel());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -94,29 +86,29 @@ public class MusicControllerTest
     public void Save_ValidDto_RedirectsToIndex()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
-        musicServiceMock.Setup(service => service.Create(viewModel.Music));
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
+        albumServiceMock.Setup(service => service.Create(viewModel.Album));
 
         // Act
-        var result = musicController.Save(viewModel);
+        var result = albumController.Save(viewModel);
 
         // Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Index", redirectResult.ActionName);
-        musicServiceMock.Verify(service => service.Create(viewModel.Music), Times.Once);
+        albumServiceMock.Verify(service => service.Create(viewModel.Album), Times.Once);
     }
 
     [Fact]
     public void Save_ServiceThrowsArgumentException_Returns_CreateView_WithWarningAlert()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
-        musicServiceMock.Setup(service => service.Create(viewModel.Music)).Throws(new ArgumentException("Invalid data."));
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
+        albumServiceMock.Setup(service => service.Create(viewModel.Album)).Throws(new ArgumentException("Invalid data."));
 
         // Act
-        var result = musicController.Save(viewModel);
+        var result = albumController.Save(viewModel);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -131,13 +123,13 @@ public class MusicControllerTest
     public void Save_ServiceThrowsException_Returns_CreateView_WithDangerAlert()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
 
-        musicServiceMock.Setup(service => service.Create(viewModel.Music)).Throws(new Exception("Error"));
+        albumServiceMock.Setup(service => service.Create(viewModel.Album)).Throws(new Exception("Error"));
 
         // Act
-        var result = musicController.Save(viewModel);
+        var result = albumController.Save(viewModel);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -145,25 +137,25 @@ public class MusicControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao salvar os dados da musica.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao salvar os dados do álbum.", alert.Message);
     }
 
     [Fact]
     public void Edit_ValidId_Returns_ViewResult_With_Model()
     {
         // Arrange        
-        var musicDto = MockMusic.Instance.GetFakerDto();
-        var id = musicDto.Id;
-        musicServiceMock.Setup(service => service.FindById(id)).Returns(musicDto);
+        var albumDto = MockAlbum.Instance.GetFakerDto();
+        var id = albumDto.Id;
+        albumServiceMock.Setup(service => service.FindById(id)).Returns(albumDto);
 
         // Act
-        var result = musicController.Edit(id);
+        var result = albumController.Edit(id);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<MusicViewModel>(viewResult.Model);
+        var model = Assert.IsType<AlbumViewModel>(viewResult.Model);
         Assert.NotNull(model);
-        Assert.Equal(musicDto, model.Music);
+        Assert.Equal(albumDto, model.Album);
     }
 
     [Fact]
@@ -171,10 +163,10 @@ public class MusicControllerTest
     {
         // Arrange
         var id = Guid.NewGuid();
-        musicServiceMock.Setup(service => service.FindById(id)).Throws(new ArgumentException("Invalid user."));
+        albumServiceMock.Setup(service => service.FindById(id)).Throws(new ArgumentException("Invalid user."));
 
         // Act
-        var result = musicController.Edit(id);
+        var result = albumController.Edit(id);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -189,27 +181,27 @@ public class MusicControllerTest
     {
         // Arrange
         var id = Guid.NewGuid();
-        musicServiceMock.Setup(service => service.FindById(id)).Throws(new Exception("Error"));
+        albumServiceMock.Setup(service => service.FindById(id)).Throws(new Exception("Error"));
 
         // Act
-        var result = musicController.Edit(id);
+        var result = albumController.Edit(id);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal("Ocorreu um erro ao editar os dados desta musica.", alert.Message);
+        Assert.Equal("Ocorreu um erro ao editar os dados deste álbum.", alert.Message);
     }
 
     [Fact]
     public void Update_ModelStateInvalid_Returns_EditView()
     {
         // Arrange
-        musicController.ModelState.AddModelError("test", "test error");
+        albumController.ModelState.AddModelError("test", "test error");
 
         // Act
-        var result = musicController.Update(new MusicViewModel());
+        var result = albumController.Update(new AlbumViewModel());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -220,29 +212,29 @@ public class MusicControllerTest
     public void Update_ValidDto_RedirectsToIndex()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
-        musicServiceMock.Setup(service => service.Update(viewModel.Music));
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
+        albumServiceMock.Setup(service => service.Update(viewModel.Album));
 
         // Act
-        var result = musicController.Update(viewModel);
+        var result = albumController.Update(viewModel);
 
         // Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Index", redirectResult.ActionName);
-        musicServiceMock.Verify(service => service.Update(viewModel.Music), Times.Once);
+        albumServiceMock.Verify(service => service.Update(viewModel.Album), Times.Once);
     }
 
     [Fact]
     public void Update_ServiceThrowsArgumentException_Returns_EditView_WithWarningAlert()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
-        musicServiceMock.Setup(service => service.Update(viewModel.Music)).Throws(new ArgumentException("Invalid data."));
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
+        albumServiceMock.Setup(service => service.Update(viewModel.Album)).Throws(new ArgumentException("Invalid data."));
 
         // Act
-        var result = musicController.Update(viewModel);
+        var result = albumController.Update(viewModel);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -257,12 +249,12 @@ public class MusicControllerTest
     public void Update_ServiceThrowsException_Returns_EditView_WithDangerAlert()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
-        musicServiceMock.Setup(service => service.Update(viewModel.Music)).Throws(new Exception("Error"));
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
+        albumServiceMock.Setup(service => service.Update(viewModel.Album)).Throws(new Exception("Error"));
 
         // Act
-        var result = musicController.Update(viewModel);
+        var result = albumController.Update(viewModel);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -270,38 +262,38 @@ public class MusicControllerTest
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal($"Ocorreu um erro ao atualizar a musica {viewModel.Music?.Name}.", alert.Message);
+        Assert.Equal($"Ocorreu um erro ao atualizar o álbum {viewModel.Album?.Name}.", alert.Message);
     }
 
     [Fact]
     public void Delete_ValidId_Returns_IndexView_With_SuccessAlert()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
-        musicServiceMock.Setup(service => service.Delete(viewModel.Music)).Returns(true);
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
+        albumServiceMock.Setup(service => service.Delete(viewModel.Album)).Returns(true);
 
         // Act
-        var result = musicController.Delete(viewModel.Music);
+        var result = albumController.Delete(viewModel.Album);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Sucesso", alert.Header);
         Assert.Equal("success", alert.Type);
-        Assert.Equal($"Musica {viewModel.Music?.Name} excluída.", alert.Message);
+        Assert.Equal($"Álbum {viewModel.Album?.Name} excluído.", alert.Message);
     }
 
     [Fact]
     public void Delete_ServiceThrowsArgumentException_Returns_IndexView_WithWarningAlert()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
-        musicServiceMock.Setup(service => service.Delete(viewModel.Music)).Throws(new ArgumentException("Invalid user."));
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
+        albumServiceMock.Setup(service => service.Delete(viewModel.Album)).Throws(new ArgumentException("Invalid user."));
 
         // Act
-        var result = musicController.Delete(viewModel.Music);
+        var result = albumController.Delete(viewModel.Album);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -315,19 +307,19 @@ public class MusicControllerTest
     public void Delete_ServiceThrowsException_Returns_IndexView_WithDangerAlert()
     {
         // Arrange
-        var viewModel = MockMusicViewModel.Instance.GetFaker();
-        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Music.UsuarioId, "teste", "teste@teste.com", musicController);
+        var viewModel = MockAlbumViewModel.Instance.GetFaker();
+        MockHttpContextHelper.MockClaimsIdentitySigned(viewModel.Album.UsuarioId, "teste", "teste@teste.com", albumController);
 
-        musicServiceMock.Setup(service => service.Delete(viewModel.Music)).Throws(new Exception("Error"));
+        albumServiceMock.Setup(service => service.Delete(viewModel.Album)).Throws(new Exception("Error"));
 
         // Act
-        var result = musicController.Delete(viewModel.Music);
+        var result = albumController.Delete(viewModel.Album);
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
         var alert = Assert.IsType<AlertViewModel>(viewResult.ViewData["Alert"]);
         Assert.Equal("Erro", alert.Header);
         Assert.Equal("danger", alert.Type);
-        Assert.Equal($"Ocorreu um erro ao excluir a musica {viewModel.Music?.Name}.", alert.Message);
+        Assert.Equal($"Ocorreu um erro ao excluir o álbum {viewModel.Album?.Name}.", alert.Message);
     }
 }

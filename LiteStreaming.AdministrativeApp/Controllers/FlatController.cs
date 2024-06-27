@@ -2,29 +2,28 @@
 using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using LiteStreaming.Application.Abstractions;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class FlatController : BaseController
+public class FlatController : BaseController<FlatDto>
 {
-    private readonly IFlatService flatService;
-    public FlatController(IFlatService flatService)
+    private readonly IService<FlatDto> flatService;
+    public FlatController(IService<FlatDto> flatService): base(flatService)
     {
         this.flatService = flatService;
     }
 
-    public IActionResult Index()
-    {
-        return View(this.flatService.FindAll());
-    }
 
+    [Authorize]
     public IActionResult Create()
     {
         return CreateView();
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Save(FlatDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -47,6 +46,7 @@ public class FlatController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Update(FlatDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -68,6 +68,7 @@ public class FlatController : BaseController
         }
     }
 
+    [Authorize]
     public IActionResult Edit(Guid Id)
     {
         try
@@ -85,6 +86,7 @@ public class FlatController : BaseController
         return View(INDEX, this.flatService.FindAll());
     }
 
+    [Authorize]
     public IActionResult Delete(FlatDto dto)
     {
         try

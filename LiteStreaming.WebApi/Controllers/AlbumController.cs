@@ -24,7 +24,7 @@ public class AlbumController : ControllerBaseTokensProps
     {
         try
         {
-            var result = this._albumService.FindAll(UserIdentity);
+            var result = this._albumService.FindAll();
             if (result == null)
                 return NotFound();
 

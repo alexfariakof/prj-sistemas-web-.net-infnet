@@ -73,10 +73,16 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
         return result;
     }
 
-    public override List<MerchantDto> FindAll(Guid userId)
+    public List<MerchantDto> FindAll(Guid userId)
     {
         var merchants = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
         var result = this.Mapper.Map<List<MerchantDto>>(merchants);
+        return result;
+    }
+
+    public override List<MerchantDto> FindAll()
+    {
+        var result = this.Mapper.Map<List<MerchantDto>>(this.Repository.GetAll());
         return result;
     }
 

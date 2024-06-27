@@ -2,29 +2,27 @@
 using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using LiteStreaming.Application.Abstractions;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class BandController : BaseController
+public class BandController : BaseController<BandDto>
 {
-    private readonly IBandService bandService;
-    public BandController(IBandService bandService)
+    private readonly IService<BandDto> bandService;
+    public BandController(IService<BandDto> bandService): base(bandService)
     {
         this.bandService = bandService;
     }
 
-    public IActionResult Index()
-    {
-        return View(this.bandService.FindAll());
-    }
-
+    [Authorize]
     public IActionResult Create()
     {
         return CreateView();
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Save(BandDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -47,6 +45,7 @@ public class BandController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Update(BandDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -68,6 +67,7 @@ public class BandController : BaseController
         }
     }
 
+    [Authorize]
     public IActionResult Edit(Guid Id)
     {
         try
@@ -85,6 +85,7 @@ public class BandController : BaseController
         return View(INDEX, this.bandService.FindAll());
     }
 
+    [Authorize]
     public IActionResult Delete(BandDto dto)
     {
         try

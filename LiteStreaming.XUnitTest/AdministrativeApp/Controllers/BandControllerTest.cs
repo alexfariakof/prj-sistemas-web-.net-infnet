@@ -1,22 +1,21 @@
 ﻿using LiteStreaming.AdministrativeApp.Models;
 using Application.Streaming.Dto;
-using Application.Streaming.Dto.Interfaces;
 using LiteStreaming.AdministrativeApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using LiteStreaming.XunitTest.__mock__.Admin;
-using Humanizer;
+using LiteStreaming.Application.Abstractions;
 
 namespace AdministrativeApp.Controllers;
 
 public class BandControllerTest
 {
-    private readonly Mock<IBandService> bandServiceMock;
+    private readonly Mock<IService<BandDto>> bandServiceMock;
     private readonly BandController bandController;
 
     public BandControllerTest()
     {
-        bandServiceMock = new Mock<IBandService>();
+        bandServiceMock = new Mock<IService<BandDto>>();
         bandController = new BandController(bandServiceMock.Object)
         {
             ControllerContext = new ControllerContext

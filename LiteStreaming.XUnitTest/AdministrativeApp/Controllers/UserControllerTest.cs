@@ -1,22 +1,22 @@
 ﻿using __mock__.Admin;
 using LiteStreaming.AdministrativeApp.Models;
 using Application.Administrative.Dto;
-using Application.Administrative.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using LiteStreaming.AdministrativeApp.Controllers;
 using LiteStreaming.XunitTest.__mock__.Admin;
+using LiteStreaming.Application.Abstractions;
 
 namespace AdministrativeApp.Controllers;
 
 public class UserControllerTest
 {
-    private readonly Mock<IAdministrativeAccountService> administrativeAccountServiceMock;
+    private readonly Mock<IService<AdministrativeAccountDto>> administrativeAccountServiceMock;
     private readonly UserController userController;
 
     public UserControllerTest()
     {
-        administrativeAccountServiceMock = new Mock<IAdministrativeAccountService>();
+        administrativeAccountServiceMock = new Mock<IService<AdministrativeAccountDto>>();
         userController = new UserController(administrativeAccountServiceMock.Object)
         {
             ControllerContext = new ControllerContext

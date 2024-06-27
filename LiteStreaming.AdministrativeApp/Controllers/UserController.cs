@@ -1,34 +1,34 @@
 ﻿using LiteStreaming.AdministrativeApp.Controllers.Abstractions;
 using LiteStreaming.AdministrativeApp.Models;
 using Application.Administrative.Dto;
-using Application.Administrative.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using LiteStreaming.Application.Abstractions;
 
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
-public class UserController : BaseController
+public class UserController : BaseController<AdministrativeAccountDto>
 {
-    private IAdministrativeAccountService administrativeAccountService;
+    private readonly IService<AdministrativeAccountDto> administrativeAccountService;
 
-    public UserController(IAdministrativeAccountService administrativeAccountService)
+    public UserController(IService<AdministrativeAccountDto> administrativeAccountService): base(administrativeAccountService)
     {
         this.administrativeAccountService = administrativeAccountService;
     }
 
-    [Authorize]
-    public IActionResult Index()
+    public override IActionResult Index()
     {
         return View(this.administrativeAccountService.FindAll());
     }
 
+    [Authorize(Roles = "Admin")]
     public IActionResult Create()
     {
         return CreateView();
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public IActionResult Save(AdministrativeAccountDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -51,7 +51,7 @@ public class UserController : BaseController
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public IActionResult Update(AdministrativeAccountDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -72,8 +72,8 @@ public class UserController : BaseController
             return EditView();
         }
     }
-       
-    [Authorize]
+
+    [Authorize(Roles = "Admin")]
     public IActionResult Edit(Guid Id)
     {
         try
@@ -92,7 +92,7 @@ public class UserController : BaseController
         return View(INDEX, this.administrativeAccountService.FindAll());
     }
 
-    [Authorize]
+    
     public IActionResult Delete(AdministrativeAccountDto dto)
     {
         try

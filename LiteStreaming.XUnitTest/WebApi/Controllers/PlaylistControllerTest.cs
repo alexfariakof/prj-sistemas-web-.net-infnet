@@ -22,7 +22,7 @@ public class PlaylistControllerTest
         var userId = Guid.NewGuid();
         var playlistList = MockPlaylist.Instance.GetListFaker(2);
         var expectedPlaylistDtoList = MockPlaylist.Instance.GetDtoListFromPlaylistList(playlistList);
-        mockPlaylistService.Setup(service => service.FindAll(It.IsAny<Guid>())).Returns(expectedPlaylistDtoList);
+        mockPlaylistService.Setup(service => service.FindAll()).Returns(expectedPlaylistDtoList);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
@@ -40,7 +40,7 @@ public class PlaylistControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockPlaylistService.Setup(service => service.FindAll(userId)).Returns(() => null);
+        mockPlaylistService.Setup(service => service.FindAll()).Returns(() => null);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
@@ -56,7 +56,7 @@ public class PlaylistControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockPlaylistService.Setup(service => service.FindAll(It.IsAny<Guid>())).Throws(new Exception("BadRequest_Erro_Message"));
+        mockPlaylistService.Setup(service => service.FindAll()).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(userId, controller);
 
         // Act

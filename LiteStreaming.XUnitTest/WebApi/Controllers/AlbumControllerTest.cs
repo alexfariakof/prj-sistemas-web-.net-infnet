@@ -22,7 +22,7 @@ public class AlbumControllerTest
         var userId = Guid.NewGuid();
         var albumList = MockAlbum.Instance.GetListFaker(2);
         var expectedAlbumDtoList = MockAlbum.Instance.GetDtoListFromAlbumList(albumList);
-        mockAlbumService.Setup(service => service.FindAll(It.IsAny<Guid>())).Returns(expectedAlbumDtoList);
+        mockAlbumService.Setup(service => service.FindAll()).Returns(expectedAlbumDtoList);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
@@ -41,7 +41,7 @@ public class AlbumControllerTest
         // Arrange        
         var userId = Guid.NewGuid();
         List<AlbumDto>? nullObject = null;
-        mockAlbumService.Setup(service => service.FindAll(userId)).Returns(nullObject);
+        mockAlbumService.Setup(service => service.FindAll()).Returns(nullObject);
         Usings.SetupBearerToken(userId, controller);
 
         // Act
@@ -57,7 +57,7 @@ public class AlbumControllerTest
     {
         // Arrange        
         var userId = Guid.NewGuid();
-        mockAlbumService.Setup(service => service.FindAll(It.IsAny<Guid>())).Throws(new Exception("BadRequest_Erro_Message"));
+        mockAlbumService.Setup(service => service.FindAll()).Throws(new Exception("BadRequest_Erro_Message"));
         Usings.SetupBearerToken(userId, controller);
 
         // Act

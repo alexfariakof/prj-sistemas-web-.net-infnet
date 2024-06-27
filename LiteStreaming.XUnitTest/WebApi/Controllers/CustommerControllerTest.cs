@@ -1,4 +1,5 @@
 ﻿using Application.Streaming.Dto;
+using Application.Streaming.Dto.Interfaces;
 using Domain.Account.ValueObject;
 using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +10,13 @@ namespace WebApi.Controllers;
 public class CustomerControllerTest
 {
     private Mock<IService<CustomerDto>> mockCustomerService;
-    private Mock<IService<PlaylistPersonalDto>> mockPlaylistPersonalService;
+    private Mock<IPlaylistPersonalService> mockPlaylistPersonalService;
 
     private CustomerController controller;
     public CustomerControllerTest()
     {
         mockCustomerService = new Mock<IService<CustomerDto>>();
-        mockPlaylistPersonalService = new Mock<IService<PlaylistPersonalDto>>();
+        mockPlaylistPersonalService = new Mock<IPlaylistPersonalService>();
         controller = new CustomerController(mockCustomerService.Object, mockPlaylistPersonalService.Object);
     }
 

@@ -26,7 +26,7 @@ public class GenreService : ServiceBase<GenreDto, Genre>, IService<GenreDto>, IG
         var result = Mapper.Map<GenreDto>(Genre);
         return result;
     }
-    public List<GenreDto> FindAll()
+    public override List<GenreDto> FindAll()
     {
         var Genres = Repository.GetAll().ToList();
         var result = Mapper.Map<List<GenreDto>>(Genres);

@@ -24,7 +24,7 @@ public class BandController : ControllerBaseTokensProps
     {
         try
         {
-            var result = this._bandService.FindAll(UserIdentity);
+            var result = this._bandService.FindAll();
             if (result == null)
                 return NotFound();
 

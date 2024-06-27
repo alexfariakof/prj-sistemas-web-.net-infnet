@@ -59,14 +59,14 @@ public class MusicServiceTest
     {
         // Arrange
         var musicDtos = MockMusic.Instance.GetDtoListFromMusicList(mockMusicList);
-        mapperMock.Setup(mapper => mapper.Map<List<MusicDto>>(It.IsAny<List<Music>>())).Returns(musicDtos);
+        mapperMock.Setup(mapper => mapper.Map<List<MusicDto>>(It.IsAny<IEnumerable<Music>>())).Returns(musicDtos);
 
         // Act
         var result = musicService.FindAll();
 
         // Assert
         musicRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
-        mapperMock.Verify(mapper => mapper.Map<List<MusicDto>>(It.IsAny<List<Music>>()), Times.Once);
+        mapperMock.Verify(mapper => mapper.Map<List<MusicDto>>(It.IsAny<IEnumerable<Music>>()), Times.Once);
 
         Assert.NotNull(result);
         Assert.Equal(mockMusicList.Count, result.Count);

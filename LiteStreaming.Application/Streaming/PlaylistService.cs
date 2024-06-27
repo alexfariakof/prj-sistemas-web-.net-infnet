@@ -27,9 +27,9 @@ public class PlaylistService : ServiceBase<PlaylistDto, Playlist>, IService<Play
         return result;
     }
 
-    public override List<PlaylistDto> FindAll(Guid userId)
+    public override List<PlaylistDto> FindAll()
     {
-        var Playlists = Repository.GetAll().ToList();
+        var Playlists = Repository.GetAll();
         var result = Mapper.Map<List<PlaylistDto>>(Playlists);
         return result;
     }
