@@ -24,11 +24,11 @@
                         string selected = band.Id == Model.Music.BandId? "selected='selected'" : "";
                         @if (band.Id == Model.Music.BandId)
                         {
-                            <option value="@band.Id" selected>@band.Name</option>
+                            <option value="@band?.Id" selected>@band?.Name</option>
                         }
                         else
                         {
-                            <option value="@band.Id">@band.Name</option>
+                            <option value="@band?.Id">@band?.Name</option>
                         }                        
                     }
                 </select>
@@ -42,14 +42,14 @@
                     <option value="" disabled>Selecione um Album</option>
                     @foreach (var album in Model.Albums)
                     {
-                        string selected = album.Id == Model.Music.AlbumId ? "selected='selected'" : "";
-                        @if (album.Id == Model.Music.AlbumId)
+                        string selected = album?.Id == Model.Music.AlbumId ? "selected='selected'" : "";
+                        @if (album?.Id == Model.Music.AlbumId)
                         {
-                            <option value="@album.Id" selected>@album.Name</option>
+                            <option value="@album?.Id" selected>@album?.Name</option>
                         }
                         else
                         {
-                            <option value="@album.Id">@album.Name</option>
+                            <option value="@album?.Id">@album?.Name</option>
                         }
                     }
                 </select>
@@ -63,14 +63,14 @@
                     <option value="" disabled >Selecione um Gênero</option>
                     @foreach (var genre in Model.Genres)
                     {
-                        string selected = genre.Id == Model.Music.GenreId ? "selected='selected'" : "";
+                        string selected = genre?.Id == Model.Music.GenreId ? "selected='selected'" : "";
                         @if (genre.Id == Model.Music.GenreId)
                         {
-                            <option value="@genre.Id" selected >@genre.Name</option>
+                            <option value="@genre?.Id" selected >@genre?.Name</option>
                         }
                         else
                         {
-                            <option value="@genre.Id">@genre.Name</option>
+                            <option value="@genre?.Id">@genre?.Name</option>
                         }
                     }
                 </select>

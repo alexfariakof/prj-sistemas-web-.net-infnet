@@ -20,7 +20,7 @@
                     <option value="" disabled selected >Selecione uma Banda</option>
                     @foreach (var band in Model.Bands)
                     {
-                        <option value="@band.Id">@band.Name</option>
+                        <option value="@band?.Id">@band?.Name</option>
                     }
                 </select>
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.BandId"></span>
@@ -33,7 +33,7 @@
                     <option value="" disabled selected>Selecione um Album</option>
                     @foreach (var album in Model.Albums)
                     {
-                        <option value="@album.Id">@album.Name</option>
+                        <option value="@album?.Id">@album?.Name</option>
                     }
                 </select>
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.AlbumId"></span>
@@ -46,7 +46,7 @@
                     <option value="" disabled selected>Selecione um Gênero</option>
                     @foreach (var genre in Model.Genres)
                     {
-                        <option value="@genre.Id">@genre.Name</option>
+                        <option value="@genre?.Id">@genre?.Name</option>
                     }
                 </select>
                 <span class="badge bg-secondary bg-opacity-50 text-danger" asp-validation-for="Music.GenreId"></span>
