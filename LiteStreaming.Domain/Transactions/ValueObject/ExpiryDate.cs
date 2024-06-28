@@ -21,11 +21,10 @@ public record ExpiryDate
         Year = value.Year;
     }
 
-    private ExpiryDate((int Month, int Year) values)
+    private ExpiryDate((int Month, int Year) values) : this(new DateTime(values.Year, values.Month, 1, 0, 0, 0, DateTimeKind.Local))
     {
         Month = values.Month;
         Year = values.Year;
-        Value = new DateTime(Year, Month, 1);
     }
 
     public string Formatted_ptBr()
