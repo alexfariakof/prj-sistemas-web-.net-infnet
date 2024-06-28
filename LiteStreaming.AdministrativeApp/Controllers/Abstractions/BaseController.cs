@@ -8,19 +8,34 @@ namespace LiteStreaming.AdministrativeApp.Controllers.Abstractions;
 
 public abstract class BaseController<T> : Controller where T : class, new()
 {
-    protected string CREATE { get;  } = "Create";
-    protected string INDEX { get; }  = "Index";
+    protected string INDEX { get; } = "Index";
+    protected string CREATE { get;  } = "Create";    
     protected string EDIT { get; }  = "Edit";
+    protected IService<T> Services { get; private set; }
 
-    private readonly IService<T> service;
     protected BaseController(IService<T> service) 
     {
-        this.service = service;    
+        this.Services = service;    
     }
 
     public virtual IActionResult Index()
     {
-        return View(this.service.FindAll());
+        return View(this.Services.FindAll());
+    }
+
+    protected IActionResult CreateView()
+    {
+        return View(CREATE);
+    }
+
+    protected IActionResult EditView()
+    {
+        return View(EDIT);
+    }
+
+    protected IActionResult RedirectToIndexView()
+    {
+        return RedirectToAction(INDEX);
     }
 
     public Guid UserId
@@ -48,20 +63,5 @@ public abstract class BaseController<T> : Controller where T : class, new()
             ViewBag.LoginError = "Usuário sem permissão de acesso.";
             HttpContext.SignOutAsync();
         }
-    }
-
-    protected IActionResult CreateView()
-    {
-        return View(CREATE);
-    }
-
-    protected IActionResult EditView()
-    {
-        return View(EDIT);
-    }
-
-    protected IActionResult RedirectToIndexView()
-    {
-        return RedirectToAction(INDEX);
     }
 }

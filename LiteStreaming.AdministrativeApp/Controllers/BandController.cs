@@ -9,10 +9,8 @@ namespace LiteStreaming.AdministrativeApp.Controllers;
 
 public class BandController : BaseController<BandDto>
 {
-    private readonly IService<BandDto> bandService;
-    public BandController(IService<BandDto> bandService): base(bandService)
+    public BandController(IService<BandDto> services): base(services)
     {
-        this.bandService = bandService;
     }
 
     [Authorize]
@@ -31,7 +29,7 @@ public class BandController : BaseController<BandDto>
         try
         {
             dto.UsuarioId = UserId;
-            bandService.Create(dto);
+            this.Services.Create(dto);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -54,7 +52,7 @@ public class BandController : BaseController<BandDto>
         try
         {
             dto.UsuarioId = UserId;
-            bandService.Update(dto);
+            this.Services.Update(dto);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -72,7 +70,7 @@ public class BandController : BaseController<BandDto>
     {
         try
         {
-            var result = this.bandService.FindById(Id);
+            var result = this.Services.FindById(Id);
             return View(result);
         }
         catch (Exception ex)
@@ -82,7 +80,7 @@ public class BandController : BaseController<BandDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados desta banda.");
         }
-        return View(INDEX, this.bandService.FindAll());
+        return View(INDEX, this.Services.FindAll());
     }
 
     [Authorize]
@@ -91,7 +89,7 @@ public class BandController : BaseController<BandDto>
         try
         {
             dto.UsuarioId = UserId;
-            var result = this.bandService.Delete(dto);
+            var result = this.Services.Delete(dto);
             if (result)
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Banda { dto?.Name } excluída.");
         }
@@ -103,6 +101,6 @@ public class BandController : BaseController<BandDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir a banda { dto?.Name }.");
         }
-        return View(INDEX, this.bandService.FindAll());
+        return View(INDEX, this.Services.FindAll());
     }
 }

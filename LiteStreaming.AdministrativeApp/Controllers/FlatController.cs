@@ -9,10 +9,8 @@ namespace LiteStreaming.AdministrativeApp.Controllers;
 
 public class FlatController : BaseController<FlatDto>
 {
-    private readonly IService<FlatDto> flatService;
-    public FlatController(IService<FlatDto> flatService): base(flatService)
+    public FlatController(IService<FlatDto> services): base(services)
     {
-        this.flatService = flatService;
     }
 
 
@@ -32,7 +30,7 @@ public class FlatController : BaseController<FlatDto>
         try
         {
             dto.UsuarioId = UserId;
-            flatService.Create(dto);
+            this.Services.Create(dto);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -55,7 +53,7 @@ public class FlatController : BaseController<FlatDto>
         try
         {
             dto.UsuarioId = UserId;
-            flatService.Update(dto);
+            this.Services.Update(dto);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -73,7 +71,7 @@ public class FlatController : BaseController<FlatDto>
     {
         try
         {
-            var result = this.flatService.FindById(Id);
+            var result = this.Services.FindById(Id);
             return View(result);
         }
         catch (Exception ex)
@@ -83,7 +81,7 @@ public class FlatController : BaseController<FlatDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste plano.");
         }
-        return View(INDEX, this.flatService.FindAll());
+        return View(INDEX, this.Services.FindAll());
     }
 
     [Authorize]
@@ -92,7 +90,7 @@ public class FlatController : BaseController<FlatDto>
         try
         {
             dto.UsuarioId = UserId;
-            var result = this.flatService.Delete(dto);
+            var result = this.Services.Delete(dto);
             if (result)
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Plano { dto?.Name } excluído.");
         }
@@ -104,6 +102,6 @@ public class FlatController : BaseController<FlatDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o plano { dto?.Name }.");
         }
-        return View(INDEX, this.flatService.FindAll());
+        return View(INDEX, this.Services.FindAll());
     }
 }
