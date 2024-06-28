@@ -5,6 +5,8 @@ import { AlbumComponent } from './pages/album/album.component';
 import { MusicComponent } from './pages/musics/musics.component';
 import { MyplaylistComponent } from './pages/myplaylist/myplaylist.component';
 import { PlaylistComponent } from './pages/playlist/playlist.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { PageAccessDeniedComponent } from './pages/page-access-denied/page-access-denied.component';
 
 export const routes: Routes = [
     { path: '',  pathMatch: 'full', redirectTo: '' },
@@ -19,6 +21,8 @@ export const routes: Routes = [
     { path: 'album', component: AlbumComponent},
     { path: 'album/:albumId', component: AlbumComponent},
     { path: 'music/:musicId', component: MusicComponent},
+    { path: 'access-denied', component: PageAccessDeniedComponent},
+    { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
