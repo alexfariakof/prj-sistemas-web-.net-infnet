@@ -60,7 +60,7 @@ public class BandController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Create([FromBody] BandDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -81,7 +81,7 @@ public class BandController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(BandDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Update(BandDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -103,7 +103,7 @@ public class BandController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Delete(BandDto dto)
     {
         if (ModelState is { IsValid: false })

@@ -48,7 +48,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [AllowAnonymous]
     public IActionResult Create([FromBody] CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -69,7 +69,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Update(CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -91,7 +91,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Delete(CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -113,7 +113,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(List<PlaylistPersonalDto>))]
     [ProducesResponseType((401))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize("Bearer", Roles = "Admin, Customer, Merchant")]
     public IActionResult FindAllPlaylist()
     {
         try
@@ -131,7 +131,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
     [ProducesResponseType((401))]
     [ProducesResponseType((403))]
-    [Authorize("Bearer", Roles = "Customer")]
+    [Authorize("Bearer", Roles = "Admin, Customer, Merchant")]
     public IActionResult FindByIdPlaylist([FromRoute] Guid playlistId)
     {
         try

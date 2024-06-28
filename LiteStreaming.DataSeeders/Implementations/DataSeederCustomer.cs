@@ -19,19 +19,18 @@ public class DataSeederCustomer : IDataSeeder
     {
         try
         {
-
             var customer = new Customer
             {
-                Name = "Free User Test",
+                Name = "Administrator",
                 Birth = new DateTime(1990, 1, 1),
                 CPF = "123.456.789-01",
                 Phone = new Phone { Number = "+5521993879312" },
                 User = new User()
                 {
-                    Login = new Login { Email = "free@user.com", Password = "12345T!" },
-                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
+                    Login = new Login { Email = "user@admin.com", Password = "12345T!" },
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Admin)).First()
                 },
-                Flat = _context.Flat.First(f => f.Name ==  "Free Flat") ?? new()
+                Flat = _context.Flat.First(f => f.Name == "Free Flat") ?? new()
             };
 
             var address = new Address()
@@ -48,6 +47,45 @@ public class DataSeederCustomer : IDataSeeder
             customer.AddAdress(address);
 
             var card = new Card()
+            {
+                Number = "5564 7434 7840 3985",
+                Validate = new ExpiryDate(new DateTime(2099, 1, 1)),
+                CVV = "388",
+                CardBrand = _context.CardBrand.Where(c => c.Id == (int)CreditCardBrand.IdentifyCard("5564 7434 7840 3985").CardBrand).FirstOrDefault(),
+                Active = true,
+                Limit = 1000m
+            };
+            customer.AddCard(card);
+            _context.Add(customer);
+
+            customer = new Customer
+            {
+                Name = "Free User Test",
+                Birth = new DateTime(1990, 1, 1),
+                CPF = "123.456.789-01",
+                Phone = new Phone { Number = "+5521993879312" },
+                User = new User()
+                {
+                    Login = new Login { Email = "free@user.com", Password = "12345T!" },
+                    PerfilType = _context.PerfilUser.Where(u => u.Id.Equals((int)PerfilUser.UserType.Customer)).First()
+                },
+                Flat = _context.Flat.First(f => f.Name ==  "Free Flat") ?? new()
+            };
+
+            address = new Address()
+            {
+                Zipcode = "12345-678",
+                Street = "Free Street",
+                Number = "123",
+                Neighborhood = "Free",
+                City = "FreeCityville",
+                State = "ST",
+                Complement = "Apt 456",
+                Country = "FreeCountryland"
+            };
+            customer.AddAdress(address);
+
+            card = new Card()
             {
                 Number = "5564 7434 7840 3985",
                 Validate = new ExpiryDate(new DateTime(2099, 1, 1)),
