@@ -9,10 +9,8 @@ namespace LiteStreaming.AdministrativeApp.Controllers;
 
 public class PlaylistController : BaseController<PlaylistDto>
 {
-    private readonly IService<PlaylistDto> playlistService;
     public PlaylistController(IService<PlaylistDto> playlistService): base(playlistService)
     {
-        this.playlistService = playlistService;
     }
 
     [Authorize]
@@ -31,7 +29,7 @@ public class PlaylistController : BaseController<PlaylistDto>
         try
         {
             viewModel.UsuarioId = UserId;
-            playlistService.Create(viewModel);
+            this.Services.Create(viewModel);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -54,7 +52,7 @@ public class PlaylistController : BaseController<PlaylistDto>
         try
         {
             viewModel.UsuarioId = UserId;
-            playlistService.Update(viewModel);
+            this.Services.Update(viewModel);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -72,7 +70,7 @@ public class PlaylistController : BaseController<PlaylistDto>
     {
         try
         {
-            var viewModel = this.playlistService.FindById(Id);
+            var viewModel = this.Services.FindById(Id);
             return View(viewModel);
         }
         catch (Exception ex)
@@ -82,7 +80,7 @@ public class PlaylistController : BaseController<PlaylistDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados desta playlista.");
         }
-        return View(INDEX, this.playlistService.FindAll());
+        return View(INDEX, this.Services.FindAll());
     }
 
     [Authorize]
@@ -91,7 +89,7 @@ public class PlaylistController : BaseController<PlaylistDto>
         try
         {
             dto.UsuarioId = UserId;
-            var result = this.playlistService.Delete(dto);
+            var result = this.Services.Delete(dto);
             if (result)
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Playlista { dto?.Name } excluída.");
         }
@@ -103,6 +101,6 @@ public class PlaylistController : BaseController<PlaylistDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir a playlista {dto?.Name }.");
         }
-        return View(INDEX, this.playlistService.FindAll());
+        return View(INDEX, this.Services.FindAll());
     }
 }

@@ -8,15 +8,13 @@ namespace LiteStreaming.AdministrativeApp.Controllers;
 
 public class GenreController : BaseController<GenreDto>
 {
-    private readonly IService<GenreDto> genreService;
     public GenreController(IService<GenreDto> genreService): base(genreService)
     {
-        this.genreService = genreService;
     }
 
     public override IActionResult Index()
     {
-        return View(this.genreService.FindAll());
+        return View(this.Services.FindAll());
     }
 
     public IActionResult Create()
@@ -33,7 +31,7 @@ public class GenreController : BaseController<GenreDto>
         try
         {
             dto.UsuarioId = UserId;
-            genreService.Create(dto);
+            this.Services.Create(dto);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -55,7 +53,7 @@ public class GenreController : BaseController<GenreDto>
         try
         {
             dto.UsuarioId = UserId;
-            genreService.Update(dto);
+            this.Services.Update(dto);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -72,7 +70,7 @@ public class GenreController : BaseController<GenreDto>
     {
         try
         {
-            var result = this.genreService.FindById(Id);
+            var result = this.Services.FindById(Id);
             return View(result);
         }
         catch (Exception ex)
@@ -83,7 +81,7 @@ public class GenreController : BaseController<GenreDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste gênero.");
         }
-        return View(INDEX, this.genreService.FindAll());
+        return View(INDEX, this.Services.FindAll());
     }
 
     public IActionResult Delete(GenreDto dto)
@@ -91,7 +89,7 @@ public class GenreController : BaseController<GenreDto>
         try
         {
             dto.UsuarioId = UserId;
-            var result = this.genreService.Delete(dto);
+            var result = this.Services.Delete(dto);
             if (result)
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Gênero {dto?.Name} excluído.");
         }
@@ -103,6 +101,6 @@ public class GenreController : BaseController<GenreDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o gênero {dto?.Name}.");
         }
-        return View(INDEX, this.genreService.FindAll());
+        return View(INDEX, this.Services.FindAll());
     }
 } 
