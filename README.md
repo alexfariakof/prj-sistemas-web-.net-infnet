@@ -1,4 +1,4 @@
-# Sistemas Web com ASP .NET 
+# Projeto Persistência e MVC [24E2_2] 
 
 ### O objetivo é apresentar conceitos avançados do desenvolvimento de aplicações web utilizando o ASP.NET, que vão desde o projeto de aplicações web para serem utilizadas no mundo real, passando pelo acesso a dados utilizando o Entity Framework, incluindo toda a preocupação com segurança, até a sua distribuição.
 
