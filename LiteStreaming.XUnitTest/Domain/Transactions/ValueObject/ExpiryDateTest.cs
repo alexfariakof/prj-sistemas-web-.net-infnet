@@ -34,21 +34,6 @@ public class ExpiryDateTests
     }
 
     [Fact]
-    public void ConstructorWithTuple_ShouldInitializeCorrectly()
-    {
-        // Arrange
-        var values = (Month: 6, Year: 2024);
-
-        // Act
-        var expiryDate = new ExpiryDate(values);
-
-        // Assert
-        Assert.Equal(6, expiryDate.Month);
-        Assert.Equal(2024, expiryDate.Year);
-        Assert.Equal(new DateTime(2024, 6, 1), expiryDate.Value);
-    }
-
-    [Fact]
     public async Task Formatted_ptBr_ShouldReturnCorrectFormat()
     {
         // Arrange

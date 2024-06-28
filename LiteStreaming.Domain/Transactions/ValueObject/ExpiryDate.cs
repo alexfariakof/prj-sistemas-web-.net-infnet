@@ -21,7 +21,7 @@ public record ExpiryDate
         Year = value.Year;
     }
 
-    public ExpiryDate((int Month, int Year) values)
+    private ExpiryDate((int Month, int Year) values)
     {
         Month = values.Month;
         Year = values.Year;
