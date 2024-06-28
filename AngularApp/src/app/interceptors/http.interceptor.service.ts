@@ -3,32 +3,34 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router, NavigationExtras } from '@angular/router';
 import { LoadingComponent } from '../components';
+
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
   private activeRequests: number = 0;
   private isModalOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal, private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.showLoader();
-    let  modifiedRequest: any;
-    if (request.url === 'http://localhost:5055/connect/token'){
+    let modifiedRequest: any;
+    if (request.url === 'http://localhost:5055/connect/token') {
       modifiedRequest = request.clone({ url: `${request.url}` });
-    }
-    else{
+    } else {
       modifiedRequest = request.clone({
-        url:  `${request.url}`,
+        url: `${request.url}`,
         setHeaders: {
           Authorization: `Bearer ${sessionStorage.getItem('@token')}`
         }
       });
-
     }
     return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log(() => error.message);
+        if (error.status === 403) {
+          this.router.navigate(['access-denied']);
+        }
         return throwError(() => error);
       }),
       finalize(() => this.hideLoader())
