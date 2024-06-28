@@ -43,7 +43,7 @@ describe('Unit Test AuthService', () => {
         token_type: 'Bearer'
       };
 
-      service.signIn(loginData).subscribe((response: any) => {
+      service.signInIdentityServerSTS(loginData).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
       const expectedUrl = 'http://localhost:5055/connect/token';
