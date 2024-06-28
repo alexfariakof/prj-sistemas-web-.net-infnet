@@ -93,7 +93,7 @@ builder.Services.AddSigningConfigurations(builder.Configuration);
 // Add AutoAuthConfigurations Configuratons
 builder.Services.AddAutoAuthenticationConfigurations();
 
-// Autorization Configuratons Identity Server STS
+// Autorization Configurations Identity Server STS
 //builder.Services.AddIdentityServerConfigurations(builder.Configuration);
 
 // AutoMapper
@@ -109,8 +109,6 @@ builder.Services.AddServicesWebApiApp();
 builder.Services.AddServicesCryptography(builder.Configuration);
 
 var app = builder.Build();
-
-
 
 if (app.Environment.IsStaging())
 {    
@@ -129,9 +127,25 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Enviro
 else
     app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCertificateForwarding();
-app.MapControllers();
+
+if (app.Environment.IsStaging())
+{
+    app.UseAuthentication();
+    app.UseRouting()
+    .UseAuthorization()
+    .UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+        endpoints.MapFallbackToFile("index.html");
+    });
+}
+else
+{
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseCertificateForwarding();
+    app.MapControllers();
+}
+
 
 app.Run();

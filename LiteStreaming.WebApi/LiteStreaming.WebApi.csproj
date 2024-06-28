@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
@@ -67,11 +67,11 @@
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
 		<Exec WorkingDirectory="$(SpaRoot)\" Command="npm install" />
-		<Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build -- --configuration production" />
+		<Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build" />
 
 		<!-- Include the newly-built files in the publish output -->
 		<ItemGroup>
-			<DistFiles Include="$(SpaRoot)\dist\angular-app\**; $(SpaRoot)\dist-server\angular-app\**" />
+			<DistFiles Include="$(SpaRoot)\dist\**; $(SpaRoot)\dist-server\**" />
 			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
 				<RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
 				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -93,10 +93,6 @@
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-	</ItemGroup>
-	
-	<ItemGroup>
-		<Folder Include="wwwroot\" />
 	</ItemGroup>
 	
 	<ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="https://chat-agents.lobehub.com/schema/lobeAgentSchema_v1.json" /></VisualStudio></ProjectExtensions>
