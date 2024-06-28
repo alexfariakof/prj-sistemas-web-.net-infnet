@@ -1,8 +1,14 @@
 ### MySqlSever Add Migrations 
 
+
+## É nesseráro setar a variavel de ambiente para Migratiosn antes de Usar o Migrations 
+## Set-Item -Path Env:DOTNET_ENVIRONMENT -Value "Migrations"
+
+
 ## Migrations.Application
 dotnet ef migrations add Initial -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
 dotnet ef migrations add Update-Databae-Context -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
+dotnet ef migrations add Convert-PKs-Type-GUID-to-Binary -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
 dotnet ef database update -c MySqlServerContext -p ./Migrations.MySqlServer/Migrations.MySqlServer.csproj -s ./LiteStreaming.WebApi
 
 ## Migrations.Administrative

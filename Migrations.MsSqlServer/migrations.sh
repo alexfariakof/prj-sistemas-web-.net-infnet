@@ -1,9 +1,11 @@
 ### MsSqlSever Add Migrations 
 
+## É nesseráro setar a variavel de ambiente para Migratiosn antes de Usar o Migrations 
+## Set-Item -Path Env:DOTNET_ENVIRONMENT -Value "Migrations"
+
 ## Migrations.Application
 dotnet ef migrations add Initial -c MsSqlServerContext -p ./Migrations.MsSqlServer/Migrations.MsSqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
 dotnet ef migrations add Update-Configurations-Perfil -c MsSqlServerContext -p ./Migrations.MsSqlServer/Migrations.MsSqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
-
 dotnet ef migrations add Update-Database-Context -c MsSqlServerContext -p ./Migrations.MsSqlServer/Migrations.MsSqlServer.csproj -s ./LiteStreaming.WebApi -o Migrations.Application
 
 dotnet ef database update -c MsSqlServerContext -p ./Migrations.MsSqlServer/Migrations.MsSqlServer.csproj -s ./LiteStreaming.WebApi
