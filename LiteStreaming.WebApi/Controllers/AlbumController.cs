@@ -41,7 +41,7 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles ="Customer")]
     public IActionResult FindById([FromRoute] Guid albumId)
     {
         try
@@ -62,7 +62,7 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(AlbumDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult Create([FromBody] AlbumDto dto)
     {
 
@@ -84,7 +84,7 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(AlbumDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult Update(AlbumDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -106,7 +106,7 @@ public class AlbumController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult Delete(AlbumDto dto)
     {
         if (ModelState is { IsValid: false })

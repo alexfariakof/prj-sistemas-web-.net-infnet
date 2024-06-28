@@ -2,23 +2,24 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Notifications;
 
-namespace Repository.Mapping.Notifications
+namespace Repository.Mapping.Notifications;
+public class NotificationMap : IEntityTypeConfiguration<Notification>
 {
-    public  class NotificationMap : IEntityTypeConfiguration<Notification>
+    public void Configure(EntityTypeBuilder<Notification> builder)
     {
-        public void Configure(EntityTypeBuilder<Notification> builder)
-        {
-            builder.ToTable(nameof(Notification));
+        builder.ToTable(nameof(Notification));
+        builder.Property(notification => notification.Id).HasColumnType("binary(16)")
+            .HasConversion(
+            v => v.ToByteArray(),
+            v => new Guid(v)
+            ).ValueGeneratedOnAdd();
+        builder.HasKey(notification => notification.Id);
+        builder.Property(notification => notification.Title).IsRequired().HasMaxLength(150);
+        builder.Property(notification => notification.Message).IsRequired().HasMaxLength(250);
+        builder.Property(notification => notification.DtNotification).IsRequired();
+        builder.Property(notification => notification.NotificationType).IsRequired();
 
-            builder.HasKey(notification => notification.Id);
-            builder.Property(notification => notification.Id).ValueGeneratedOnAdd();
-            builder.Property(notification => notification.Title).IsRequired().HasMaxLength(150);
-            builder.Property(notification => notification.Message).IsRequired().HasMaxLength(250);
-            builder.Property(notification => notification.DtNotification).IsRequired();
-            builder.Property(notification => notification.NotificationType).IsRequired();
-
-            builder.HasOne(notification => notification.Destination).WithMany(customer => customer.Notifications).IsRequired().OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(notification => notification.Sender).WithMany().IsRequired(false);
-        }
+        builder.HasOne(notification => notification.Destination).WithMany(customer => customer.Notifications).IsRequired().OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(notification => notification.Sender).WithMany().IsRequired(false);
     }
 }

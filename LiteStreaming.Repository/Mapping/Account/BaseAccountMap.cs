@@ -7,9 +7,14 @@ public abstract class BaseAccountMap<T> : IEntityTypeConfiguration<T> where T : 
 {
     public void Configure(EntityTypeBuilder<T> builder)
     {
-        builder.ToTable(typeof(T).Name);        
+        builder.ToTable(typeof(T).Name);
+        builder.Property(account => account.Id).HasColumnType("binary(16)")
+        .HasConversion(
+            v => v.ToByteArray(),
+            v => new Guid(v)
+        )
+        .ValueGeneratedOnAdd();
         builder.HasKey(account => account.Id);
-        builder.Property(account => account.Id).ValueGeneratedOnAdd();
         builder.Property(account => account.Name).IsRequired().HasMaxLength(100);
         builder.HasOne(account => account.User).WithMany().OnDelete(DeleteBehavior.NoAction);
         ConfigureCustom(builder);

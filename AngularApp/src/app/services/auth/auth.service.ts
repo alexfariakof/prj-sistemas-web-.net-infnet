@@ -8,11 +8,12 @@ import { Login } from '../../model';
 })
 
 export class AuthService {
-  private routeUrl:string = 'http://localhost:5055/connect/token';
+  private routeUrl: string = 'api/auth';
+  private routeSTSSeverUrl: string = 'http://localhost:5055/connect/token';
 
   constructor(private httpClient: HttpClient) { }
 
-  signIn(login: Login): Observable<any> {
+  signInIdentityServerSTS(login: Login): Observable<any> {
     let body = new URLSearchParams();
     body.set("username", login.email);
     body.set("password", login.password);
@@ -25,6 +26,10 @@ export class AuthService {
        headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
      }
 
-    return this.httpClient.post(`${ this.routeUrl }`, body.toString(), options);
+    return this.httpClient.post(`${this.routeSTSSeverUrl }`, body.toString(), options);
+  }
+
+  signIn(login: Login): Observable<any> {
+    return this.httpClient.post<Login>(`${ this.routeUrl }`, login);
   }
 }

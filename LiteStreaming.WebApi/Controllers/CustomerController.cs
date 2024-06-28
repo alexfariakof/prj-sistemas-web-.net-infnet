@@ -26,7 +26,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult FindById()
     {
         try
@@ -48,7 +48,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult Create([FromBody] CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -69,7 +69,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(CustomerDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult Update(CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -91,7 +91,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult Delete(CustomerDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -113,7 +113,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(List<PlaylistPersonalDto>))]
     [ProducesResponseType((401))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult FindAllPlaylist()
     {
         try
@@ -131,7 +131,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
     [ProducesResponseType((401))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult FindByIdPlaylist([FromRoute] Guid playlistId)
     {
         try
@@ -149,7 +149,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult CreatePlaylist([FromBody] PlaylistPersonalDto dto)
     {
         var validationResults = new List<ValidationResult>();
@@ -176,7 +176,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(PlaylistPersonalDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
 
     public IActionResult UpdatePlaylist(PlaylistPersonalDto dto)
     {
@@ -206,7 +206,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult DeletePlaylist([FromRoute] Guid playlistId)
     {
         var dto = new PlaylistPersonalDto { Id = playlistId };
@@ -235,7 +235,7 @@ public class CustomerController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Customer")]
     public IActionResult DeleteMusicFromPlaylist([FromRoute] Guid playlistId, [FromRoute] Guid musicId)
     {
         var dto = new PlaylistPersonalDto { Id = playlistId, Musics = { new MusicDto { Id = musicId } } };

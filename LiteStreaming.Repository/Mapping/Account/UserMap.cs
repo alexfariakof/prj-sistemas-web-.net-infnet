@@ -8,10 +8,15 @@ public class UserMap : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("User"); 
+        builder.ToTable("User");
+        builder.Property(user => user.Id).HasColumnType("binary(16)")
+          .HasConversion(
+             v => v.ToByteArray(),
+             v => new Guid(v)
+         )
+         .ValueGeneratedOnAdd();
         builder.HasKey(user => user.Id);
-        builder.Property(user => user.Id).ValueGeneratedOnAdd();
-        builder.Property(user => user.DtCreated).ValueGeneratedOnAdd();                
+        builder.Property(user => user.DtCreated).ValueGeneratedOnAdd();
         builder.HasOne(user => user.PerfilType).WithMany(perfilType => perfilType.Users).IsRequired();
         builder.OwnsOne<Login>(user => user.Login, dictonary =>
         {

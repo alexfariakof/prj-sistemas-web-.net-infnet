@@ -21,7 +21,7 @@ public class MerchantController : ControllerBaseTokensProps
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((404), Type = null)]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Merchant")]
     public IActionResult FindById()
     {
         try
@@ -43,7 +43,7 @@ public class MerchantController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MerchantDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Merchant")]
     public IActionResult Create([FromBody] MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -64,7 +64,7 @@ public class MerchantController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(MerchantDto))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Merchant")]
     public IActionResult Update(MerchantDto dto)
     {
         if (ModelState is { IsValid: false })
@@ -87,7 +87,7 @@ public class MerchantController : ControllerBaseTokensProps
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
     [ProducesResponseType((403))]
-    [Authorize]
+    [Authorize("Bearer", Roles = "Merchant")]
     public IActionResult Delete(MerchantDto dto)
     {
         if (ModelState is { IsValid: false })

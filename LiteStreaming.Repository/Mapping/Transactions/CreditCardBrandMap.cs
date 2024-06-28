@@ -8,7 +8,6 @@ public class CreditCardBrandMap : IEntityTypeConfiguration<CreditCardBrand>
     public void Configure(EntityTypeBuilder<CreditCardBrand> builder)
     {
         builder.ToTable("CardBrand");
-
         builder.HasKey(cardbrand => cardbrand.Id);
         builder.Property(cardbrand => cardbrand.Id).IsRequired().HasConversion<int>();
         builder.Property(cardbrand => cardbrand.Name).IsRequired();                       

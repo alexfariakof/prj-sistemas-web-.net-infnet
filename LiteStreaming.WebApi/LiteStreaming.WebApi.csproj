@@ -98,5 +98,7 @@
 	<ItemGroup>
 		<Folder Include="wwwroot\" />
 	</ItemGroup>
+	
+	<ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="https://chat-agents.lobehub.com/schema/lobeAgentSchema_v1.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -7,10 +7,14 @@ public class GenreMap : IEntityTypeConfiguration<Genre>
 {
     public void Configure(EntityTypeBuilder<Genre> builder)
     {
-        builder.ToTable("Genre");
-
+        builder.ToTable("Genre");        
+        builder.Property(genre => genre.Id).HasColumnType("binary(16)")
+        .HasConversion(
+            v => v.ToByteArray(),
+            v => new Guid(v)
+        )
+        .ValueGeneratedOnAdd();
         builder.HasKey(genre => genre.Id);
-        builder.Property(genre => genre.Id).ValueGeneratedOnAdd();
         builder.Property(genre => genre.Name).IsRequired().HasMaxLength(50);
     }
 }

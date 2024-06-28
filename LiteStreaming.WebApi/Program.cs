@@ -75,6 +75,11 @@ else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
+else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
+{
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+}
+
 else
 {
     builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
@@ -86,10 +91,10 @@ else
 builder.Services.AddSigningConfigurations(builder.Configuration); 
 
 // Add AutoAuthConfigurations Configuratons
-//builder.Services.AddAutoAuthConfigurations(builder.Configuration);
+builder.Services.AddAutoAuthenticationConfigurations();
 
 // Autorization Configuratons Identity Server STS
-builder.Services.AddIdentityServerConfigurations(builder.Configuration);
+//builder.Services.AddIdentityServerConfigurations(builder.Configuration);
 
 // AutoMapper
 builder.Services.AddAutoMapperWebApiApp();
@@ -115,7 +120,7 @@ if (app.Environment.IsStaging())
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.EnvironmentName.Equals("MySqlServer"))
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });

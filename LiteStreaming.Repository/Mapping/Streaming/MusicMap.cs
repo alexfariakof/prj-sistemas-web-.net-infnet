@@ -16,9 +16,13 @@ public class MusicMap : IEntityTypeConfiguration<Music>
     public void Configure(EntityTypeBuilder<Music> builder)
     {
         builder.ToTable("Music");
-
+        builder.Property(music => music.Id).HasColumnType("binary(16)")
+        .HasConversion(
+            v => v.ToByteArray(),
+            v => new Guid(v)
+        )
+        .ValueGeneratedOnAdd();
         builder.HasKey(music => music.Id);
-        builder.Property(music => music.Id).ValueGeneratedOnAdd();
         builder.Property(music => music.Name).IsRequired().HasMaxLength(50);
         builder.Property(music => music.Url).IsRequired();
 
