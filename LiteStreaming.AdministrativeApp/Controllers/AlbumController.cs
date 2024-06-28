@@ -100,7 +100,7 @@ public class AlbumController : BaseController<AlbumDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste álbum.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return IndexView();
     }
 
     [Authorize]
@@ -121,6 +121,6 @@ public class AlbumController : BaseController<AlbumDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o álbum { dto?.Name }.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return IndexView();
     }
 }

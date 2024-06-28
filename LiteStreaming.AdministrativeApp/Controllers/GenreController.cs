@@ -81,7 +81,7 @@ public class GenreController : BaseController<GenreDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste gênero.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return IndexView();
     }
 
     public IActionResult Delete(GenreDto dto)
@@ -101,6 +101,6 @@ public class GenreController : BaseController<GenreDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o gênero {dto?.Name}.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return IndexView();
     }
 } 

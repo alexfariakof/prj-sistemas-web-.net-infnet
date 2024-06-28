@@ -80,7 +80,7 @@ public class BandController : BaseController<BandDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados desta banda.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return IndexView();
     }
 
     [Authorize]
@@ -101,6 +101,6 @@ public class BandController : BaseController<BandDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir a banda { dto?.Name }.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return IndexView();
     }
 }

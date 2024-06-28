@@ -87,7 +87,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste usuário.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return IndexView();
     }
 
     
@@ -107,7 +107,6 @@ public class UserController : BaseController<AdministrativeAccountDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o usuário { dto?.Name }.");
         }
-        return View(INDEX, this.Services.FindAll());
-
+        return IndexView();
     }
 }

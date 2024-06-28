@@ -23,6 +23,11 @@ public abstract class BaseController<T> : Controller where T : class, new()
         return View(this.Services.FindAll());
     }
 
+    protected IActionResult IndexView()
+    {
+        return View(INDEX, this.Services.FindAll());
+    }
+
     protected IActionResult CreateView()
     {
         return View(CREATE);
