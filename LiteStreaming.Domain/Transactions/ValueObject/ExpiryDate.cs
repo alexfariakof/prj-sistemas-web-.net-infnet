@@ -33,4 +33,3 @@ public record ExpiryDate
         return $"{Value.Month:D2}/{Value.Year % 100:D2}";
     }
 }
-
