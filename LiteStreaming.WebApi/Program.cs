@@ -64,17 +64,22 @@ builder.Services.AddSwaggerGen(c => {
 builder.Services.AddDataSeeders();
 
 if (builder.Environment.IsStaging())
-{    
-    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));    
+{
+    builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
 }
 else if (builder.Environment.IsDevelopment())
-{    
+{
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
+else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
+{
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+}
+
 else
 {
     builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
@@ -83,13 +88,13 @@ else
 }
 
 //Add SigningConfigurations Configuratons
-builder.Services.AddSigningConfigurations(builder.Configuration); 
+builder.Services.AddSigningConfigurations(builder.Configuration);
 
 // Add AutoAuthConfigurations Configuratons
-//builder.Services.AddAutoAuthConfigurations(builder.Configuration);
+builder.Services.AddAutoAuthenticationConfigurations();
 
-// Autorization Configuratons Identity Server STS
-builder.Services.AddIdentityServerConfigurations(builder.Configuration);
+// Autorization Configurations Identity Server STS
+//builder.Services.AddIdentityServerConfigurations(builder.Configuration);
 
 // AutoMapper
 builder.Services.AddAutoMapperWebApiApp();
@@ -105,17 +110,15 @@ builder.Services.AddServicesCryptography(builder.Configuration);
 
 var app = builder.Build();
 
-
-
 if (app.Environment.IsStaging())
-{    
+{
     app.Urls.Add("http://0.0.0.0:5146");
 }
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.EnvironmentName.Equals("MySqlServer"))
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} {appVersion}"); });
@@ -124,9 +127,25 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 else
     app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCertificateForwarding();
-app.MapControllers();
+
+if (app.Environment.IsStaging())
+{
+    app.UseAuthentication();
+    app.UseRouting()
+    .UseAuthorization()
+    .UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+        endpoints.MapFallbackToFile("index.html");
+    });
+}
+else
+{
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseCertificateForwarding();
+    app.MapControllers();
+}
+
 
 app.Run();
