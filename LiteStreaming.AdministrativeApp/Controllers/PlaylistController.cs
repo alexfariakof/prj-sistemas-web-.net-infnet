@@ -26,8 +26,8 @@ public class PlaylistController : BaseController<PlaylistDto>
         }
         catch (Exception ex)
         {
-            if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+            if (ex is ArgumentException argSaveEx)
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argSaveEx.Message);
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados da playlista.");
             return Create();
@@ -49,8 +49,8 @@ public class PlaylistController : BaseController<PlaylistDto>
         }
         catch (Exception ex)
         {
-            if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+            if (ex is ArgumentException argUpdateEx)
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argUpdateEx.Message);
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar a playlista { viewModel?.Name }.");
             return EditView();
@@ -67,8 +67,8 @@ public class PlaylistController : BaseController<PlaylistDto>
         }
         catch (Exception ex)
         {
-            if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+            if (ex is ArgumentException argEditEx)
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEditEx.Message);
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados desta playlista.");
         }
@@ -87,8 +87,8 @@ public class PlaylistController : BaseController<PlaylistDto>
         }
         catch (Exception ex)
         {
-            if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+            if (ex is ArgumentException argDeleteEx)
+                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argDeleteEx.Message);
 
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir a playlista {dto?.Name }.");
