@@ -1,6 +1,6 @@
 ﻿using Domain.Account.ValueObject;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 using Repository.Abstractions;
-using Repository.Interfaces;
 
 namespace Repository.Persistency.Account;
 public class UserTypeRepository : BaseRepository<PerfilUser>, IRepository<PerfilUser>

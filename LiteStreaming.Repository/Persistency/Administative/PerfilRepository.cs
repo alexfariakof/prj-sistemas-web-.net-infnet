@@ -1,6 +1,6 @@
 ﻿using Domain.Administrative.ValueObject;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 using Repository.Abstractions;
-using Repository.Interfaces;
 
 namespace Repository.Persistency.Administrative;
 public class PerfilRepository : BaseRepository<Perfil>, IRepository<Perfil>

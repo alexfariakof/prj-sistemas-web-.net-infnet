@@ -36,7 +36,7 @@ public class AlbumControllerTest
     {
         // Arrange
         var albumsDto = MockAlbum.Instance.GetDtoListFromAlbumList(MockAlbum.Instance.GetListFaker());
-        albumServiceMock.Setup(service => service.FindAll(null, 0)).Returns(albumsDto);
+        albumServiceMock.Setup(service => service.FindAllSorted(null, 0)).Returns(albumsDto);
 
         // Act
         var result = albumController.Index();

@@ -42,7 +42,7 @@ public abstract class BaseController<T> : Controller where T : class, new()
             sortOrder = SortOrder.Ascending;
             ViewData[SORT_PARAM_NAME] = "_init";
         }
-        return View(this.Services.FindAll(sortProperty, sortOrder));
+        return View(this.Services.FindAllSorted(sortProperty, sortOrder));
     }
 
     [Authorize]

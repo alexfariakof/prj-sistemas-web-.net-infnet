@@ -4,7 +4,7 @@ using AutoMapper;
 using Domain.Streaming.Agreggates;
 using LiteStreaming.Application.Abstractions;
 using LiteStreaming.Application.Core.Interfaces.Query;
-using Repository.Interfaces;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class AlbumService : ServiceBase<AlbumDto, Album>, IService<AlbumDto>, IAlbumService, IFindAll<AlbumDto>

@@ -1,7 +1,7 @@
 ﻿using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 using Repository.Abstractions;
-using Repository.Interfaces;
 
 namespace Repository.Persistency;
 public class AdminAccountRepository : BaseRepository<AdministrativeAccount>, IRepository<AdministrativeAccount>

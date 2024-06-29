@@ -3,7 +3,7 @@ using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using LiteStreaming.Application.Abstractions;
-using Repository.Interfaces;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class FlatService: ServiceBase<FlatDto, Flat>, IService<FlatDto>, IFlatService

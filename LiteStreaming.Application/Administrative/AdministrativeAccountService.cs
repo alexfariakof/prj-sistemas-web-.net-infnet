@@ -6,11 +6,11 @@ using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
 using EasyCryptoSalt;
 using LiteStreaming.Application.Abstractions;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 using Microsoft.Data.SqlClient;
-using Repository.Interfaces;
 
 namespace Application.Administrative;
-public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAccountService, IAdministrativeAuthenticationService
+public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto, AdministrativeAccount>, IService<AdministrativeAccountDto>, IAdministrativeAuthenticationService
 {
     private readonly ICrypto _crypto;
     public AdministrativeAccountService(IMapper mapper, IRepository<AdministrativeAccount> customerRepository, ICrypto crypto) : base(mapper, customerRepository)    
@@ -45,9 +45,9 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         return result;
     }
 
-    public override List<AdministrativeAccountDto> FindAll(string sortProperty = null, SortOrder sortOrder = 0)
+    public override List<AdministrativeAccountDto> FindAllSorted(string sortProperty = null, SortOrder sortOrder = 0)
     {
-        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.FindAll(sortProperty, sortOrder));
+        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.FindAllSorted(sortProperty, sortOrder));
         return result;
     }
 
@@ -56,7 +56,6 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
         var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.FindAll());
         return result;
     }
-
 
     public override AdministrativeAccountDto Update(AdministrativeAccountDto dto)
     {

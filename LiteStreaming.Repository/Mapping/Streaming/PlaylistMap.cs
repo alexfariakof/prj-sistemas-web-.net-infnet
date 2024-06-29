@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Domain.Streaming.Agreggates;
-using Repository.Abstractions;
+using Repository.Constants;
 
 namespace Repository.Mapping.Streaming
 {
     public class PlaylistMap : IEntityTypeConfiguration<Playlist>
     {
-        private readonly BaseConstants baseConstants;
-        public PlaylistMap(BaseConstants baseConstants) : base()
+        private readonly DefaultValueSqlConstants baseConstants;
+        public PlaylistMap(DefaultValueSqlConstants baseConstants) : base()
         {
             this.baseConstants = baseConstants;
         }

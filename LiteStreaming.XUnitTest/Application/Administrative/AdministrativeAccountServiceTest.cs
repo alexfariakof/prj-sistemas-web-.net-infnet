@@ -5,9 +5,9 @@ using AutoMapper;
 using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
 using EasyCryptoSalt;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 using Microsoft.Extensions.Options;
 using Moq;
-using Repository.Interfaces;
 using System.Linq.Expressions;
 
 namespace Application.Administrative;
@@ -83,14 +83,14 @@ public class AdministrativeAccountServiceTest
         var accounts = mockAccountList.Take(3).ToList();
         var userId = accounts.First().Id;
         var accountDtos = MockAdministrativeAccount.Instance.GetFakerListDto(accounts);
-        administrativeAccountRepositoryMock.Setup(repo => repo.FindAll(null, 0)).Returns(accounts.AsQueryable());
+        administrativeAccountRepositoryMock.Setup(repo => repo.FindAll()).Returns(accounts.AsQueryable());
         mapperMock.Setup(mapper => mapper.Map<List<AdministrativeAccountDto>>(It.IsAny<List<AdministrativeAccount>>())).Returns(accountDtos);
 
         // Act
         var result = administrativeAccountService.FindAll(userId);
 
         // Assert
-        administrativeAccountRepositoryMock.Verify(repo => repo.FindAll(null, 0), Times.Once);
+        administrativeAccountRepositoryMock.Verify(repo => repo.FindAll(), Times.Once);
         Assert.NotNull(result);
         Assert.Equal(3, result.Count);
     }
@@ -142,14 +142,14 @@ public class AdministrativeAccountServiceTest
         var accounts = mockAccountList.Take(3).ToList();
         var accountDtos = MockAdministrativeAccount.Instance.GetFakerListDto(accounts);
 
-        administrativeAccountRepositoryMock.Setup(repo => repo.FindAll(null, 0)).Returns(accounts.AsQueryable());
+        administrativeAccountRepositoryMock.Setup(repo => repo.FindAll()).Returns(accounts.AsQueryable());
         mapperMock.Setup(mapper => mapper.Map<List<AdministrativeAccountDto>>(accounts)).Returns(accountDtos);
 
         // Act
         var result = administrativeAccountService.FindAll();
 
         // Assert
-        administrativeAccountRepositoryMock.Verify(repo => repo.FindAll(null, 0), Times.Once);
+        administrativeAccountRepositoryMock.Verify(repo => repo.FindAll(), Times.Once);
         Assert.NotNull(result);
         Assert.Equal(3, result.Count());
     }

@@ -4,7 +4,7 @@ using AutoMapper;
 using Domain.Account.Agreggates;
 using Domain.Streaming.Agreggates;
 using LiteStreaming.Application.Abstractions;
-using Repository.Interfaces;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class PlaylistPersonalService : ServiceBase<PlaylistPersonalDto, PlaylistPersonal>, IService<PlaylistPersonalDto>, IPlaylistPersonalService

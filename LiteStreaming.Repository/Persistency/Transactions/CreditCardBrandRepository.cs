@@ -1,6 +1,6 @@
 ﻿using Domain.Transactions.ValueObject;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 using Repository.Abstractions;
-using Repository.Interfaces;
 
 namespace Repository.Persistency.Transactions;
 public class CreditCardBrandRepository : BaseRepository<CreditCardBrand>, IRepository<CreditCardBrand>

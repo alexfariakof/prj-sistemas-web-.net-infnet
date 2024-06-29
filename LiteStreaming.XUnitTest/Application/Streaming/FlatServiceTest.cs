@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using Application.Streaming.Dto;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
-using Repository.Interfaces;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class FlatServiceTest
@@ -64,7 +64,7 @@ public class FlatServiceTest
         var result = flatService.FindAll();
 
         // Assert
-        flatRepositoryMock.Verify(repo => repo.FindAll(null, 0), Times.Once);
+        flatRepositoryMock.Verify(repo => repo.FindAll(), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<FlatDto>>(It.IsAny<List<Flat>>()), Times.Once);
         Assert.NotNull(result);
         Assert.Equal(mockFlatList.Count, result.Count);

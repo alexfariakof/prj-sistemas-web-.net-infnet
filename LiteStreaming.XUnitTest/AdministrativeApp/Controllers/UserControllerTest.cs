@@ -31,7 +31,7 @@ public class UserControllerTest
     {
         // Arrange
         var accounts = MockAdministrativeAccount.Instance.GetFakerListDto();
-        administrativeAccountServiceMock.Setup(service => service.FindAll(null, 0)).Returns(accounts);
+        administrativeAccountServiceMock.Setup(service => service.FindAllSorted(null, 0)).Returns(accounts);
 
         // Act
         var result = userController.Index();

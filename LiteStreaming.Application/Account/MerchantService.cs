@@ -7,7 +7,7 @@ using Domain.Streaming.Agreggates;
 using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
 using LiteStreaming.Application.Abstractions;
-using Repository.Interfaces;
+using LiteStreaming.Repository.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<MerchantDto>, IMerchantService
