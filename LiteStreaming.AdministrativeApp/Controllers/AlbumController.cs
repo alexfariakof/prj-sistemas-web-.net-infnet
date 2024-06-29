@@ -19,7 +19,7 @@ public class AlbumController : BaseController<AlbumDto>
     }
 
     [Authorize]
-    public IActionResult Create()
+    public override IActionResult Create()
     {
         var genres = genreService.FindAll();
         var bands = bandService.FindAll();

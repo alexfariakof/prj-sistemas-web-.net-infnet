@@ -9,22 +9,14 @@ namespace LiteStreaming.AdministrativeApp.Controllers;
 
 public class BandController : BaseController<BandDto>
 {
-    public BandController(IService<BandDto> services): base(services)
-    {
-    }
-
-    [Authorize]
-    public IActionResult Create()
-    {
-        return CreateView();
-    }
+    public BandController(IService<BandDto> services): base(services) { }
 
     [HttpPost]
     [Authorize]
     public IActionResult Save(BandDto dto)
     {
         if (ModelState is { IsValid: false })
-            return CreateView();
+            return Create();
 
         try
         {
@@ -38,7 +30,7 @@ public class BandController : BaseController<BandDto>
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados da banda.");
-            return CreateView();
+            return Create();
         }
     }
 

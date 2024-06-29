@@ -1,5 +1,6 @@
 ﻿using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Data.SqlClient;
@@ -9,6 +10,7 @@ namespace LiteStreaming.AdministrativeApp.Controllers.Abstractions;
 
 public abstract class BaseController<T> : Controller where T : class, new()
 {
+    const string SORT_PARAM_NAME = "SortParamName"; 
     protected string INDEX { get; } = "Index";
     protected string CREATE { get;  } = "Create";    
     protected string EDIT { get; }  = "Edit";
@@ -21,34 +23,39 @@ public abstract class BaseController<T> : Controller where T : class, new()
 
     public virtual IActionResult Index(string sortExpression = null)
     {
-        ViewData["SortParamName"] = "";
+        ViewData[SORT_PARAM_NAME] = "";
         SortOrder sortOrder;
         string? sortProperty = sortExpression?.Replace("_desc", "").ToLower();
 
-        if (sortProperty is not null && (sortExpression.Contains("_desc") || sortExpression.Contains("_asc")))
+        if (sortProperty is not null && (sortExpression.Contains("_desc") || sortExpression.Contains("_init")))
         {
             sortOrder = SortOrder.Descending;
-            ViewData["SortParamName"] = $"{sortProperty}";
+            ViewData[SORT_PARAM_NAME] = $"{sortProperty}";
         }
         else if (sortProperty is not null && !sortExpression.Contains("_desc"))
         {
             sortOrder = SortOrder.Ascending;
-            ViewData["SortParamName"] = $"{sortProperty}_desc";
+            ViewData[SORT_PARAM_NAME] = $"{sortProperty}_desc";
         }
         else
         {
             sortOrder = SortOrder.Ascending;
-            ViewData["SortParamName"] = "_asc";
+            ViewData[SORT_PARAM_NAME] = "_init";
         }
         return View(this.Services.FindAll(sortProperty, sortOrder));
+    }
+
+    [Authorize]
+    public virtual IActionResult Create()
+    {
+        return View(CREATE);
     }
 
     protected IActionResult IndexView()
     {
         return View(INDEX, this.Services.FindAll());
     }
-
-    protected IActionResult CreateView()
+    protected virtual IActionResult CreateView()
     {
         return View(CREATE);
     }

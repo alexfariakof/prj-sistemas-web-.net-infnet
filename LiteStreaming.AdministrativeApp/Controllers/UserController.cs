@@ -10,14 +10,12 @@ namespace LiteStreaming.AdministrativeApp.Controllers;
 [Authorize]
 public class UserController : BaseController<AdministrativeAccountDto>
 {
-    public UserController(IService<AdministrativeAccountDto> administrativeAccountService): base(administrativeAccountService)
-    {
-    }
+    public UserController(IService<AdministrativeAccountDto> administrativeAccountService): base(administrativeAccountService)  { }
 
     [Authorize(Roles = "Admin")]
-    public IActionResult Create()
+    public override IActionResult Create()
     {
-        return CreateView();
+        return View(CREATE);
     }
 
     [HttpPost]
@@ -25,7 +23,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
     public IActionResult Save(AdministrativeAccountDto dto)
     {
         if (ModelState is { IsValid: false })
-            return CreateView();
+            return this.Create();
 
         try
         {
@@ -39,7 +37,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do usuário.");
-            return CreateView();
+            return this.Create();
         }
     }
 

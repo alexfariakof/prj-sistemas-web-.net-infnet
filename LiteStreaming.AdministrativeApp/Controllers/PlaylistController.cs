@@ -9,22 +9,14 @@ namespace LiteStreaming.AdministrativeApp.Controllers;
 
 public class PlaylistController : BaseController<PlaylistDto>
 {
-    public PlaylistController(IService<PlaylistDto> playlistService): base(playlistService)
-    {
-    }
-
-    [Authorize]
-    public IActionResult Create()
-    {
-        return CreateView();
-    }
+    public PlaylistController(IService<PlaylistDto> playlistService): base(playlistService)  { }
 
     [HttpPost]
     [Authorize]
     public IActionResult Save(PlaylistDto viewModel)
     {
         if (ModelState is { IsValid: false })
-            return CreateView();
+            return Create();
 
         try
         {
@@ -38,7 +30,7 @@ public class PlaylistController : BaseController<PlaylistDto>
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados da playlista.");
-            return CreateView();
+            return Create();
         }
     }
 

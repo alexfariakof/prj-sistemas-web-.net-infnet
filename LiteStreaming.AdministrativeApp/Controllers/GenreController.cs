@@ -8,20 +8,13 @@ namespace LiteStreaming.AdministrativeApp.Controllers;
 
 public class GenreController : BaseController<GenreDto>
 {
-    public GenreController(IService<GenreDto> genreService): base(genreService)
-    {
-    }
+    public GenreController(IService<GenreDto> genreService): base(genreService)  { }
         
-    public IActionResult Create()
-    {
-        return CreateView();
-    }
-
     [HttpPost]
     public IActionResult Save(GenreDto dto)
     {
         if (ModelState is { IsValid: false })
-            return CreateView();
+            return Create();
 
         try
         {
@@ -35,7 +28,7 @@ public class GenreController : BaseController<GenreDto>
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do gênero.");
-            return CreateView();
+            return Create();
         }
     }
 

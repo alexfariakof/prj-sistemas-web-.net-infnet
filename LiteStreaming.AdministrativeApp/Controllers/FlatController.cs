@@ -13,19 +13,12 @@ public class FlatController : BaseController<FlatDto>
     {
     }
 
-
-    [Authorize]
-    public IActionResult Create()
-    {
-        return CreateView();
-    }
-
     [HttpPost]
     [Authorize]
     public IActionResult Save(FlatDto dto)
     {
         if (ModelState is { IsValid: false })
-            return CreateView();
+            return Create();
 
         try
         {
@@ -39,7 +32,7 @@ public class FlatController : BaseController<FlatDto>
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do plano.");
-            return CreateView();
+            return Create();
         }
     }
 
