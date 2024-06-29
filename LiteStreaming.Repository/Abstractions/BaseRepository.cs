@@ -98,11 +98,11 @@ public abstract class BaseRepository<T> where T : class, new()
     /// <param name="sortProperty">A propriedade para ordenar. Se nula, a primeira propriedade pública é usada.</param>
     /// <param name="sortOrder">A ordem para classificar as entidades.</param>
     /// <returns>Uma coleção ordenada de entidades.</returns>
-    public virtual IEnumerable<T> FindAll(string sortProperty = "", SortOrder sortOrder = SortOrder.Ascending)
+    public virtual IEnumerable<T> FindAll(string sortProperty = null, SortOrder sortOrder = SortOrder.Ascending)
     {
         var list = Context.Set<T>().ToList();
 
-        if (String.IsNullOrEmpty(sortProperty))
+        if (sortProperty is null)
             return list;
 
         PropertyInfo? prop = null;
@@ -160,14 +160,8 @@ public abstract class BaseRepository<T> where T : class, new()
 
         // Ordena a lista com base na expressão de acesso à propriedade
         if (sortOrder == SortOrder.Ascending)
-        {
-            list = list.AsQueryable().OrderBy(sortExpression).ToList();
-        }
+            return list.AsQueryable().OrderBy(sortExpression).ToList();
         else
-        {
-            list = list.AsQueryable().OrderByDescending(sortExpression).ToList();
-        }
-
-        return list;
+            return list.AsQueryable().OrderByDescending(sortExpression).ToList();
     }
 }
