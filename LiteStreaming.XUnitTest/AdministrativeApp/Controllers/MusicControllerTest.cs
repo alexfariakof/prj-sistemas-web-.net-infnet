@@ -42,7 +42,7 @@ public class MusicControllerTest
     {
         // Arrange
         var musicsDto = MockMusic.Instance.GetDtoListFromMusicList(MockMusic.Instance.GetListFaker());
-        musicServiceMock.Setup(service => service.FindAll()).Returns(musicsDto);
+        musicServiceMock.Setup(service => service.FindAll(null, 0)).Returns(musicsDto);
 
         // Act
         var result = musicController.Index();

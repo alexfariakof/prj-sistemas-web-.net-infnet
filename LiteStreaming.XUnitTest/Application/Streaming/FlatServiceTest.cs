@@ -64,7 +64,7 @@ public class FlatServiceTest
         var result = flatService.FindAll();
 
         // Assert
-        flatRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
+        flatRepositoryMock.Verify(repo => repo.FindAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<FlatDto>>(It.IsAny<List<Flat>>()), Times.Once);
         Assert.NotNull(result);
         Assert.Equal(mockFlatList.Count, result.Count);

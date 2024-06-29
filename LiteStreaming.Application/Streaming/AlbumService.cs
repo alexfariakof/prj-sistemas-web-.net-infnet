@@ -31,7 +31,7 @@ public class AlbumService : ServiceBase<AlbumDto, Album>, IService<AlbumDto>, IA
 
     public override List<AlbumDto> FindAll()
     {
-        var albums = Repository.GetAll().ToList();
+        var albums = Repository.FindAll().ToList();
         var result = Mapper.Map<List<AlbumDto>>(albums);
         return result;
     }

@@ -128,7 +128,7 @@ public class CustomerServiceTest
         var result = customerService.FindAll();
 
         // Assert
-        customerRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
+        customerRepositoryMock.Verify(repo => repo.FindAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>()), Times.Once);
 
         Assert.NotNull(result);
@@ -147,7 +147,7 @@ public class CustomerServiceTest
         var result = customerService.FindAll(userId);
 
         // Assert
-        customerRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
+        customerRepositoryMock.Verify(repo => repo.FindAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<CustomerDto>>(It.IsAny<List<Customer>>()), Times.Once);
 
         Assert.NotNull(result);

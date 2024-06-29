@@ -72,7 +72,7 @@ public class PlaylistPersonalServiceTest
         // Arrange
         var playlistPersonalDtos = MockPlaylistPersonal.Instance.GetDtoListFromPlaylistPersonalList(mockPlaylistPersonalList);
         mapperMock.Setup(mapper => mapper.Map<List<PlaylistPersonalDto>>(It.IsAny<IEnumerable<PlaylistPersonal>>())).Returns(playlistPersonalDtos);
-        playlistPersonalRepositoryMock.Setup(repo => repo.GetAll(null, 0)).Returns(mockPlaylistPersonalList);
+        playlistPersonalRepositoryMock.Setup(repo => repo.FindAll(null, 0)).Returns(mockPlaylistPersonalList);
 
         // Act
         var result = playlistPersonalService.FindAll();

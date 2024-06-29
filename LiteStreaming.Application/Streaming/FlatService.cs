@@ -27,7 +27,7 @@ public class FlatService: ServiceBase<FlatDto, Flat>, IService<FlatDto>, IFlatSe
     }
     public override List<FlatDto> FindAll()
     {
-        var flats = Repository.GetAll().ToList();
+        var flats = Repository.FindAll().ToList();
         var result = Mapper.Map<List<FlatDto>>(flats);
         return result;
     }

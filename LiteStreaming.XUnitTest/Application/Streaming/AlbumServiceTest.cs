@@ -63,7 +63,7 @@ public class AlbumServiceTest
         var result = albumService.FindAll();
 
         // Assert
-        albumRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
+        albumRepositoryMock.Verify(repo => repo.FindAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<AlbumDto>>(It.IsAny<List<Album>>()), Times.Once);
 
         Assert.NotNull(result);

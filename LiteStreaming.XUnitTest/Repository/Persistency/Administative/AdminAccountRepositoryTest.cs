@@ -75,7 +75,7 @@ public class AdminAccountRepositoryTest
         contextMock.Setup(c => c.Set<AdministrativeAccount>()).Returns(dbSetMock.Object);
 
         // Act
-        var result = repository.GetAll();
+        var result = repository.FindAll();
 
         // Assert
         Assert.Equal(adminAccount.Count, result.Count());

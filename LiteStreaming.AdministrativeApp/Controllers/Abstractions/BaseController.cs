@@ -25,7 +25,7 @@ public abstract class BaseController<T> : Controller where T : class, new()
         SortOrder sortOrder;
         string? sortProperty = sortExpression?.Replace("_desc", "").ToLower();
 
-        if (sortProperty is not null && sortExpression.Contains("_desc"))
+        if (sortProperty is not null && (sortExpression.Contains("_desc") || sortExpression.Contains("_asc")))
         {
             sortOrder = SortOrder.Descending;
             ViewData["SortParamName"] = $"{sortProperty}";
@@ -38,7 +38,7 @@ public abstract class BaseController<T> : Controller where T : class, new()
         else
         {
             sortOrder = SortOrder.Ascending;
-            ViewData["SortParamName"] = "name";
+            ViewData["SortParamName"] = "_asc";
         }
         return View(this.Services.FindAll(sortProperty, sortOrder));
     }

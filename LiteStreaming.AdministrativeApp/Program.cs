@@ -25,7 +25,7 @@ builder.Services.AddAdministrativeDataSeeders();
 builder.Services.AddWebApiDataSeeders();
 
 if (builder.Environment.IsDevelopment())
-{    
+{
     builder.Services.AddDbContext<RegisterContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
@@ -37,6 +37,7 @@ else if (builder.Environment.EnvironmentName.Equals("InMemory"))
 {
     builder.Services.AddDbContext<RegisterContextAdministrative>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
     builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
+}
 else
 {
     builder.Services.AddDbContext<RegisterContextAdministrative>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
@@ -69,10 +70,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
-if (!app.Environment.IsProduction())
+if (app.Environment.EnvironmentName.Equals("InMemory"))
 {
     app.RunAdministrativeAppDataSeeders();
     app.RunWebApiDataSeeders();
+}
+else if (!app.Environment.IsProduction())
+{
+    app.RunAdministrativeAppDataSeeders();    
 }
 
 app.Run();

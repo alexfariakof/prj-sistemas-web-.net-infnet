@@ -30,7 +30,7 @@ public class BandControllerTest
     {
         // Arrange
         var bandsDto = MockBand.Instance.GetDtoListFromBandList(MockBand.Instance.GetListFaker());
-        bandServiceMock.Setup(service => service.FindAll()).Returns(bandsDto);
+        bandServiceMock.Setup(service => service.FindAll(null, 0)).Returns(bandsDto);
 
         // Act
         var result = bandController.Index();

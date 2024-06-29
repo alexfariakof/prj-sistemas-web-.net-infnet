@@ -2,7 +2,7 @@
 
 namespace DataSeeders.Administrative;
 
-public class DataSeederAdministrative : IDataSeeder
+public class DataSeederAdministrative : IAdministrativeDataSeeder
 {
     private readonly RegisterContextAdministrative _context;
 

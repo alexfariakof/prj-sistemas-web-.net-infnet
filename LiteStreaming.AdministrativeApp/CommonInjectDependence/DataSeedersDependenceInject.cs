@@ -6,7 +6,7 @@ public static class DataSeedersDependenceInject
 {
     public static void AddAdministrativeDataSeeders(this IServiceCollection services)
     {
-        services.AddTransient<IDataSeeder, DataSeederAdministrative>();
+        services.AddTransient<IAdministrativeDataSeeder, DataSeederAdministrative>();
     }
 
     public static void RunAdministrativeAppDataSeeders(this WebApplication app)
@@ -14,7 +14,7 @@ public static class DataSeedersDependenceInject
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
-            var dataSeeder = services.GetRequiredService<IDataSeeder>();
+            var dataSeeder = services.GetRequiredService<IAdministrativeDataSeeder>();
             dataSeeder.SeedData();
         }
     }

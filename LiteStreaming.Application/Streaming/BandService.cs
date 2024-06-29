@@ -31,7 +31,7 @@ public class BandService : ServiceBase<BandDto, Band>, IService<BandDto>, IBandS
 
     public override List<BandDto> FindAll()
     {
-        var bands = Repository.GetAll().ToList();
+        var bands = Repository.FindAll().ToList();
         var result = Mapper.Map<List<BandDto>>(bands);
         return result;
     }

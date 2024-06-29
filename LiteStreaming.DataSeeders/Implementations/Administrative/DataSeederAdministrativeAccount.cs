@@ -4,7 +4,7 @@ using Domain.Core.ValueObject;
 using Repository;
 
 namespace DataSeeders.Administrative;
-public class DataSeederAdministrativeAccount : IDataSeeder
+public class DataSeederAdministrativeAccount : IAdministrativeDataSeeder
 {
     private readonly RegisterContextAdministrative _context;
 

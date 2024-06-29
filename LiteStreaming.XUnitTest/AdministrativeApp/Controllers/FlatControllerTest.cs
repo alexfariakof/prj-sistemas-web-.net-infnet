@@ -30,7 +30,7 @@ public class FlatControllerTest
     {
         // Arrange
         var flatsDto = MockFlat.Instance.GetDtoListFromFlatList(MockFlat.Instance.GetListFaker());
-        flatServiceMock.Setup(service => service.FindAll()).Returns(flatsDto);
+        flatServiceMock.Setup(service => service.FindAll(null, 0)).Returns(flatsDto);
 
         // Act
         var result = flatController.Index();

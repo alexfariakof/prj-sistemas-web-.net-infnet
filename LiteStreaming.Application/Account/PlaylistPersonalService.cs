@@ -48,7 +48,7 @@ public class PlaylistPersonalService : ServiceBase<PlaylistPersonalDto, Playlist
 
     public override List<PlaylistPersonalDto> FindAll()
     {
-        var result = Mapper.Map<List<PlaylistPersonalDto>>(Repository.GetAll());
+        var result = Mapper.Map<List<PlaylistPersonalDto>>(Repository.FindAll());
         return result;
     }
 

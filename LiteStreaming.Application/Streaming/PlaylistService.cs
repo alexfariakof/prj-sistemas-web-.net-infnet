@@ -29,7 +29,7 @@ public class PlaylistService : ServiceBase<PlaylistDto, Playlist>, IService<Play
 
     public override List<PlaylistDto> FindAll()
     {
-        var Playlists = Repository.GetAll();
+        var Playlists = Repository.FindAll();
         var result = Mapper.Map<List<PlaylistDto>>(Playlists);
         return result;
     }

@@ -40,20 +40,20 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
 
     public List<AdministrativeAccountDto> FindAll(Guid userId)
     {
-        var accounts = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
+        var accounts = this.Repository.FindAll().Where(c => c.Id == userId).ToList();
         var result = this.Mapper.Map<List<AdministrativeAccountDto>>(accounts);
         return result;
     }
 
     public override List<AdministrativeAccountDto> FindAll(string sortProperty = null, SortOrder sortOrder = 0)
     {
-        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.GetAll(sortProperty, sortOrder));
+        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.FindAll(sortProperty, sortOrder));
         return result;
     }
 
     public override List<AdministrativeAccountDto> FindAll()
     {
-        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.GetAll());
+        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.FindAll());
         return result;
     }
 

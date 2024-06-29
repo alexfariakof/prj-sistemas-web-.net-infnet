@@ -30,7 +30,7 @@ public class MusicService : ServiceBase<MusicDto, Music>, IService<MusicDto>, IM
 
     public override List<MusicDto> FindAll()
     {
-        var musics = Repository.GetAll();
+        var musics = Repository.FindAll();
         var result = Mapper.Map<List<MusicDto>>(musics);
         return result;
     }
