@@ -56,7 +56,7 @@ public static class Usings
         _mock.Setup(repo => repo.Update(It.IsAny<T>()));
         _mock.Setup(repo => repo.Delete(It.IsAny<T>()));
 
-        _mock.Setup(repo => repo.GetAll())
+        _mock.Setup(repo => repo.GetAll(null, 0))
             .Returns(() => { return _dataSet.AsEnumerable(); });
 
         _mock.Setup(repo => repo.GetById(It.IsAny<Guid>()))

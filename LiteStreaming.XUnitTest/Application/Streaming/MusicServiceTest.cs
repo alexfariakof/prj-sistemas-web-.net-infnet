@@ -65,7 +65,7 @@ public class MusicServiceTest
         var result = musicService.FindAll();
 
         // Assert
-        musicRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        musicRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<MusicDto>>(It.IsAny<IEnumerable<Music>>()), Times.Once);
 
         Assert.NotNull(result);

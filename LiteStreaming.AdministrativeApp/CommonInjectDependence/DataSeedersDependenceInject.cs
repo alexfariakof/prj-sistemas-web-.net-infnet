@@ -4,12 +4,27 @@ using DataSeeders.Administrative;
 namespace AdministrativeApp.CommonDependenceInject;
 public static class DataSeedersDependenceInject
 {
-    public static void AddDataSeeders(this IServiceCollection services)
+    public static void AddAdministrativeDataSeeders(this IServiceCollection services)
     {
         services.AddTransient<IDataSeeder, DataSeederAdministrative>();
     }
 
-    public static void RunDataSeeders(this WebApplication app)
+    public static void RunAdministrativeAppDataSeeders(this WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var dataSeeder = services.GetRequiredService<IDataSeeder>();
+            dataSeeder.SeedData();
+        }
+    }
+
+    public static void AddWebApiDataSeeders(this IServiceCollection services)
+    {
+        services.AddTransient<IDataSeeder, DataSeeder>();
+    }
+
+    public static void RunWebApiDataSeeders(this WebApplication app)
     {
         using (var scope = app.Services.CreateScope())
         {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Data.SqlClient;
 using System.Security.Claims;
 
 namespace LiteStreaming.AdministrativeApp.Controllers.Abstractions;
@@ -18,9 +19,28 @@ public abstract class BaseController<T> : Controller where T : class, new()
         this.Services = service;    
     }
 
-    public virtual IActionResult Index()
+    public virtual IActionResult Index(string sortExpression = null)
     {
-        return View(this.Services.FindAll());
+        ViewData["SortParamName"] = "";
+        SortOrder sortOrder;
+        string? sortProperty = sortExpression?.Replace("_desc", "").ToLower();
+
+        if (sortProperty is not null && sortExpression.Contains("_desc"))
+        {
+            sortOrder = SortOrder.Descending;
+            ViewData["SortParamName"] = $"{sortProperty}";
+        }
+        else if (sortProperty is not null && !sortExpression.Contains("_desc"))
+        {
+            sortOrder = SortOrder.Ascending;
+            ViewData["SortParamName"] = $"{sortProperty}_desc";
+        }
+        else
+        {
+            sortOrder = SortOrder.Ascending;
+            ViewData["SortParamName"] = "name";
+        }
+        return View(this.Services.FindAll(sortProperty, sortOrder));
     }
 
     protected IActionResult IndexView()

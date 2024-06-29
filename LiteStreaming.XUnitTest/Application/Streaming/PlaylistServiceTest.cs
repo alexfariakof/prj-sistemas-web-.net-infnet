@@ -64,7 +64,7 @@ public class PlaylistServiceTest
         var result = playlistService.FindAll();
 
         // Assert
-        playlistRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        playlistRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<PlaylistDto>>(It.IsAny<IEnumerable<Playlist>>()), Times.Once);
 
         Assert.NotNull(result);

@@ -14,11 +14,6 @@ public class UserController : BaseController<AdministrativeAccountDto>
     {
     }
 
-    public override IActionResult Index()
-    {
-        return View(this.Services.FindAll());
-    }
-
     [Authorize(Roles = "Admin")]
     public IActionResult Create()
     {

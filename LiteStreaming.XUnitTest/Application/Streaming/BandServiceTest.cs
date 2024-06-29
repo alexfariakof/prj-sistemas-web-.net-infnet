@@ -65,7 +65,7 @@ public class BandServiceTest
         var result = bandService.FindAll();
 
         // Assert
-        bandRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        bandRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<BandDto>>(It.IsAny<List<Band>>()), Times.Once);
         Assert.NotNull(result);
         Assert.Equal(mockBandList.Count, result.Count);

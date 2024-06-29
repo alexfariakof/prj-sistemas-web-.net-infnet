@@ -11,12 +11,7 @@ public class GenreController : BaseController<GenreDto>
     public GenreController(IService<GenreDto> genreService): base(genreService)
     {
     }
-
-    public override IActionResult Index()
-    {
-        return View(this.Services.FindAll());
-    }
-
+        
     public IActionResult Create()
     {
         return CreateView();

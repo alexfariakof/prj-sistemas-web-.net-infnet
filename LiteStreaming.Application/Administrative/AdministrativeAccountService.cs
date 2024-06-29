@@ -6,6 +6,7 @@ using Domain.Administrative.Agreggates;
 using Domain.Administrative.ValueObject;
 using EasyCryptoSalt;
 using LiteStreaming.Application.Abstractions;
+using Microsoft.Data.SqlClient;
 using Repository.Interfaces;
 
 namespace Application.Administrative;
@@ -41,6 +42,12 @@ public class AdministrativeAccountService : ServiceBase<AdministrativeAccountDto
     {
         var accounts = this.Repository.GetAll().Where(c => c.Id == userId).ToList();
         var result = this.Mapper.Map<List<AdministrativeAccountDto>>(accounts);
+        return result;
+    }
+
+    public override List<AdministrativeAccountDto> FindAll(string sortProperty = null, SortOrder sortOrder = 0)
+    {
+        var result = this.Mapper.Map<List<AdministrativeAccountDto>>(this.Repository.GetAll(sortProperty, sortOrder));
         return result;
     }
 

@@ -107,7 +107,7 @@ public class MerchantServiceTest
         var result = merchantService.FindAll();
 
         // Assert
-        merchantRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        merchantRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>()), Times.Once);
 
         Assert.NotNull(result);
@@ -126,7 +126,7 @@ public class MerchantServiceTest
         var result = merchantService.FindAll(userId);
 
         // Assert
-        merchantRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        merchantRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<MerchantDto>>(It.IsAny<List<Merchant>>()), Times.Once);
 
         Assert.NotNull(result);

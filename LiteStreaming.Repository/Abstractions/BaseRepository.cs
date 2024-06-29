@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Microsoft.Data.SqlClient;
+using System.Reflection;
 
 namespace Repository.Abstractions;
 public abstract class BaseRepository<T> where T : class, new()
@@ -29,9 +31,70 @@ public abstract class BaseRepository<T> where T : class, new()
         Context.SaveChanges();
     }
 
-    public virtual IEnumerable<T> GetAll()
+    public virtual IEnumerable<T> GetAll(string sortProperty = null, SortOrder sortOrder = SortOrder.Ascending)
     {
-        return Context.Set<T>().ToList();
+        var list = Context.Set<T>().ToList();
+        PropertyInfo? prop = null;
+        Expression<Func<T, object>>? sortExpression = null;
+
+        // Por default, caso a sortProperty seja null, é setada a primeira propriedade pública da entidade
+        if (!string.IsNullOrWhiteSpace(sortProperty))
+        {
+            prop = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                            .FirstOrDefault(p => string.Equals(p.Name, sortProperty, StringComparison.OrdinalIgnoreCase));
+
+            // Se a propriedade não for encontrada diretamente na entidade T, percorre as propriedades de navegação
+            if (prop == null)
+            {
+                var navigations = Context.Model.FindEntityType(typeof(T))?.GetNavigations();
+                if (navigations != null)
+                {
+                    foreach (var navigation in navigations)
+                    {
+                        var navigationEntityType = Context.Model.FindEntityType(navigation.ClrType);
+                        if (navigationEntityType != null)
+                        {
+                            prop = navigationEntityType.ClrType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                .FirstOrDefault(p => string.Equals(p.Name, sortProperty, StringComparison.OrdinalIgnoreCase));
+                            if (prop != null)
+                            {
+                                // Cria uma expressão para acessar a propriedade da entidade de navegação
+                                var parameter = Expression.Parameter(typeof(T), "x");
+                                var navigationProperty = Expression.Property(parameter, navigation.Name);
+                                var property = Expression.Property(navigationProperty, prop.Name);
+                                var converted = Expression.Convert(property, typeof(object));
+                                sortExpression = Expression.Lambda<Func<T, object>>(converted, parameter);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Se a propriedade ainda não for encontrada, usa a primeira propriedade pública da entidade T
+        if (prop == null)
+        {
+            prop = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault();
+
+            // Cria uma expressão para acessar a propriedade diretamente
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var property = Expression.Property(parameter, prop.Name);
+            var converted = Expression.Convert(property, typeof(object));
+            sortExpression = Expression.Lambda<Func<T, object>>(converted, parameter);
+        }
+
+        // Ordena a lista com base na expressão de acesso à propriedade
+        if (sortOrder == SortOrder.Ascending)
+        {
+            list = list.AsQueryable().OrderBy(sortExpression).ToList();
+        }
+        else
+        {
+            list = list.AsQueryable().OrderByDescending(sortExpression).ToList();
+        }
+
+        return list;
     }
 
     public virtual T GetById(Guid id)

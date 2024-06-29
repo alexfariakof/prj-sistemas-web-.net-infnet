@@ -59,7 +59,7 @@ public class GenreServiceTest
         var result = genreService.FindAll();
 
         // Assert
-        genreRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
+        genreRepositoryMock.Verify(repo => repo.GetAll(null, 0), Times.Once);
         mapperMock.Verify(mapper => mapper.Map<List<GenreDto>>(It.IsAny<List<Genre>>()), Times.Once);
         Assert.NotNull(result);
         Assert.Equal(mockGenreList.Count, result.Count);
