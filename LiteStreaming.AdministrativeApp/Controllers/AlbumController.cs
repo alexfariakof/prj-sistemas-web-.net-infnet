@@ -48,9 +48,9 @@ public class AlbumController : BaseController<AlbumDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do álbum.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao salvar os dados do álbum.");
             return CreateView();
         }
     }
@@ -71,9 +71,9 @@ public class AlbumController : BaseController<AlbumDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar o álbum {viewModel.Album?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao atualizar o álbum {viewModel.Album?.Name }.");
             return EditView();
         }
     }
@@ -96,9 +96,9 @@ public class AlbumController : BaseController<AlbumDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste álbum.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao editar os dados deste álbum.");
         }
         return IndexView();
     }
@@ -111,15 +111,15 @@ public class AlbumController : BaseController<AlbumDto>
             dto.UsuarioId = UserId;
             var result = this.Services.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Álbum { dto?.Name } excluído.");
+                ViewBag.Alert = SuccessMessage($"Álbum { dto?.Name } excluído.");
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
 
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o álbum { dto?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao excluir o álbum { dto?.Name }.");
         }
         return IndexView();
     }

@@ -1,5 +1,4 @@
 ﻿using LiteStreaming.AdministrativeApp.Controllers.Abstractions;
-using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Streaming.Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -29,9 +28,9 @@ public class FlatController : BaseController<FlatDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argSaveEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argSaveEx.Message);
+                ViewBag.Alert = WarningMessage(argSaveEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do plano.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao salvar os dados do plano.");
             return Create();
         }
     }
@@ -52,9 +51,9 @@ public class FlatController : BaseController<FlatDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argUpdateEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argUpdateEx.Message);
+                ViewBag.Alert = WarningMessage(argUpdateEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar o plano { dto?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao atualizar o plano { dto?.Name }.");
             return EditView();
         }
     }
@@ -70,9 +69,9 @@ public class FlatController : BaseController<FlatDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEditEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEditEx.Message);
+                ViewBag.Alert = WarningMessage(argEditEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste plano.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao editar os dados deste plano.");
         }
         return IndexView();
     }
@@ -85,15 +84,15 @@ public class FlatController : BaseController<FlatDto>
             dto.UsuarioId = UserId;
             var result = this.Services.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Plano { dto?.Name } excluído.");
+                ViewBag.Alert = SuccessMessage($"Plano { dto?.Name } excluído.");
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argDeleteEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argDeleteEx.Message);
+                ViewBag.Alert = WarningMessage(argDeleteEx.Message);
 
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o plano { dto?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao excluir o plano { dto?.Name }.");
         }
         return IndexView();
     }

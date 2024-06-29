@@ -1,4 +1,5 @@
-﻿using LiteStreaming.Application.Abstractions;
+﻿using LiteStreaming.AdministrativeApp.Models;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -95,5 +96,20 @@ public abstract class BaseController<T> : Controller where T : class, new()
             ViewBag.LoginError = "Usuário sem permissão de acesso.";
             HttpContext.SignOutAsync();
         }
+    }
+
+    protected AlertViewModel SuccessMessage(string message)
+    {
+        return new AlertViewModel(AlertViewModel.AlertType.Success, message);
+    }
+
+    protected AlertViewModel WarningMessage(string message)
+    {
+        return new AlertViewModel(AlertViewModel.AlertType.Warning, message);
+    }
+
+    protected AlertViewModel ErrorMessage(string message)
+    {
+        return new AlertViewModel(AlertViewModel.AlertType.Danger, message);
     }
 }

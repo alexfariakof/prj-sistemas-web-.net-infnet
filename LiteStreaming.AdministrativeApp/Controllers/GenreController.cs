@@ -1,5 +1,4 @@
 ﻿using LiteStreaming.AdministrativeApp.Controllers.Abstractions;
-using LiteStreaming.AdministrativeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Streaming.Dto;
 using LiteStreaming.Application.Abstractions;
@@ -25,9 +24,9 @@ public class GenreController : BaseController<GenreDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do gênero.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao salvar os dados do gênero.");
             return Create();
         }
     }
@@ -47,9 +46,9 @@ public class GenreController : BaseController<GenreDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar o gênero {dto?.Name}.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao atualizar o gênero {dto?.Name}.");
             return EditView();
         }
     }
@@ -64,10 +63,10 @@ public class GenreController : BaseController<GenreDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
 
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste gênero.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao editar os dados deste gênero.");
         }
         return IndexView();
     }
@@ -79,15 +78,15 @@ public class GenreController : BaseController<GenreDto>
             dto.UsuarioId = UserId;
             var result = this.Services.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Gênero {dto?.Name} excluído.");
+                ViewBag.Alert = SuccessMessage($"Gênero {dto?.Name} excluído.");
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
 
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o gênero {dto?.Name}.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao excluir o gênero {dto?.Name}.");
         }
         return IndexView();
     }

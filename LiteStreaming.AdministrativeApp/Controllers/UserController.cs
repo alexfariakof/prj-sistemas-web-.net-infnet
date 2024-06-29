@@ -1,5 +1,4 @@
 ﻿using LiteStreaming.AdministrativeApp.Controllers.Abstractions;
-using LiteStreaming.AdministrativeApp.Models;
 using Application.Administrative.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -34,9 +33,9 @@ public class UserController : BaseController<AdministrativeAccountDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados do usuário.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao salvar os dados do usuário.");
             return this.Create();
         }
     }
@@ -57,9 +56,9 @@ public class UserController : BaseController<AdministrativeAccountDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar os dados do usuário { dto?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao atualizar os dados do usuário { dto?.Name }.");
             return EditView();
         }
     }
@@ -75,10 +74,10 @@ public class UserController : BaseController<AdministrativeAccountDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
 
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste usuário.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao editar os dados deste usuário.");
         }
         return IndexView();
     }
@@ -91,14 +90,14 @@ public class UserController : BaseController<AdministrativeAccountDto>
             dto.UsuarioId = UserId;
             var result = this.Services.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Usuário { dto?.Name } excluído.");
+                ViewBag.Alert = SuccessMessage($"Usuário { dto?.Name } excluído.");
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o usuário { dto?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao excluir o usuário { dto?.Name }.");
         }
         return IndexView();
     }

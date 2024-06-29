@@ -52,9 +52,9 @@ public class MusicController : BaseController<MusicDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao salvar os dados da musica.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao salvar os dados da musica.");
             return CreateView();
         }
     }
@@ -75,9 +75,9 @@ public class MusicController : BaseController<MusicDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao atualizar a musica { viewModel.Music?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao atualizar a musica { viewModel.Music?.Name }.");
             return EditView();
         }
     }
@@ -103,9 +103,9 @@ public class MusicController : BaseController<MusicDto>
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados desta musica.");
+                ViewBag.Alert = ErrorMessage("Ocorreu um erro ao editar os dados desta musica.");
         }
         return IndexView();
     }
@@ -118,15 +118,15 @@ public class MusicController : BaseController<MusicDto>
             dto.UsuarioId = UserId;
             var result = this.Services.Delete(dto);
             if (result)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Musica { dto?.Name } excluída.");
+                ViewBag.Alert = SuccessMessage($"Musica { dto?.Name } excluída.");
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Warning, argEx.Message);
+                ViewBag.Alert = WarningMessage(argEx.Message);
 
             else
-                ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir a musica {dto?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao excluir a musica {dto?.Name }.");
         }
         return IndexView();
     }
