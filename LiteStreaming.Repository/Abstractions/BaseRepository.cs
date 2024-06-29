@@ -92,13 +92,12 @@ public abstract class BaseRepository<T> where T : class, new()
         return Find(expression).Any();
     }
 
-
     /// <summary>
     /// Retorna todas as entidades.
     /// </summary>
     public virtual IEnumerable<T> FindAll()
     {
-        return Context.Set<T>().ToList();       
+        return Context.Set<T>().ToList();
     }
 
     /// <summary>
@@ -114,63 +113,65 @@ public abstract class BaseRepository<T> where T : class, new()
         if (sortProperty is null)
             return listToSort;
 
-        PropertyInfo? prop = null;
-        Expression<Func<T, object>>? sortExpression = null;
-
-        prop = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                        .FirstOrDefault(p => string.Equals(p.Name, sortProperty, StringComparison.OrdinalIgnoreCase));
-
-        // Se a propriedade não for encontrada diretamente na entidade T, percorre as propriedades de navegação
-        if (prop == null)
-        {
-            var navigations = Context.Model.FindEntityType(typeof(T))?.GetNavigations();
-            if (navigations != null)
-            {
-                foreach (var navigation in navigations)
-                {
-                    var navigationEntityType = Context.Model.FindEntityType(navigation.ClrType);
-                    if (navigationEntityType != null)
-                    {
-                        prop = navigationEntityType.ClrType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                            .FirstOrDefault(p => string.Equals(p.Name, sortProperty, StringComparison.OrdinalIgnoreCase));
-                        if (prop != null)
-                        {
-                            // Cria uma expressão para acessar a propriedade da entidade de navegação
-                            var parameter = Expression.Parameter(typeof(T), "x");
-                            var navigationProperty = Expression.Property(parameter, navigation.Name);
-                            var property = Expression.Property(navigationProperty, prop.Name);
-                            var converted = Expression.Convert(property, typeof(object));
-                            sortExpression = Expression.Lambda<Func<T, object>>(converted, parameter);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        else if (prop != null)
-        {
-            var parameter = Expression.Parameter(typeof(T), "x");
-            var property = Expression.Property(parameter, prop.Name);
-            var converted = Expression.Convert(property, typeof(object));
-            sortExpression = Expression.Lambda<Func<T, object>>(converted, parameter);
-        }
-
-        // Se a propriedade ainda não for encontrada, usa a primeira propriedade pública da entidade T
-        if (prop == null)
-        {
-            prop = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault();
-
-            // Cria uma expressão para acessar a propriedade diretamente
-            var parameter = Expression.Parameter(typeof(T), "x");
-            var property = Expression.Property(parameter, prop.Name);
-            var converted = Expression.Convert(property, typeof(object));
-            sortExpression = Expression.Lambda<Func<T, object>>(converted, parameter);
-        }
+        Expression<Func<T, object>>? sortExpression = GetSortExpressionFromProperty(typeof(T), sortProperty) 
+            ?? GetSortExpressionFromNavigation(typeof(T), sortProperty) 
+            ?? GetSortExpressionFromDefaultProperty(typeof(T), sortProperty);
 
         // Ordena a lista com base na expressão de acesso à propriedade
         if (sortOrder == SortOrder.Ascending)
             return listToSort.AsQueryable().OrderBy(sortExpression).ToList();
         else
             return listToSort.AsQueryable().OrderByDescending(sortExpression).ToList();
+    }
+
+    private Expression<Func<T, object>> GetSortExpressionFromDefaultProperty(Type type, string propertyName)
+    {
+        var prop = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault();
+
+        // Cria uma expressão para acessar a propriedade diretamente
+        var parameter = Expression.Parameter(typeof(T), "x");
+        var property = Expression.Property(parameter, prop?.Name);
+        var converted = Expression.Convert(property, typeof(object));
+        return Expression.Lambda<Func<T, object>>(converted, parameter);
+    }
+
+    private Expression<Func<T, object>>? GetSortExpressionFromProperty(Type type, string propertyName)
+    {        
+        var prop = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                   .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+        
+        if (prop is null) return null;
+
+        var parameter = Expression.Parameter(typeof(T), "x");
+        var property = Expression.Property(parameter, prop.Name);
+        var converted = Expression.Convert(property, typeof(object));
+        return Expression.Lambda<Func<T, object>>(converted, parameter);
+    }
+
+    private Expression<Func<T, object>>? GetSortExpressionFromNavigation(Type type, string propertyName)
+    {
+        var navigations = Context.Model.FindEntityType(typeof(T))?.GetNavigations();
+        if (navigations != null)
+        {
+            foreach (var navigation in navigations)
+            {
+                var navigationEntityType = Context.Model.FindEntityType(navigation.ClrType);
+                if (navigationEntityType != null)
+                {
+                    var prop = navigationEntityType.ClrType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+                    if (prop != null)
+                    {
+                        // Cria uma expressão para acessar a propriedade da entidade de navegação
+                        var parameter = Expression.Parameter(typeof(T), "x");
+                        var navigationProperty = Expression.Property(parameter, navigation.Name);
+                        var property = Expression.Property(navigationProperty, prop?.Name);
+                        var converted = Expression.Convert(property, typeof(object));
+                        return Expression.Lambda<Func<T, object>>(converted, parameter);
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
