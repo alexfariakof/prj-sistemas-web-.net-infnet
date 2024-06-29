@@ -115,7 +115,7 @@ public abstract class BaseRepository<T> where T : class, new()
 
         Expression<Func<T, object>>? sortExpression = TryGetSortExpressionFromProperty(propertyToSort) 
             ?? TryGetSortExpressionFromNavigation(propertyToSort) 
-            ?? GetSortExpressionFromDefaultProperty(propertyToSort);
+            ?? GetSortExpressionFromDefaultProperty();
 
         // Ordena a lista com base na expressão de acesso à propriedade
         if (sortOrder == SortOrder.Ascending)
@@ -124,13 +124,13 @@ public abstract class BaseRepository<T> where T : class, new()
             return listToSort.AsQueryable().OrderByDescending(sortExpression).ToList();
     }
 
-    private Expression<Func<T, object>> GetSortExpressionFromDefaultProperty(string propertyName)
+    private Expression<Func<T, object>> GetSortExpressionFromDefaultProperty()
     {
         var prop = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault();
 
         // Cria uma expressão para acessar a propriedade diretamente
         var parameter = Expression.Parameter(typeof(T), "x");
-        var property = Expression.Property(parameter, prop.Name);
+        var property = Expression.Property(parameter, prop?.Name);
         var converted = Expression.Convert(property, typeof(object));
         return Expression.Lambda<Func<T, object>>(converted, parameter);
     }
