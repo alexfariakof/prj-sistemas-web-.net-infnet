@@ -43,6 +43,6 @@ public class RepositoryInjectDependenceTest
         services?.AddRepositoriesAdministrativeApp();
 
         // Assert
-        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<AdministrativeAccount>) && descriptor.ImplementationType == typeof(AdminAccountRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<AdminAccount>) && descriptor.ImplementationType == typeof(AdminAccountRepository)));
     }
 }

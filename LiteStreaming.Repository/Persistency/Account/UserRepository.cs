@@ -1,7 +1,7 @@
 ﻿using Domain.Account.Agreggates;
 using Domain.Account.ValueObject;
-using LiteStreaming.Repository.Abstractions.Interfaces;
-using Repository.Abstractions;
+using Repository.Persistency.Abstractions;
+using Repository.Interfaces;
 
 namespace Repository.Persistency.Account;
 public class UserRepository : BaseRepository<User>, IRepository<User>

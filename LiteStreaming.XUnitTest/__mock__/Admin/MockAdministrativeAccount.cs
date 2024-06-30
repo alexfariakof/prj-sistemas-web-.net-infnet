@@ -21,9 +21,9 @@ public class MockAdministrativeAccount
 
     private MockAdministrativeAccount() { }
 
-    public AdministrativeAccount GetFaker()
+    public AdminAccount GetFaker()
     {
-        var fakeAdministrativeAccount = new Faker<AdministrativeAccount>()
+        var fakeAdministrativeAccount = new Faker<AdminAccount>()
             .RuleFor(a => a.Id, f => f.Random.Guid())
             .RuleFor(a => a.Login, MockLogin.Instance.GetFaker())
             .RuleFor(a => a.DtCreated, f => f.Date.Past())
@@ -33,11 +33,11 @@ public class MockAdministrativeAccount
         return fakeAdministrativeAccount;
     }
 
-    public AdministrativeAccountDto GetFakerDto()
+    public AdminAccountDto GetFakerDto()
     {
         lock (LockObject)
         {
-            var fakeAdministrativeAccountDto = new Faker<AdministrativeAccountDto>()
+            var fakeAdministrativeAccountDto = new Faker<AdminAccountDto>()
                 .RuleFor(a => a.Id, f => f.Random.Guid())
                 .RuleFor(a => a.Name, f => f.Name.FirstName())
                 .RuleFor(a => a.Email, f => f.Internet.Email())
@@ -49,30 +49,25 @@ public class MockAdministrativeAccount
         }
     }
 
-    public List<AdministrativeAccount> GetListFaker(int count = 2)
+    public List<AdminAccount> GetListFaker(int count)
     {
-        lock (LockObject)
+        var administrativeAccounts = new List<AdminAccount>();
+
+        for (int i = 0; i < count; i++)
         {
-            var administrativeAccounts = new List<AdministrativeAccount>();
-
-            for (int i = 0; i < count; i++)
-            {
-                var account = GetFaker();
-                account.PerfilType = (i + 2) % 2 == 0 ? Perfil.UserType.Admin : Perfil.UserType.Normal;
-                administrativeAccounts.Add(account);
-            }
-
-            return administrativeAccounts;
+            administrativeAccounts.Add(GetFaker());
         }
+
+        return administrativeAccounts;
     }
     
-    public AdministrativeAccountDto GetFakerDto(AdministrativeAccount? account = null)
+    public AdminAccountDto GetFakerDto(AdminAccount? account = null)
     {
         lock (LockObject)
         {
             if (account == null) account = MockAdministrativeAccount.Instance.GetFaker();
 
-            var fakeAdministrativeAccountDto = new Faker<AdministrativeAccountDto>()
+            var fakeAdministrativeAccountDto = new Faker<AdminAccountDto>()
                 .RuleFor(a => a.Id, f => account.Id)
                 .RuleFor(a => a.UsuarioId, f => account.Id)
                 .RuleFor(a => a.Name, f => account.Name)
@@ -85,13 +80,13 @@ public class MockAdministrativeAccount
         }
     }
 
-    public List<AdministrativeAccountDto> GetFakerListDto(IList<AdministrativeAccount>? accounts = null, int count = 3)
+    public List<AdminAccountDto> GetFakerListDto(IList<AdminAccount>? accounts = null, int count = 3)
     {
         lock (LockObject)
         {
             if (accounts == null) accounts = MockAdministrativeAccount.Instance.GetListFaker(count);
 
-            var administrativeAccountDtoList = new List<AdministrativeAccountDto>();
+            var administrativeAccountDtoList = new List<AdminAccountDto>();
 
             foreach (var account in accounts)
             {

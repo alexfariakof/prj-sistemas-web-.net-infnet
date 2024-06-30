@@ -1,6 +1,6 @@
 ﻿using Domain.Account.Agreggates;
-using LiteStreaming.Repository.Abstractions.Interfaces;
-using Repository.Abstractions;
+using Repository.Persistency.Abstractions;
+using Repository.Interfaces;
 
 namespace Repository.Persistency.Account;
 public class PlaylistPersonalRepository : BaseRepository<PlaylistPersonal>, IRepository<PlaylistPersonal>
