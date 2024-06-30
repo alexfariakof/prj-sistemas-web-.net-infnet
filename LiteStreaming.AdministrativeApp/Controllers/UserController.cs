@@ -8,11 +8,11 @@ using LiteStreaming.Application.Abstractions;
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
 [Authorize]
-public class UserController : BaseController<AdministrativeAccountDto>
+public class UserController : BaseController<AdminAccountDto>
 {
-    private readonly IService<AdministrativeAccountDto> administrativeAccountService;
+    private readonly IService<AdminAccountDto> administrativeAccountService;
 
-    public UserController(IService<AdministrativeAccountDto> administrativeAccountService): base(administrativeAccountService)
+    public UserController(IService<AdminAccountDto> administrativeAccountService): base(administrativeAccountService)
     {
         this.administrativeAccountService = administrativeAccountService;
     }
@@ -30,7 +30,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public IActionResult Save(AdministrativeAccountDto dto)
+    public IActionResult Save(AdminAccountDto dto)
     {
         if (ModelState is { IsValid: false })
             return CreateView();
@@ -53,7 +53,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public IActionResult Update(AdministrativeAccountDto dto)
+    public IActionResult Update(AdminAccountDto dto)
     {
         if (ModelState is { IsValid: false })
             return EditView();
@@ -94,7 +94,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
     }
 
     
-    public IActionResult Delete(AdministrativeAccountDto dto)
+    public IActionResult Delete(AdminAccountDto dto)
     {
         try
         {
