@@ -49,16 +49,21 @@ public class MockAdministrativeAccount
         }
     }
 
-    public List<AdministrativeAccount> GetListFaker(int count)
+    public List<AdministrativeAccount> GetListFaker(int count = 2)
     {
-        var administrativeAccounts = new List<AdministrativeAccount>();
-
-        for (int i = 0; i < count; i++)
+        lock (LockObject)
         {
-            administrativeAccounts.Add(GetFaker());
-        }
+            var administrativeAccounts = new List<AdministrativeAccount>();
 
-        return administrativeAccounts;
+            for (int i = 0; i < count; i++)
+            {
+                var account = GetFaker();
+                account.PerfilType = (i + 2) % 2 == 0 ? Perfil.UserType.Admin : Perfil.UserType.Normal;
+                administrativeAccounts.Add(account);
+            }
+
+            return administrativeAccounts;
+        }
     }
     
     public AdministrativeAccountDto GetFakerDto(AdministrativeAccount? account = null)
