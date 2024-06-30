@@ -15,7 +15,7 @@ using Domain.Account.ValueObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 
 public static class Usings
 {

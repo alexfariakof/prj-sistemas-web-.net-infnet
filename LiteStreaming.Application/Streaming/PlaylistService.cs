@@ -3,7 +3,7 @@ using Application.Streaming.Dto.Interfaces;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
 using LiteStreaming.Application.Abstractions;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 using Microsoft.Data.SqlClient;
 
 namespace Application.Streaming;

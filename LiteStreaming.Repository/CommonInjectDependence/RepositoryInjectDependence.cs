@@ -5,7 +5,7 @@ using Repository.Persistency;
 using Domain.Administrative.Agreggates;
 using Repository.Persistency.Account;
 using Repository.Persistency.Streaming;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 
 namespace Repository.CommonInjectDependence;
 public static class RepositoryInjectDependence

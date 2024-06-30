@@ -8,7 +8,7 @@ using Domain.Account.ValueObject;
 using EasyCryptoSalt;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class UserService : IUserService

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 using Microsoft.Data.SqlClient;
 
 namespace LiteStreaming.Application.Abstractions;

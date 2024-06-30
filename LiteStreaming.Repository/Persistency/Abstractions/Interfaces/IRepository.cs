@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Linq.Expressions;
 
-namespace LiteStreaming.Repository.Abstractions.Interfaces;
+namespace Repository.Persistency.Abstractions.Interfaces;
 public interface IRepository<T> where T : class, new()
 {
     public void Save(T entity);
