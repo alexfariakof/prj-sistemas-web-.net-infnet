@@ -5,6 +5,7 @@ using Domain.Streaming.Agreggates;
 using LiteStreaming.Application.Abstractions;
 using LiteStreaming.Application.Core.Interfaces.Query;
 using LiteStreaming.Repository.Abstractions.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace Application.Streaming;
 public class AlbumService : ServiceBase<AlbumDto, Album>, IService<AlbumDto>, IAlbumService, IFindAll<AlbumDto>
@@ -33,6 +34,12 @@ public class AlbumService : ServiceBase<AlbumDto, Album>, IService<AlbumDto>, IA
     {
         var albums = Repository.FindAll().ToList();
         var result = Mapper.Map<List<AlbumDto>>(albums);
+        return result;
+    }
+
+    public override List<AlbumDto> FindAllSorted(string sortProperty = null, SortOrder sortOrder = 0)
+    {
+        var result = this.Mapper.Map<List<AlbumDto>>(this.Repository.FindAllSorted(sortProperty, sortOrder));
         return result;
     }
 

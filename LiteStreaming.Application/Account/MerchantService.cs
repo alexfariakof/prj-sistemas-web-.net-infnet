@@ -8,6 +8,7 @@ using Domain.Transactions.Agreggates;
 using Domain.Transactions.ValueObject;
 using LiteStreaming.Application.Abstractions;
 using LiteStreaming.Repository.Abstractions.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace Application.Streaming;
 public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<MerchantDto>, IMerchantService
@@ -83,6 +84,12 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
     public override List<MerchantDto> FindAll()
     {
         var result = this.Mapper.Map<List<MerchantDto>>(this.Repository.FindAll());
+        return result;
+    }
+
+    public override List<MerchantDto> FindAllSorted(string sortProperty = null, SortOrder sortOrder = 0)
+    {
+        var result = this.Mapper.Map<List<MerchantDto>>(this.Repository.FindAllSorted(sortProperty, sortOrder));
         return result;
     }
 

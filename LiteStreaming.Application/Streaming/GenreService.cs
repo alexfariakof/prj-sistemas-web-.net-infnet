@@ -5,6 +5,7 @@ using Domain.Streaming.Agreggates;
 using LiteStreaming.Application.Abstractions;
 using LiteStreaming.Application.Core.Interfaces.Query;
 using LiteStreaming.Repository.Abstractions.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace Application.Streaming;
 public class GenreService : ServiceBase<GenreDto, Genre>, IService<GenreDto>, IGenreService, IFindAll<GenreDto>
@@ -32,7 +33,13 @@ public class GenreService : ServiceBase<GenreDto, Genre>, IService<GenreDto>, IG
         var result = Mapper.Map<List<GenreDto>>(Genres);
         return result;
     }
-        
+
+    public override List<GenreDto> FindAllSorted(string sortProperty = null, SortOrder sortOrder = 0)
+    {
+        var result = this.Mapper.Map<List<GenreDto>>(this.Repository.FindAllSorted(sortProperty, sortOrder));
+        return result;
+    }
+
     public override GenreDto Update(GenreDto dto)
     {
         var Genre = Mapper.Map<Genre>(dto);

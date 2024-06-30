@@ -164,7 +164,7 @@ public class BaseRepositoryAdministrativeContextTest
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted("", 0);
+            var result = repository.FindAllSorted("");
 
             // Assert
             var sortedEntities = entities.OrderBy(e => e.Id).ToList();

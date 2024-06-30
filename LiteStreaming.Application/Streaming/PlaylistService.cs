@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Streaming.Agreggates;
 using LiteStreaming.Application.Abstractions;
 using LiteStreaming.Repository.Abstractions.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace Application.Streaming;
 public class PlaylistService : ServiceBase<PlaylistDto, Playlist>, IService<PlaylistDto>, IPlaylistService
@@ -33,6 +34,13 @@ public class PlaylistService : ServiceBase<PlaylistDto, Playlist>, IService<Play
         var result = Mapper.Map<List<PlaylistDto>>(Playlists);
         return result;
     }
+
+    public override List<PlaylistDto> FindAllSorted(string sortProperty = null, SortOrder sortOrder = 0)
+    {
+        var result = this.Mapper.Map<List<PlaylistDto>>(this.Repository.FindAllSorted(sortProperty, sortOrder));
+        return result;
+    }
+
     public override PlaylistDto Update(PlaylistDto dto)
     {
         var Playlist = Mapper.Map<Playlist>(dto);
