@@ -1,8 +1,8 @@
 ﻿using Domain.Streaming.Agreggates;
 using Domain.Streaming.ValueObject;
+using Repository.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Repository.Abstractions;
 
 namespace Repository.Mapping.Streaming;
 public class MusicMap : IEntityTypeConfiguration<Music>

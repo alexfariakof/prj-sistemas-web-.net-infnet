@@ -1,7 +1,7 @@
 ﻿using Domain.Streaming.Agreggates;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Repository.Abstractions;
+using Repository.Constants;
 
 namespace Repository.Mapping.Streaming
 {

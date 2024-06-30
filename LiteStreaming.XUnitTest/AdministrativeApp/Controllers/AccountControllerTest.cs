@@ -10,12 +10,12 @@ using LiteStreaming.XunitTest.__mock__.Admin;
 namespace AdministrativeApp.Controllers;
 public class AccountControllerTest
 {
-    private readonly Mock<IAdministrativeAuthenticationService> authenticationServiceMock;
+    private readonly Mock<IAdminAuthService> authenticationServiceMock;
     private readonly AccountController accountController;
 
     public AccountControllerTest()
     {
-        authenticationServiceMock = new Mock<IAdministrativeAuthenticationService>();
+        authenticationServiceMock = new Mock<IAdminAuthService>();
         accountController = new AccountController(authenticationServiceMock.Object)
         {
             ControllerContext = new ControllerContext

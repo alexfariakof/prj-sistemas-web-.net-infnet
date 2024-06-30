@@ -1,5 +1,5 @@
 ﻿using Domain.Account.Agreggates;
-using Repository.Abstractions;
+using Repository.Persistency.Abstractions;
 using Repository.Interfaces;
 
 namespace Repository.Persistency.Account;

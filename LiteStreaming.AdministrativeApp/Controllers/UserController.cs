@@ -8,15 +8,18 @@ using LiteStreaming.Application.Abstractions;
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
 [Authorize]
-public class UserController : BaseController<AdministrativeAccountDto>
+public class UserController : BaseController<AdminAccountDto>
 {
-    public UserController(IService<AdministrativeAccountDto> administrativeAccountService): base(administrativeAccountService)
+    private readonly IService<AdminAccountDto> administrativeAccountService;
+
+    public UserController(IService<AdminAccountDto> administrativeAccountService): base(administrativeAccountService)
     {
+        this.administrativeAccountService = administrativeAccountService;
     }
 
     public override IActionResult Index()
     {
-        return View(this.Services.FindAll());
+        return View(this.administrativeAccountService.FindAll());
     }
 
     [Authorize(Roles = "Admin")]
@@ -27,7 +30,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public IActionResult Save(AdministrativeAccountDto dto)
+    public IActionResult Save(AdminAccountDto dto)
     {
         if (ModelState is { IsValid: false })
             return CreateView();
@@ -35,7 +38,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
         try
         {
             dto.UsuarioId = UserId;
-            this.Services.Create(dto);
+            administrativeAccountService.Create(dto);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -50,7 +53,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public IActionResult Update(AdministrativeAccountDto dto)
+    public IActionResult Update(AdminAccountDto dto)
     {
         if (ModelState is { IsValid: false })
             return EditView();
@@ -58,7 +61,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
         try
         {
             dto.UsuarioId = UserId;
-            this.Services.Update(dto);
+            administrativeAccountService.Update(dto);
             return this.RedirectToIndexView();
         }
         catch (Exception ex)
@@ -76,7 +79,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
     {
         try
         {
-            var result = this.Services.FindById(Id);
+            var result = this.administrativeAccountService.FindById(Id);
             return View(result);
         }
         catch (Exception ex)
@@ -87,16 +90,16 @@ public class UserController : BaseController<AdministrativeAccountDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, "Ocorreu um erro ao editar os dados deste usuário.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return View(INDEX, this.administrativeAccountService.FindAll());
     }
 
     
-    public IActionResult Delete(AdministrativeAccountDto dto)
+    public IActionResult Delete(AdminAccountDto dto)
     {
         try
         {
             dto.UsuarioId = UserId;
-            var result = this.Services.Delete(dto);
+            var result = this.administrativeAccountService.Delete(dto);
             if (result)
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Success, $"Usuário { dto?.Name } excluído.");
         }
@@ -107,7 +110,7 @@ public class UserController : BaseController<AdministrativeAccountDto>
             else
                 ViewBag.Alert = new AlertViewModel(AlertViewModel.AlertType.Danger, $"Ocorreu um erro ao excluir o usuário { dto?.Name }.");
         }
-        return View(INDEX, this.Services.FindAll());
+        return View(INDEX, this.administrativeAccountService.FindAll());
 
     }
 }
