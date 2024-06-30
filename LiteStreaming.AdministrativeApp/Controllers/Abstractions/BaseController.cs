@@ -1,13 +1,17 @@
-﻿using LiteStreaming.Application.Abstractions;
+﻿using LiteStreaming.AdministrativeApp.Models;
+using LiteStreaming.Application.Abstractions;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Data.SqlClient;
 using System.Security.Claims;
 
 namespace LiteStreaming.AdministrativeApp.Controllers.Abstractions;
 
 public abstract class BaseController<T> : Controller where T : class, new()
 {
+    const string SORT_PARAM_NAME = "SortParamName"; 
     protected string INDEX { get; } = "Index";
     protected string CREATE { get;  } = "Create";    
     protected string EDIT { get; }  = "Edit";
@@ -18,12 +22,41 @@ public abstract class BaseController<T> : Controller where T : class, new()
         this.Services = service;    
     }
 
-    public virtual IActionResult Index()
+    public virtual IActionResult Index(string sortExpression = null)
     {
-        return View(this.Services.FindAll());
+        ViewData[SORT_PARAM_NAME] = "";
+        SortOrder sortOrder;
+        string? sortProperty = sortExpression?.Replace("_desc", "").ToLower();
+
+        if (sortProperty is not null && (sortExpression.Contains("_desc") || sortExpression.Contains("_init")))
+        {
+            sortOrder = SortOrder.Descending;
+            ViewData[SORT_PARAM_NAME] = $"{sortProperty}";
+        }
+        else if (sortProperty is not null && !sortExpression.Contains("_desc"))
+        {
+            sortOrder = SortOrder.Ascending;
+            ViewData[SORT_PARAM_NAME] = $"{sortProperty}_desc";
+        }
+        else
+        {
+            sortOrder = SortOrder.Ascending;
+            ViewData[SORT_PARAM_NAME] = "_init";
+        }
+        return View(this.Services.FindAllSorted(sortProperty, sortOrder));
     }
 
-    protected IActionResult CreateView()
+    [Authorize]
+    public virtual IActionResult Create()
+    {
+        return View(CREATE);
+    }
+
+    protected IActionResult IndexView()
+    {
+        return View(INDEX, this.Services.FindAll());
+    }
+    protected virtual IActionResult CreateView()
     {
         return View(CREATE);
     }
@@ -63,5 +96,20 @@ public abstract class BaseController<T> : Controller where T : class, new()
             ViewBag.LoginError = "Usuário sem permissão de acesso.";
             HttpContext.SignOutAsync();
         }
+    }
+
+    protected AlertViewModel SuccessMessage(string message)
+    {
+        return new AlertViewModel(AlertViewModel.AlertType.Success, message);
+    }
+
+    protected AlertViewModel WarningMessage(string message)
+    {
+        return new AlertViewModel(AlertViewModel.AlertType.Warning, message);
+    }
+
+    protected AlertViewModel ErrorMessage(string message)
+    {
+        return new AlertViewModel(AlertViewModel.AlertType.Danger, message);
     }
 }

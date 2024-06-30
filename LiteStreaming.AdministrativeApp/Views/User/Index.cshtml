@@ -26,9 +26,21 @@
         <thead>
             <tr>
                 <th scope="col" class="visually-hidden">Id</th>
-                <th scope="col" class="text-start">Name</th>
-                <th scope="col" class="text-start">Email</th>
-                <th scope="col" class="text-start">Perfil</th>
+                <th scope="col" class="text-start">
+                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") !="name" ? "name" : ViewData["SortParamName"])">
+                        Nome
+                    </a>
+                </th>
+                <th scope="col" class="text-start">
+                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") != "email" ? "email" : ViewData["SortParamName"])">
+                        Email
+                    </a>
+                </th>
+                <th scope="col" class="text-start">
+                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") !="description" ? "description" : ViewData["SortParamName"])">
+                        Perfil
+                    </a>
+                </th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
