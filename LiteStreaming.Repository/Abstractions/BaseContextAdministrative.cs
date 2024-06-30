@@ -8,7 +8,7 @@ namespace Repository.Abstractions;
 public class BaseContextAdministrative<TContext> : DbContext where TContext : DbContext
 {
     public BaseContextAdministrative(DbContextOptions<TContext> options) : base(options) { }
-    public DbSet<AdministrativeAccount> Admin { get; set; }
+    public DbSet<AdminAccount> Admin { get; set; }
     public DbSet<Perfil> Perfil { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

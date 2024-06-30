@@ -1,10 +1,10 @@
 ﻿using Repository;
 
 namespace DataSeeders.Administrative;
-public class DataSeederAdministrative : IDataSeeder
+public class DataSeederAdmin : IDataSeederAdmin
 {
-    private readonly RegisterContextAdministrative _context;
-    public DataSeederAdministrative(RegisterContextAdministrative context)
+    private readonly RegisterContextAdmin _context;
+    public DataSeederAdmin(RegisterContextAdmin context)
     {
         _context = context;
     }
@@ -21,7 +21,7 @@ public class DataSeederAdministrative : IDataSeeder
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
-            new DataSeederAdministrativeAccount(_context).SeedData();
+            new DataSeederAdmin(_context).SeedData();
         }
         catch
         {

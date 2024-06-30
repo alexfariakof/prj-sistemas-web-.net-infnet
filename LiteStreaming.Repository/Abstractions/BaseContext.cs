@@ -10,6 +10,7 @@ using Repository.Mapping.Account;
 using Repository.Mapping.Notifications;
 using Repository.Mapping.Streaming;
 using Repository.Mapping.Transactions;
+using Repository.Constants;
 
 namespace Repository.Abstractions;
 
