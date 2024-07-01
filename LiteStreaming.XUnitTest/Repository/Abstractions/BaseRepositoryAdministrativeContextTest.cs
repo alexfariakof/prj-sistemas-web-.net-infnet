@@ -164,10 +164,10 @@ public class BaseRepositoryAdministrativeContextTest
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted("");
+            var result = repository.FindAllSorted();
 
             // Assert
-            var sortedEntities = entities.OrderBy(e => e.Id).ToList();
+            var sortedEntities = entities.ToList();
             Assert.Equal(sortedEntities.Count, result.Count());
             Assert.Equal(sortedEntities.First().Id, result.First().Id);
             Assert.Equal(sortedEntities.Last().Id, result.Last().Id);
