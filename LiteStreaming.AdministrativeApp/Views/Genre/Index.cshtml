@@ -25,7 +25,11 @@
     <table class="table table-striped table-dark mb-0">
         <thead>
             <tr>
-                <th scope="col" class="text-start">Nome</th>
+                <th scope="col" class="text-start">
+                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") !="name" ? "name_desc" : ViewData["SortParamName"])">
+                        <i class="@(ViewData["SortParamName"].ToString().Replace("_desc", "") == "name" ? ViewData["SortIcon"] : "bi bi-sort-alpha-up")">Nome</i>
+                    </a>
+                </th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>

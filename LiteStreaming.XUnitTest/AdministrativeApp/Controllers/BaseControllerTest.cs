@@ -20,7 +20,7 @@ public class BaseControllerTest
         this.mockService = new Mock<IService<FlatDto>>();
     }
 
-    public class MockBaseController : BaseController<FlatDto> 
+    public class MockBaseController : UnitControllerBase<FlatDto> 
     {        
         public MockBaseController(IService<FlatDto> service) : base(service)
         {
