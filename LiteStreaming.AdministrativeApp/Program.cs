@@ -70,14 +70,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
-if (app.Environment.EnvironmentName.Equals("InMemory"))
+if (!app.Environment.IsProduction())
 {
     app.RunAdministrativeAppDataSeeders();
     app.RunWebApiDataSeeders();
-}
-else if (!app.Environment.IsProduction())
-{
-    app.RunAdministrativeAppDataSeeders();
 }
 
 app.Run();
