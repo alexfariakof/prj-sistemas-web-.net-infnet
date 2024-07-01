@@ -9,41 +9,53 @@ using System.Security.Claims;
 
 namespace LiteStreaming.AdministrativeApp.Controllers.Abstractions;
 
-public abstract class BaseController<T> : Controller where T : class, new()
+public abstract class UnitControllerBase<T> : Controller where T : class, new()
 {
-    const string SORT_PARAM_NAME = "SortParamName"; 
+    const string SORT_PARAM_NAME = "SortParamName";
+    const string SORT_ICONS = "SortIcon";
+    const string SORT_ICON_ASC = "bi bi-sort-alpha-down";
+    const string SORT_ICON_DESC = "bi bi-sort-alpha-up";
     protected string INDEX { get; } = "Index";
     protected string CREATE { get;  } = "Create";    
     protected string EDIT { get; }  = "Edit";
     protected IService<T> Services { get; private set; }
 
-    protected BaseController(IService<T> service) 
+    protected UnitControllerBase(IService<T> service) 
     {
         this.Services = service;    
     }
 
-    public virtual IActionResult Index(string sortExpression = null)
+    private SortOrder ApllySortOrder(string sortExpression)
     {
         ViewData[SORT_PARAM_NAME] = "";
-        SortOrder sortOrder;
-        string? sortProperty = sortExpression?.Replace("_desc", "").ToLower();
+        ViewData[SORT_ICONS] = "";
 
-        if (sortProperty is not null && (sortExpression.Contains("_desc") || sortExpression.Contains("_init")))
-        {
-            sortOrder = SortOrder.Descending;
-            ViewData[SORT_PARAM_NAME] = $"{sortProperty}";
-        }
-        else if (sortProperty is not null && !sortExpression.Contains("_desc"))
+        SortOrder sortOrder;
+        if (sortExpression is not null && !sortExpression.Contains("_desc"))
         {
             sortOrder = SortOrder.Ascending;
-            ViewData[SORT_PARAM_NAME] = $"{sortProperty}_desc";
+            ViewData[SORT_PARAM_NAME] = $"{sortExpression}_desc";
+            ViewData[SORT_ICONS] = SORT_ICON_DESC;
+        }
+        else if (sortExpression is not null)
+        {
+            sortOrder = SortOrder.Descending;
+            ViewData[SORT_PARAM_NAME] = $"{sortExpression.Replace("_desc", "").ToLower()}";
+            ViewData[SORT_ICONS] = SORT_ICON_ASC;
         }
         else
         {
             sortOrder = SortOrder.Ascending;
-            ViewData[SORT_PARAM_NAME] = "_init";
+            ViewData[SORT_PARAM_NAME] = "default_desc";
+            ViewData[SORT_ICONS] = SORT_ICON_DESC;
         }
-        return View(this.Services.FindAllSorted(sortProperty, sortOrder));
+        return sortOrder;
+    }
+
+    public virtual IActionResult Index(string sortExpression = null)
+    {
+        var sortOrder = ApllySortOrder(sortExpression);
+        return View(this.Services.FindAllSorted(sortExpression, sortOrder));
     }
 
     [Authorize]

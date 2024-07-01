@@ -27,18 +27,18 @@
             <tr>
                 <th scope="col" class="visually-hidden">Id</th>
                 <th scope="col" class="text-start">
-                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") !="name" ? "name" : ViewData["SortParamName"])">
-                        Nome
+                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") !="name" ? "name_desc" : ViewData["SortParamName"])">
+                        <i class="@(ViewData["SortParamName"].ToString().Replace("_desc", "") == "name" ? ViewData["SortIcon"] : "bi bi-sort-alpha-up")">Nome</i>
                     </a>
                 </th>
                 <th scope="col" class="text-start">
-                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") != "email" ? "email" : ViewData["SortParamName"])">
-                        Email
+                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") != "email" ? "email_desc" : ViewData["SortParamName"])">
+                        <i class="@(ViewData["SortParamName"].ToString().Replace("_desc", "") == "email" ? ViewData["SortIcon"] : "bi bi-sort-alpha-up")">Email</i>
                     </a>
                 </th>
                 <th scope="col" class="text-start">
-                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") !="description" ? "description" : ViewData["SortParamName"])">
-                        Perfil
+                    <a asp-action="Index" asp-route-sortExpression="@(ViewData["SortParamName"].ToString().Replace("_desc", "") !="description" ? "description_desc" : ViewData["SortParamName"])">
+                        <i class="@(ViewData["SortParamName"].ToString().Replace("_desc", "") == "description" ? ViewData["SortIcon"] : "bi bi-sort-alpha-up")">Perfil</i>
                     </a>
                 </th>
                 <th scope="col">Actions</th>
