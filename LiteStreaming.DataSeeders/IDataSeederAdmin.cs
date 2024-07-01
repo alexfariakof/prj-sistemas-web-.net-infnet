@@ -1,5 +1,5 @@
 ﻿namespace DataSeeders;
-public interface IAdministrativeDataSeeder
+public interface IDataSeederAdmin
 {
     public void SeedData();
 }

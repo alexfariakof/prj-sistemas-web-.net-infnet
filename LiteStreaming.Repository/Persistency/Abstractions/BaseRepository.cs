@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using Microsoft.Data.SqlClient;
 using System.Reflection;
 
-namespace Repository.Abstractions;
+namespace Repository.Persistency.Abstractions;
 
 /// <summary>
 /// Repositório base que fornece operações CRUD comuns para entidades.

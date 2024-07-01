@@ -26,21 +26,21 @@ builder.Services.AddWebApiDataSeeders();
 
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddDbContext<RegisterContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
+    builder.Services.AddDbContext<RegisterContextAdmin>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
     builder.Services.AddDbContext<RegisterContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
 }
 else if (builder.Environment.IsProduction())
 {
-    builder.Services.AddDbContext<RegisterContextAdministrative>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
+    builder.Services.AddDbContext<RegisterContextAdmin>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MsSqlAdministrativeConnectionString")));
 }
 else if (builder.Environment.EnvironmentName.Equals("InMemory"))
 {
-    builder.Services.AddDbContext<RegisterContextAdministrative>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
+    builder.Services.AddDbContext<RegisterContextAdmin>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
     builder.Services.AddDbContext<RegisterContext>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_InMemory"));
 }
 else
 {
-    builder.Services.AddDbContext<RegisterContextAdministrative>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
+    builder.Services.AddDbContext<RegisterContextAdmin>(opt => opt.UseLazyLoadingProxies().UseInMemoryDatabase("Register_Database_Administrative_InMemory"));
     builder.Services.MsSqlServerMigrationsAdministrativeContext(builder.Configuration);
     builder.Services.MySqlServerMigrationsAdministrativeContext(builder.Configuration);
 }
@@ -59,8 +59,8 @@ app.UseRequestLocalization(localizationOptions);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsProduction())
 {
-    app.UseExceptionHandler("/Home/Error");    
-    app.UseHsts();    
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -77,7 +77,7 @@ if (app.Environment.EnvironmentName.Equals("InMemory"))
 }
 else if (!app.Environment.IsProduction())
 {
-    app.RunAdministrativeAppDataSeeders();    
+    app.RunAdministrativeAppDataSeeders();
 }
 
 app.Run();

@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using Repository.Persistency.Abstractions;
 
 namespace Repository.Abstractions;
 public sealed class BaseRepositoryTest

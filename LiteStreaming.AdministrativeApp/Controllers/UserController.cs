@@ -7,9 +7,9 @@ using LiteStreaming.Application.Abstractions;
 namespace LiteStreaming.AdministrativeApp.Controllers;
 
 [Authorize]
-public class UserController : UnitControllerBase<AdministrativeAccountDto>
+public class UserController : UnitControllerBase<AdministrativeAccountD
 {
-    public UserController(IService<AdministrativeAccountDto> administrativeAccountService): base(administrativeAccountService)  { }
+    public UserController(IService<AdminAccountDto> administrativeAccountService) : base(administrativeAccountService) { }
 
     [Authorize(Roles = "Admin")]
     public override IActionResult Create()
@@ -19,7 +19,7 @@ public class UserController : UnitControllerBase<AdministrativeAccountDto>
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public IActionResult Save(AdministrativeAccountDto dto)
+    public IActionResult Save(AdminAccountDto dto)
     {
         if (ModelState is { IsValid: false })
             return this.Create();
@@ -42,7 +42,7 @@ public class UserController : UnitControllerBase<AdministrativeAccountDto>
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public IActionResult Update(AdministrativeAccountDto dto)
+    public IActionResult Update(AdminAccountDto dto)
     {
         if (ModelState is { IsValid: false })
             return EditView();
@@ -58,7 +58,7 @@ public class UserController : UnitControllerBase<AdministrativeAccountDto>
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao atualizar os dados do usuário { dto?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao atualizar os dados do usuário {dto?.Name}.");
             return EditView();
         }
     }
@@ -82,22 +82,22 @@ public class UserController : UnitControllerBase<AdministrativeAccountDto>
         return IndexView();
     }
 
-    
-    public IActionResult Delete(AdministrativeAccountDto dto)
+
+    public IActionResult Delete(AdminAccountDto dto)
     {
         try
         {
             dto.UsuarioId = UserId;
             var result = this.Services.Delete(dto);
             if (result)
-                ViewBag.Alert = SuccessMessage($"Usuário { dto?.Name } excluído.");
+                ViewBag.Alert = SuccessMessage($"Usuário {dto?.Name} excluído.");
         }
         catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
                 ViewBag.Alert = WarningMessage(argEx.Message);
             else
-                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao excluir o usuário { dto?.Name }.");
+                ViewBag.Alert = ErrorMessage($"Ocorreu um erro ao excluir o usuário {dto?.Name}.");
         }
         return IndexView();
     }

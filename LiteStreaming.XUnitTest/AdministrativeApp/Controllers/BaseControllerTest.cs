@@ -49,7 +49,7 @@ public class BaseControllerTest
     {
         // Arrange
         var controller = new MockBaseController(mockService.Object);
-        var account = MockAdministrativeAccount.Instance.GetFaker();
+        var account = MockAdminAccount.Instance.GetFaker();
         MockHttpContextHelper.MockClaimsIdentitySigned(account.Id, account.Name, account.Login.Email, controller);
 
         // Act

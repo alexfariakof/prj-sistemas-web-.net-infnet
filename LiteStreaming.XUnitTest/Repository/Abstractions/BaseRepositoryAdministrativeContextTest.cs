@@ -3,22 +3,23 @@ using Domain.Administrative.Agreggates;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using Repository.Persistency.Abstractions;
 
 namespace Repository.Abstractions;
 public class BaseRepositoryAdministrativeContextTest
 {
-    public class TestRepository : BaseRepository<AdministrativeAccount>
+    public class TestRepository : BaseRepository<AdminAccount>
     {
-        public TestRepository(RegisterContextAdministrative context) : base(context) { }
+        public TestRepository(RegisterContextAdmin context) : base(context) { }
     }
 
 
-    private Mock<RegisterContextAdministrative> contextMock;
+    private Mock<RegisterContextAdmin> contextMock;
     public BaseRepositoryAdministrativeContextTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministrative>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
-        contextMock = new Mock<RegisterContextAdministrative>(options);
+        var options = new DbContextOptionsBuilder<RegisterContextAdmin>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
+        contextMock = new Mock<RegisterContextAdmin>(options);
     }
 
     [Fact]
@@ -26,7 +27,7 @@ public class BaseRepositoryAdministrativeContextTest
     {
         // Arrange
         var repository = new TestRepository(contextMock.Object);
-        var entity = new AdministrativeAccount();
+        var entity = new AdminAccount();
 
         // Act
         repository.Save(entity);
@@ -41,7 +42,7 @@ public class BaseRepositoryAdministrativeContextTest
     {
         // Arrange
         var repository = new TestRepository(contextMock.Object);
-        var entity = new AdministrativeAccount();
+        var entity = new AdminAccount();
 
         // Act
         repository.Update(entity);
@@ -56,7 +57,7 @@ public class BaseRepositoryAdministrativeContextTest
     {
         // Arrange
         var repository = new TestRepository(contextMock.Object);
-        var entity = new AdministrativeAccount();
+        var entity = new AdminAccount();
 
         // Act
         repository.Delete(entity);
@@ -71,9 +72,9 @@ public class BaseRepositoryAdministrativeContextTest
     {
         // Arrange
         var repository = new TestRepository(contextMock.Object);
-        var entities = new List<AdministrativeAccount> { new AdministrativeAccount(), new AdministrativeAccount() };
+        var entities = new List<AdminAccount> { new AdminAccount(), new AdminAccount() };
         var dbSetMock = Usings.MockDbSet(entities);
-        contextMock.Setup(c => c.Set<AdministrativeAccount>()).Returns(dbSetMock.Object);
+        contextMock.Setup(c => c.Set<AdminAccount>()).Returns(dbSetMock.Object);
 
         // Act
         var result = repository.FindAll();
@@ -88,9 +89,9 @@ public class BaseRepositoryAdministrativeContextTest
         // Arrange
         var repository = new TestRepository(contextMock.Object);
         var entityId = Guid.NewGuid();
-        var entity = new AdministrativeAccount { Id = entityId };
+        var entity = new AdminAccount { Id = entityId };
 
-        contextMock.Setup(c => c.Set<AdministrativeAccount>().Find(entityId)).Returns(entity);
+        contextMock.Setup(c => c.Set<AdminAccount>().Find(entityId)).Returns(entity);
 
         // Act
         var result = repository.GetById(entityId);
@@ -104,9 +105,9 @@ public class BaseRepositoryAdministrativeContextTest
     {
         // Arrange
         var repository = new TestRepository(contextMock.Object);
-        var entities = new List<AdministrativeAccount> { new AdministrativeAccount { Name = "Entity1" }, new AdministrativeAccount { Name = "Entity2" } };
+        var entities = new List<AdminAccount> { new AdminAccount { Name = "Entity1" }, new AdminAccount { Name = "Entity2" } };
         var dbSetMock = Usings.MockDbSet(entities);
-        contextMock.Setup(c => c.Set<AdministrativeAccount>()).Returns(dbSetMock.Object);
+        contextMock.Setup(c => c.Set<AdminAccount>()).Returns(dbSetMock.Object);
 
         // Act
         var result = repository.Find(e => e.Name == "Entity1");
@@ -121,9 +122,9 @@ public class BaseRepositoryAdministrativeContextTest
     {
         // Arrange
         var repository = new TestRepository(contextMock.Object);
-        var entities = new List<AdministrativeAccount> { new AdministrativeAccount { Name = "Entity1" }, new AdministrativeAccount { Name = "Entity2" } };
+        var entities = new List<AdminAccount> { new AdminAccount { Name = "Entity1" }, new AdminAccount { Name = "Entity2" } };
         var dbSetMock = Usings.MockDbSet(entities);
-        contextMock.Setup(c => c.Set<AdministrativeAccount>()).Returns(dbSetMock.Object);
+        contextMock.Setup(c => c.Set<AdminAccount>()).Returns(dbSetMock.Object);
 
         // Act
         var result = repository.Exists(e => e.Name == "Entity1");
@@ -137,9 +138,9 @@ public class BaseRepositoryAdministrativeContextTest
     {
         // Arrange
         var repository = new TestRepository(contextMock.Object);
-        var entities = new List<AdministrativeAccount> { new AdministrativeAccount { Name = "Entity1" }, new AdministrativeAccount { Name = "Entity2" } };
+        var entities = new List<AdminAccount> { new AdminAccount { Name = "Entity1" }, new AdminAccount { Name = "Entity2" } };
         var dbSetMock = Usings.MockDbSet(entities);
-        contextMock.Setup(c => c.Set<AdministrativeAccount>()).Returns(dbSetMock.Object);
+        contextMock.Setup(c => c.Set<AdminAccount>()).Returns(dbSetMock.Object);
 
         // Act
         var result = repository.Exists(e => e.Name == "Entity3");
@@ -152,12 +153,12 @@ public class BaseRepositoryAdministrativeContextTest
     public void FindAllSorted_Should_Return_All_Entities_Sorted_By_Ascending_Specified_DefaultProperty()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministrative>().UseInMemoryDatabase(databaseName: "TestDatabase_Default_Property_Sorted_By_Ascending").Options;
-        using (var context = new RegisterContextAdministrative(options))
+        var options = new DbContextOptionsBuilder<RegisterContextAdmin>().UseInMemoryDatabase(databaseName: "TestDatabase_Default_Property_Sorted_By_Ascending").Options;
+        using (var context = new RegisterContextAdmin(options))
         {
             // Inserindo dados de exemplo no contexto
-            var entities = MockAdministrativeAccount.Instance.GetListFaker();
-            context.Set<AdministrativeAccount>().AddRange(entities);
+            var entities = MockAdminAccount.Instance.GetListFaker();
+            context.Set<AdminAccount>().AddRange(entities);
             context.SaveChanges();
 
             // Criando o repositório com o contexto real
@@ -167,7 +168,7 @@ public class BaseRepositoryAdministrativeContextTest
             var result = repository.FindAllSorted("");
 
             // Assert
-            var sortedEntities = entities.OrderBy(e => e.Id).ToList();
+            var sortedEntities = entities.ToList();
             Assert.Equal(sortedEntities.Count, result.Count());
             Assert.Equal(sortedEntities.First().Id, result.First().Id);
             Assert.Equal(sortedEntities.Last().Id, result.Last().Id);
@@ -179,19 +180,19 @@ public class BaseRepositoryAdministrativeContextTest
     public void FindAllSorted_Should_Return_All_Entities_Sorted_By_Ascending_Specified_Property()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministrative>().UseInMemoryDatabase(databaseName: "TestDatabase_Property__Sorted_By_Ascending").Options;
-        using (var context = new RegisterContextAdministrative(options))
+        var options = new DbContextOptionsBuilder<RegisterContextAdmin>().UseInMemoryDatabase(databaseName: "TestDatabase_Property__Sorted_By_Ascending").Options;
+        using (var context = new RegisterContextAdmin(options))
         {
             // Inserindo dados de exemplo no contexto
-            var entities = MockAdministrativeAccount.Instance.GetListFaker();
-            context.Set<AdministrativeAccount>().AddRange(entities);
+            var entities = MockAdminAccount.Instance.GetListFaker();
+            context.Set<AdminAccount>().AddRange(entities);
             context.SaveChanges();
 
             // Criando o repositório com o contexto real
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted(nameof(AdministrativeAccount.Name), SortOrder.Ascending);
+            var result = repository.FindAllSorted(nameof(AdminAccount.Name), SortOrder.Ascending);
 
             // Assert
             var sortedEntities = entities.OrderBy(e => e.Name).ToList();
@@ -205,19 +206,19 @@ public class BaseRepositoryAdministrativeContextTest
     public void FindAllSorted_Should_Return_All_Entities_Sorted_By_Desscending_Specified_Property()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministrative>().UseInMemoryDatabase(databaseName: "TestDatabase_Property__Sorted_By_Descending").Options;
-        using (var context = new RegisterContextAdministrative(options))
+        var options = new DbContextOptionsBuilder<RegisterContextAdmin>().UseInMemoryDatabase(databaseName: "TestDatabase_Property__Sorted_By_Descending").Options;
+        using (var context = new RegisterContextAdmin(options))
         {
             // Inserindo dados de exemplo no contexto
-            var entities = MockAdministrativeAccount.Instance.GetListFaker();
-            context.Set<AdministrativeAccount>().AddRange(entities);
+            var entities = MockAdminAccount.Instance.GetListFaker();
+            context.Set<AdminAccount>().AddRange(entities);
             context.SaveChanges();
 
             // Criando o repositório com o contexto real
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted(nameof(AdministrativeAccount.Name), SortOrder.Descending);
+            var result = repository.FindAllSorted(nameof(AdminAccount.Name), SortOrder.Descending);
 
             // Assert
             var sortedEntities = entities.OrderByDescending(e => e.Name).ToList();
@@ -232,19 +233,19 @@ public class BaseRepositoryAdministrativeContextTest
     public void FindAllSorted_Should_Return_All_Entities_Sorted_By_Ascending_Specified_Navigation()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministrative>().UseInMemoryDatabase(databaseName: "TestDatabase_Sorted_By_Ascending").Options;
-        using (var context = new RegisterContextAdministrative(options))
+        var options = new DbContextOptionsBuilder<RegisterContextAdmin>().UseInMemoryDatabase(databaseName: "TestDatabase_Sorted_By_Ascending").Options;
+        using (var context = new RegisterContextAdmin(options))
         {
             // Inserindo dados de exemplo no contexto
-            var entities = MockAdministrativeAccount.Instance.GetListFaker();
-            context.Set<AdministrativeAccount>().AddRange(entities);
+            var entities = MockAdminAccount.Instance.GetListFaker();
+            context.Set<AdminAccount>().AddRange(entities);
             context.SaveChanges();
 
             // Criando o repositório com o contexto real
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted(nameof(AdministrativeAccount.Login.Email), SortOrder.Ascending);
+            var result = repository.FindAllSorted(nameof(AdminAccount.Login.Email), SortOrder.Ascending);
 
             // Assert
             var sortedEntities = entities.OrderBy(e => e.Login.Email).ToList();
@@ -258,19 +259,19 @@ public class BaseRepositoryAdministrativeContextTest
     public void FindAllSorted_Should_Return_All_Entities_Sorted_By_Descending_Specified_Navigation()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContextAdministrative>().UseInMemoryDatabase(databaseName: "TestDatabase_Sorted_By_Descending").Options;
-        using (var context = new RegisterContextAdministrative(options))
+        var options = new DbContextOptionsBuilder<RegisterContextAdmin>().UseInMemoryDatabase(databaseName: "TestDatabase_Sorted_By_Descending").Options;
+        using (var context = new RegisterContextAdmin(options))
         {
             // Inserindo dados de exemplo no contexto
-            var entities = MockAdministrativeAccount.Instance.GetListFaker();
-            context.Set<AdministrativeAccount>().AddRange(entities);
+            var entities = MockAdminAccount.Instance.GetListFaker();
+            context.Set<AdminAccount>().AddRange(entities);
             context.SaveChanges();
 
             // Criando o repositório com o contexto real
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted(nameof(AdministrativeAccount.Login.Email), SortOrder.Descending);
+            var result = repository.FindAllSorted(nameof(AdminAccount.Login.Email), SortOrder.Descending);
 
             // Assert
             var sortedEntities = entities.OrderByDescending(e => e.Login.Email).ToList();
