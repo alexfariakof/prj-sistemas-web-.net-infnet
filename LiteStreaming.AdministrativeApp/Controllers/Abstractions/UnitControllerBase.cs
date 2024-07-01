@@ -52,7 +52,7 @@ public abstract class UnitControllerBase<T> : Controller where T : class, new()
         return sortOrder;
     }
 
-    public virtual IActionResult Index(string sortExpression = null)
+    public virtual IActionResult Index(string sortExpression = null, string serachText = "")
     {
         var sortOrder = ApllySortOrder(sortExpression);
         return View(this.Services.FindAllSorted(sortExpression, sortOrder));
