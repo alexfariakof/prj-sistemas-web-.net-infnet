@@ -106,12 +106,16 @@ public abstract class BaseRepository<T> where T : class, new()
     /// <param name="propertyToSort">A propriedade para ordenar. Se nula, a primeira propriedade pública é usada.</param>
     /// <param name="sortOrder">A ordem para classificar as entidades.</param>
     /// <returns>Uma coleção ordenada de entidades.</returns>
-    public virtual IEnumerable<T> FindAllSorted(string propertyToSort = null, SortOrder sortOrder = SortOrder.Ascending)
+    public virtual IEnumerable<T> FindAllSorted(string serachParams = null, string propertyToSort = null, SortOrder sortOrder = SortOrder.Ascending)
     {
-        var listToSort = FindAll();
-
         if (propertyToSort is null)
-            return listToSort;
+        {
+            if (String.IsNullOrEmpty(serachParams))
+                return FindAll();
+
+            Expression<Func<T, bool>>? serachExpression = GetSearchExpressionFromParams(serachParams);
+            return Context.Set<T>().Where(serachExpression).ToList();
+        }            
 
         Expression<Func<T, object>>? sortExpression = TryGetSortExpressionFromProperty(propertyToSort)
             ?? TryGetSortExpressionFromNavigation(propertyToSort)
@@ -119,9 +123,74 @@ public abstract class BaseRepository<T> where T : class, new()
 
         // Ordena a lista com base na expressão de acesso à propriedade
         if (sortOrder == SortOrder.Ascending)
-            return listToSort.AsQueryable().OrderBy(sortExpression).ToList();
+            return Context.Set<T>().AsQueryable().OrderBy(sortExpression).ToList();
         else
-            return listToSort.AsQueryable().OrderByDescending(sortExpression).ToList();
+            return Context.Set<T>().AsQueryable().OrderByDescending(sortExpression).ToList();
+    }
+
+    private Expression<Func<T, bool>>? GetSearchExpressionFromParams(string searchParams)
+    {
+        var parameter = Expression.Parameter(typeof(T), "x");
+        Expression? combinedExpression = null;
+
+        // Verificar propriedades diretas da entidade T
+        foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            if (prop.PropertyType == typeof(string))
+            {
+                var property = Expression.Property(parameter, prop.Name);
+                var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                var containsExpression = Expression.Call(property, containsMethod, Expression.Constant(searchParams, typeof(string)));
+
+                if (combinedExpression == null)
+                {
+                    combinedExpression = containsExpression;
+                }
+                else
+                {
+                    combinedExpression = Expression.OrElse(combinedExpression, containsExpression);
+                }
+            }
+        }
+
+        // Verificar propriedades de navegação
+        var navigations = Context.Model.FindEntityType(typeof(T))?.GetNavigations();
+        if (navigations != null)
+        {
+            foreach (var navigation in navigations)
+            {
+                var navigationEntityType = Context.Model.FindEntityType(navigation.ClrType);
+                if (navigationEntityType != null)
+                {
+                    foreach (var prop in navigationEntityType.ClrType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                    {
+                        if (prop.PropertyType == typeof(string))
+                        {
+                            var navigationProperty = Expression.Property(parameter, navigation.Name);
+                            var property = Expression.Property(navigationProperty, prop.Name);
+                            var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                            var containsExpression = Expression.Call(property, containsMethod, Expression.Constant(searchParams, typeof(string)));
+
+                            if (combinedExpression == null)
+                            {
+                                combinedExpression = containsExpression;
+                            }
+                            else
+                            {
+                                combinedExpression = Expression.OrElse(combinedExpression, containsExpression);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (combinedExpression == null)
+        {
+            return null;
+        }
+
+        return Expression.Lambda<Func<T, bool>>(combinedExpression, parameter);
     }
 
     /// <summary>

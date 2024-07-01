@@ -33,9 +33,9 @@ public class FlatService: ServiceBase<FlatDto, Flat>, IService<FlatDto>, IFlatSe
         return result;
     }
 
-    public override List<FlatDto> FindAllSorted(string sortProperty = null, SortOrder sortOrder = 0)
+    public override List<FlatDto> FindAllSorted(string serachParams = null, string sortProperty = null, SortOrder sortOrder = 0)
     {
-        var result = this.Mapper.Map<List<FlatDto>>(this.Repository.FindAllSorted(sortProperty, sortOrder));
+        var result = this.Mapper.Map<List<FlatDto>>(this.Repository.FindAllSorted(serachParams, sortProperty, sortOrder));
         return result;
     }
 
