@@ -25,12 +25,12 @@ public abstract class UnitControllerBase<T> : Controller where T : class, new()
         this.Services = service;    
     }
 
-    public virtual IActionResult Index(string sortExpression = null)
+    private SortOrder ApllySortOrder(string sortExpression)
     {
-        SortOrder sortOrder;
         ViewData[SORT_PARAM_NAME] = "";
         ViewData[SORT_ICONS] = "";
-                
+
+        SortOrder sortOrder;
         if (sortExpression is not null && !sortExpression.Contains("_desc"))
         {
             sortOrder = SortOrder.Ascending;
@@ -49,6 +49,12 @@ public abstract class UnitControllerBase<T> : Controller where T : class, new()
             ViewData[SORT_PARAM_NAME] = "default_desc";
             ViewData[SORT_ICONS] = SORT_ICON_DESC;
         }
+        return sortOrder;
+    }
+
+    public virtual IActionResult Index(string sortExpression = null)
+    {
+        var sortOrder = ApllySortOrder(sortExpression);
         return View(this.Services.FindAllSorted(sortExpression, sortOrder));
     }
 

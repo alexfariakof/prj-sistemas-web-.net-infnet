@@ -173,8 +173,7 @@ public class BaseRepositoryAdministrativeContextTest
             Assert.Equal(sortedEntities.First().Id, result.First().Id);
             Assert.Equal(sortedEntities.Last().Id, result.Last().Id);
         }
-    }
-      
+    }      
 
     [Fact]
     public void FindAllSorted_Should_Return_All_Entities_Sorted_By_Ascending_Specified_Property()
