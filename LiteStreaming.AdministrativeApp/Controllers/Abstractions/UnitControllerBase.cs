@@ -13,8 +13,8 @@ public abstract class UnitControllerBase<T> : Controller where T : class, new()
 {
     const string SORT_PARAM_NAME = "SortParamName";
     const string SORT_ICONS = "SortIcon";
-    const string SORT_ICON_ASC = "bi bi-sort-alpha-down";
-    const string SORT_ICON_DESC = "bi bi-sort-alpha-up";
+    const string SORT_ICON_ASC = "";
+    const string SORT_ICON_DESC = "";
     protected string INDEX { get; } = "Index";
     protected string CREATE { get;  } = "Create";    
     protected string EDIT { get; }  = "Edit";
@@ -25,37 +25,30 @@ public abstract class UnitControllerBase<T> : Controller where T : class, new()
         this.Services = service;    
     }
 
-    private SortOrder ApllySortOrder(string sortExpression)
+    private SortModel ApllySortOrder(string sortExpression)
     {
-        ViewData[SORT_PARAM_NAME] = "";
-        ViewData[SORT_ICONS] = "";
-
-        SortOrder sortOrder;
+        SortModel sortModel = new();
         if (sortExpression is not null && !sortExpression.Contains("_desc"))
         {
-            sortOrder = SortOrder.Ascending;
-            ViewData[SORT_PARAM_NAME] = $"{sortExpression}_desc";
-            ViewData[SORT_ICONS] = SORT_ICON_DESC;
+            sortModel.SortOrder= SortOrder.Ascending;
+            sortModel.SortParamName = $"{sortExpression}_desc";
         }
         else if (sortExpression is not null)
         {
-            sortOrder = SortOrder.Descending;
-            ViewData[SORT_PARAM_NAME] = $"{sortExpression.Replace("_desc", "").ToLower()}";
-            ViewData[SORT_ICONS] = SORT_ICON_ASC;
+            sortModel.SortOrder  = SortOrder.Descending;
+            sortModel.SortParamName  = $"{sortExpression.Replace("_desc", "").ToLower()}";
+            sortModel.SortIcon = SortIcons.SORT_ICON_DESC;
         }
-        else
-        {
-            sortOrder = SortOrder.Ascending;
-            ViewData[SORT_PARAM_NAME] = "default_desc";
-            ViewData[SORT_ICONS] = SORT_ICON_DESC;
-        }
-        return sortOrder;
+        return sortModel;
     }
 
-    public virtual IActionResult Index(string sortExpression = null, string serachText = "")
+    public virtual IActionResult Index(string sortExpression = null, string SearchText = "")
     {
-        var sortOrder = ApllySortOrder(sortExpression);
-        return View(this.Services.FindAllSorted(sortExpression, sortOrder));
+        var pagerModel = new PagerModel();                
+        pagerModel.SortModel = ApllySortOrder(sortExpression);
+        pagerModel.SearchText = SearchText;
+        pagerModel.SetItems<T>(this.Services.FindAllSorted(SearchText, sortExpression, pagerModel.SortModel.SortOrder));
+        return View(pagerModel);
     }
 
     [Authorize]
