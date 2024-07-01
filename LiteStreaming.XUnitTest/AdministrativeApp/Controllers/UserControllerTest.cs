@@ -11,12 +11,12 @@ namespace AdministrativeApp.Controllers;
 
 public class UserControllerTest
 {
-    private readonly Mock<IService<AdministrativeAccountDto>> administrativeAccountServiceMock;
+    private readonly Mock<IService<AdminAccountDto>> administrativeAccountServiceMock;
     private readonly UserController userController;
 
     public UserControllerTest()
     {
-        administrativeAccountServiceMock = new Mock<IService<AdministrativeAccountDto>>();
+        administrativeAccountServiceMock = new Mock<IService<AdminAccountDto>>();
         userController = new UserController(administrativeAccountServiceMock.Object)
         {
             ControllerContext = new ControllerContext
@@ -30,7 +30,7 @@ public class UserControllerTest
     public void Index_Returns_ViewResult_With_Model()
     {
         // Arrange
-        var accounts = MockAdministrativeAccount.Instance.GetFakerListDto();
+        var accounts = MockAdminAccount.Instance.GetFakerListDto();
         administrativeAccountServiceMock.Setup(service => service.FindAllSorted(null, 0)).Returns(accounts);
 
         // Act
@@ -38,7 +38,7 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsAssignableFrom<IEnumerable<AdministrativeAccountDto>>(viewResult.Model);
+        var model = Assert.IsAssignableFrom<IEnumerable<AdminAccountDto>>(viewResult.Model);
         Assert.Equal(accounts, model);
     }
 
@@ -61,7 +61,7 @@ public class UserControllerTest
         userController.ModelState.AddModelError("test", "test error");
 
         // Act
-        var result = userController.Save(new AdministrativeAccountDto());
+        var result = userController.Save(new AdminAccountDto());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -72,7 +72,7 @@ public class UserControllerTest
     public void Save_ValidDto_RedirectsToIndex()
     {
         // Arrange
-        var dto = MockAdministrativeAccount.Instance.GetFakerDto();        
+        var dto = MockAdminAccount.Instance.GetFakerDto();        
         MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
 
         // Act
@@ -88,9 +88,9 @@ public class UserControllerTest
     public void Save_ServiceThrowsArgumentException_Returns_CreateView_WithWarningAlert()
     {
         // Arrange
-        var dto = MockAdministrativeAccount.Instance.GetFakerDto();
+        var dto = MockAdminAccount.Instance.GetFakerDto();
         MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
-        administrativeAccountServiceMock.Setup(service => service.Create(It.IsAny<AdministrativeAccountDto>())).Throws(new ArgumentException("Invalid data."));
+        administrativeAccountServiceMock.Setup(service => service.Create(It.IsAny<AdminAccountDto>())).Throws(new ArgumentException("Invalid data."));
 
         // Act
         var result = userController.Save(dto);
@@ -108,9 +108,9 @@ public class UserControllerTest
     public void Save_ServiceThrowsException_Returns_CreateView_WithDangerAlert()
     {
         // Arrange
-        var dto = MockAdministrativeAccount.Instance.GetFakerDto();
+        var dto = MockAdminAccount.Instance.GetFakerDto();
         MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
-        administrativeAccountServiceMock.Setup(service => service.Create(It.IsAny<AdministrativeAccountDto>())).Throws(new Exception("Error"));
+        administrativeAccountServiceMock.Setup(service => service.Create(It.IsAny<AdminAccountDto>())).Throws(new Exception("Error"));
 
         // Act
         var result = userController.Save(dto);
@@ -131,7 +131,7 @@ public class UserControllerTest
         userController.ModelState.AddModelError("test", "test error");
 
         // Act
-        var result = userController.Update(new AdministrativeAccountDto());
+        var result = userController.Update(new AdminAccountDto());
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -142,7 +142,7 @@ public class UserControllerTest
     public void Update_ValidDto_RedirectsToIndex()
     {
         // Arrange
-        var dto = MockAdministrativeAccount.Instance.GetFakerDto();
+        var dto = MockAdminAccount.Instance.GetFakerDto();
         MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
 
         // Act
@@ -158,9 +158,9 @@ public class UserControllerTest
     public void Update_ServiceThrowsArgumentException_Returns_EditView_WithWarningAlert()
     {
         // Arrange
-        var dto = MockAdministrativeAccount.Instance.GetFakerDto();
+        var dto = MockAdminAccount.Instance.GetFakerDto();
         MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
-        administrativeAccountServiceMock.Setup(service => service.Update(It.IsAny<AdministrativeAccountDto>())).Throws(new ArgumentException("Invalid data."));
+        administrativeAccountServiceMock.Setup(service => service.Update(It.IsAny<AdminAccountDto>())).Throws(new ArgumentException("Invalid data."));
 
         // Act
         var result = userController.Update(dto);
@@ -178,9 +178,9 @@ public class UserControllerTest
     public void Update_ServiceThrowsException_Returns_EditView_WithDangerAlert()
     {
         // Arrange
-        var dto = MockAdministrativeAccount.Instance.GetFakerDto();
+        var dto = MockAdminAccount.Instance.GetFakerDto();
         MockHttpContextHelper.MockClaimsIdentitySigned(dto.UsuarioId, dto.Name, dto.Email, userController);
-        administrativeAccountServiceMock.Setup(service => service.Update(It.IsAny<AdministrativeAccountDto>())).Throws(new Exception("Error"));
+        administrativeAccountServiceMock.Setup(service => service.Update(It.IsAny<AdminAccountDto>())).Throws(new Exception("Error"));
 
         // Act
         var result = userController.Update(dto);
@@ -198,7 +198,7 @@ public class UserControllerTest
     public void Edit_ValidId_Returns_ViewResult_With_Model()
     {
         // Arrange        
-        var accountDto = MockAdministrativeAccount.Instance.GetFakerDto();
+        var accountDto = MockAdminAccount.Instance.GetFakerDto();
         var id = accountDto.Id;
         administrativeAccountServiceMock.Setup(service => service.FindById(It.IsAny<Guid>())).Returns(accountDto);
 
@@ -207,7 +207,7 @@ public class UserControllerTest
 
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<AdministrativeAccountDto>(viewResult.Model);
+        var model = Assert.IsType<AdminAccountDto>(viewResult.Model);
         Assert.Equal(accountDto, model);
     }
 
@@ -251,9 +251,9 @@ public class UserControllerTest
     public void Delete_ValidId_Returns_IndexView_With_SuccessAlert()
     {
         // Arrange     
-        var accountDto = MockAdministrativeAccount.Instance.GetFakerDto();
+        var accountDto = MockAdminAccount.Instance.GetFakerDto();
         MockHttpContextHelper.MockClaimsIdentitySigned(accountDto.UsuarioId, accountDto.Name, accountDto.Email, userController);
-        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Returns(true);
+        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdminAccountDto>())).Returns(true);
         
         // Act
         var result = userController.Delete(accountDto);
@@ -271,7 +271,7 @@ public class UserControllerTest
     {
         // Arrange
         MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", userController);
-        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Throws(new ArgumentException("Invalid user."));
+        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdminAccountDto>())).Throws(new ArgumentException("Invalid user."));
 
         // Act
         var result = userController.Delete(new());
@@ -289,7 +289,7 @@ public class UserControllerTest
     {
         // Arrange
         MockHttpContextHelper.MockClaimsIdentitySigned(Guid.NewGuid(), "teste", "teste@teste.com", userController);
-        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdministrativeAccountDto>())).Throws(new Exception("Error"));
+        administrativeAccountServiceMock.Setup(service => service.Delete(It.IsAny<AdminAccountDto>())).Throws(new Exception("Error"));
 
         // Act
         var result = userController.Delete(new());

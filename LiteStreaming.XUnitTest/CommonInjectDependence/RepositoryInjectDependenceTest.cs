@@ -6,7 +6,7 @@ using Domain.Streaming.Agreggates;
 using Domain.Administrative.Agreggates;
 using Repository.Persistency.Account;
 using Repository.Persistency.Streaming;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 
 namespace CommonInjectDependence;
 public class RepositoryInjectDependenceTest
@@ -43,6 +43,6 @@ public class RepositoryInjectDependenceTest
         services?.AddRepositoriesAdministrativeApp();
 
         // Assert
-        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<AdministrativeAccount>) && descriptor.ImplementationType == typeof(AdminAccountRepository)));
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepository<AdminAccount>) && descriptor.ImplementationType == typeof(AdminAccountRepository)));
     }
 }

@@ -6,7 +6,7 @@ using Moq;
 using System.Linq.Expressions;
 using EasyCryptoSalt;
 using Microsoft.Extensions.Options;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class UserServiceTest

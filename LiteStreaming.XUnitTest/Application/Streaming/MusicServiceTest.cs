@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using Application.Streaming.Dto;
 using AutoMapper;
 using Domain.Streaming.Agreggates;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class MusicServiceTest

@@ -4,8 +4,7 @@ using AutoMapper;
 using Domain.Account.Agreggates;
 using Application.Streaming.Dto;
 using Domain.Streaming.Agreggates;
-using Castle.Core.Resource;
-using LiteStreaming.Repository.Abstractions.Interfaces;
+using Repository.Persistency.Abstractions.Interfaces;
 
 namespace Application.Streaming;
 public class PlaylistPersonalServiceTest
