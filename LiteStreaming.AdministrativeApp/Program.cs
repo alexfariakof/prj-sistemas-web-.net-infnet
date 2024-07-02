@@ -63,6 +63,7 @@ if (app.Environment.IsProduction())
     app.UseHsts();
 }
 
+app.UseHsts();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
