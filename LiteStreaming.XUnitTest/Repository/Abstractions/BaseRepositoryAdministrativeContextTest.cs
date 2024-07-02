@@ -191,7 +191,7 @@ public class BaseRepositoryAdministrativeContextTest
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted(nameof(AdminAccount.Name), SortOrder.Ascending);
+            var result = repository.FindAllSorted(null, nameof(AdminAccount.Name), SortOrder.Ascending);
 
             // Assert
             var sortedEntities = entities.OrderBy(e => e.Name).ToList();
@@ -217,7 +217,7 @@ public class BaseRepositoryAdministrativeContextTest
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted(nameof(AdminAccount.Name), SortOrder.Descending);
+            var result = repository.FindAllSorted(null, nameof(AdminAccount.Name), SortOrder.Descending);
 
             // Assert
             var sortedEntities = entities.OrderByDescending(e => e.Name).ToList();
@@ -244,7 +244,7 @@ public class BaseRepositoryAdministrativeContextTest
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted(nameof(AdminAccount.Login.Email), SortOrder.Ascending);
+            var result = repository.FindAllSorted(null, nameof(AdminAccount.Login.Email), SortOrder.Ascending);
 
             // Assert
             var sortedEntities = entities.OrderBy(e => e.Login.Email).ToList();
@@ -270,7 +270,7 @@ public class BaseRepositoryAdministrativeContextTest
             var repository = new TestRepository(context);
 
             // Act
-            var result = repository.FindAllSorted(nameof(AdminAccount.Login.Email), SortOrder.Descending);
+            var result = repository.FindAllSorted(null, nameof(AdminAccount.Login.Email), SortOrder.Descending);
 
             // Assert
             var sortedEntities = entities.OrderByDescending(e => e.Login.Email).ToList();
