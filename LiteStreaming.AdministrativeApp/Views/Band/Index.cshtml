@@ -19,6 +19,7 @@
     <table class="table table-striped table-dark mb-0">
         <thead>
             <tr>
+                <th scope="col" class="text-center">Backdrop</th>
                 <th scope="col" class="text-start">
                     <a asp-action="Index" asp-route-sortExpression="@(Model.SortModel.SortParamName.ToString().Replace("_desc", "") !="name" ? "name_desc" : Model.SortModel.SortParamName)" asp-route-SearchText="@Model.SearchText">
                         <i class="@(Model.SortModel.SortParamName.ToString().Replace("_desc", "") == "name" ? Model.SortModel.SortIcon : "bi bi-sort-alpha-up")">Nome</i>
@@ -28,8 +29,7 @@
                     <a asp-action="Index" asp-route-sortExpression="@(Model.SortModel.SortParamName.ToString().Replace("_desc", "") !="description" ? "description_desc" : Model.SortModel.SortParamName)" asp-route-SearchText="@Model.SearchText">
                         <i class="@(Model.SortModel.SortParamName.ToString().Replace("_desc", "") == "description" ? Model.SortModel.SortIcon : "bi bi-sort-alpha-up")">Descrição</i>
                     </a>
-                </th>
-                <th scope="col" class="text-center">Backdrop</th>
+                </th>                
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -37,9 +37,9 @@
             @foreach (var item in Model.GetItems<BandDto>())
             {
                 <tr>
-                    <td class="w-10 text-start text-wrap">@item.Name</td>
-                    <td class="w-50 text-start text-wrap">@item.Description</td>
                     <td class="w-auto text-center"><img class="img-fluid" width="36" height="36" src=@item.Backdrop /></td>
+                    <td class="w-10 text-start text-wrap">@item.Name</td>
+                    <td class="w-50 text-start text-wrap">@item.Description</td>                    
                     <td class="w-5 text-center" >
                         <a type="button" class="btn btn-outline-warning rounded-circle p-2 border border-2 border-secondary" data-toggle="tooltip" data-placement="bottom" title="Editar banda" href="@Url.Action("Edit", "Band", new { Id = item.Id })">
                             <i class="bi bi-pencil-square"></i>

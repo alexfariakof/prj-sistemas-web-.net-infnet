@@ -19,12 +19,12 @@
     <table class="table table-striped table-dark mb-0">
         <thead>
             <tr>
-                <th scope="col" class="text-start">
+                <th scope="col" class="text-start">Backdrop</th>
+                <th scope="col" class="text-start w-75">
                     <a asp-action="Index" asp-route-sortExpression="@(Model.SortModel.SortParamName.ToString().Replace("_desc", "") !="name" ? "name_desc" : Model.SortModel.SortParamName)" asp-route-SearchText="@Model.SearchText">
                         <i class="@(Model.SortModel.SortParamName.ToString().Replace("_desc", "") == "name" ? Model.SortModel.SortIcon : "bi bi-sort-alpha-up")">Nome</i>
                     </a>
-                </th>
-                <th scope="col" class="text-start">Backdrop</th>
+                </th>                
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -32,8 +32,8 @@
             @foreach (var item in Model.GetItems<AlbumDto>())
             {
                 <tr>
-                    <td class="text-start">@item.Name</td>
                     <td class="w-auto text-start"><img class="img-fluid" width="36" height="36" src=@item.Backdrop /></td>
+                    <td class="text-start">@item.Name</td>                    
                     <td class="w-auto text-center">
                         <a type="button" class="btn btn-outline-warning rounded-circle p-2 border border-2 border-secondary" data-toggle="tooltip" data-placement="bottom" title="Editar álbum" href="@Url.Action("Edit", "Album", new { Id = item.Id })">
                             <i class="bi bi-pencil-square"></i>
