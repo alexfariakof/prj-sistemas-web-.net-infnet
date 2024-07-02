@@ -87,9 +87,9 @@ public class MerchantService : ServiceBase<MerchantDto, Merchant>, IService<Merc
         return result;
     }
 
-    public override List<MerchantDto> FindAllSorted(string sortProperty = null, SortOrder sortOrder = 0)
+    public override List<MerchantDto> FindAllSorted(string serachParams = null, string sortProperty = null, SortOrder sortOrder = 0)
     {
-        var result = this.Mapper.Map<List<MerchantDto>>(this.Repository.FindAllSorted(sortProperty, sortOrder));
+        var result = this.Mapper.Map<List<MerchantDto>>(this.Repository.FindAllSorted(serachParams, sortProperty, sortOrder));
         return result;
     }
 
