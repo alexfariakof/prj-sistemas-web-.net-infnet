@@ -83,7 +83,7 @@
                 <span class="w-auto text-end me-2 @(User.Identity.IsAuthenticated ? "" : "visually-hidden") d-none d-sm-inline-flex">Seja Bem vindo,  @User.Identity.Name </span>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <a class="d-flex flex-row me-2 btn btn-link bg-success w-auto text-end text-decoration-none text-light border border-1 border-light @(User.Identity.IsAuthenticated ? "" : "visually-hidden")" href="@Url.Action("LogOut", "Account")">
-                        <i class="bi bi-box-arrow-left"></i>Sair
+                        <i class="bi bi-box-arrow-left me-2"></i>Sair
                     </a>
                 </div>
             </div>
